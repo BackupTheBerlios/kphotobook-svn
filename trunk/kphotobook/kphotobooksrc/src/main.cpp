@@ -18,7 +18,7 @@ static const char description[] = I18N_NOOP(
                                       "application for managing and refinding your digital photos."
                                   );
 
-static const char version[] = "0.0.5";
+static const char version[] = "0.0.6";
 
 static KCmdLineOptions options[] = {
                                        { "+[URL]", I18N_NOOP( "Document to open." ), 0 },
