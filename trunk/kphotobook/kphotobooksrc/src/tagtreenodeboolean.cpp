@@ -232,7 +232,6 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
             // no file is selected -> dtaw a disabled checkbox
             TreeHelper::drawCheckBox(p, cg, rect);
         }
-
         break;
     }
     case TagTree::COLUMN_FILTER :
