@@ -594,95 +594,77 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
     // />
 
     int id = -1;
-    QString name;
+    QString name = QString::null;
     int tagNodeTypeId = TagNode::TYPE_INVALID;
     QString icon;
 
-    // the attributes 'id', 'name' and 'type' are mandatory and the attribute 'icon' is optional
-    if (atts.length() == 3 || atts.length() == 4) {
-        // parse first attribute 'id'
-        if (atts.localName(0) == ATTRIBUTE_TAG_ID) {
+    QString curKey, curVal;
+    // first read all arguments...
+    for (int i = 0; i <= atts.length(); ++i)
+    {
+        curKey = atts.localName(i);
+        curVal = atts.value(i);
+
+        if (curKey == ATTRIBUTE_TAG_ID) {
             bool ok;
-            id = atts.value(0).toInt(&ok); // convert the string id to an int
+            id = curVal.toInt(&ok); // convert the string id to an int
 
             if (!ok) {
-                QString msg = QString("Value of attribute 'id' is not an integer: '%1'.").arg(atts.value(0));
-                m_exception = new EngineException(
-                    msg,
-                    "");
+                QString msg = QString("Value of attribute 'id' is not an integer: '%1'.").arg(curVal);
+                m_exception = new EngineException(msg, "");
                 return false;
             }
-        } else {
-            QString msg = QString("Mandatory first attribute of tag 'tagnode' must be 'id', but attribute '%1' found.").arg(atts.localName(0));
-            m_exception = new EngineException(
-                msg,
-                "");
-            return false;
         }
-
-        // parse second attribute 'name'
-        if (atts.localName(1) == ATTRIBUTE_TAG_NAME) {
-            name = atts.value(1);
-
-            if (name.length() <= 0) {
-                m_exception = new EngineException(
-                    "Value of attribute 'name' is rather empty, but should contain the name of the tagnode.",
-                    "");
-                return false;
-            }
-        } else {
-            QString msg = QString("Mandatory second attribute of tag 'tagnode' must be 'name', but attribute '%1' found.").arg(atts.localName(1));
-            m_exception = new EngineException(
-                msg,
-                "");
-            return false;
+        else if (curKey == ATTRIBUTE_TAG_NAME) {
+            name = curVal;
         }
-
-        // parse third attribute 'type'
-        if (atts.localName(2) == ATTRIBUTE_TAG_TYPE) {
-            QString tagnodeTypeStr = atts.value(2);
+        else if (curKey == ATTRIBUTE_TAG_TYPE) {
+            QString tagnodeTypeStr = curVal;
 
             tagNodeTypeId = TagNode::tagNodeTypeId(tagnodeTypeStr);
 
             if (tagNodeTypeId == TagNode::TYPE_INVALID) {
-                QString msg = QString("Value of attribute 'type' must be '%1' or '%2', but is '%3'.").arg(TagNode::tagNodeType(TagNode::TYPE_TITLE)).arg(TagNode::tagNodeType(TagNode::TYPE_BOOLEAN)).arg(atts.value(2));
-                m_exception = new EngineException(
-                    msg,
-                    "");
+                QString msg = QString("Value of attribute 'type' must be '%1' or '%2', but is '%3'.").arg(TagNode::tagNodeType(TagNode::TYPE_TITLE)).arg(TagNode::tagNodeType(TagNode::TYPE_BOOLEAN)).arg(curVal);
+                m_exception = new EngineException(msg,"");
                 return false;
             }
-        } else {
-            QString msg = QString("Mandatory third attribute of tag 'tagnode' must be 'type', but attribute '%1' found.").arg(atts.localName(2));
-            m_exception = new EngineException(
-                msg,
-                "");
-            return false;
-        }
 
-        // parse fourth attribute 'icon'
-        if (atts.length() == 4) {
-            if (atts.localName(3) == ATTRIBUTE_TAG_ICON) {
-                icon = atts.value(3);
-
-                if (icon.length() <= 0) {
-                    // we do not care a lot if the icon-attribute is empty because the attribute is optional
-                    kdDebug() << "Optional attribute 'icon' of tagnode with the name '" << name << "' is empty." << endl;
-                }
-            } else {
-                QString msg = QString("Optional fourth attribute of tag 'tagnode' must be 'icon', but attribute '%1' found.").arg(atts.localName(3));
-                m_exception = new EngineException(
-                    msg,
-                    "");
-                return false;
-            }
         }
-    } else {
+        else if (curKey == ATTRIBUTE_TAG_ICON) {
+            icon = curVal;
+        }
+    }
+
+    
+    //and then do the consistency check:
+    // mandatory id given?
+    if (id < 0) {
         m_exception = new EngineException(
-            "Tag 'sourcedir' must contain the attributes 'id', 'dir' and optionally 'recursive'.",
-            "");
+                "Value of attribute 'id' is not set, but should contain the id of the tagnode.", "");
         return false;
     }
 
+    //mandatory name given?
+    if (name.isNull() || name.length() <= 0) {
+        m_exception = new EngineException(
+                "Value of attribute 'name' is not set or empty, but should contain the name of the tagnode.", "");
+        return false;
+    }
+    
+    //mandatory type given?
+    if (tagNodeTypeId == TagNode::TYPE_INVALID) {
+        m_exception = new EngineException(
+                "Value of attribute 'type' is not set, but should contain the type of the tagnode.", "");
+        return false;
+    }
+    
+    // icon is optional`
+    if (icon.length() <= 0) {
+        kdDebug() << "Optional attribute 'icon' of tagnode with the name '" << name << "' is empty." << endl;
+    }
+
+    
+    
     // check that the id of the tagNode is not already used
     TagNode* conflictingTagNode = m_engine->m_tagNodeDict->find(id);
     if (conflictingTagNode) {
