@@ -35,7 +35,7 @@ class File;
 /**
  * The superclass for all different taypes of tagnodes.
  *
- * CVS-ID $Id: tagnode.h,v 1.4 2004/03/22 21:51:39 starcube Exp $
+ * CVS-ID $Id$
  */
 class TagNode : public QObject {
 

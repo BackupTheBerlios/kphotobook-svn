@@ -32,7 +32,7 @@ class TagNodeBoolean;
  * Concrete class representing the association between a file and a TagNodeBoolean.
  * This associations contains a reference to the tagnode and the state of the association.
  *
- * CVS-ID $Id: filetagnodeassocboolean.h,v 1.3 2004/03/28 14:58:16 starcube Exp $
+ * CVS-ID $Id$
  */
 class FileTagNodeAssocBoolean : public FileTagNodeAssoc {
 

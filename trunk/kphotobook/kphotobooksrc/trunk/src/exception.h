@@ -26,7 +26,7 @@
 /**
  * The EngineException is the superclass of all exceptions thrown by the engine.
  *
- * CVS-ID $Id: exception.h,v 1.1 2004/03/07 18:52:42 starcube Exp $
+ * CVS-ID $Id$
  */
 class EngineException {
 
@@ -84,7 +84,7 @@ private:
  * The PersistingException is thrown when a problem during persisting
  * the xml file occurs.
  *
- * CVS-ID $Id: exception.h,v 1.1 2004/03/07 18:52:42 starcube Exp $
+ * CVS-ID $Id$
  */
 class PersistingException : public EngineException {
 

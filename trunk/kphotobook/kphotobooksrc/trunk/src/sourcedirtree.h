@@ -40,7 +40,7 @@ class SourceDirTreeNode;
 /**
  * The SourceDirTree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: sourcedirtree.h,v 1.7 2004/06/04 20:59:02 starcube Exp $
+ * CVS-ID $Id$
  */
 class SourceDirTree : public KListView {
 

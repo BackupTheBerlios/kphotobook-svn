@@ -18,25 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TAGNODETITLE_H
-#define TAGNODETITLE_H
+#ifndef TAGNODEBOOLEAN_H
+#define TAGNODEBOOLEAN_H
 
 #include "tagnode.h"
 
 #include <qstring.h>
+#include <qfile.h>
 
 /**
- * Concrete tagnode implementation representing a text only.
+ * Concrete tagnode implementation representing a boolean tag.
  *
- * CVS-ID $Id: tagnodetitle.h,v 1.1 2004/03/07 18:52:31 starcube Exp $
+ * CVS-ID $Id$
  */
-class TagNodeTitle : public TagNode {
+class TagNodeBoolean : public TagNode {
 
 public:
-    TagNodeTitle(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
+    TagNodeBoolean(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
 
-    ~TagNodeTitle() {
+    ~TagNodeBoolean() {
     }
+
+    void setTagged(File* file, bool tagged);
+    bool tagged(File* file);
 };
 
 #endif

@@ -38,7 +38,7 @@ class TagNode;
 /**
  * The engine managing all sourcedirs, tags and files/images.
  *
- * CVS-ID $Id: engine.h,v 1.6 2004/06/01 21:47:48 starcube Exp $
+ * CVS-ID $Id$
  */
 class Engine {
 

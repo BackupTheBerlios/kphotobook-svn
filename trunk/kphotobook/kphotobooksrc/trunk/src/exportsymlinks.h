@@ -36,7 +36,7 @@
  * It creates symbolic links in the set destination directory to the
  * specified images.
  *
- * CVS-ID $Id: exportsymlinks.h,v 1.2 2004/06/13 15:01:48 starcube Exp $
+ * CVS-ID $Id$
 */
 class ExportSymlinks : public QObject { //, public QThread {
 

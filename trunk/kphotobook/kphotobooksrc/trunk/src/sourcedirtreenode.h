@@ -36,7 +36,7 @@ class SourceDir;
 /**
  * Specialized KListViewItem representing a SourceDir to be used in the SourceDirTree.
  *
- * CVS-ID $Id: sourcedirtreenode.h,v 1.3 2004/06/04 20:59:02 starcube Exp $
+ * CVS-ID $Id$
  */
 class SourceDirTreeNode : public KListViewItem {
 

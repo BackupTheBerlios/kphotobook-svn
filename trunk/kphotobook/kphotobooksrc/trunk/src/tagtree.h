@@ -39,7 +39,7 @@ class KPhotoBook;
 /**
  * The tagtree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: tagtree.h,v 1.8 2004/06/04 20:59:02 starcube Exp $
+ * CVS-ID $Id$
  */
 class TagTree : public KListView {
 

@@ -18,52 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef XMLWRITER_H
-#define XMLWRITER_H
+#ifndef TAGNODETITLE_H
+#define TAGNODETITLE_H
 
-#include "exception.h"
-#include "xmlconstants.h"
+#include "tagnode.h"
 
-#include <qfile.h>
 #include <qstring.h>
 
-class Engine;
-class File;
-class SourceDir;
-class TagNode;
-class FileTagNodeAssoc;
-
 /**
- * This class is writing the xml-file containing all needed data of the engine.
+ * Concrete tagnode implementation representing a text only.
  *
- * CVS-ID $Id: xmlwriter.h,v 1.2 2004/03/14 18:14:46 starcube Exp $
+ * CVS-ID $Id$
  */
-class XmlWriter : public XmlConstants {
+class TagNodeTitle : public TagNode {
 
 public:
-    XmlWriter(Engine* engine)
-        : XmlConstants()
-        , m_engine(engine) {
+    TagNodeTitle(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
+
+    ~TagNodeTitle() {
     }
-
-    ~XmlWriter() {
-    }
-
-    void store(QFile* file) throw(PersistingException*);
-
-private:
-    Engine* m_engine;
-
-    void dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent);
-    void dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent);
-    void dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent);
-    void dumpFile(QTextStream& stream, File* file, QString indent);
-    void dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent);
-
-    /**
-     * Quotes all needed characters in the specified string for xml files.
-     */
-    QString entitize(const QString data);
 };
 
 #endif

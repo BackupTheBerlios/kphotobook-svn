@@ -30,7 +30,7 @@
  * Static helper class for KListView (Tree) subclasses.
  * This class is not instantiable and contains static helper methods only.
  *
- * CVS-ID $Id: treehelper.h,v 1.2 2004/05/22 21:31:14 starcube Exp $
+ * CVS-ID $Id$
  */
 class TreeHelper {
 

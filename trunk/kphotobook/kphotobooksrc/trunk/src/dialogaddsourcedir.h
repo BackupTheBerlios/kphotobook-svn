@@ -18,72 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FILETAGNODEASSOC_H
-#define FILETAGNODEASSOC_H
+#ifndef DIALOGADDSOURCEDIR_H
+#define DIALOGADDSOURCEDIR_H
 
-#include <qstring.h>
+#include <kdialogbase.h>
+#include <klineedit.h>
 
-class File;
-class TagNode;
+#include <qcheckbox.h>
+#include <qdir.h>
 
 /**
- * Abstract superclass of all associations between a file and a node.
- * This abstract class contains the reference to the associated file and the tagNode.
+ * Dialog for adding a source directory.
  *
- * CVS-ID $Id: filetagnodeassoc.h,v 1.3 2004/03/28 14:58:16 starcube Exp $
+ * CVS-ID $Id$
  */
-class FileTagNodeAssoc {
+class DialogAddSourceDir : public KDialogBase {
+
+Q_OBJECT
 
 public:
-    FileTagNodeAssoc(File* file, TagNode* tagNode);
+    DialogAddSourceDir(QWidget* parent = 0, const char* name = 0);
 
-    /**
-     * Removes this assoc from the list in the tagnode and the file.
-     */
-    virtual ~FileTagNodeAssoc();
+    ~DialogAddSourceDir();
 
-    void setFile(File* file) {
-        m_file = file;
+    QDir* directory() {
+        return new QDir(m_currentDirectoryLineEdit->text());
     }
 
-    File* file() {
-        return m_file;
+    bool recursive() {
+        return m_recursiveCheckBox->state();
     }
 
-    void setTagNode(TagNode* tagNode) {
-        m_tagNode = tagNode;
-    }
+private slots:
+    void slotDirectoryButtonClicked();
+    void slotTextChanged(const QString& text);
 
-    TagNode* tagNode() {
-        return m_tagNode;
-    }
-
-    virtual void update(FileTagNodeAssoc* assoc) = 0;
-
-    /**
-     * Determines if this association must be dumped to the database.
-     * The defaulkt implementation returns true;
-     */
-    virtual bool mustDump() {
-        return true;
-    }
-
-    virtual QString valueAsString() = 0;
-
-    virtual bool equals(QString* value) = 0;
-    virtual bool greaterThan(QString* value) = 0;
-    virtual bool lesserThan(QString* value) = 0;
-
-protected:
-    /**
-      * The file this association belongs to.
-      */
-    File* m_file;
-
-    /**
-     * The tagNode this association belongs to.
-     */
-    TagNode* m_tagNode;
+private:
+    KLineEdit* m_currentDirectoryLineEdit;
+    QCheckBox* m_recursiveCheckBox;
 };
 
 #endif

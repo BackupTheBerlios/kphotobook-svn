@@ -37,7 +37,7 @@ class TagNode;
 /**
  * The handler for parsing the KphotoBook xml file.
  *
- * CVS-ID $Id: xmlparser.h,v 1.2 2004/03/21 11:44:50 starcube Exp $
+ * CVS-ID $Id$
  */
 class XmlParser : public QXmlDefaultHandler, public XmlConstants {
 

@@ -18,29 +18,57 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TAGNODEBOOLEAN_H
-#define TAGNODEBOOLEAN_H
+#ifndef DIALOGEDITTAG_H
+#define DIALOGEDITTAG_H
 
-#include "tagnode.h"
+#include "kphotobook.h"
+
+#include <kdialogbase.h>
+#include <klineedit.h>
+#include <kcombobox.h>
 
 #include <qstring.h>
-#include <qfile.h>
+#include <qpushbutton.h>
+
+class TagTreeNode;
 
 /**
- * Concrete tagnode implementation representing a boolean tag.
+ * The dialog to create a now tag.
  *
- * CVS-ID $Id: tagnodeboolean.h,v 1.5 2004/03/18 22:04:14 starcube Exp $
+ * CVS-ID $Id$
  */
-class TagNodeBoolean : public TagNode {
+class DialogEditTag : public KDialogBase {
+
+Q_OBJECT
 
 public:
-    TagNodeBoolean(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
+    DialogEditTag(QWidget *parent, TagTreeNode* parentNode, KPhotoBook* photobook, const char *name);
 
-    ~TagNodeBoolean() {
+    ~DialogEditTag();
+
+    QString tagName() {
+        return m_nameLineEdit->text();
     }
 
-    void setTagged(File* file, bool tagged);
-    bool tagged(File* file);
+    QString tagIcon() {
+        return m_iconLineEdit->text();
+    }
+
+private slots:
+    void slotNameChanged(const QString& text);
+    void slotIconTextChanged(const QString& text);
+    void slotIconButtonClicked();
+
+private:
+    TagTreeNode* m_tagTreeNode;
+    KPhotoBook* m_photobook;
+
+    KComboBox* m_typeComboBox;
+    KLineEdit* m_nameLineEdit;
+    KLineEdit* m_iconLineEdit;
+    QPushButton* m_iconButton;
+
+    void validate();
 };
 
 #endif

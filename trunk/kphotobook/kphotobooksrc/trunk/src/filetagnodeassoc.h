@@ -18,62 +18,72 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DIALOGCREATETAG_H
-#define DIALOGCREATETAG_H
-
-#include "kphotobook.h"
-
-#include <kdialogbase.h>
-#include <klineedit.h>
-#include <kcombobox.h>
+#ifndef FILETAGNODEASSOC_H
+#define FILETAGNODEASSOC_H
 
 #include <qstring.h>
-#include <qpushbutton.h>
-#include <qvaluelist.h>
 
-class TagTreeNode;
+class File;
+class TagNode;
 
 /**
- * The dialog to create a now tag.
+ * Abstract superclass of all associations between a file and a node.
+ * This abstract class contains the reference to the associated file and the tagNode.
  *
- * CVS-ID $Id: dialogcreatetag.h,v 1.2 2004/03/18 22:04:14 starcube Exp $
+ * CVS-ID $Id$
  */
-class DialogCreateTag : public KDialogBase {
-
-Q_OBJECT
+class FileTagNodeAssoc {
 
 public:
-    DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, KPhotoBook* photobook, const char *name);
+    FileTagNodeAssoc(File* file, TagNode* tagNode);
 
-    ~DialogCreateTag();
+    /**
+     * Removes this assoc from the list in the tagnode and the file.
+     */
+    virtual ~FileTagNodeAssoc();
 
-    int tagType();
-
-    QString tagName() {
-        return m_nameLineEdit->text();
+    void setFile(File* file) {
+        m_file = file;
     }
 
-    QString tagIcon() {
-        return m_iconLineEdit->text();
+    File* file() {
+        return m_file;
     }
 
-private slots:
-    void slotNameChanged(const QString& text);
-    void slotIconTextChanged(const QString& text);
-    void slotIconButtonClicked();
+    void setTagNode(TagNode* tagNode) {
+        m_tagNode = tagNode;
+    }
 
-private:
-    TagTreeNode* m_parentNode;
-    KPhotoBook* m_photobook;
+    TagNode* tagNode() {
+        return m_tagNode;
+    }
 
-    KComboBox* m_typeComboBox;
-    QValueList<int>* m_typeComboBoxEntries;
+    virtual void update(FileTagNodeAssoc* assoc) = 0;
 
-    KLineEdit* m_nameLineEdit;
-    KLineEdit* m_iconLineEdit;
-    QPushButton* m_iconButton;
+    /**
+     * Determines if this association must be dumped to the database.
+     * The defaulkt implementation returns true;
+     */
+    virtual bool mustDump() {
+        return true;
+    }
 
-    void validate();
+    virtual QString valueAsString() = 0;
+
+    virtual bool equals(QString* value) = 0;
+    virtual bool greaterThan(QString* value) = 0;
+    virtual bool lesserThan(QString* value) = 0;
+
+protected:
+    /**
+      * The file this association belongs to.
+      */
+    File* m_file;
+
+    /**
+     * The tagNode this association belongs to.
+     */
+    TagNode* m_tagNode;
 };
 
 #endif

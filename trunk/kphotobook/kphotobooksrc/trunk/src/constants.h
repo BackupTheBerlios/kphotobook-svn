@@ -26,7 +26,7 @@
 /**
  * Constants for kphotobook.
  *
- * CVS-ID $Id: constants.h,v 1.10 2004/05/21 22:06:13 starcube Exp $
+ * CVS-ID $Id$
  */
 class Constants {
 

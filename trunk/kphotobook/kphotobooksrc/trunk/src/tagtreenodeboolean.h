@@ -28,7 +28,7 @@ class TagNodeBoolean;
 /**
  * Concrete tagtreenode for displaying a boolean tagnode.
  *
- * CVS-ID $Id: tagtreenodeboolean.h,v 1.8 2004/06/04 20:59:02 starcube Exp $
+ * CVS-ID $Id$
  */
 class TagTreeNodeBoolean : public TagTreeNode {
 

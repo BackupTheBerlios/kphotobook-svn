@@ -18,44 +18,52 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DIALOGADDSOURCEDIR_H
-#define DIALOGADDSOURCEDIR_H
+#ifndef XMLWRITER_H
+#define XMLWRITER_H
 
-#include <kdialogbase.h>
-#include <klineedit.h>
+#include "exception.h"
+#include "xmlconstants.h"
 
-#include <qcheckbox.h>
-#include <qdir.h>
+#include <qfile.h>
+#include <qstring.h>
+
+class Engine;
+class File;
+class SourceDir;
+class TagNode;
+class FileTagNodeAssoc;
 
 /**
- * Dialog for adding a source directory.
+ * This class is writing the xml-file containing all needed data of the engine.
  *
- * CVS-ID $Id: dialogaddsourcedir.h,v 1.1 2004/03/07 18:52:12 starcube Exp $
+ * CVS-ID $Id$
  */
-class DialogAddSourceDir : public KDialogBase {
-
-Q_OBJECT
+class XmlWriter : public XmlConstants {
 
 public:
-    DialogAddSourceDir(QWidget* parent = 0, const char* name = 0);
-
-    ~DialogAddSourceDir();
-
-    QDir* directory() {
-        return new QDir(m_currentDirectoryLineEdit->text());
+    XmlWriter(Engine* engine)
+        : XmlConstants()
+        , m_engine(engine) {
     }
 
-    bool recursive() {
-        return m_recursiveCheckBox->state();
+    ~XmlWriter() {
     }
 
-private slots:
-    void slotDirectoryButtonClicked();
-    void slotTextChanged(const QString& text);
+    void store(QFile* file) throw(PersistingException*);
 
 private:
-    KLineEdit* m_currentDirectoryLineEdit;
-    QCheckBox* m_recursiveCheckBox;
+    Engine* m_engine;
+
+    void dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent);
+    void dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent);
+    void dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent);
+    void dumpFile(QTextStream& stream, File* file, QString indent);
+    void dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent);
+
+    /**
+     * Quotes all needed characters in the specified string for xml files.
+     */
+    QString entitize(const QString data);
 };
 
 #endif

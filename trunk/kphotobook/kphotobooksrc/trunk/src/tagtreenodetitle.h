@@ -18,56 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef XMLCONSTANTS_H
-#define XMLCONSTANTS_H
+#ifndef TAGTREENODETITLE_H
+#define TAGTREENODETITLE_H
 
-#include <qstring.h>
+#include "tagtreenode.h"
+
+class TagNodeTitle;
 
 /**
- * Constants used by the xml parser and writer.
+ * Concrete tagtreenode for displaying a title.
  *
- * CVS-ID $Id: xmlconstants.h,v 1.2 2004/06/01 21:47:48 starcube Exp $
+ * CVS-ID $Id$
  */
-class XmlConstants{
+class TagTreeNodeTitle : public TagTreeNode {
 
 public:
-    // the constants containg the element- and attribute-names
-    static const QString ELEMENT_KPHOTOBOOK;
-    static const QString ELEMENT_SOURCEDIRS;
-    static const QString ELEMENT_SOURCEDIR;
-    static const QString ELEMENT_TAGS;
-    static const QString ELEMENT_TAG;
-    static const QString ELEMENT_FILES;
-    static const QString ELEMENT_FILE;
-    static const QString ELEMENT_TAGASSOC;
+    TagTreeNodeTitle(TagTree* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
-    static const QString ATTRIBUTE_KPHOTOBOOK_NAME;
-    static const QString ATTRIBUTE_KPHOTOBOOK_UID;
+    TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
-    static const QString ATTRIBUTE_SOURCEDIR_ID;
-    static const QString ATTRIBUTE_SOURCEDIR_DIR;
-    static const QString ATTRIBUTE_SOURCEDIR_RECURSIVE;
+    virtual ~TagTreeNodeTitle();
 
-    static const QString ATTRIBUTE_TAG_ID;
-    static const QString ATTRIBUTE_TAG_NAME;
-    static const QString ATTRIBUTE_TAG_TYPE;
-    static const QString ATTRIBUTE_TAG_ICON;
-
-    static const QString ATTRIBUTE_FILES_SOURCEDIRID;
-
-    static const QString ATTRIBUTE_FILE_NAME;
-    static const QString ATTRIBUTE_FILE_ROTATE;
-
-    static const QString ATTRIBUTE_TAGASSOC_TAGID;
-    static const QString ATTRIBUTE_TAGASSOC_VALUE;
-
-public:
-    XmlConstants(){
+    /**
+     * Sets the filter to find images without this tag set.
+     */
+    virtual void deselectFilter() {
+        // we do nothing, because we cannot yet filtertitles
     }
 
-    ~XmlConstants(){
+    /**
+     * Resets the filter.
+     */
+    virtual void resetFilter() {
+        // we do nothing, because we cannot yet filtertitles
     }
 
+    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment) {
+        KListViewItem::paintCell(p, cg, column, width, alignment);
+    }
 };
 
 #endif

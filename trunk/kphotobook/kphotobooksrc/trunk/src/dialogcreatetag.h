@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DIALOGEDITTAG_H
-#define DIALOGEDITTAG_H
+#ifndef DIALOGCREATETAG_H
+#define DIALOGCREATETAG_H
 
 #include "kphotobook.h"
 
@@ -29,22 +29,25 @@
 
 #include <qstring.h>
 #include <qpushbutton.h>
+#include <qvaluelist.h>
 
 class TagTreeNode;
 
 /**
  * The dialog to create a now tag.
  *
- * CVS-ID $Id: dialogedittag.h,v 1.2 2004/03/18 22:04:14 starcube Exp $
+ * CVS-ID $Id$
  */
-class DialogEditTag : public KDialogBase {
+class DialogCreateTag : public KDialogBase {
 
 Q_OBJECT
 
 public:
-    DialogEditTag(QWidget *parent, TagTreeNode* parentNode, KPhotoBook* photobook, const char *name);
+    DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, KPhotoBook* photobook, const char *name);
 
-    ~DialogEditTag();
+    ~DialogCreateTag();
+
+    int tagType();
 
     QString tagName() {
         return m_nameLineEdit->text();
@@ -60,10 +63,12 @@ private slots:
     void slotIconButtonClicked();
 
 private:
-    TagTreeNode* m_tagTreeNode;
+    TagTreeNode* m_parentNode;
     KPhotoBook* m_photobook;
 
     KComboBox* m_typeComboBox;
+    QValueList<int>* m_typeComboBoxEntries;
+
     KLineEdit* m_nameLineEdit;
     KLineEdit* m_iconLineEdit;
     QPushButton* m_iconButton;
