@@ -86,7 +86,8 @@
 #include <qlistview.h>
 
 KPhotoBook::KPhotoBook()
-    : KDockMainWindow( 0, "KPhotoBook" )
+//    : KDockMainWindow( 0, "KPhotoBook" )
+    : KMdiMainFrm( 0, "kphotobookMainWindow", KMdi::IDEAlMode )
     , m_view(0)
     , m_engine(new Engine())
     , m_zoomIn(0)
@@ -112,7 +113,7 @@ KPhotoBook::KPhotoBook()
     createStandardStatusBarAction();
 
     // create the gui
-    createGUI();
+    createGUI(0);
 
     // let's setup our context menus
     setupContextMenus();
@@ -120,6 +121,7 @@ KPhotoBook::KPhotoBook()
     // it is important to create the view after setting up context menus
     m_view = new KPhotoBookView(this);
 
+    /*
     // create the maindock widget
     KDockWidget* mainDock = createDockWidget( "KPhotoBook'sMainDockWidget", 0, 0L, "mainDockWidget");
 //    m_view = new KPhotoBookView(this);
@@ -130,6 +132,16 @@ KPhotoBook::KPhotoBook()
     mainDock->setEnableDocking(KDockWidget::DockNone);
     setView(mainDock); // central widget in a KDE mainwindow
     setMainDockWidget(mainDock); // master dockwidget
+*/
+
+    addWindow(m_view);
+
+    m_tagtree = new TagTree(this, this, "tagtree");
+    addToolWindow(m_tagtree, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("TagTree"), i18n("TagTree"));
+
+    m_sourcedirTree = new SourceDirTree(this, this, "sourcedirTree");
+    addToolWindow(m_sourcedirTree, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("SourceDirTree"), i18n("SourceDirTree"));
+
 
     /*
     KDockWidget* dock = this->createDockWidget("Any window caption", 0, 0, i18n("window caption"));
@@ -156,7 +168,7 @@ KPhotoBook::KPhotoBook()
 KPhotoBook::~KPhotoBook() {
 
     delete m_engine;
-    delete m_view;
+    closeWindow(m_view);
 }
 
 
@@ -828,7 +840,7 @@ void KPhotoBook::slotNewToolbarConfig() {
 
     // this slot is called when user clicks "Ok" or "Apply" in the toolbar editor.
     // recreate our GUI, and re-apply the settings (e.g. "text under icons", etc.)
-    createGUI();
+    createGUI(0);
 
     applyMainWindowSettings(KGlobal::config(), autoSaveGroup());
 }

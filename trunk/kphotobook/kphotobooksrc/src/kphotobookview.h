@@ -13,6 +13,8 @@
 #include <qlabel.h>
 #include <qptrlist.h>
 
+#include <kmdichildview.h>
+
 class KPhotoBook;
 class SourceDir;
 class SourceDirTree;
@@ -33,7 +35,7 @@ class TagTreeNodeTitle;
  * @author Michael Christen <starcube@my-mail.ch>
  * @version 0.1
  */
-class KPhotoBookView : public QWidget {
+class KPhotoBookView : public KMdiChildView {// QWidget {
 
     Q_OBJECT
 
@@ -48,13 +50,9 @@ public:
      */
     virtual ~KPhotoBookView();
 
-    TagTree* tagTree() {
-        return m_tagtree;
-    }
+    TagTree* tagTree();
 
-    SourceDirTree* sourceDirTree() {
-        return m_sourcedirTree;
-    }
+    SourceDirTree* sourceDirTree();
 
     KFileIconView* fileView() {
         return m_fileView;
@@ -93,11 +91,11 @@ private slots:
 private:
     KPhotoBook* m_photobook;
 
-    QSplitter* m_split;
-    QSplitter* m_treesplit;
+//    QSplitter* m_split;
+//    QSplitter* m_treesplit;
 
-    TagTree* m_tagtree;
-    SourceDirTree* m_sourcedirTree;
+//    TagTree* m_tagtree;
+//    SourceDirTree* m_sourcedirTree;
     KFileIconView* m_fileView;
 
     int m_currentImagePreviewSize;

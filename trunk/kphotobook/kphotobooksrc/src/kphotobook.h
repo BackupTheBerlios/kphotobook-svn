@@ -28,6 +28,8 @@
 #include <kpopupmenu.h>
 #include <kdockwidget.h>
 
+#include <kmdimainfrm.h>
+
 #include <qdir.h>
 
 class Engine;
@@ -44,6 +46,9 @@ class TagNode;
 class TagTreeNode;
 class EngineException;
 
+class TagTree;
+class SourceDirTree;
+
 /**
  * This class serves as the main window for KPhotoBook.  It handles the
  * menus, toolbars, and status bars.
@@ -52,7 +57,7 @@ class EngineException;
  * @author $AUTHOR <$EMAIL>
  * @version $APP_VERSION
  */
-class KPhotoBook : public KDockMainWindow {
+class KPhotoBook : public KMdiMainFrm {// KDockMainWindow {
 
     Q_OBJECT
 
@@ -72,6 +77,14 @@ public:
      */
     KPhotoBookView* view() {
         return m_view;
+    }
+
+    TagTree* tagTree() {
+        return m_tagtree;
+    }
+
+    SourceDirTree* sourceDirTree() {
+        return m_sourcedirTree;
     }
 
     Configuration* configuration() {
@@ -252,6 +265,9 @@ private:
 
 private:
     KPhotoBookView* m_view;
+
+    TagTree* m_tagtree;
+    SourceDirTree* m_sourcedirTree;
 
     Engine* m_engine;
     Configuration* m_configuration;

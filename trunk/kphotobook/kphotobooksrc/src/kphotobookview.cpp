@@ -34,12 +34,14 @@
 
 
 KPhotoBookView::KPhotoBookView(QWidget *parent)
-    : QWidget(parent)
+//    : QWidget(parent)
+    : KMdiChildView(parent)
     , m_currentImagePreviewSize(-1) {
 
     // store casted pointer to the photobook
     m_photobook = dynamic_cast<KPhotoBook*>(parent);
 
+    /*
     // setup our layout manager to automatically add our widgets
     QHBoxLayout* topLayout = new QHBoxLayout(this, 5, 5, "topLayout");
     topLayout->setAutoAdd(true);
@@ -61,18 +63,19 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
     m_treesplit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // append the tagtree
-    m_tagtree = new TagTree(m_treesplit, m_photobook, "tagtree");
+//    m_tagtree = new TagTree(m_treesplit, m_photobook, "tagtree");
+
 
     // append the sourcedirTree
-    m_sourcedirTree = new SourceDirTree(m_treesplit, m_photobook, "sourcedirTree");
-
+//    m_sourcedirTree = new SourceDirTree(m_treesplit, m_photobook, "sourcedirTree");
+*/
     // main panel
-    QWidget* mainPanel = new QWidget(m_split, "mainPanel");
-    QVBoxLayout* mainLayout = new QVBoxLayout(mainPanel, 5, 5, "mainLayout");
+//    QWidget* mainPanel = new QWidget(m_split, "mainPanel");
+    QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 0, "mainLayout");
     mainLayout->setAutoAdd(true);
 
     // file preview
-    m_fileView = new KFileIconView(mainPanel, "fileIconView");
+    m_fileView = new KFileIconView(this, "fileIconView");
     if (Settings::imagePreviewSelectionMode() == Settings::EnumImagePreviewSelectionMode::Extended) {
         m_fileView->setSelectionMode(KFile::Extended);
     } else {
@@ -88,8 +91,8 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
     QObject::connect(m_fileView, SIGNAL(selectionChanged ()), m_photobook, SLOT(slotFileSelectionChanged()));
 
     // set splitter position
-    m_split->setSizes(Configuration::getInstance()->mainSplitterSizes());
-    m_treesplit->setSizes(Configuration::getInstance()->treeSplitterSizes());
+//    m_split->setSizes(Configuration::getInstance()->mainSplitterSizes());
+//    m_treesplit->setSizes(Configuration::getInstance()->treeSplitterSizes());
 }
 
 
@@ -104,9 +107,19 @@ KPhotoBookView::~KPhotoBookView() {
 }
 
 
+TagTree* KPhotoBookView::tagTree() {
+    return m_photobook->tagTree();//m_tagtree;
+}
+
+
+SourceDirTree* KPhotoBookView::sourceDirTree() {
+    return m_photobook->sourceDirTree();
+}
+
+
 SourceDirTreeNode* KPhotoBookView::selectedSourceDir() {
 
-    QListViewItem* currentItem = m_sourcedirTree->currentItem();
+    QListViewItem* currentItem = sourceDirTree()->currentItem();
     if (typeid(*currentItem) != typeid(SourceDirTreeNode)) {
         kdDebug() << "[KPhotoBookView::selectedSourceDir] sourcedirTree contains a node of other type than 'SourceDirTreeNode'" << endl;
         return 0;
@@ -155,8 +168,8 @@ void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
 
 void KPhotoBookView::storeConfiguration() {
     // store splitter sizes
-    Configuration::getInstance()->setMainSplitterSizes(m_split->sizes());
-    Configuration::getInstance()->setTreeSplitterSizes(m_treesplit->sizes());
+//    Configuration::getInstance()->setMainSplitterSizes(m_split->sizes());
+//    Configuration::getInstance()->setTreeSplitterSizes(m_treesplit->sizes());
 }
 
 

@@ -11,7 +11,7 @@ INCLUDES = $(all_includes)
 kphotobook_LDFLAGS = $(KDE_RPATH) $(all_libraries)
 
 # the libraries to link against.
-kphotobook_LDADD   = $(LIB_KFILE) $(LIB_KDEPRINT)
+kphotobook_LDADD = -lkmdi $(LIB_KFILE) $(LIB_KDEPRINT)
 
 # which sources should be compiled for kphotobook
 kphotobook_SOURCES = main.cpp kphotobook.cpp kphotobookview.cpp pref.cpp engine.cpp tagtree.cpp tagtreenode.cpp exception.cpp configuration.cpp xmlwriter.cpp xmlparser.cpp dialogcreatetag.cpp dialogaddsourcedir.cpp constants.cpp xmlconstants.cpp dialogedittag.cpp sourcedir.cpp file.cpp tagnode.cpp tagnodetitle.cpp tagnodeboolean.cpp filetagnodeassoc.cpp filetagnodeassocboolean.cpp tagtreenodetitle.cpp tagtreenodeboolean.cpp sourcedirtree.cpp sourcedirtreenode.cpp treehelper.cpp settings.cpp settingstagtree.ui settingssourcedirtree.ui settingsimagepreview.ui settingstools.ui settingsfilehandling.ui
