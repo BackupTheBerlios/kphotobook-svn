@@ -54,6 +54,9 @@ const QString Constants::ICON_SETTINGS_IMAGEPREVIEW = QString("view_refresh");
 const QString Constants::ICON_SETTINGS_FILEHANDLING = QString("folder_txt");
 const QString Constants::ICON_SETTINGS_TOOLS = QString("kfind");
 
+const QString Constants::ICON_OPERATOR_AND = QString("andify");
+const QString Constants::ICON_OPERATOR_OR = QString("orify");
+
 
 //
 // file-extension
@@ -67,3 +70,8 @@ const QString Constants::FILE_EXTENSION = QString("kpb");
 const int Constants::SETTINGS_MIN_PREVIEW_SIZE = 32;
 const int Constants::SETTINGS_MAX_PREVIEW_SIZE = 160;
 
+
+//
+// constants for tree
+//
+const int Constants::TREE_CHECKBOX_MAXSIZE = 16;

@@ -12,6 +12,7 @@
         <Action name="addMaintag" />
         <Separator/>
         <Action name="andifyTags" />
+        <Action name="orifyTags" />
     </Menu>
     <Menu name="view">
         <text>&amp;View</text>
@@ -42,6 +43,7 @@
   <Action name="addMaintag" />
   <Separator/>
   <Action name="andifyTags" />
+  <Action name="orifyTags" />
 </ToolBar>
 
 <ToolBar name="previewToolBar" fullWidth="true" newline="true" >

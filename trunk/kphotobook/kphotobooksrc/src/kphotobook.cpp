@@ -92,6 +92,7 @@ KPhotoBook::KPhotoBook()
     , m_zoomOut(0)
     , m_save(0)
     , m_andifyTagsAction(0)
+    , m_orifyTagsAction(0)
     , m_contextMenuSourceDirTree(0)
     , m_contextMenuSourceDir(0)
     , m_contextMenuSubDir(0)
@@ -327,6 +328,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotDecreasePreviewSize()),
         actionCollection(), "decreasePreviewSize"
     );
+    applyZoomSetting();
 
     //
     // sourcedir actions
@@ -442,12 +444,18 @@ void KPhotoBook::setupActions() {
     );
 
     m_andifyTagsAction = new KToggleAction(
-        i18n("Andify tags"), "attach",
+        i18n("Andify tags"), Constants::ICON_OPERATOR_AND,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotAndifyTags()),
         actionCollection(), "andifyTags"
     );
-    m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::And);
+    m_orifyTagsAction = new KToggleAction(
+        i18n("Orify tags"), Constants::ICON_OPERATOR_OR,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotOrifyTags()),
+        actionCollection(), "orifyTags"
+    );
+    applyOperatorSetting();
 
     new KAction(
         i18n("Expand tag"), Constants::ICON_EXPAND_FOLDER,
@@ -1052,14 +1060,14 @@ void KPhotoBook::slotRefreshView() {
 void KPhotoBook::slotIncreasePreviewSize() {
     Settings::setImagePreviewSize(Settings::imagePreviewSize() + 8);
 
-    enableDisableZoom();
+    applyZoomSetting();
 
     m_view->updateCurrentImageSize();
 }
 void KPhotoBook::slotDecreasePreviewSize() {
     Settings::setImagePreviewSize(Settings::imagePreviewSize() - 8);
 
-    enableDisableZoom();
+    applyZoomSetting();
 
     m_view->updateCurrentImageSize();
 }
@@ -1113,13 +1121,26 @@ void KPhotoBook::slotCollapseAllSourceDirs() {
 
 void KPhotoBook::slotAndifyTags() {
 
-    if (Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::And) {
-        Settings::setTagTreeFilterOperator(Settings::EnumTagTreeFilterOperator::Or);
-    } else {
-        Settings::setTagTreeFilterOperator(Settings::EnumTagTreeFilterOperator::And);
-    }
+    int lastOperator = Settings::tagTreeFilterOperator();
 
-    autoRefreshView();
+    Settings::setTagTreeFilterOperator(Settings::EnumTagTreeFilterOperator::And);
+    applyOperatorSetting();
+
+    if (lastOperator != Settings::EnumTagTreeFilterOperator::And) {
+        autoRefreshView();
+    }
+}
+
+void KPhotoBook::slotOrifyTags() {
+
+    int lastOperator = Settings::tagTreeFilterOperator();
+
+    Settings::setTagTreeFilterOperator(Settings::EnumTagTreeFilterOperator::Or);
+    applyOperatorSetting();
+
+    if (lastOperator != Settings::EnumTagTreeFilterOperator::Or) {
+        autoRefreshView();
+    }
 }
 
 void KPhotoBook::slotExpandTag() {
@@ -1150,9 +1171,8 @@ void KPhotoBook::slotFileSelectionChanged() {
 
 void KPhotoBook::slotLoadSettings() {
 
-    m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::And);
-
-    enableDisableZoom();
+    applyOperatorSetting();
+    applyZoomSetting();
 }
 
 
@@ -1225,10 +1245,17 @@ TagNode* KPhotoBook::createTag(int type, const QString& name, const QString& ico
 }
 
 
-void KPhotoBook::enableDisableZoom() {
+void KPhotoBook::applyZoomSetting() {
 
     m_zoomIn->setEnabled(Settings::imagePreviewSize() < Constants::SETTINGS_MAX_PREVIEW_SIZE);
     m_zoomOut->setEnabled(Settings::imagePreviewSize() > Constants::SETTINGS_MIN_PREVIEW_SIZE);
+}
+
+
+void KPhotoBook::applyOperatorSetting() {
+
+    m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::And);
+    m_orifyTagsAction->setChecked(Settings::tagTreeFilterOperator() != Settings::EnumTagTreeFilterOperator::And);
 }
 
 

@@ -26,7 +26,7 @@
 /**
  * Constants for kphotobook.
  *
- * CVS-ID $Id: constants.h,v 1.6 2004/03/25 23:33:52 starcube Exp $
+ * CVS-ID $Id: constants.h,v 1.7 2004/03/28 13:42:46 starcube Exp $
  */
 class Constants {
 
@@ -63,12 +63,18 @@ public:
     static const QString ICON_SETTINGS_FILEHANDLING;
     static const QString ICON_SETTINGS_TOOLS;
 
+    static const QString ICON_OPERATOR_AND;
+    static const QString ICON_OPERATOR_OR;
+
     // file-extension
     static const QString FILE_EXTENSION; /**< The default used fileextension for kphotobook files. */
 
     // constants for settings
     static const int SETTINGS_MIN_PREVIEW_SIZE;
     static const int SETTINGS_MAX_PREVIEW_SIZE;
+
+    // constants for tree
+    static const int TREE_CHECKBOX_MAXSIZE;
 };
 
 #endif

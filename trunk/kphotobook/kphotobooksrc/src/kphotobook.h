@@ -187,6 +187,7 @@ private slots:
     void slotCollapseAllSourceDirs();
 
     void slotAndifyTags();
+    void slotOrifyTags();
 
     void slotExpandTag();
     void slotCollapseTag();
@@ -231,10 +232,15 @@ private:
     TagNode* createTag(int type, const QString& name, const QString& iconName, TagNode* parent = 0);
 
     /**
-     * Enables or dsiables the zoomin and zoomout function depending on the
+     * Enables or disables the zoomin and zoomout function depending on the
      * current preview size of the images.
      */
-    void enableDisableZoom();
+    void applyZoomSetting();
+
+    /**
+     * Enables or disables the operator (and / or) actions.
+     */
+    void applyOperatorSetting();
 
 private:
     KPhotoBookView* m_view;
@@ -247,6 +253,7 @@ private:
     KAction* m_zoomOut;
     KAction* m_save;
     KToggleAction* m_andifyTagsAction;
+    KToggleAction* m_orifyTagsAction;
 
     // contextMenus
     KPopupMenu* m_contextMenuSourceDirTree;

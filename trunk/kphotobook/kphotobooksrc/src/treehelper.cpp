@@ -20,7 +20,10 @@
 
 #include "treehelper.h"
 
+#include "constants.h"
+
 #include <kapp.h>
+#include <kdebug.h>
 
 #include <qstyle.h>
 #include <qcheckbox.h>
@@ -28,8 +31,13 @@
 
 void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect) {
 
-    rect.setHeight(16);
-    rect.setWidth(16);
+    // we force the checkbox to  amaximu size of Constants::TREE_CHECKBOX_MAXSIZE
+    if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
+        rect.setTop(2 + (rect.height() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setLeft(rect.left() + (rect.width() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setHeight(Constants::TREE_CHECKBOX_MAXSIZE);
+        rect.setWidth(Constants::TREE_CHECKBOX_MAXSIZE);
+    }
 
     static QCheckBox checkBox(0);
     checkBox.setChecked(false);
@@ -58,8 +66,13 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect) {
 
 void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked) {
 
-    rect.setHeight(16);
-    rect.setWidth(16);
+    // we force the checkbox to  amaximu size of Constants::TREE_CHECKBOX_MAXSIZE
+    if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
+        rect.setTop(2 + (rect.height() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setLeft(rect.left() + (rect.width() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setHeight(Constants::TREE_CHECKBOX_MAXSIZE);
+        rect.setWidth(Constants::TREE_CHECKBOX_MAXSIZE);
+    }
 
     static QCheckBox checkBox(0);
     checkBox.setChecked(checked);
@@ -90,8 +103,13 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bo
 
 void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate) {
 
-    rect.setHeight(16);
-    rect.setWidth(16);
+    // we force the checkbox to  amaximu size of Constants::TREE_CHECKBOX_MAXSIZE
+    if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
+        rect.setTop(2 + (rect.height() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setLeft(rect.left() + (rect.width() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setHeight(Constants::TREE_CHECKBOX_MAXSIZE);
+        rect.setWidth(Constants::TREE_CHECKBOX_MAXSIZE);
+    }
 
     static QCheckBox checkBox(0);
     if (tristate == 0) {
