@@ -282,9 +282,11 @@ void KPhotoBook::setupActions() {
     );
     autoRefreshViewAction->setChecked(Configuration::getInstance()->autoRefresh());
 
+    KShortcut refreshViewShortCut(KStdAccel::shortcut(KStdAccel::Reload));
+    refreshViewShortCut.append(KKey("CTRL+r"));
     new KAction(
         i18n("&Refresh view"), Constants::ICON_REFRESH_VIEW,
-        KStdAccel::shortcut(KStdAccel::Reload),
+        refreshViewShortCut, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotRefreshView()),
         actionCollection(), "refreshView"
     );
