@@ -224,8 +224,9 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
         // paint the cell with the alternating background color
         p->fillRect(0, 0, width, this->height(), backgroundColor());
 
-        // draw the checkbox in the center of the cell
-        QRect rect((width-this->height()+4)/2, 2, this->height()-4, this->height()-4);
+        // draw the checkbox in the center of the cell in the size of the font
+        int size = p->fontInfo().pixelSize()+2;
+        QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
 
         // get all selected files
         const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
@@ -273,8 +274,9 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
         // paint the cell with the alternating background color
         p->fillRect(0, 0, width, this->height(), backgroundColor());
 
-        // draw the checkbox in the center of the cell
-        QRect rect((width-this->height()+4)/2, 2, this->height()-4, this->height()-4);
+        // draw the checkbox in the center of the cell in the size of the font
+        int size = p->fontInfo().pixelSize()+2;
+        QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
 
         TreeHelper::drawCheckBox(p, cg, rect, m_filterState, true);
 
