@@ -74,6 +74,10 @@
 #include <kconfigdialog.h>
 #include <kcombobox.h>
 
+#include <ktoolbar.h>
+#include <ktoolbarbutton.h>
+#include <kpushbutton.h>
+
 #include <kdebug.h>
 
 #include <qdragobject.h>
@@ -82,8 +86,7 @@
 #include <qfileinfo.h>
 #include <qptrlist.h>
 #include <qlistview.h>
-
-#include <qlistview.h>
+#include <qlayout.h>
 
 KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     : KMdiMainFrm(0, "kphotobookMainWindow", mdiMode)
@@ -132,24 +135,54 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     // add the KPhotoBookView as mainwindow
     addWindow(m_view);
 
-    // add toolwindows
-    m_tagTree = new TagTree(this, this, "tagtree");
+    // create tagtree toolwindow
+    QWidget* tagTreePanel = new QWidget(this, "tagTreePanel");
+    QVBoxLayout* tagTreePanelLayout = new QVBoxLayout(tagTreePanel, 0, 0, "tagTreePanelLayout");
+    tagTreePanelLayout->setAutoAdd(true);
+
+    KToolBar* tagTreeToolBar = new KToolBar(tagTreePanel, "tagTreeToolBar", true, true);
+    tagTreeToolBar->setIconSize(16);
+    actionCollection()->action("addMaintag")->plug(tagTreeToolBar);
+    tagTreeToolBar->insertSeparator();
+    actionCollection()->action("expandAllTags")->plug(tagTreeToolBar);
+    actionCollection()->action("collapseAllTags")->plug(tagTreeToolBar);
+    tagTreeToolBar->insertSeparator();
+    actionCollection()->action("andifyTags")->plug(tagTreeToolBar);
+    actionCollection()->action("orifyTags")->plug(tagTreeToolBar);
+
+    m_tagTree = new TagTree(tagTreePanel, this, "tagtree");
     QIconSet tagTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
     if (tagTreeIconSet.isNull()) {
         kdDebug() << "[KPhotoBook::KPhotoBook] Could not load iconset with iconname: '" << Constants::ICON_TAG << "'" << endl;
     } else {
-        m_tagTree->setIcon(tagTreeIconSet.pixmap());
+        tagTreePanel->setIcon(tagTreeIconSet.pixmap());
     }
-    addToolWindow(m_tagTree, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("TagTree"), i18n("TagTree"));
+    addToolWindow(tagTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("TagTree"), i18n("TagTree"));
 
-    m_sourcedirTree = new SourceDirTree(this, this, "sourcedirTree");
+    // create sourcedirtree toolwindow
+    QWidget* sourceDirTreePanel = new QWidget(this, "sourceDirTreePanel");
+    QVBoxLayout* sourceDirTreePanelLayout = new QVBoxLayout(sourceDirTreePanel, 0, 0, "sourceDirTreePanelLayout");
+    sourceDirTreePanelLayout->setAutoAdd(true);
+
+    KToolBar* sourceDirTreeToolBar = new KToolBar(sourceDirTreePanel, "sourceDirTreeToolBar", true, true);
+    sourceDirTreeToolBar->setIconSize(16);
+    actionCollection()->action("addSourceDir")->plug(sourceDirTreeToolBar);
+    sourceDirTreeToolBar->insertSeparator();
+    actionCollection()->action("expandAllSourceDirs")->plug(sourceDirTreeToolBar);
+    actionCollection()->action("collapseAllSourceDirs")->plug(sourceDirTreeToolBar);
+    sourceDirTreeToolBar->insertSeparator();
+    actionCollection()->action("includeAllSourceDirs")->plug(sourceDirTreeToolBar);
+    actionCollection()->action("excludeAllSourceDirs")->plug(sourceDirTreeToolBar);
+    actionCollection()->action("invertAllSourceDirs")->plug(sourceDirTreeToolBar);
+
+    m_sourcedirTree = new SourceDirTree(sourceDirTreePanel, this, "sourcedirTree");
     QIconSet sourcedirTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
     if (sourcedirTreeIconSet.isNull()) {
         kdDebug() << "[KPhotoBook::KPhotoBook] Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
     } else {
-        m_sourcedirTree->setIcon(sourcedirTreeIconSet.pixmap());
+        sourceDirTreePanel->setIcon(sourcedirTreeIconSet.pixmap());
     }
-    addToolWindow(m_sourcedirTree, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("SourceDirTree"), i18n("SourceDirTree"));
+    addToolWindow(sourceDirTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("SourceDirTree"), i18n("SourceDirTree"));
 
     // init some other things: statusbar,..
     init();
