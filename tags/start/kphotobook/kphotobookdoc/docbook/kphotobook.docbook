@@ -1,0 +1,181 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
+
+  <!ENTITY kmyapplication "<application>KPhotoBook</application>">
+  <!ENTITY kappname "&kmyapplication;">
+  <!ENTITY package "kde-module">
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % English "INCLUDE">
+  <!ENTITY Michael.Christen "<personname><firstname>Michael</firstname><surname>Christen</surname></personname>">
+  <!ENTITY Michael.Christen.mail "<email>starcube@my-mail.ch</email>">
+
+]>
+
+<book>
+<bookinfo>
+	<title>The &kmyapplication; Handbook</title>
+	<authorgroup>
+		<author>
+			&Michael.Christen;
+			<email>&Michael.Christen.mail;</email>
+		</author>
+	</authorgroup>
+	<copyright>
+		<year>2004</year>
+		<holder>Michael Christen</holder>
+	</copyright>
+	
+	<date>2003-01-10</date>
+	<releaseinfo>0.0.1a</releaseinfo>
+	<abstract>
+		<para>
+		This is the handbook for &kmyapplication;, an easy to use, straight forward and fast application for managing all your photos.
+		</para>
+	</abstract>
+	<keywordset>
+		<keyword>KDE</keyword>
+		<keyword>photos</keyword>
+		<keyword>pictures</keyword>
+		<keyword>photobook</keyword>
+		<keyword>tag</keyword>
+	</keywordset>
+</bookinfo>
+
+  <chapter id="introduction">
+    <title>Introduction</title>
+    
+    <para>This handbook is intended to give an overview on the easy use of &kmyapplication;.</para>
+    
+    <sect1>
+      <title>About This Manual</title>
+      <para>text text text</para>
+    </sect1>
+    <sect1>
+      <title>Idea</title>
+      <para>text text text</para>
+    </sect1>
+    <sect1>
+      <title>Licence</title>
+      <para>text text text</para>
+    </sect1>
+    <sect1>
+      <title>Technology</title>
+      <para>text text text</para>
+    </sect1>        
+  </chapter>
+
+  <chapter id="source-directories">
+    <title>Source Directories</title>
+        <para>text text text</para>
+      <sect1>
+      <title>Adding and Removing Source Directories</title>
+      <para>text text text</para>
+      </sect1>
+      <sect1>
+      <title>Rescan Source Directories</title>
+      <para>text text text</para>
+      </sect1>
+  </chapter>
+  
+  <chapter id="thumbnails">
+    <title>Thumbnail Window</title>
+        <para>text text text</para>
+      <sect1>
+      <title>Refresh the Thumbnail Window</title>
+      <para>text text text</para>
+      </sect1>
+      <sect1>
+      <title>Setting the Size of the Thumbnails</title>
+      <para>text text text</para>
+      </sect1>
+  </chapter>
+  
+  <chapter id="tags">
+    <title>Tags</title>
+        <para>text text text</para>
+    <sect1>
+      <title>Tag Tree</title>
+      <para>text text text</para>
+    </sect1>
+    
+    <sect1>
+      <title>Adding, Deleting and Editinig Tags</title>
+      <para>text text text</para>
+    <sect2>
+      <title>Tagging One Photo at a Time</title>
+      <para>text text text</para>
+      </sect2>
+    <sect2>
+      <title>Tagging Severl Photos at once</title>
+      <para>text text text</para>
+      </sect2>
+    </sect1>
+    
+    <sect1>
+      <title>Tag Types</title>
+      <para>text text text</para>
+      <sect2>
+      <title>Boolean Tags</title>
+      <para>text text text</para>
+      </sect2>
+      <sect2>
+      <title>Enumeration Tags</title>
+      <para>text text text</para>
+      </sect2>
+      <sect2>
+      <title>String Tags</title>
+      <para>text text text</para>
+      </sect2>
+      <sect2>
+      <title>Numeric Tags</title>
+      <para>text text text</para>
+      </sect2>
+    </sect1>
+  </chapter>
+
+  <chapter id="comment">
+    <title>Photo Comments</title>
+        <para>text text text</para>
+    <sect1>
+      <title>Adding, Editing and Removing Comments</title>
+      <para>text text text</para>
+    </sect1>
+  </chapter>
+  
+  <chapter id="filtering">
+    <title>Filtering the Photo Database</title>
+        <para>text text text</para>
+    <sect1>
+      <title>Filtering using the Tag Tree</title>
+      <para>text text text</para>
+    </sect1>
+    <sect1>
+      <title>Filtering using the Source Directory Tree</title>
+      <para>text text text</para>
+    </sect1>
+  </chapter>
+  
+  <chapter id="generating-html">
+    <title>Generating HTML</title>
+        <para>text text text</para>
+  </chapter>
+  
+  <chapter id="configuring">
+    <title>Configuring &kmyapplication;</title>
+        <para>text text text</para>
+    <sect1>
+      <title>Dies und Das</title>
+      <para>text text text</para>
+    </sect1>
+    <sect1>
+      <title>Jenes und Eines</title>
+      <para>text text text</para>
+    </sect1>
+  </chapter>
+  
+  <chapter id="faq">
+    <title>F.A.Q.</title>
+        <para>These are some answers to the most frequently asked questions. As soon as there are too many questions for one page, this chapter will be splitted.</para>
+  </chapter>
+  
+</book>

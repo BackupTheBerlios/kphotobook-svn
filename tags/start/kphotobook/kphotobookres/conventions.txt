@@ -1,0 +1,25 @@
+1) Member Variables are beginning with 'm_'.
+
+2) Setter methods are beginning with 'set'.
+
+3) Getter methods are NOT beginning with 'get'!
+    They're named equal the variable but without the 'm_' prefix.
+
+4) Declaring a pointer variable as follow: 'Type* varname'.
+    It seems that KDE uses often one of the following formats: 'Type * varname'
+    or 'Type *varname' but the format as suggested by me is also used.
+
+5) Storing the data in the engine:
+
+    - Class Image (or File)
+        - represents exactly one image or one file ;-).
+        - has a list of ImageTagAssoc objects.
+
+    - Class TagNode or its subclasses
+        - represents exactly one possible tag (without value).
+        - has a list of ImageTagAssoc objects.
+
+    - Class ImageTagAssoc or its subclasses
+        - represent the association between one image and one tag.
+        - contain the value of the associated tag.
+        - there exists one concrete subclass for each TagNode subclass.
