@@ -22,7 +22,7 @@
 <td>
 
 <p>
-Sorry, there is no release yet.
+Sorry, there is no tarball yet.
 </p>
 <p>
 Downloads and cvs access are available on the projectsite at sourceforce.net: <a href="http://sourceforge.net/projects/kphotobook/" target="_top">KPhotoBook at sourceforge.net</a>
@@ -33,13 +33,22 @@ Downloads and cvs access are available on the projectsite at sourceforce.net: <a
 Follow these instructions to build the application from the repository:
 </p>
 <ul>
-<li>Login to the cvs-repository at sourceforge: <code>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/kphotobook login</code></li>
-<li>Checkout the sourcecode: <code>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/kphotobook co kphotobooksrc</code></li>
-<li>Create the makefile: <code>make -f Makefile.cvs</code></li>
-<li>Start configure: <code>./configure --prefix='KDE-installation-path'</code> (where KDE-installation-path is '/opt/kde3' for example)</li>
-<li>Build the application: <code>make</code></li>
-<li>Change to root: <code>su</code></li>
-<li>Install the application: <code>make install</code></li>
+<li>Login to the cvs-repository at sourceforge (no password is required):
+<pre>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/kphotobook login</pre></li>
+<li>Checkout the sourcecode:
+<pre>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/kphotobook co kphotobooksrc</pre></li>
+<li>Change into the checked out directory<pre>cd kphotobooksrc</pre></li>
+
+<li>Create the makefile:
+<pre>make -f Makefile.cvs</pre></li>
+<li>Start configure (where KDE-installation-path is '/opt/kde3' for example):
+<pre>./configure --prefix='KDE-installation-path'</pre></li>
+<li>Build the application:
+<pre>make</pre></li>
+<li>Change to root:
+<pre>su</pre></li>
+<li>Install the application:
+<pre>make install</pre></li>
 </ul>
 
 

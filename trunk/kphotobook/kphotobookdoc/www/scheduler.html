@@ -18,72 +18,214 @@
 
 <table class="document">
 <tr>
-<td>
+<tr>
 
 <table class="scheduler">
 <colgroup>
-<col width="150">
+<col width="150" nowrap="nowrap">
 <col>
-<col>
-<col>
-
+<col width="100">
+<col width="100">
 </colgroup>
 
 <tr class="done"><td colspan="4">Done</td></tr>
-<tr class="done"><td>Feature</td><td>Description</td><td>Done on</td><td>Release</td></tr>
+<tr class="done"><td>Feature</td><td>Description</td><td>Done on</td><td>Version</td></tr>
 
-<tr class="scheduler"><td>Directory Tree</td><td>The directory tree is one of the main elements of the userfriendly interface. It allows you to add and remove folders containting photos for the current database. The folders can be added single or recursively. The directory tree also allows you to filter the photos so that only the pictures of the chosen directory are shown.</td><td>February 2004</td><td></td></tr>
+<tr class="scheduler">
+<td class="scheduler_title">Tag Tree</td>
+<td class="scheduler_desc">The tag tree is one of the main elements wich makes the work with <em>KPhotoBook</em> easy. The tag tree allows you to create your own tags which are also sorted hierarchical. There are several types of tags which allows you to type in different types of data. The tags can be labelled with a text and an individual icon. </td>
+<td class="scheduler_date">March 2004</td>
+<td class="scheduler_version">0.0.4</td>
+</tr>
 
-<tr class="scheduler"><td>Show Photos</td><td>The photos themselves are shown in a separate frame of the program. The photos are shown konqueror-like. It is possible to change the size of the thumbnails with a ruler. </td><td>February 2004</td><td></td></tr>
+<tr class="scheduler">
+<td class="scheduler_title">Show Photos</td>
+<td class="scheduler_desc">The images themselves are shown in a separate frame of the program. The images are shown konqueror-like. It is possible to change the size of the thumbnails with a ruler. </td>
+<td class="scheduler_date">February 2004</td>
+<td class="scheduler_version">0.0.3</td>
+</tr>
 
-<!--
-<tr class="scheduler"><td></td><td></td><td></td><td></td></tr>
-<tr class="scheduler"><td></td><td></td><td></td><td></td></tr>
--->
+<tr class="scheduler">
+<td class="scheduler_title">Directory Tree</td>
+<td class="scheduler_desc">The directory tree is one of the main elements of the userfriendly interface. It allows you to add and remove folders containting images for the current database. The folders can be added single or recursively. The directory tree also allows you to filter the images so that only the pictures of the chosen directory are shown.</td>
+<td class="scheduler_date">February 2004</td>
+<td class="scheduler_version">0.0.3</td>
+</tr>
+
+
+
 
 <tr class="progress"><td colspan="4">Work in Progress</td></tr>
-<tr class="progress"><td>Features</td><td>Description</td><td>Planned</td><td>Release</td></tr>
+<tr class="progress"><td>Features</td><td>Description</td><td>Planned</td><td>Version</td></tr>
 
-<tr class="scheduler"><td>Tag Tree</td><td>The tag tree is one of the main elements wich makes the work with <em>KPhotoBook</em> easy. The tag tree allows you to create your own tags which are also sorted hierarchical. There are several types of tags which allows you to type in different types of data. The tags can be labelled with a text and an individual icon. </td><td>March 2004</td><td></td></tr>
+<tr class="scheduler">
+<td class="scheduler_title">Config Dialog</td>
+<td class="scheduler_desc">
+	<ul>
+	<li>Iconsize in Tag tree</li>
+	<li>Selection mode for image preview (multi or extended)</li>
+	<li>Preview size</li>
+	<li>Show/hide filename in image preview</li>
+	<li>Font size for trees</li>
+	<li>Show/Hide icons in the Tag tree</li>
+	<li>List of regular expressions of directory names to ignore (e.g. [Tt]humbs, [Tt]humbnails)</li>
+	<li>List of regular expressions of file names to handle (e.g. *.jpg, *.jpeg)</li>
+	<li>List of viewer programs and editing programs to open a photo with</li>
+	</ul>
+</td>
+<td class="scheduler_date">March 2003</td>
+<td class="scheduler_version">0.0.5</td>
+</tr>
 
-<!--
-<tr class="scheduler"><td></td><td></td><td></td><td></td></tr>
-<tr class="scheduler"><td></td><td></td><td></td><td></td></tr>
--->
+<tr class="scheduler">
+<td class="scheduler_title">Tidying up GUI</td>
+<td class="scheduler_desc">
+	<ul>
+	<li>Source directory tree and Tag tree will be moved to separate tabs</li>
+	<li>There will be a toolbar above every tree with the most important features</li>
+	<li>Some icons will be added and improved</li>
+	<li>There will be new filter operation for the Tag tree like reset filter and such...</li>
+	<li>When switching on "autorefresh", refresh the view immediately</li>
+	<li>Ruler for icon preview size will be removed from the current position. There will be another solution.</li>
+	<li>To change the preview size, there will be magnyfiers in the toolbar.</li>
+	<li>Remove Tree operation from the main menu</li>
+	<li>Status bar displays information about the currently selected photo</li>
+	<li>Make a toolbar for chosing the preview-size of the images</li>
+	</ul>
+</td>
+<td class="scheduler_date">March 2003</td>
+<td class="scheduler_version">0.0.5</td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Show EXIF info</td>
+<td class="scheduler_desc">There will probably be another tab (beside the Tag tree and source directory tree tab) which contains the EXIF information for the active photo.</td>
+<td class="scheduler_date">March 2003</td>
+<td class="scheduler_version">0.0.5</td>
+</tr>
+
+
 
 <tr class="todo"><td colspan="4">To Do</td></tr>
-<tr class="todo"><td>Feature</td><td>Description</td><td>Planned</td><td>Release</td></tr>
-
-<tr class="scheduler"><td>Infobox</td><td>Show infobox in the pictures containing data about it. (e.g. given tags, date, size, dimension ...). </td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>Files</td><td>Files can be renamed, deleted and added.</td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>Password</td><td>Tags can be added to an exclude list. Those photos will not be shown anymore. This can be protected by a password.</td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>Rotation</td><td>The photos can be rotated - either in the database only, in the EXIF information of the photo or physically.</td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>HTML export</td><td>Photobooks can be exported as HTML files.</td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>Spellcheck</td><td>Spellcheck for the Photobook editor.</td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>Status bar</td><td>Display several infos about the picture you hover over.</td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>Full Screen Mode</td><td>Full Screen Mode as in Konqueror</td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>Open with</td><td>Open Picture with different configurable external programs.</td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>Send to</td><td>Ability of sending a picture by email or to a directory.</td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>What's this</td><td>What's this help for all the functions - most programs have badly implemented this.</td><td></td><td></td></tr>
-
-<tr class="scheduler"><td>Photobook function</td><td>Photobooks can be created. For each photo a text can be written which will then be shown in the slideshow.</td><td></td><td></td></tr>
-
-
+<tr class="todo"><td>Feature</td><td>Description</td><td>Planned</td><td>Version</td></tr>
 
 <!--
-<tr class="scheduler"><td></td><td></td><td></td><td></td></tr>
-<tr class="scheduler"><td></td><td></td><td></td><td></td></tr>
+<tr class="scheduler">
+<td class="scheduler_title"></td>
+<td class="scheduler_desc"></td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
 -->
+
+<tr class="scheduler">
+<td class="scheduler_title">Rotation</td>
+<td class="scheduler_desc">The images can be rotated - either in the database only, in the EXIF information of the photo or physically.</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Extended Tooltip</td>
+<td class="scheduler_desc">Showing a bigger image preview and detailed information for the current file.</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Password Protection</td>
+<td class="scheduler_desc">Tags can be added to an exclude list. Those images will not be shown without being authorized by a password.</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Send to</td>
+<td class="scheduler_desc">Ability of sending a picture by email or to a directory</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">What's this</td>
+<td class="scheduler_desc">What's this help for all the functions - most programs have badly implemented this</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Move Tags</td>
+<td class="scheduler_desc">Tags should be movable inside the tag tree (possible solution: make it possible to change the parent in the edit dialog box of a tag)</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Floating Toolbar</td>
+<td class="scheduler_desc">Use floating toolbar for displaying the trees (and image details).</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">File/Sourcedirectory<br/>not Found</td>
+<td class="scheduler_desc">If a file or a sourcedirectory is not found during startup or rescan of the filesystem, the user should be asked what to do: ignore, remove file/sourcedirectory from database or enter new location</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Backup Icons</td>
+<td class="scheduler_desc">User can configure if the icons are copied to a specified location (to avoid losing icons)</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+
+<tr class="nyd"><td colspan="4">Not Yet Decided</td></tr>
+<tr class="nyd"><td>Feature</td><td>Description</td><td>Planned</td><td>Version</td></tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">HTML Export</td>
+<td class="scheduler_desc">Photobooks can be exported as HTML files</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Spellcheck</td>
+<td class="scheduler_desc">Spellcheck for the Photobook editor</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Full Screen Mode</td>
+<td class="scheduler_desc">Full Screen Mode as in Konqueror</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Photobook Function</td>
+<td class="scheduler_desc">Photobooks can be created. For each photo a text can be written which will then be shown in the slideshow</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Borders Around Images</td>
+<td class="scheduler_desc">Writing an own widget for displaying the image previews in (possibly necessary for rotating the images anyway)</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Import Function</td>
+<td class="scheduler_desc">Import function for <em>KimDaBa</em> and <em>Fotoon</em> files.</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
 
 </table>
 
