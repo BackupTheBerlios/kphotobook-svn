@@ -78,23 +78,26 @@
   </group>
 
   <group name="FileFilter">
-    <entry name="FileFilterSubdirsToIgnore" type="StringList" key="SubdirsToIgnore">
-      <label>Contains the regularexpressions for subdirectories to ignore.</label>
-    </entry>
     <entry name="FileFilterFileToHandle" type="StringList" key="FileToHandle">
       <label>Contains the regularexpressions for files to handle.</label>
+      <default>.*\\.jpg,.*\\.jpeg</default>
+    </entry>
+    <entry name="FileFilterSubdirsToIgnore" type="StringList" key="SubdirsToIgnore">
+      <label>Contains the regularexpressions for subdirectories to ignore.</label>
+      <default>\\..*,[Tt]humbs,[Tt]humbnails,[Tt]humbNails</default>
     </entry>
   </group>
 
   <group name="Tools">
     <entry name="ToolsDefaultExternalTool" type="String" key="DefaultExternalTool">
       <label>Contains the external to open an image with when doubleclicked.</label>
+      <default>kuickshow</default>
     </entry>
     <entry name="ToolsExternalTools" type="StringList" key="ExternalTools">
       <label>Contains the list of tools an image can be opened with.</label>
+      <default>kuickshow</default>
     </entry>
   </group>
-
 
 <!--
     <entry name="Font" type="Font" key="font">
