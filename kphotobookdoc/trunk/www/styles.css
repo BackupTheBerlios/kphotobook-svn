@@ -149,34 +149,76 @@ border-spacing:1px;
 background-color:#7381D5;
 }
 
-tr.done {
+
+
+tr.done_header {
 color:#000000;
 background-color:#7ecd72;
+/* background-color:green; */
+font-size: 10pt;
+font-weight: bold;
+}
+
+tr.done {
+color:#000000;
+background-color:#eeffee;
+font-size: 10pt;
+font-weight: normal;
+}
+
+
+
+tr.progress_header {
+color:#000000;
+background-color: #f7ff57;
+/* background-color: yellow; */
 font-size: 10pt;
 font-weight: bold;
 }
 
 tr.progress {
 color:#000000;
-background-color: #f7ff57;
+background-color: #ffffee;
+font-size: 10pt;
+font-weight: normal;}
+
+
+
+tr.todo_header {
+color:#000000;
+background-color: #ff5728;
+/* background-color: red; */
 font-size: 10pt;
 font-weight: bold;
 }
 
 tr.todo {
 color:#000000;
-background-color: #ff5728;
+background-color: #ffeeee;
 font-size: 10pt;
-font-weight: bold;
+font-weight: normal;
 }
 
-tr.nyd {
+
+
+tr.nyd_header {
 color:#000000;
 background-color: #000000;
+/* background-color:gray; */
 font-size: 10pt;
 font-weight: bold;
 color: #ffffff;
 }
+
+tr.nyd {
+color:#000000;
+background-color: #aaaaaa;
+font-size: 10pt;
+font-weight: normal;
+color: #ffffff;
+}
+
+
 
 tr.roadmap {
 color:#000000;
@@ -185,6 +227,28 @@ font-size: 10pt;
 font-weight: normal;
 vertical-align: top;
 text-align: left;
+}
+
+td.done {
+color:#ffffff;
+background-color:green;
+font-weight: bold;
+}
+
+td.progress {
+background-color:yellow;
+font-weight: bold;
+}
+
+td.todo {
+background-color:red;
+font-weight: bold;
+}
+
+td.nyd {
+color:#ffffff;
+background-color:gray;
+font-weight: bold;
 }
 
 td.roadmap_responsible {
