@@ -22,6 +22,8 @@
 
 #include "constants.h"
 #include "configuration.h"
+#include "settings.h"
+
 #include "xmlparser.h"
 #include "xmlwriter.h"
 #include "sourcedir.h"
@@ -679,12 +681,28 @@ void Engine::addSourceDirs(SourceDir* parent) {
 }
 
 
+bool Engine::mustHandleFile(QString filename) {
+
+    QStringList filetypesToHandle = Settings::fileFilterFileToHandle();
+
+    for ( QStringList::Iterator it = filetypesToHandle.begin(); it != filetypesToHandle.end(); ++it ) {
+        QRegExp regExp(*it);
+        if (regExp.exactMatch(filename)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 bool Engine::mustHandleDirectory(QString directoryName) {
 
-    QStringList subdirsToIgnore = Configuration::getInstance()->subdirsToIgnore();
+    QStringList subdirsToIgnore = Settings::fileFilterSubdirsToIgnore();
 
     for (QStringList::Iterator it = subdirsToIgnore.begin(); it != subdirsToIgnore.end(); ++it) {
-        if (directoryName == *it) {
+        QRegExp regExp(*it);
+        if (regExp.exactMatch(directoryName)) {
             return false;
         }
     }
@@ -692,16 +710,3 @@ bool Engine::mustHandleDirectory(QString directoryName) {
     return true;
 }
 
-
-bool Engine::mustHandleFile(QString filename) {
-
-    QStringList filetypesToHandle = Configuration::getInstance()->filetypesToHandle();
-
-    for ( QStringList::Iterator it = filetypesToHandle.begin(); it != filetypesToHandle.end(); ++it ) {
-        if (filename.endsWith(*it)) {
-            return true;
-        }
-    }
-
-    return false;
-}
