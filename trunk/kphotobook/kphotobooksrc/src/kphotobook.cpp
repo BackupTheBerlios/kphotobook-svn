@@ -139,70 +139,9 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     // add the KPhotoBookView as mainwindow
     addWindow(m_view);
 
-    // create tagtree toolwindow
-    QWidget* tagTreePanel = new QWidget(this, "tagTreePanel");
-    QVBoxLayout* tagTreePanelLayout = new QVBoxLayout(tagTreePanel, 0, 0, "tagTreePanelLayout");
-    tagTreePanelLayout->setAutoAdd(true);
-
-    KToolBar* tagTreeToolBar = new KToolBar(tagTreePanel, "tagTreeToolBar", true, true);
-    tagTreeToolBar->setIconSize(16);
-    actionCollection()->action("addMaintag")->plug(tagTreeToolBar);
-    tagTreeToolBar->insertSeparator();
-    actionCollection()->action("expandAllTags")->plug(tagTreeToolBar);
-    actionCollection()->action("collapseAllTags")->plug(tagTreeToolBar);
-    tagTreeToolBar->insertSeparator();
-    actionCollection()->action("andifyTags")->plug(tagTreeToolBar);
-    actionCollection()->action("orifyTags")->plug(tagTreeToolBar);
-    tagTreeToolBar->insertSeparator();
-    actionCollection()->action("deselectFilter")->plug(tagTreeToolBar);
-    actionCollection()->action("resetFilter")->plug(tagTreeToolBar);
-
-    m_tagTree = new TagTree(tagTreePanel, this, "tagtree");
-    QIconSet tagTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
-    if (tagTreeIconSet.isNull()) {
-        kdDebug() << "[KPhotoBook::KPhotoBook] Could not load iconset with iconname: '" << Constants::ICON_TAG << "'" << endl;
-    } else {
-        tagTreePanel->setIcon(tagTreeIconSet.pixmap());
-    }
-    addToolWindow(tagTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Tags"), i18n("Tags"));
-
-    // create sourcedirtree toolwindow
-    QWidget* sourceDirTreePanel = new QWidget(this, "sourceDirTreePanel");
-    QVBoxLayout* sourceDirTreePanelLayout = new QVBoxLayout(sourceDirTreePanel, 0, 0, "sourceDirTreePanelLayout");
-    sourceDirTreePanelLayout->setAutoAdd(true);
-
-    KToolBar* sourceDirTreeToolBar = new KToolBar(sourceDirTreePanel, "sourceDirTreeToolBar", true, true);
-    sourceDirTreeToolBar->setIconSize(16);
-    actionCollection()->action("addSourceDir")->plug(sourceDirTreeToolBar);
-    sourceDirTreeToolBar->insertSeparator();
-    actionCollection()->action("expandAllSourceDirs")->plug(sourceDirTreeToolBar);
-    actionCollection()->action("collapseAllSourceDirs")->plug(sourceDirTreeToolBar);
-
-    /*
-    QWidget* spacer = new QWidget(sourceDirTreeToolBar);
-    QSizePolicy horPolicy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    horPolicy.setHorStretch(99);
-    spacer->setSizePolicy(horPolicy, QSizePolicy::Fixed);
-    sourceDirTreeToolBar->insertWidget(99999, 99999, spacer, -1);
-    */
-
-    actionCollection()->action("includeAllSourceDirs")->plug(sourceDirTreeToolBar);
-//    sourceDirTreeToolBar->alignItemRight(KAction::getToolButtonID());
-    actionCollection()->action("excludeAllSourceDirs")->plug(sourceDirTreeToolBar);
-    actionCollection()->action("invertAllSourceDirs")->plug(sourceDirTreeToolBar);
-
-    sourceDirTreeToolBar->alignItemRight(sourceDirTreeToolBar->idAt(6));
-    sourceDirTreeToolBar->alignItemRight(sourceDirTreeToolBar->idAt(7));
-    sourceDirTreeToolBar->alignItemRight(sourceDirTreeToolBar->idAt(8));
-
-    m_sourcedirTree = new SourceDirTree(sourceDirTreePanel, this, "sourcedirTree");
-    QIconSet sourcedirTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
-    if (sourcedirTreeIconSet.isNull()) {
-        kdDebug() << "[KPhotoBook::KPhotoBook] Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
-    } else {
-        sourceDirTreePanel->setIcon(sourcedirTreeIconSet.pixmap());
-    }
-    addToolWindow(sourceDirTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Source"), i18n("Source"));
+    // create toolwindows
+    setupToolWindowTagTree();
+    setupToolWindowSourceDirTree();
 
     // read dock configuration
     readDockConfig(KGlobal::config(), "DockConfig");
@@ -1318,6 +1257,83 @@ void KPhotoBook::changeStatusbar(const QString& text) {
 
     // display the text on the statusbar
     statusBar()->changeItem(text, 1);
+}
+
+
+void KPhotoBook::setupToolWindowTagTree() {
+
+    QWidget* tagTreePanel = new QWidget(this, "tagTreePanel");
+    QVBoxLayout* tagTreePanelLayout = new QVBoxLayout(tagTreePanel, 0, 0, "tagTreePanelLayout");
+    tagTreePanelLayout->setAutoAdd(true);
+
+    KToolBar* tagTreeToolBar = new KToolBar(tagTreePanel, "tagTreeToolBar", true, true);
+    tagTreeToolBar->setIconSize(16);
+
+    actionCollection()->action("addMaintag")->plug(tagTreeToolBar);
+
+    tagTreeToolBar->insertSeparator();
+
+    actionCollection()->action("expandAllTags")->plug(tagTreeToolBar);
+    actionCollection()->action("collapseAllTags")->plug(tagTreeToolBar);
+
+    QWidget* spacer = new QWidget(tagTreeToolBar);
+    QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    sizePolicy.setHorStretch(99);
+    spacer->setSizePolicy(sizePolicy);
+    tagTreeToolBar->insertWidget(99999, 99999, spacer, -1);
+
+    actionCollection()->action("andifyTags")->plug(tagTreeToolBar);
+    actionCollection()->action("orifyTags")->plug(tagTreeToolBar);
+    tagTreeToolBar->insertSeparator();
+    actionCollection()->action("deselectFilter")->plug(tagTreeToolBar);
+    actionCollection()->action("resetFilter")->plug(tagTreeToolBar);
+
+    m_tagTree = new TagTree(tagTreePanel, this, "tagtree");
+    QIconSet tagTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
+    if (tagTreeIconSet.isNull()) {
+        kdDebug() << "[KPhotoBook::KPhotoBook] Could not load iconset with iconname: '" << Constants::ICON_TAG << "'" << endl;
+    } else {
+        tagTreePanel->setIcon(tagTreeIconSet.pixmap());
+    }
+    addToolWindow(tagTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Tags"), i18n("Tags"));
+}
+
+
+void KPhotoBook::setupToolWindowSourceDirTree() {
+
+    // create sourcedirtree toolwindow
+    QWidget* sourceDirTreePanel = new QWidget(this, "sourceDirTreePanel");
+    QVBoxLayout* sourceDirTreePanelLayout = new QVBoxLayout(sourceDirTreePanel, 0, 0, "sourceDirTreePanelLayout");
+    sourceDirTreePanelLayout->setAutoAdd(true);
+
+    KToolBar* sourceDirTreeToolBar = new KToolBar(sourceDirTreePanel, "sourceDirTreeToolBar", true, true);
+    sourceDirTreeToolBar->setIconSize(16);
+
+    actionCollection()->action("addSourceDir")->plug(sourceDirTreeToolBar);
+
+    sourceDirTreeToolBar->insertSeparator();
+
+    actionCollection()->action("expandAllSourceDirs")->plug(sourceDirTreeToolBar);
+    actionCollection()->action("collapseAllSourceDirs")->plug(sourceDirTreeToolBar);
+
+    QWidget* spacer = new QWidget(sourceDirTreeToolBar);
+    QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    sizePolicy.setHorStretch(99);
+    spacer->setSizePolicy(sizePolicy);
+    sourceDirTreeToolBar->insertWidget(99999, 99999, spacer, -1);
+
+    actionCollection()->action("includeAllSourceDirs")->plug(sourceDirTreeToolBar);
+    actionCollection()->action("excludeAllSourceDirs")->plug(sourceDirTreeToolBar);
+    actionCollection()->action("invertAllSourceDirs")->plug(sourceDirTreeToolBar);
+
+    m_sourcedirTree = new SourceDirTree(sourceDirTreePanel, this, "sourcedirTree");
+    QIconSet sourcedirTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
+    if (sourcedirTreeIconSet.isNull()) {
+        kdDebug() << "[KPhotoBook::KPhotoBook] Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
+    } else {
+        sourceDirTreePanel->setIcon(sourcedirTreeIconSet.pixmap());
+    }
+    addToolWindow(sourceDirTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Source"), i18n("Source"));
 }
 
 

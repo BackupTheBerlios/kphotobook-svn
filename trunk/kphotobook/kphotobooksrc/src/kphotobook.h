@@ -225,6 +225,9 @@ private:
     void setupActions();
     void setupContextMenus();
 
+    void setupToolWindowTagTree();
+    void setupToolWindowSourceDirTree();
+
     void updateState();
     void updateStatusBar();
 
