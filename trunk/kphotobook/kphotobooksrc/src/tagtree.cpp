@@ -85,7 +85,7 @@ void TagTree::addTagNode(TagNode* rootNode) {
 
     kdDebug() << "Converting subtree with root node: " << *rootNode->text() << "..." << endl;
 
-    TagTreeNode* tagTreeNode;
+    TagTreeNode* tagTreeNode = 0;
 
     // create the concrete tagtreenode
     if (typeid(*rootNode) == typeid(TagNodeTitle)) {
@@ -106,7 +106,7 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
 
     kdDebug() << "Converting node: " << *child->text() << "..." << endl;
 
-    TagTreeNode* tagTreeNode;
+    TagTreeNode* tagTreeNode = 0;
 
     // create the concrete tagtreenode
     if (typeid(*child) == typeid(TagNodeTitle)) {
