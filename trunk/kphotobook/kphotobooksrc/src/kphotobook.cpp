@@ -123,6 +123,7 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
 
     // then, setup our actions
     setupActions();
+    setupWhatsThis();
 
     // show toggle menu entry for statusbar
     createStandardStatusBarAction();
@@ -143,9 +144,6 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     setupToolWindowTagTree();
     setupToolWindowSourceDirTree();
 
-    // read dock configuration
-    readDockConfig(KGlobal::config(), "DockConfig");
-
     // init some other things: statusbar,..
     init();
 
@@ -153,6 +151,9 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     // to automatically save settings if changed: window size, toolbar
     // position, icon size, etc.
     setAutoSaveSettings();
+
+    // read dock configuration
+    readDockConfig(KGlobal::config(), "DockConfig");
 }
 
 
@@ -498,6 +499,59 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotCollapseAllTags()),
         actionCollection(), "collapseAllTags"
     );
+}
+
+
+void KPhotoBook::setupWhatsThis() {
+
+
+//    actionCollection()->action("openNew")->setWhatsThis(i18n("Create a new KPhotoBook database."));
+//    actionCollection()->action("open")->setWhatsThis(i18n("Open an existing KPhotoBook database for editing."));
+//    actionCollection()->action("save")->setWhatsThis(i18n("Save the current KPhotoBook database."));
+
+    actionCollection()->action("rescanFilesystem")->setWhatsThis(i18n("This may, for example, be needed after having added a new directory to a directory which is already part of the current database. New directories and files will be added to the database, removed items will be prompted for user input."));
+    actionCollection()->action("autoRefreshView")->setWhatsThis(i18n("This will reload the thumbnail window automatically after, for example, changing the tag filter or the source directory to be shown."));
+    actionCollection()->action("refreshView")->setWhatsThis(i18n("This may, for example, be needed after having changed the tag filter or the source directory to be shown."));
+
+    actionCollection()->action("addSourceDir")->setWhatsThis(i18n("Add a source directory to the database. This can happen to a single directory or recursively. "));
+    actionCollection()->action("addMaintag")->setWhatsThis(i18n("Add a new main tag to the database. This is a top level tag which can contain sub-tags."));
+    actionCollection()->action("andifyTags")->setWhatsThis(i18n("This sets the filter operator to 'AND', which means that only images which contain all in the filter marked tags will be shown."));
+    actionCollection()->action("orifyTags")->setWhatsThis(i18n("This sets the filter operator to 'OR', which means that pictures with any in the filter marked tags will be shown."));
+    actionCollection()->action("increasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window bigger."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
+    actionCollection()->action("decreasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window smaller."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
+    actionCollection()->action("expandAllTags")->setWhatsThis(i18n("Expand the whole tag tree."));
+    actionCollection()->action("collapseAllTags")->setWhatsThis(i18n("Collapse the whole tag tree."));
+/*
+    actionCollection()->action("")->setWhatsThis(i18n(""));
+
+    actionCollection(), "increasePreviewSize"
+    actionCollection(), "decreasePreviewSize"
+    actionCollection(), "addSourceDir"
+    actionCollection(), "editSourceDir"
+    actionCollection(), "removeSourceDir"
+    actionCollection(), "includeWholeSourceDir"
+    actionCollection(), "excludeWholeSourceDir"
+    actionCollection(), "invertSourceDir"
+    actionCollection(), "includeAllSourceDirs"
+    actionCollection(), "excludeAllSourceDirs"
+    actionCollection(), "invertAllSourceDirs"
+    actionCollection(), "expandSourceDir"
+    actionCollection(), "collapseSourceDir"
+    actionCollection(), "expandAllSourceDirs"
+    actionCollection(), "collapseAllSourceDirs"
+    actionCollection(), "addMaintag"
+    actionCollection(), "createSubtag"
+    actionCollection(), "editTag"
+    actionCollection(), "deleteTag"
+    actionCollection(), "andifyTags"
+    actionCollection(), "orifyTags"
+    actionCollection(), "deselectFilter"
+    actionCollection(), "resetFilter"
+    actionCollection(), "expandTag"
+    actionCollection(), "collapseTag"
+    actionCollection(), "expandAllTags"
+    actionCollection(), "collapseAllTags"
+*/
 }
 
 
@@ -850,7 +904,6 @@ void KPhotoBook::slotOptionsPreferences() {
     connect(dialog, SIGNAL(settingsChanged()), m_tagTree, SLOT(slotLoadSettings()));
     connect(dialog, SIGNAL(settingsChanged()), m_sourcedirTree, SLOT(slotLoadSettings()));
     connect(dialog, SIGNAL(settingsChanged()), m_view, SLOT(slotLoadSettings()));
-
 
     dialog->show();
 }

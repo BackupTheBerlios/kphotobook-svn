@@ -223,6 +223,7 @@ private:
     void init();
     void setupAccel();
     void setupActions();
+    void setupWhatsThis();
     void setupContextMenus();
 
     void setupToolWindowTagTree();
