@@ -22,6 +22,23 @@ Settings::Settings(  )
   : KConfigSkeleton( "kphotobookrc" )
 {
   mSelf = this;
+  setCurrentGroup( "General" );
+
+  QValueList<KConfigSkeleton::ItemEnum::Choice> valuesGeneralViewMode;
+  {
+    KConfigSkeleton::ItemEnum::Choice choice;
+    choice.name = "IDEAlMode";
+    valuesGeneralViewMode.append( choice );
+  }
+  {
+    KConfigSkeleton::ItemEnum::Choice choice;
+    choice.name = "TabPageMode";
+    valuesGeneralViewMode.append( choice );
+  }
+  KConfigSkeleton::ItemEnum  *itemGeneralViewMode;
+  itemGeneralViewMode = new KConfigSkeleton::ItemEnum( currentGroup(), "ViewMode", mGeneralViewMode, valuesGeneralViewMode, EnumGeneralViewMode::IDEAlMode );
+  addItem( itemGeneralViewMode, "GeneralViewMode" );
+
   setCurrentGroup( "TagTree" );
 
   KConfigSkeleton::ItemInt  *itemTagTreeIconSize;
@@ -126,6 +143,15 @@ Settings::Settings(  )
   KConfigSkeleton::ItemStringList  *itemToolsExternalTools;
   itemToolsExternalTools = new KConfigSkeleton::ItemStringList( currentGroup(), "ExternalTools", mToolsExternalTools, defaultToolsExternalTools );
   addItem( itemToolsExternalTools, "ToolsExternalTools" );
+
+  setCurrentGroup( "FileSystem" );
+
+  KConfigSkeleton::ItemString  *itemFileSystemLastOpenedFile;
+  itemFileSystemLastOpenedFile = new KConfigSkeleton::ItemString( currentGroup(), "LastOpenedFile", mFileSystemLastOpenedFile );
+  addItem( itemFileSystemLastOpenedFile, "FileSystemLastOpenedFile" );
+  KConfigSkeleton::ItemString  *itemFileSystemLastAddedSourcedir;
+  itemFileSystemLastAddedSourcedir = new KConfigSkeleton::ItemString( currentGroup(), "LastAddedSourcedir", mFileSystemLastAddedSourcedir );
+  addItem( itemFileSystemLastAddedSourcedir, "FileSystemLastAddedSourcedir" );
 }
 
 Settings::~Settings()

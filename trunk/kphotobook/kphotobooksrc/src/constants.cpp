@@ -23,13 +23,13 @@
 //
 // icons
 //
-const QString Constants::ICON_SOURCEDIR = QString("folder");
-
+const QString Constants::ICON_TAG = QString("tag");
 const QString Constants::ICON_CREATE_MAINTAG = QString("tag_add");
 const QString Constants::ICON_CREATE_SUBTAG = QString("tag_add");
 const QString Constants::ICON_EDIT_TAG = QString("tag_edit");
 const QString Constants::ICON_DELETE_TAG = QString("tag_del");
 
+const QString Constants::ICON_SOURCEDIR = QString("folder");
 const QString Constants::ICON_ADD_SOURCEDIR = QString("sourcedir_add");
 const QString Constants::ICON_EDIT_SOURCEDIR = QString("sourcedir_edit");
 const QString Constants::ICON_REMOVE_SOURCEDIR = QString("sourcedir_remove");
@@ -48,7 +48,8 @@ const QString Constants::ICON_INVERT_FOLDER_SELECTION = QString("invert");
 const QString Constants::ICON_EXPAND_FOLDER = QString("expand");
 const QString Constants::ICON_COLLAPSE_FOLDER = QString("collapse");
 
-const QString Constants::ICON_SETTINGS_TAG = QString("tag_edit");
+const QString Constants::ICON_SETTINGS_GENERAL = QString("folder_home");
+const QString Constants::ICON_SETTINGS_TAG = QString("tag");
 const QString Constants::ICON_SETTINGS_SOURCEDIR = QString("folder");
 const QString Constants::ICON_SETTINGS_IMAGEPREVIEW = QString("view_refresh");
 const QString Constants::ICON_SETTINGS_FILEHANDLING = QString("folder_txt");

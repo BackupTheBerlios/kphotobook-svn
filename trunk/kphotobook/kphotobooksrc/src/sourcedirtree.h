@@ -40,7 +40,7 @@ class SourceDirTreeNode;
 /**
  * The SourceDirTree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: sourcedirtree.h,v 1.4 2004/03/23 22:19:39 starcube Exp $
+ * CVS-ID $Id: sourcedirtree.h,v 1.5 2004/03/30 21:44:31 starcube Exp $
  */
 class SourceDirTree : public KListView {
 
@@ -78,6 +78,8 @@ public:
     KPhotoBook* photobook() {
         return m_photobook;
     }
+
+    SourceDirTreeNode* selectedSourceDir();
 
     void doRepaintAll();
 

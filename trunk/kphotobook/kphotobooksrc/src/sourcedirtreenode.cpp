@@ -21,7 +21,6 @@
 #include "sourcedirtreenode.h"
 
 #include "constants.h"
-#include "configuration.h"
 #include "settings.h"
 
 #include "kphotobook.h"

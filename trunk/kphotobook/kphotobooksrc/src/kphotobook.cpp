@@ -20,10 +20,10 @@
 
 #include "kphotobook.h"
 
-#include "configuration.h"
 #include "constants.h"
 
 #include "settings.h"
+#include "settingsgeneral.h"
 #include "settingstagtree.h"
 #include "settingssourcedirtree.h"
 #include "settingsimagepreview.h"
@@ -85,21 +85,29 @@
 
 #include <qlistview.h>
 
-KPhotoBook::KPhotoBook()
-//    : KDockMainWindow( 0, "KPhotoBook" )
-    : KMdiMainFrm( 0, "kphotobookMainWindow", KMdi::IDEAlMode )
+KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
+    : KMdiMainFrm(0, "kphotobookMainWindow", mdiMode)
     , m_view(0)
+    , m_tagTree(0)
+    , m_sourcedirTree(0)
     , m_engine(new Engine())
+
+    , m_autoRefreshViewAction(0)
     , m_zoomIn(0)
     , m_zoomOut(0)
     , m_save(0)
     , m_andifyTagsAction(0)
     , m_orifyTagsAction(0)
+
     , m_contextMenuSourceDirTree(0)
     , m_contextMenuSourceDir(0)
     , m_contextMenuSubDir(0)
     , m_contextMenuTagTree(0)
     , m_contextMenuTagTreeItem(0)
+
+    , m_settingsImagePreview(0)
+    , m_settingsTagTree(0)
+    , m_settingsSourceDirTree(0)
     , m_settingsFileHandling(0)
     , m_settingsTools(0) {
 
@@ -121,39 +129,27 @@ KPhotoBook::KPhotoBook()
     // it is important to create the view after setting up context menus
     m_view = new KPhotoBookView(this);
 
-    /*
-    // create the maindock widget
-    KDockWidget* mainDock = createDockWidget( "KPhotoBook'sMainDockWidget", 0, 0L, "mainDockWidget");
-//    m_view = new KPhotoBookView(this);
-    mainDock->setWidget(m_view);
-    // allow others to dock to the 4 sides
-    mainDock->setDockSite(KDockWidget::DockCorner);
-    // forbit docking abilities of mainDock itself
-    mainDock->setEnableDocking(KDockWidget::DockNone);
-    setView(mainDock); // central widget in a KDE mainwindow
-    setMainDockWidget(mainDock); // master dockwidget
-*/
-
+    // add the KPhotoBookView as mainwindow
     addWindow(m_view);
 
-    m_tagtree = new TagTree(this, this, "tagtree");
-    addToolWindow(m_tagtree, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("TagTree"), i18n("TagTree"));
+    // add toolwindows
+    m_tagTree = new TagTree(this, this, "tagtree");
+    QIconSet tagTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
+    if (tagTreeIconSet.isNull()) {
+        kdDebug() << "[KPhotoBook::KPhotoBook] Could not load iconset with iconname: '" << Constants::ICON_TAG << "'" << endl;
+    } else {
+        m_tagTree->setIcon(tagTreeIconSet.pixmap());
+    }
+    addToolWindow(m_tagTree, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("TagTree"), i18n("TagTree"));
 
     m_sourcedirTree = new SourceDirTree(this, this, "sourcedirTree");
+    QIconSet sourcedirTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
+    if (sourcedirTreeIconSet.isNull()) {
+        kdDebug() << "[KPhotoBook::KPhotoBook] Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
+    } else {
+        m_sourcedirTree->setIcon(sourcedirTreeIconSet.pixmap());
+    }
     addToolWindow(m_sourcedirTree, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("SourceDirTree"), i18n("SourceDirTree"));
-
-
-    /*
-    KDockWidget* dock = this->createDockWidget("Any window caption", 0, 0, i18n("window caption"));
-    TagTree* actualWidget = new TagTree(dock, this, "tagtree in dock");
-    dock->setWidget(actualWidget); // embed it
-    dock->setToolTipString(i18n("That's me")); // available when appearing as tab page
-    dock->manualDock(mainDock,              // dock target
-                     KDockWidget::DockLeft, // dock site
-                     20 );                  // relation target/this (in percent)
-*/
-    // tell the KMainWindow that this is indeed the main widget
-    //setCentralWidget(m_view);
 
     // init some other things: statusbar,..
     init();
@@ -263,18 +259,18 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
 
         // set the new angine as current engine
         m_engine = newEngine;
-        Configuration::getInstance()->setLastOpenedFile(currentURL());
+        Settings::setFileSystemLastOpenedFile(currentURL());
 
         updateState();
 
         // update the view
 
         // add the tagNodes to the tagtree
-        m_view->tagTree()->addTagNodes(tagForest());
+        m_tagTree->addTagNodes(tagForest());
 
         // add the sourcedirectories to the tagtree
-        m_view->sourceDirTree()->clear();
-        m_view->sourceDirTree()->addSourceDirs(m_engine->sourceDirs());
+        m_sourcedirTree->clear();
+        m_sourcedirTree->addSourceDirs(m_engine->sourceDirs());
 
         // add the files to the view
         m_view->updateFiles();
@@ -490,7 +486,7 @@ void KPhotoBook::setupActions() {
     );
     new KAction(
         i18n("Collapse all tags"), Constants::ICON_COLLAPSE_FOLDER,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),m_view->sourceDirTree()
+        0, //KStdAccel::shortcut(KStdAccel::Reload),m_sourcedirTree
         this, SLOT(slotCollapseAllTags()),
         actionCollection(), "collapseAllTags"
     );
@@ -518,7 +514,7 @@ QPtrList<File>* KPhotoBook::files(QString filter) {
     // build the filter from the tagtree if the specified filter is empty
     if (filter.isNull() && m_view) {
         TagTreeNode* lastItem = 0;
-        QListViewItemIterator it(m_view->tagTree());
+        QListViewItemIterator it(m_tagTree);
         while (it.current()) {
             TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
 
@@ -551,7 +547,6 @@ bool KPhotoBook::queryClose() {
 
     // store the configuration
     m_view->storeConfiguration();
-    Configuration::getInstance()->store();
 
     // we have to store the properties which aren't handled magically by framewotk (stringlist)
     QStringList stringList;
@@ -574,6 +569,15 @@ bool KPhotoBook::queryClose() {
             stringList.append(m_settingsTools->kcfg_ToolsExternalTools->text(i));
         }
         Settings::setToolsExternalTools(stringList);
+    }
+
+    switch (mdiMode()) {
+        case KMdi::TabPageMode:
+            Settings::setGeneralViewMode(Settings::EnumGeneralViewMode::TabPageMode);
+            break;
+        default:
+            Settings::setGeneralViewMode(Settings::EnumGeneralViewMode::IDEAlMode);
+            break;
     }
 
     // force writing the settings
@@ -689,7 +693,7 @@ void KPhotoBook::slotFileOpen() {
     }
 
     // try to get last opened file
-    QString lastFileName = Configuration::getInstance()->lastOpenedFile();
+    QString lastFileName = Settings::fileSystemLastOpenedFile();
 
     QString lastDirName("");
     if (!lastFileName.isEmpty()) {
@@ -768,7 +772,7 @@ bool KPhotoBook::slotFileSaveAs() {
             // save your info, here
             try {
                 m_engine->saveAs(newFile);
-                Configuration::getInstance()->setLastOpenedFile(currentURL());
+                Settings::setFileSystemLastOpenedFile(currentURL());
                 fileSaved = true;
             } catch(PersistingException* ex) {
                 KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
@@ -807,12 +811,17 @@ void KPhotoBook::slotOptionsPreferences() {
     // first time --> create the settings dialog
     KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self(), KDialogBase::IconList);
 
-    m_settingsImagePreview = new SettingsImagePreview(0, "SettingsImagePreview");
-    dialog->addPage(m_settingsImagePreview, i18n("ImagePreview"), Constants::ICON_SETTINGS_IMAGEPREVIEW);
+    m_settingsGeneral = new SettingsGeneral(0, "SettingsGeneral");
+    dialog->addPage(m_settingsGeneral, i18n("General"), Constants::ICON_SETTINGS_GENERAL);
+
     m_settingsTagTree = new SettingsTagTree(0, "SettingsTagtree");
     dialog->addPage(m_settingsTagTree, i18n("TagTree"), Constants::ICON_SETTINGS_TAG);
+
     m_settingsSourceDirTree = new SettingsSourceDirTree(0, "SettingsSourceDirTree");
     dialog->addPage(m_settingsSourceDirTree, i18n("SourceDirTree"), Constants::ICON_SETTINGS_SOURCEDIR);
+
+    m_settingsImagePreview = new SettingsImagePreview(0, "SettingsImagePreview");
+    dialog->addPage(m_settingsImagePreview, i18n("ImagePreview"), Constants::ICON_SETTINGS_IMAGEPREVIEW);
 
     m_settingsFileHandling = new SettingsFileHandling(0, "SettingsFileHandling");
     m_settingsFileHandling->kcfg_FileFilterFileToHandle->insertStringList(Settings::fileFilterFileToHandle());
@@ -827,9 +836,9 @@ void KPhotoBook::slotOptionsPreferences() {
     dialog->addPage(m_settingsTools, i18n("Tools"), Constants::ICON_SETTINGS_TOOLS);
 
     connect(dialog, SIGNAL(settingsChanged()), this, SLOT(slotLoadSettings()));
-    connect(dialog, SIGNAL(settingsChanged()), view()->tagTree(), SLOT(slotLoadSettings()));
-    connect(dialog, SIGNAL(settingsChanged()), view()->sourceDirTree(), SLOT(slotLoadSettings()));
-    connect(dialog, SIGNAL(settingsChanged()), view(), SLOT(slotLoadSettings()));
+    connect(dialog, SIGNAL(settingsChanged()), m_tagTree, SLOT(slotLoadSettings()));
+    connect(dialog, SIGNAL(settingsChanged()), m_sourcedirTree, SLOT(slotLoadSettings()));
+    connect(dialog, SIGNAL(settingsChanged()), m_view, SLOT(slotLoadSettings()));
 
 
     dialog->show();
@@ -862,7 +871,7 @@ void KPhotoBook::slotAddSourcedir() {
             SourceDir* sourceDir = addSourceDir(dialog->directory(), dialog->recursive());
 
             kdDebug() << "[KPhotoBook::slotAddSourcedir] new sourcedirectory is ok. adding it to the view..." << endl;
-            m_view->sourceDirTree()->addSourceDir(sourceDir);
+            m_sourcedirTree->addSourceDir(sourceDir);
 
             // update the view to display the new found files
             kdDebug() << "[KPhotoBook::slotAddSourcedir] updating fileview" << endl;
@@ -898,7 +907,7 @@ void KPhotoBook::slotRemoveSourceDir() {
     kdDebug() << "[KPhotoBook::slotRemoveSourceDir] called... " << endl;
 
     // get the sourcedir to remove from the tagtree
-    SourceDirTreeNode* currentNode = m_view->selectedSourceDir();
+    SourceDirTreeNode* currentNode = m_sourcedirTree->selectedSourceDir();
 
     // show a dialog to the user
     QString msg = QString(i18n("Do you want to remove the source directory?\n%1")).arg(currentNode->sourceDir()->dir()->absPath());
@@ -921,7 +930,7 @@ void KPhotoBook::slotRemoveSourceDir() {
         kdDebug() << "[KPhotoBook::slotRemoveSourceDir] sourcedirs removed from engine... " << endl;
 
         // remove the sourcedir from the view
-        m_view->sourceDirTree()->removeSourceDir(currentNode);
+        m_sourcedirTree->removeSourceDir(currentNode);
 
         kdDebug() << "[KPhotoBook::slotRemoveSourceDir] sourcedirnode from sourcedirtree removed... " << endl;
 
@@ -946,7 +955,7 @@ void KPhotoBook::slotAddMaintag() {
         TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagIcon());
 
         // add the new tagnode to the tagnodetree
-        m_view->tagTree()->addTagNode(newTagNode);
+        m_tagTree->addTagNode(newTagNode);
     }
     delete dialog;
 }
@@ -957,7 +966,7 @@ void KPhotoBook::slotCreateSubtag() {
     kdDebug() << "[KPhotoBook::slotCreateSubtag] called... " << endl;
 
     // get the tag to add a child to
-    QListViewItem* currentItem = m_view->tagTree()->currentItem();
+    QListViewItem* currentItem = m_tagTree->currentItem();
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)) {
         kdDebug() << "[KPhotoBook::slotCreateSubtag] called on a tree item other than TagTreeNode!" << endl;
@@ -974,7 +983,7 @@ void KPhotoBook::slotCreateSubtag() {
         TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagIcon(), parent->tagNode());
 
         // add the new tagnode to the tagnodetree
-        m_view->tagTree()->addTagNode(parent, newTagNode);
+        m_tagTree->addTagNode(parent, newTagNode);
         parent->setOpen(true);
     }
     delete dialog;
@@ -986,7 +995,7 @@ void KPhotoBook::slotEditTag() {
     kdDebug() << "[KPhotoBook::slotEditTag] called... " << endl;
 
     // get the tag to add a child to
-    QListViewItem* currentItem = m_view->tagTree()->currentItem();
+    QListViewItem* currentItem = m_tagTree->currentItem();
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)) {
         kdDebug() << "[KPhotoBook::slotCreateSubtag] called on a tree item other than TagTreeNode!" << endl;
@@ -1015,7 +1024,7 @@ void KPhotoBook::slotDeleteTag() {
     kdDebug() << "[KPhotoBook::slotDeleteTag] called... " << endl;
 
     // get the tag to add a child to
-    QListViewItem* currentItem = m_view->tagTree()->currentItem();
+    QListViewItem* currentItem = m_tagTree->currentItem();
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)) {
         kdDebug() << "[KPhotoBook::slotDeleteTag] called on a tree item other than TagTreeNode!" << endl;
@@ -1054,8 +1063,8 @@ void KPhotoBook::slotRescanFilesystem() {
     m_engine->rescanSourceDirs();
 
     // add the sourcedirectories to the tagtree
-    m_view->sourceDirTree()->clear();
-    m_view->sourceDirTree()->addSourceDirs(m_engine->sourceDirs());
+    m_sourcedirTree->clear();
+    m_sourcedirTree->addSourceDirs(m_engine->sourceDirs());
 
     // add the files to the view
     m_view->updateFiles();
@@ -1090,48 +1099,48 @@ void KPhotoBook::slotDecreasePreviewSize() {
 
 
 void KPhotoBook::slotIncludeWholeSourceDir() {
-    m_view->sourceDirTree()->includeWholeSourceDir();
+    m_sourcedirTree->includeWholeSourceDir();
 
     autoRefreshView();
 }
 void KPhotoBook::slotExcludeWholeSourceDir() {
-    m_view->sourceDirTree()->excludeWholeSourceDir();
+    m_sourcedirTree->excludeWholeSourceDir();
 
     autoRefreshView();
 }
 void KPhotoBook::slotInvertSourceDir() {
-    m_view->sourceDirTree()->invertSourceDir();
+    m_sourcedirTree->invertSourceDir();
 
     autoRefreshView();
 }
 void KPhotoBook::slotIncludeAllSourceDirs() {
-    m_view->sourceDirTree()->includeAllSourceDirs();
+    m_sourcedirTree->includeAllSourceDirs();
 
     autoRefreshView();
 }
 void KPhotoBook::slotExcludeAllSourceDirs() {
-    m_view->sourceDirTree()->excludeAllSourceDirs();
+    m_sourcedirTree->excludeAllSourceDirs();
 
     autoRefreshView();
 }
 void KPhotoBook::slotInvertAllSourceDirs() {
-    m_view->sourceDirTree()->invertAllSourceDirs();
+    m_sourcedirTree->invertAllSourceDirs();
 
     autoRefreshView();
 }
 
 
 void KPhotoBook::slotExpandSourceDir() {
-    m_view->sourceDirTree()->expandCurrent();
+    m_sourcedirTree->expandCurrent();
 }
 void KPhotoBook::slotCollapseSourceDir() {
-    m_view->sourceDirTree()->collapseCurrent();
+    m_sourcedirTree->collapseCurrent();
 }
 void KPhotoBook::slotExpandAllSourceDirs() {
-    m_view->sourceDirTree()->expandAll();
+    m_sourcedirTree->expandAll();
 }
 void KPhotoBook::slotCollapseAllSourceDirs() {
-    m_view->sourceDirTree()->collapseAll();
+    m_sourcedirTree->collapseAll();
 }
 
 
@@ -1160,16 +1169,16 @@ void KPhotoBook::slotOrifyTags() {
 }
 
 void KPhotoBook::slotExpandTag() {
-    m_view->tagTree()->expandCurrent();
+    m_tagTree->expandCurrent();
 }
 void KPhotoBook::slotCollapseTag() {
-    m_view->tagTree()->collapseCurrent();
+    m_tagTree->collapseCurrent();
 }
 void KPhotoBook::slotExpandAllTags() {
-    m_view->tagTree()->expandAll();
+    m_tagTree->expandAll();
 }
 void KPhotoBook::slotCollapseAllTags() {
-    m_view->tagTree()->collapseAll();
+    m_tagTree->collapseAll();
 }
 
 
@@ -1179,9 +1188,9 @@ void KPhotoBook::slotFileSelectionChanged() {
     QString selectedMsg = QString(i18n("Selected: %1")).arg(m_view->fileView()->selectedItems()->count());
     statusBar()->changeItem(selectedMsg, 4);
 
-    m_view->sourceDirTree()->reflectSelectedFiles(m_view->fileView()->selectedItems());
+    m_sourcedirTree->reflectSelectedFiles(m_view->fileView()->selectedItems());
 
-    m_view->tagTree()->doRepaintAll();
+    m_tagTree->doRepaintAll();
 }
 
 
@@ -1190,6 +1199,21 @@ void KPhotoBook::slotLoadSettings() {
     applyOperatorSetting();
     applyZoomSetting();
     applyAutorefreshSetting();
+
+    KMdi::MdiMode newMdiMode = KMdi::IDEAlMode;
+    if (Settings::generalViewMode() == Settings::EnumGeneralViewMode::TabPageMode) {
+        newMdiMode = KMdi::TabPageMode;
+    }
+    if (newMdiMode != mdiMode()) {
+        switch (newMdiMode) {
+            case KMdi::TabPageMode:
+                switchToTabPageMode();
+                break;
+            default:
+                switchToIDEAlMode();
+                break;
+        }
+    }
 }
 
 

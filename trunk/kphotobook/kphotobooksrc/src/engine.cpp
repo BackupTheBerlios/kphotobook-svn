@@ -21,7 +21,6 @@
 #include "engine.h"
 
 #include "constants.h"
-#include "configuration.h"
 #include "settings.h"
 
 #include "xmlparser.h"

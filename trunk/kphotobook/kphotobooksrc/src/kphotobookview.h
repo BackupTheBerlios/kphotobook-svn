@@ -8,7 +8,6 @@
 #include <kfileiconview.h>
 
 #include <qwidget.h>
-//#include <qslider.h>
 #include <qsplitter.h>
 #include <qlabel.h>
 #include <qptrlist.h>
@@ -50,15 +49,9 @@ public:
      */
     virtual ~KPhotoBookView();
 
-    TagTree* tagTree();
-
-    SourceDirTree* sourceDirTree();
-
     KFileIconView* fileView() {
         return m_fileView;
     }
-
-    SourceDirTreeNode* selectedSourceDir();
 
     /**
      * Removes the specified node from the tagNodeTree.
@@ -91,11 +84,6 @@ private slots:
 private:
     KPhotoBook* m_photobook;
 
-//    QSplitter* m_split;
-//    QSplitter* m_treesplit;
-
-//    TagTree* m_tagtree;
-//    SourceDirTree* m_sourcedirTree;
     KFileIconView* m_fileView;
 
     int m_currentImagePreviewSize;

@@ -20,7 +20,6 @@
 
 #include "dialogcreatetag.h"
 
-#include "configuration.h"
 #include "settings.h"
 #include "tagtreenode.h"
 #include "tagnode.h"

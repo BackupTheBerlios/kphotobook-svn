@@ -8,6 +8,11 @@
 class Settings : public KConfigSkeleton
 {
   public:
+    class EnumGeneralViewMode
+    {
+      public:
+      enum { IDEAlMode, TabPageMode, COUNT };
+    };
     class EnumTagTreeFilterOperator
     {
       public:
@@ -21,6 +26,25 @@ class Settings : public KConfigSkeleton
 
     static Settings *self();
     ~Settings();
+
+    /**
+      Set Defines the mdi view mode.
+    */
+    static
+    void setGeneralViewMode( int v )
+    {
+      if (!self()->isImmutable( "GeneralViewMode" ))
+        self()->mGeneralViewMode = v;
+    }
+
+    /**
+      Get Defines the mdi view mode.
+    */
+    static
+    int generalViewMode()
+    {
+      return self()->mGeneralViewMode;
+    }
 
     /**
       Set The size of the icons in the TagTree.
@@ -326,6 +350,44 @@ class Settings : public KConfigSkeleton
       return self()->mToolsExternalTools;
     }
 
+    /**
+      Set Contains the last opened kphotobook file.
+    */
+    static
+    void setFileSystemLastOpenedFile( const QString & v )
+    {
+      if (!self()->isImmutable( "FileSystemLastOpenedFile" ))
+        self()->mFileSystemLastOpenedFile = v;
+    }
+
+    /**
+      Get Contains the last opened kphotobook file.
+    */
+    static
+    QString fileSystemLastOpenedFile()
+    {
+      return self()->mFileSystemLastOpenedFile;
+    }
+
+    /**
+      Set Contains the last added source directory.
+    */
+    static
+    void setFileSystemLastAddedSourcedir( const QString & v )
+    {
+      if (!self()->isImmutable( "FileSystemLastAddedSourcedir" ))
+        self()->mFileSystemLastAddedSourcedir = v;
+    }
+
+    /**
+      Get Contains the last added source directory.
+    */
+    static
+    QString fileSystemLastAddedSourcedir()
+    {
+      return self()->mFileSystemLastAddedSourcedir;
+    }
+
     static
     void writeConfig()
     {
@@ -335,6 +397,9 @@ class Settings : public KConfigSkeleton
     Settings();
     static Settings *mSelf;
 
+
+    // General
+    int mGeneralViewMode;
 
     // TagTree
     int mTagTreeIconSize;
@@ -361,6 +426,10 @@ class Settings : public KConfigSkeleton
     // Tools
     QString mToolsDefaultExternalTool;
     QStringList mToolsExternalTools;
+
+    // FileSystem
+    QString mFileSystemLastOpenedFile;
+    QString mFileSystemLastAddedSourcedir;
 
   private:
 };

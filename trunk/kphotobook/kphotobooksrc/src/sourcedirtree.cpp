@@ -215,6 +215,17 @@ void SourceDirTree::reflectSelectedFiles(const KFileItemList* selectedFiles) {
 }
 
 
+SourceDirTreeNode* SourceDirTree::selectedSourceDir() {
+
+    if (typeid(*currentItem()) != typeid(SourceDirTreeNode)) {
+        kdDebug() << "[SourceDirTree::selectedSourceDir] sourcedirTree contains a node of other type than 'SourceDirTreeNode'" << endl;
+        return 0;
+    }
+
+    return dynamic_cast<SourceDirTreeNode*>(currentItem());
+}
+
+
 void SourceDirTree::doRepaintAll() {
     QListViewItemIterator it(this);
     while (it.current()) {

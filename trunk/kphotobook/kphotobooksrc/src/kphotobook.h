@@ -26,19 +26,20 @@
 #include <kaction.h>
 #include <kapplication.h>
 #include <kpopupmenu.h>
-#include <kdockwidget.h>
 
 #include <kmdimainfrm.h>
 
 #include <qdir.h>
 
 class Engine;
-class Configuration;
-class SettingsImagePreview;
+
+class SettingsGeneral;
 class SettingsTagTree;
 class SettingsSourceDirTree;
+class SettingsImagePreview;
 class SettingsFileHandling;
 class SettingsTools;
+
 class KPhotoBookView;
 class SourceDir;
 class File;
@@ -57,7 +58,7 @@ class SourceDirTree;
  * @author $AUTHOR <$EMAIL>
  * @version $APP_VERSION
  */
-class KPhotoBook : public KMdiMainFrm {// KDockMainWindow {
+class KPhotoBook : public KMdiMainFrm {
 
     Q_OBJECT
 
@@ -65,7 +66,7 @@ public:
     /**
      * Creates a new photobook mainwindow.
      */
-    KPhotoBook();
+    KPhotoBook(KMdi::MdiMode mdiMode = KMdi::IDEAlMode);
 
     /**
      * Default Destructor
@@ -80,15 +81,11 @@ public:
     }
 
     TagTree* tagTree() {
-        return m_tagtree;
+        return m_tagTree;
     }
 
     SourceDirTree* sourceDirTree() {
         return m_sourcedirTree;
-    }
-
-    Configuration* configuration() {
-        return m_configuration;
     }
 
     void dirtyfy();
@@ -266,11 +263,10 @@ private:
 private:
     KPhotoBookView* m_view;
 
-    TagTree* m_tagtree;
+    TagTree* m_tagTree;
     SourceDirTree* m_sourcedirTree;
 
     Engine* m_engine;
-    Configuration* m_configuration;
 
     // actions
     KToggleAction* m_autoRefreshViewAction;
@@ -288,6 +284,7 @@ private:
     KPopupMenu* m_contextMenuTagTreeItem;
 
     // settings pages
+    SettingsGeneral* m_settingsGeneral;
     SettingsImagePreview* m_settingsImagePreview;
     SettingsTagTree* m_settingsTagTree;
     SettingsSourceDirTree* m_settingsSourceDirTree;

@@ -4,6 +4,17 @@
   <kcfgfile name="kphotobookrc"/>
   <!--<include>kwin.h</include>-->
 
+  <group name="General">
+    <entry name="GeneralViewMode" type="Enum" key="ViewMode">
+      <label>Defines the mdi view mode.</label>
+      <default>IDEAlMode</default>
+      <choices>
+        <choice name="IDEAlMode" />
+        <choice name="TabPageMode" />
+      </choices>
+    </entry>
+  </group>
+
   <group name="TagTree">
     <entry name="TagTreeIconSize" type="Int" key="IconSize">
       <label>The size of the icons in the TagTree.</label>
@@ -99,26 +110,13 @@
     </entry>
   </group>
 
-<!--
-    <entry name="Font" type="Font" key="font">
-        <default code="true">KGlobalSettings::generalFont()</default>
+  <group name="FileSystem">
+    <entry name="FileSystemLastOpenedFile" type="String" key="LastOpenedFile">
+      <label>Contains the last opened kphotobook file.</label>
     </entry>
+    <entry name="FileSystemLastAddedSourcedir" type="String" key="LastAddedSourcedir">
+      <label>Contains the last added source directory.</label>
+    </entry>
+  </group>
 
-    <entry name="TitleFont" type="Font" key="titlefont">
-        <default code="true">KGlobalSettings::windowTitleFont()</default>
-    </entry>
--->
 </kcfg>
-
-
-<!--
-
-const QString Configuration::GROUP_DIRECTORIES = QString("Directories");
-const QString Configuration::CONFIG_ENTRY_LASTOPENEDFILE = QString("LastOpenedFile");
-const QString Configuration::CONFIG_ENTRY_LASTADDEDSOURCEDIR = QString("LastAddedSourcedir");
-
-const QString Configuration::GROUP_DISPLAYSETTINGS = QString("DisplaySettings");
-const QString Configuration::CONFIG_ENTRY_MAINSPLITTERSIZES = QString("MainSplitterSizes");
-const QString Configuration::CONFIG_ENTRY_TREESPLITTERSIZES = QString("TreeSplitterSizes");
-
--->

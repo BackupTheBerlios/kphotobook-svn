@@ -3,7 +3,7 @@
  */
 
 #include "kphotobook.h"
-#include "configuration.h"
+#include "settings.h"
 
 #include <qfileinfo.h>
 
@@ -44,16 +44,19 @@ int main(int argc, char** argv) {
 
     KApplication app;
 
-    Configuration::getInstance()->load();
+    KMdi::MdiMode mdiMode = KMdi::IDEAlMode;
+    if (Settings::generalViewMode() == Settings::EnumGeneralViewMode::TabPageMode) {
+        mdiMode = KMdi::TabPageMode;
+    }
 
     KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
     if (args->count() == 0) {
 
-        KPhotoBook* widget = new KPhotoBook();
+        KPhotoBook* widget = new KPhotoBook(mdiMode);
         widget->show();
 
         // try to load last opened file
-        QString lastFileName = Configuration::getInstance()->lastOpenedFile();
+        QString lastFileName = Settings::fileSystemLastOpenedFile();
         if (!lastFileName.isEmpty()) {
             QFileInfo lastFile(lastFileName);
             widget->load(lastFile);
@@ -62,7 +65,7 @@ int main(int argc, char** argv) {
         int i = 0;
         for (; i < args->count(); i++) {
             QFileInfo file(args->url(i).path());
-            KPhotoBook* widget = new KPhotoBook();
+            KPhotoBook* widget = new KPhotoBook(mdiMode);
             widget->show();
             widget->load(file);
         }

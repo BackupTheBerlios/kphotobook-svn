@@ -26,19 +26,19 @@
 /**
  * Constants for kphotobook.
  *
- * CVS-ID $Id: constants.h,v 1.7 2004/03/28 13:42:46 starcube Exp $
+ * CVS-ID $Id: constants.h,v 1.8 2004/03/30 21:44:31 starcube Exp $
  */
 class Constants {
 
 public:
     // icons
-    static const QString ICON_SOURCEDIR;
-
+    static const QString ICON_TAG;
     static const QString ICON_CREATE_MAINTAG;
     static const QString ICON_CREATE_SUBTAG;
     static const QString ICON_EDIT_TAG;
     static const QString ICON_DELETE_TAG;
 
+    static const QString ICON_SOURCEDIR;
     static const QString ICON_ADD_SOURCEDIR;
     static const QString ICON_EDIT_SOURCEDIR;
     static const QString ICON_REMOVE_SOURCEDIR;
@@ -57,6 +57,7 @@ public:
     static const QString ICON_EXPAND_FOLDER;
     static const QString ICON_COLLAPSE_FOLDER;
 
+    static const QString ICON_SETTINGS_GENERAL;
     static const QString ICON_SETTINGS_TAG;
     static const QString ICON_SETTINGS_SOURCEDIR;
     static const QString ICON_SETTINGS_IMAGEPREVIEW;

@@ -23,7 +23,6 @@
 #include "tagnodetitle.h"
 #include "tagnodeboolean.h"
 
-#include "configuration.h"
 #include "file.h"
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocboolean.h"

@@ -20,7 +20,7 @@
 
 #include "dialogaddsourcedir.h"
 
-#include "configuration.h"
+#include "settings.h"
 
 #include <klocale.h>
 #include <kglobal.h>
@@ -69,7 +69,7 @@ DialogAddSourceDir::DialogAddSourceDir(QWidget* parent, const char* name)
     spacer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
     // set the directory
-    m_currentDirectoryLineEdit->setText(Configuration::getInstance()->lastAddedSourcedir());
+    m_currentDirectoryLineEdit->setText(Settings::fileSystemLastAddedSourcedir());
 
     // set the focus
     m_currentDirectoryLineEdit->setFocus();
@@ -80,7 +80,7 @@ DialogAddSourceDir::~DialogAddSourceDir() {
 
     // save chosen directory only if OK is clicked
     if (result()) {
-        Configuration::getInstance()->setLastAddedSourcedir(m_currentDirectoryLineEdit->text());
+        Settings::setFileSystemLastAddedSourcedir(m_currentDirectoryLineEdit->text());
     }
 }
 
