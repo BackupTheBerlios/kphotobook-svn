@@ -30,7 +30,7 @@ class TagNode;
  * Abstract superclass of all associations between a file and a node.
  * This abstract class contains the reference to the associated file and the tagNode.
  *
- * CVS-ID $Id: filetagnodeassoc.h,v 1.2 2004/03/20 16:37:13 starcube Exp $
+ * CVS-ID $Id: filetagnodeassoc.h,v 1.3 2004/03/28 14:58:16 starcube Exp $
  */
 class FileTagNodeAssoc {
 
@@ -59,6 +59,14 @@ public:
     }
 
     virtual void update(FileTagNodeAssoc* assoc) = 0;
+
+    /**
+     * Determines if this association must be dumped to the database.
+     * The defaulkt implementation returns true;
+     */
+    virtual bool mustDump() {
+        return true;
+    }
 
     virtual QString valueAsString() = 0;
 

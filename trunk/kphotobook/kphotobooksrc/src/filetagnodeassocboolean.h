@@ -32,7 +32,7 @@ class TagNodeBoolean;
  * Concrete class representing the association between a file and a TagNodeBoolean.
  * This associations contains a reference to the tagnode and the state of the association.
  *
- * CVS-ID $Id: filetagnodeassocboolean.h,v 1.2 2004/03/20 16:37:13 starcube Exp $
+ * CVS-ID $Id: filetagnodeassocboolean.h,v 1.3 2004/03/28 14:58:16 starcube Exp $
  */
 class FileTagNodeAssocBoolean : public FileTagNodeAssoc {
 
@@ -59,6 +59,13 @@ public:
     }
 
     bool value() {
+        return m_value;
+    }
+
+    /**
+     * A boolean association must be dumped only, if the assoc is true.
+     */
+    virtual bool mustDump() {
         return m_value;
     }
 
