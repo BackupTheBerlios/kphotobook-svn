@@ -32,6 +32,11 @@ messages: rc.cpp
 kdelnkdir = $(kde_appsdir)/Graphics
 kdelnk_DATA = kphotobook.desktop
 
+# install a mimelnk
+mimedir = $(kde_mimedir)/application
+mime_DATA = x-kphotobook.desktop
+EXTRA_DIST = $(mime_DATA)
+
 # this is where the XML-GUI resource file goes
 rcdir = $(kde_datadir)/kphotobook
 rc_DATA = kphotobookui.rc
