@@ -26,7 +26,7 @@
 /**
  * Constants for kphotobook.
  *
- * CVS-ID $Id: constants.h,v 1.5 2004/03/24 22:17:54 starcube Exp $
+ * CVS-ID $Id: constants.h,v 1.6 2004/03/25 23:33:52 starcube Exp $
  */
 class Constants {
 
@@ -60,6 +60,8 @@ public:
     static const QString ICON_SETTINGS_TAG;
     static const QString ICON_SETTINGS_SOURCEDIR;
     static const QString ICON_SETTINGS_IMAGEPREVIEW;
+    static const QString ICON_SETTINGS_FILEHANDLING;
+    static const QString ICON_SETTINGS_TOOLS;
 
     // file-extension
     static const QString FILE_EXTENSION; /**< The default used fileextension for kphotobook files. */

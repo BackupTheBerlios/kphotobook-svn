@@ -51,6 +51,8 @@ const QString Constants::ICON_COLLAPSE_FOLDER = QString("collapse");
 const QString Constants::ICON_SETTINGS_TAG = QString("tag_edit");
 const QString Constants::ICON_SETTINGS_SOURCEDIR = QString("folder");
 const QString Constants::ICON_SETTINGS_IMAGEPREVIEW = QString("view_refresh");
+const QString Constants::ICON_SETTINGS_FILEHANDLING = QString("folder_txt");
+const QString Constants::ICON_SETTINGS_TOOLS = QString("kfind");
 
 
 //
