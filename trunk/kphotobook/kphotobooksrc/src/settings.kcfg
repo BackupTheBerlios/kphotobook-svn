@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kcfg SYSTEM "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
+<kcfg>
+  <kcfgfile name="settingsrc"/>
+  <!--<include>kwin.h</include>-->
+
+  <group name="TagTree">
+    <entry name="TagTreeIconSize" type="Int" key="IconSize">
+      <label>The size of the Icons in the TagTree.</label>
+      <default>22</default>
+      <min>16</min>
+      <max>48</max>
+    </entry>
+    <entry name="TagTreeShowIcons" type="Bool" key="ShowIcons">
+      <label>Defines if the icons in the TagTree are shown.</label>
+      <default>true</default>
+    </entry>
+    <entry name="TagTreeFont" type="Font" key="Font">
+      <default code="true">KGlobalSettings::generalFont()</default>
+    </entry>
+  </group>
+<!--
+    <entry name="Font" type="Font" key="font">
+        <default code="true">KGlobalSettings::generalFont()</default>
+    </entry>
+
+    <entry name="TitleFont" type="Font" key="titlefont">
+        <default code="true">KGlobalSettings::windowTitleFont()</default>
+    </entry>
+-->
+</kcfg>
