@@ -60,6 +60,10 @@ const QString Constants::ICON_SETTINGS_TOOLS = QString("kfind");
 const QString Constants::ICON_OPERATOR_AND = QString("andify");
 const QString Constants::ICON_OPERATOR_OR = QString("orify");
 
+const QString Constants::ICON_RESTORE_TOOL_VIEWS = QString("view_layout_restore");
+
+const QString Constants::ICON_TAG_LOCK = QString("tag_lock");
+const QString Constants::ICON_TAG_UNLOCK = QString("tag_unlock");
 
 //
 // file-extension

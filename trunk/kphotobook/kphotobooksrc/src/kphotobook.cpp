@@ -77,6 +77,7 @@
 #include <klistview.h>
 #include <kfilemetainfo.h>
 #include <kedittoolbar.h>
+#include <kmditoolviewaccessor.h>
 
 #include <kdebug.h>
 
@@ -508,6 +509,35 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotCollapseAllTags()),
         actionCollection(), "collapseAllTags"
     );
+    
+    // Tool view actions
+    new KAction(
+        i18n("Restore toolviews"), Constants::ICON_RESTORE_TOOL_VIEWS,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),m_sourcedirTree
+        this, SLOT(slotRestoreToolViews()),
+        actionCollection(), "restoreToolViews"
+    );
+    
+    new KAction(
+        i18n("Show Tagtree"), 0,
+        0,
+        this, SLOT(slotShowToolViewTagTree()),
+        actionCollection(), "showToolViewTagTree"
+    );
+
+    new KAction(
+        i18n("Show Sourcedirtree"), 0,
+        0,
+        this, SLOT(slotShowToolViewSourceDirTree()),
+        actionCollection(), "showToolViewSourceDirTree"
+    );
+
+    new KAction(
+        i18n("Show EXIF"), 0,
+        0,
+        this, SLOT(slotShowToolViewMetaInfoTree()),
+        actionCollection(), "showToolViewMetaInfoTree"
+    );    
 }
 
 
@@ -1259,6 +1289,8 @@ void KPhotoBook::slotCollapseAllTags() {
 
 void KPhotoBook::slotFileSelectionChanged() {
 
+    kdDebug() << "[KPhotoBook::slotFileSelectionChanged] invoked..." << endl;
+
     unsigned int selectedImagesCount = m_view->fileView()->selectedItems()->count();
 
     // update the statusbar to reflect the number of selected files
@@ -1274,6 +1306,8 @@ void KPhotoBook::slotFileSelectionChanged() {
 
     // show EXIF info if only one image is seleced
     if (m_view->fileView()->selectedItems()->count() == 1) {
+        kdDebug() << "one file is selected" << endl;
+        
         QPtrListIterator<KFileItem> tempIt(*m_view->fileView()->selectedItems());
         KFileItem* selectedFile = tempIt.current() ;
 
@@ -1283,6 +1317,7 @@ void KPhotoBook::slotFileSelectionChanged() {
         QStringList groups = metaInfo.groups();
         KListViewItem* currentGroup = 0;
         for ( QStringList::Iterator groupIt = groups.begin(); groupIt != groups.end(); ++groupIt ) {
+            kdDebug() << "Handling metainfo group: " << *groupIt << endl;
             currentGroup = new KListViewItem(m_metaInfoTree, *groupIt);
             currentGroup->setOpen(true);
             KFileMetaInfoGroup group = metaInfo.group(*groupIt);
@@ -1291,6 +1326,7 @@ void KPhotoBook::slotFileSelectionChanged() {
 
             // iterate over keys
             for ( QStringList::Iterator keysIt = keys.begin(); keysIt != keys.end(); ++keysIt ) {
+                kdDebug() << "Handling metainfo key: " << *keysIt << endl;
                 KFileMetaInfoItem item = group.item(*keysIt);
                 QString value = item.string();
 
@@ -1345,6 +1381,59 @@ void KPhotoBook::slotConfigDefaultClicked() {
     m_settingsTools->kcfg_ToolsExternalTools->setSelected(0, true);
 
     defaultSettings->useDefaults(false);
+}
+
+
+void KPhotoBook::slotRestoreToolViews() {
+
+    m_tagTreeToolView->place(KDockWidget::DockLeft, getMainDockWidget(), 20);
+    m_sourceDirTreeToolView->place(KDockWidget::DockCenter, m_tagTree, 20);
+    m_metaInfoTreeToolView->place(KDockWidget::DockCenter, m_tagTree, 20);
+}
+
+void KPhotoBook::slotShowToolViewTagTree() {
+
+    if (!m_sourcedirTree->isHidden()) {
+        m_tagTreeToolView->place(KDockWidget::DockCenter, m_sourcedirTree, 20);
+
+    } else if (!m_metaInfoTree->isHidden()) {
+        m_tagTreeToolView->place(KDockWidget::DockCenter, m_metaInfoTree, 20);
+
+    } else {
+        m_tagTreeToolView->place(KDockWidget::DockLeft, getMainDockWidget(), 20);
+    }
+    
+    m_tagTreeToolView->show();
+}
+
+void KPhotoBook::slotShowToolViewSourceDirTree() {
+
+    if (!m_tagTree->isHidden()) {
+        m_sourceDirTreeToolView->place(KDockWidget::DockCenter, m_tagTree, 20);
+
+    } else if (!m_metaInfoTree->isHidden()) {
+        m_sourceDirTreeToolView->place(KDockWidget::DockCenter, m_metaInfoTree, 20);
+
+    } else {
+        m_sourceDirTreeToolView->place(KDockWidget::DockLeft, getMainDockWidget(), 20);
+    }
+
+    m_sourceDirTreeToolView->show();
+}
+
+void KPhotoBook::slotShowToolViewMetaInfoTree() {
+
+    if (!m_tagTree->isHidden()) {
+        m_metaInfoTreeToolView->place(KDockWidget::DockCenter, m_tagTree, 20);
+
+    } else if (!m_sourcedirTree->isHidden()) {
+        m_metaInfoTreeToolView->place(KDockWidget::DockCenter, m_sourcedirTree, 20);
+
+    } else {
+        m_metaInfoTreeToolView->place(KDockWidget::DockLeft, getMainDockWidget(), 20);
+    }
+
+    m_metaInfoTreeToolView->show();
 }
 
 
@@ -1405,7 +1494,7 @@ void KPhotoBook::setupToolWindowTagTree() {
     }
 
     // eventually do add the tool window
-    addToolWindow(tagTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Tags"), i18n("Tags"));
+    m_tagTreeToolView = addToolWindow(tagTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Tags"), i18n("Tags"));
 }
 
 
@@ -1447,7 +1536,7 @@ void KPhotoBook::setupToolWindowSourceDirTree() {
     }
 
     // eventually do add the tool window
-    addToolWindow(sourceDirTreePanel, KDockWidget::DockCenter, m_tagTree, 20, i18n("Source directories"), i18n("Source"));
+    m_sourceDirTreeToolView = addToolWindow(sourceDirTreePanel, KDockWidget::DockCenter, m_tagTree, 20, i18n("Source directories"), i18n("Source"));
 }
 
 
@@ -1477,7 +1566,7 @@ void KPhotoBook::setupToolWindowMetaInfoTree() {
     }
 
     // eventually do add the tool window
-    addToolWindow(m_metaInfoTree, KDockWidget::DockCenter, m_tagTree, 20, i18n("EXIF Information"), i18n("EXIF"));
+    m_metaInfoTreeToolView = addToolWindow(m_metaInfoTree, KDockWidget::DockCenter, m_tagTree, 20, i18n("EXIF Information"), i18n("EXIF"));
 }
 
 

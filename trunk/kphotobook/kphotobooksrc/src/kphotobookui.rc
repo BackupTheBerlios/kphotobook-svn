@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<gui name="kphotobook" version="5">
+<gui name="kphotobook" version="8">
 
 <MenuBar>
     <Menu name="file">
@@ -26,8 +26,17 @@
         <Separator/>
         <Action name="expandAllSourceDirs" />
         <Action name="collapseAllSourceDirs" />
+        <Separator/>
+        <Action name="restoreToolViews" />
     </Menu>
     <Menu name="settings">
+        <Menu name="toolviews">            
+            <text>&amp;Tool Views</text>
+            <Action name="showToolViewTagTree" />
+            <Action name="showToolViewSourceDirTree" />
+            <Action name="showToolViewMetaInfoTree" />
+        </Menu>
+        <Separator/>
         <Action name="autoRefreshView" />
     </Menu>
 </MenuBar>
