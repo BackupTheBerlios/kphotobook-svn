@@ -97,8 +97,9 @@ public:
 
     /**
      * Returns all files matching the specified filter.
+     * If the filter is QString::null, the filter is build from the selection in the tagtree.
      */
-    QPtrList<File>* files(QPtrList<TagNode>* filter);
+    QPtrList<File>* files(QString filter);
 
     /**
      * Refreshes the view only if autorefresh is enabled.
@@ -174,6 +175,8 @@ private slots:
     void slotCollapseSourceDir();
     void slotExpandAllSourceDirs();
     void slotCollapseAllSourceDirs();
+
+    void slotAndifyTags();
 
     void slotExpandTag();
     void slotCollapseTag();

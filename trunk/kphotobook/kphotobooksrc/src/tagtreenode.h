@@ -38,7 +38,7 @@ class TagTree;
 /**
  * Superclass of all nodes to display in a tagtree.
  *
- * CVS-ID $Id: tagtreenode.h,v 1.3 2004/03/10 21:42:54 starcube Exp $
+ * CVS-ID $Id: tagtreenode.h,v 1.4 2004/03/11 22:45:47 starcube Exp $
  */
 class TagTreeNode : public KListViewItem {
 
@@ -56,6 +56,10 @@ public:
     }
 
     virtual TagNode* tagNode() = 0;
+
+    virtual QString filter() {
+        return QString::null;
+    }
 
     void setOpenRecursive(bool open);
 

@@ -29,6 +29,7 @@
 #include "tagnodetitle.h"
 #include "tagnodeboolean.h"
 #include "filetagnodeassoc.h"
+#include "filetagnodeassocboolean.h"
 #include "file.h"
 
 #include <kglobal.h>
@@ -42,6 +43,7 @@
 #include <qdatetime.h>
 #include <qintdict.h>
 #include <qptrlist.h>
+#include <qregexp.h>
 
 
 Engine::Engine()
@@ -305,9 +307,18 @@ void Engine::removeTag(TagNode* tag) {
 }
 
 
-QPtrList<File>* Engine::files(QPtrList<TagNode>* filter) {
+QPtrList<File>* Engine::files(QString filter) {
 
-    kdDebug() << "[Engine::files] invoked..." << endl;
+    kdDebug() << "[Engine::files] invoked with filter '" << filter << "'"<< endl;
+
+    // prepare filter
+    QStringList filterItems = QStringList::split(QRegExp("\\&|\\|"), filter, false);
+
+    // determine operator
+    bool andOperator = false;
+    if (filter.find("&") >= 0) {
+        andOperator = true;
+    }
 
     // remove all files currently shown
     m_fileList2display->clear();
@@ -322,14 +333,68 @@ QPtrList<File>* Engine::files(QPtrList<TagNode>* filter) {
 
             File* file;
             for (file = fileList->first(); file; file = fileList->next()) {
-                // todo: test if the current file matches the filter
 
-                m_fileList2display->append(file);
+                bool match = andOperator;
+
+                // iterate over filterItems and validate
+                for (QStringList::Iterator it = filterItems.begin(); it != filterItems.end(); ++it) {
+                    QString filterItem(*it);
+
+                    // test for ! and remove it
+                    bool negate = false;
+                    if (filterItem.startsWith("!")) {
+                        negate = true;
+                        filterItem = filterItem.mid(1);
+                    }
+
+                    // convert string to int
+                    bool ok;
+                    int tagId = filterItem.toInt(&ok);
+                    if (!ok) {
+                        kdWarning() << "FilterItem is not an integer: " << filterItem << endl;
+                        continue;
+                    }
+
+                    // get the tagnode with the found tagId
+                    TagNode* tagNode = m_tagNodeDict->find(tagId);
+                    if (!tagNode) {
+                        kdWarning() << "TagNode with id " << tagId << " does not exist!" << endl;
+                        continue;
+                    }
+
+                    // get the tagnodeassoc to the found tagnode
+                    FileTagNodeAssoc* tagNodeAssoc = file->getAssoc(tagNode);
+
+                    bool isTagged = false;
+
+                    // test if the file is tagged with the current tag
+                    if (tagNodeAssoc) {
+                        if (typeid(*tagNodeAssoc) == typeid(FileTagNodeAssocBoolean)) {
+                            FileTagNodeAssocBoolean* tagNodeAssocBoolean = dynamic_cast<FileTagNodeAssocBoolean*>(tagNodeAssoc);
+                            isTagged = tagNodeAssocBoolean->value();
+                        }
+                    }
+
+                    if (andOperator) {
+                        if (negate == isTagged) {
+                            match = false;
+                            break;
+                        }
+                    } else {
+                        if (negate != isTagged) {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+
+                // append the file if it matches the filter
+                if (filter.isNull() || match) {
+                    m_fileList2display->append(file);
+                }
             }
         }
     }
-
-    kdDebug() << "[Engine::files] ended..." << endl;
 
     return m_fileList2display;
 }

@@ -279,14 +279,12 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotIncludeWholeSourceDir()),
         actionCollection(), "includeWholeSourceDir"
     );
-
     new KAction(
         i18n("&Exclude whole folder"), Constants::ICON_EXCLUDE_WHOLE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotExcludeWholeSourceDir()),
         actionCollection(), "excludeWholeSourceDir"
     );
-
     new KAction(
         i18n("In&vert folder selection"), Constants::ICON_INVERT_FOLDER_SELECTION,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -300,14 +298,12 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotIncludeAllSourceDirs()),
         actionCollection(), "includeAllSourceDirs"
     );
-
     new KAction(
         i18n("&Exclude all"), Constants::ICON_EXCLUDE_WHOLE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotExcludeAllSourceDirs()),
         actionCollection(), "excludeAllSourceDirs"
     );
-
     new KAction(
         i18n("In&vert all"), Constants::ICON_INVERT_FOLDER_SELECTION,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -321,21 +317,18 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotExpandSourceDir()),
         actionCollection(), "expandSourceDir"
     );
-
     new KAction(
         i18n("Collapse sourcedir"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotCollapseSourceDir()),
         actionCollection(), "collapseSourceDir"
     );
-
     new KAction(
         i18n("Expand all sourcedirs"), Constants::ICON_EXPAND_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotExpandAllSourceDirs()),
         actionCollection(), "expandAllSourceDirs"
     );
-
     new KAction(
         i18n("Collapse all sourcedirs"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -371,27 +364,32 @@ void KPhotoBook::setupActions() {
         actionCollection(), "deleteTag"
     );
 
+    KToggleAction* andifyTagsAction = new KToggleAction(
+        i18n("Andify tags"), "attach",
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotAndifyTags()),
+        actionCollection(), "andifyTags"
+    );
+    andifyTagsAction->setChecked(Configuration::getInstance()->tagfilterOperator() == "&");
+
     new KAction(
         i18n("Expand tag"), Constants::ICON_EXPAND_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotExpandTag()),
         actionCollection(), "expandTag"
     );
-
     new KAction(
         i18n("Collapse tag"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotCollapseTag()),
         actionCollection(), "collapseTag"
     );
-
     new KAction(
         i18n("Expand all tags"), Constants::ICON_EXPAND_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotExpandAllTags()),
         actionCollection(), "expandAllTags"
     );
-
     new KAction(
         i18n("Collapse all tags"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),m_view->sourceDirTree()
@@ -412,8 +410,28 @@ void KPhotoBook::setupContextMenus() {
 }
 
 
-QPtrList<File>* KPhotoBook::files(QPtrList<TagNode>* filter) {
+QPtrList<File>* KPhotoBook::files(QString filter) {
 
+    // build the filter from the tagtree if the specified filter is empty
+    if (filter.isNull() && m_view) {
+        TagTreeNode* lastItem = 0;
+        QListViewItemIterator it(m_view->tagTree());
+        while (it.current()) {
+            TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
+
+            if (!item->filter().isNull()) {
+                if (lastItem) {
+                    filter.append(Configuration::getInstance()->tagfilterOperator());
+                }
+                filter.append(item->filter());
+                lastItem = item;
+            }
+
+            ++it;
+        }
+    }
+
+    // get the files matching the filter
     QPtrList<File>* files = m_engine->files(filter);
 
     updateState();
@@ -936,6 +954,12 @@ void KPhotoBook::slotCollapseAllSourceDirs() {
     m_view->sourceDirTree()->collapseAll();
 }
 
+
+void KPhotoBook::slotAndifyTags() {
+    Configuration::getInstance()->invertTagfilterOperation();
+
+    autoRefreshView();
+}
 
 void KPhotoBook::slotExpandTag() {
     m_view->tagTree()->expandCurrent();

@@ -27,8 +27,7 @@
 
 
 TagNodeBoolean::TagNodeBoolean(unsigned int id, const QString& text, const QString& iconName, TagNode* parent)
-    : TagNode(id, text, iconName, parent)
-    , m_filtered(true) {
+    : TagNode(id, text, iconName, parent) {
 
     kdDebug() << "[TagNodeBoolean::TagNodeBoolean] invoked with id: " << id << "text: " << text << ", icon: " << iconName << endl;
 }
@@ -58,26 +57,3 @@ bool TagNodeBoolean::tagged(File* file) {
     return fileTagNodeAssocBoolean->value();
 }
 
-
-int TagNodeBoolean::tagLevel() {
-
-    return 100;
-/*
-    if (m_tagged) {
-        return 100;
-    }
-
-    int totalTagLevel = 0;
-
-    // we have to copy the list of children because it is constant
-    QPtrList<QObject> childList(*children());
-    QObject* current;
-    for ( current = childList.first(); current; current = childList.next() ) {
-        TagNodeBoolean* child = dynamic_cast<TagNodeBoolean*>(current);
-
-        totalTagLevel += child->tagLevel();
-    }
-
-    return totalTagLevel/childList.count();
-*/
-}

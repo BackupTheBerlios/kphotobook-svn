@@ -48,7 +48,7 @@ SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char
     // create columns
     addColumn(i18n("Source directories"));
     addColumn(i18n("Selected"));
-    addColumn(i18n("Included"));
+    addColumn(i18n("Include"));
 
     // we set the alignment to center to force redrawing the wohle cell always
     setColumnAlignment (COLUMN_TEXT, Qt::AlignLeft);

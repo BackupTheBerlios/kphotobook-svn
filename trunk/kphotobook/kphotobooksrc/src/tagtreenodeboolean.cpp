@@ -29,12 +29,16 @@
 #include <kfileitem.h>
 
 TagTreeNodeBoolean::TagTreeNodeBoolean(KListView* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu), m_tagNode(tagNode) {
+    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu)
+    , m_tagNode(tagNode)
+    , m_filterState(FILTERSTATE_IGNORE) {
 }
 
 
 TagTreeNodeBoolean::TagTreeNodeBoolean(KListViewItem* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu), m_tagNode(tagNode) {
+    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu)
+    , m_tagNode(tagNode)
+    , m_filterState(FILTERSTATE_IGNORE) {
 }
 
 
@@ -44,6 +48,26 @@ TagTreeNodeBoolean::~TagTreeNodeBoolean() {
 
 TagNode* TagTreeNodeBoolean::tagNode() {
     return m_tagNode;
+}
+
+
+QString TagTreeNodeBoolean::filter() {
+
+    QString filter;
+
+    switch (m_filterState) {
+    case FILTERSTATE_EXCLUDE:
+        filter = QString("!%1").arg(m_tagNode->id());
+        break;
+    case FILTERSTATE_IGNORE:
+        filter = QString::null;
+        break;
+    case FILTERSTATE_INCLUDE:
+        filter = QString::number(m_tagNode->id());
+        break;
+    }
+
+    return filter;
 }
 
 
@@ -102,9 +126,23 @@ void TagTreeNodeBoolean::columnClicked(__attribute__((unused)) TagTree* tagTree,
         break;
     }
     case TagTree::COLUMN_FILTER :
-        m_tagNode->setFiltered(!m_tagNode->filtered());
+        // change state of the filter: exclude -> ignore -> include -> exclude -> ...
+        switch (m_filterState) {
+        case FILTERSTATE_EXCLUDE:
+            m_filterState = FILTERSTATE_IGNORE;
+            break;
+        case FILTERSTATE_IGNORE:
+            m_filterState = FILTERSTATE_INCLUDE;
+            break;
+        case FILTERSTATE_INCLUDE:
+            m_filterState = FILTERSTATE_EXCLUDE;
+            break;
+        }
+
         // force redrawing of this listviewitem
         this->repaint();
+
+        m_photobook->autoRefreshView();
         break;
     }
 }
@@ -173,7 +211,7 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
         // draw the checkbox in the center of the cell
         QRect rect((width-this->height()+4)/2, 2, this->height()-4, this->height()-4);
 
-        drawCheckBox(p, cg, rect, m_tagNode->filtered());
+        drawCheckBox(p, cg, rect, m_filterState);
 
         break;
     }

@@ -50,7 +50,7 @@ TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     // create columns
     addColumn(i18n("Tags"));
     addColumn(i18n("Value"));
-    addColumn(i18n("Selected"));
+    addColumn(i18n("Filter"));
 
     // we set the alignment to center to force redrawing the wohle cell always
     setColumnAlignment (1, Qt::AlignCenter);

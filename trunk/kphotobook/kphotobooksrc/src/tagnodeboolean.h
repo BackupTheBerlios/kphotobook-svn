@@ -29,7 +29,7 @@
 /**
  * Concrete tagnode implementation representing a boolean tag.
  *
- * CVS-ID $Id: tagnodeboolean.h,v 1.2 2004/03/09 23:01:07 starcube Exp $
+ * CVS-ID $Id: tagnodeboolean.h,v 1.3 2004/03/11 22:45:47 starcube Exp $
  */
 class TagNodeBoolean : public TagNode {
 
@@ -41,22 +41,6 @@ public:
 
     void setTagged(File* file, bool tagged);
     bool tagged(File* file);
-
-    void setFiltered(bool filtered) {
-        m_filtered = filtered;
-    }
-    bool filtered() {
-        return m_filtered;
-    }
-
-    /**
-     * If this node is tagged (m_tagged = true) then 100 is returned.
-     * Else the percentage of the tagged children is returned.
-     */
-    int tagLevel();
-
-private:
-    bool m_filtered;
 };
 
 #endif

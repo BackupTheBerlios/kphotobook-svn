@@ -10,6 +10,8 @@
         <Action name="addSourceDir" />
         <Separator/>
         <Action name="addMaintag" />
+        <Separator/>
+        <Action name="andifyTags" />
     </Menu>
     <Menu name="view">
         <text>&amp;View</text>
@@ -38,6 +40,8 @@
   <Separator/>
   <Action name="autoRefreshView" />
   <Action name="refreshView" />
+  <Separator/>
+  <Action name="andifyTags" />
 </ToolBar>
 
 <Menu name="contextMenu_tagTree">

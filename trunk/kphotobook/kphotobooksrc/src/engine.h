@@ -38,14 +38,14 @@ class TagNode;
 /**
  * The engine managing all sourcedirs, tags and files/images.
  *
- * CVS-ID $Id: engine.h,v 1.2 2004/03/09 22:59:25 starcube Exp $
+ * CVS-ID $Id: engine.h,v 1.3 2004/03/11 22:45:47 starcube Exp $
  */
 class Engine {
 
 public:
     friend class XmlParser;  // class XmlParser cann access everything on this class
     friend class XmlWriter;  // class XmlWriter cann access everything on this class
-    friend class File;
+    friend class File;       // class File cann access everything on this class
 
     Engine();
     Engine(QFileInfo& fileinfo) throw(EngineException*);
@@ -81,7 +81,7 @@ public:
     }
 
     /**
-     * Returns the number of files selected by the current filter.
+     * Returns the number of files selected by the last specified filter.
      */
     int filteredNumberOfFiles() {
         return m_fileList2display->count();
@@ -106,16 +106,6 @@ public:
     QPtrList<SourceDir>* sourceDirs() {
         return m_sourceDirs;
     }
-
-    /**
-     * Returns the sourcedir the specified file belongs to.
-     */
-    SourceDir* sourceDirOfFile(File* file);
-
-    /**
-     * Sets the selected flag of every sourcedir to false.
-     */
-    void deselectAllSourceDirs();
 
     /**
      * returns all possible tags of all files
@@ -143,7 +133,7 @@ public:
     /**
     * Returns all files matching the specified filter.
     */
-    QPtrList<File>* files(QPtrList<TagNode>* filter);
+    QPtrList<File>* files(QString filter);
 
     void save() throw(PersistingException*);
     void saveAs(QFileInfo& newFile) throw(PersistingException*);
