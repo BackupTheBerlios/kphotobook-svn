@@ -69,7 +69,7 @@ public:
     /**
      * Updates the displayed images.
      */
-    void updateFiles();
+    void updateFiles(QPtrList<KFileItem> *selectedFiles = 0);
 
     void storeConfiguration();
 

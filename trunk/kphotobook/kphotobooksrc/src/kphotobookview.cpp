@@ -83,7 +83,7 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
 
     // file preview
     m_fileView = new KFileIconView(mainPanel, "fileIconView");
-    m_fileView->setSelectionMode(KFile::Multi);
+    m_fileView->setSelectionMode(KFile::Extended);
     m_fileView->setResizeMode(KFileIconView::Adjust);
     m_fileView->showPreviews();
     m_fileView->setWordWrapIconText(false);
@@ -128,9 +128,16 @@ void KPhotoBookView::removeTagNode(TagTreeNode* node) {
 }
 
 
-void KPhotoBookView::updateFiles() {
+void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
 
     kdDebug() << "[KPhotoBookView::updateFiles] updating the displayed images." << endl;
+
+    // remember all selected files if no selected files are specified
+    QPtrList<KFileItem> temp;
+    if (!selectedFiles) {
+        temp = QPtrList<KFileItem>(*m_fileView->selectedItems());
+        selectedFiles = &temp;
+    }
 
     // remove all displayed images
     removeAllFiles();
@@ -141,6 +148,12 @@ void KPhotoBookView::updateFiles() {
     File* file;
     for ( file = fileList->first(); file; file = fileList->next() ) {
         m_fileView->insertItem(file);
+    }
+
+    // reselect all previously selected files
+    QPtrListIterator<KFileItem> it(*selectedFiles);
+    for (; it.current(); ++it) {
+        m_fileView->setSelected(it.current(), true);
     }
 }
 
@@ -213,7 +226,8 @@ void KPhotoBookView::updateCurrentImageSizeLabel() {
 
 void KPhotoBookView::updateCurrentImageSize() {
 
-    // TODO: remember all selected files
+    // remember all selected files
+    QPtrList<KFileItem> selectedFiles(*m_fileView->selectedItems());
 
     // remove all displayed images
     removeAllFiles();
@@ -224,13 +238,14 @@ void KPhotoBookView::updateCurrentImageSize() {
     m_fileView->setGridY(8*m_imageSizeSlider->value()+10);
 
     // force redrawing all files by removing them and adding them again
-    updateFiles();
-
-    // TODO: reselect all previously selected files
+    updateFiles(&selectedFiles);
 }
 
 
 void KPhotoBookView::removeAllFiles() {
+
+    // we must deselct all files before removing it to inprove the speed
+    m_fileView->clearSelection();
 
     QPtrList<QIconViewItem>* itemList = new QPtrList<QIconViewItem>();
 
