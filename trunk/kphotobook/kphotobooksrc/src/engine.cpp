@@ -362,17 +362,11 @@ QPtrList<File>* Engine::files(QString filter) {
                         continue;
                     }
 
-                    // get the tagnodeassoc to the found tagnode
-                    FileTagNodeAssoc* tagNodeAssoc = file->getAssoc(tagNode);
-
+                    // test if the file is tagged with the current tag or a subtag
                     bool isTagged = false;
-
-                    // test if the file is tagged with the current tag
-                    if (tagNodeAssoc) {
-                        if (typeid(*tagNodeAssoc) == typeid(FileTagNodeAssocBoolean)) {
-                            FileTagNodeAssocBoolean* tagNodeAssocBoolean = dynamic_cast<FileTagNodeAssocBoolean*>(tagNodeAssoc);
-                            isTagged = tagNodeAssocBoolean->value();
-                        }
+                    if (typeid(*tagNode) == typeid(TagNodeBoolean)) {
+                        TagNodeBoolean* tagNodeBoolean = dynamic_cast<TagNodeBoolean*>(tagNode);
+                        isTagged = tagNodeBoolean->taggedRecursive(file);
                     }
 
                     if (andOperator) {

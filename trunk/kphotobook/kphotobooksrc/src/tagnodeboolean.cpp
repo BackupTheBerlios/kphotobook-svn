@@ -57,3 +57,26 @@ bool TagNodeBoolean::tagged(File* file) {
     return fileTagNodeAssocBoolean->value();
 }
 
+
+bool TagNodeBoolean::taggedRecursive(File* file) {
+
+    bool isTagged = tagged(file);
+
+    if (!isTagged && m_children) {
+        // loop over all children
+        TagNode* child;
+        for (child = m_children->first(); child; child = m_children->next()) {
+            if (typeid(*child) == typeid(TagNodeBoolean)) {
+                TagNodeBoolean* tagNodeBooleanChild = dynamic_cast<TagNodeBoolean*>(child);
+
+                isTagged = tagNodeBooleanChild->taggedRecursive(file);
+                // abort loop as soon as found a tagged child
+                if (isTagged) {
+                    break;
+                }
+            }
+        }
+    }
+
+    return isTagged;
+}
