@@ -520,36 +520,30 @@ void KPhotoBook::setupWhatsThis() {
     actionCollection()->action("decreasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window smaller."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
     actionCollection()->action("expandAllTags")->setWhatsThis(i18n("Expand the whole tag tree."));
     actionCollection()->action("collapseAllTags")->setWhatsThis(i18n("Collapse the whole tag tree."));
+    
+    actionCollection()->action("removeSourceDir")->setWhatsThis(i18n("Remove the selected source directory with all its sub directories. The files which are in this sub directory will be removed from the database - losing the tag associatioins."));
+    actionCollection()->action("includeWholeSourceDir")->setWhatsThis(i18n("Include the current directory and all sub directories to the thumbnail preview."));
+    actionCollection()->action("excludeWholeSourceDir")->setWhatsThis(i18n("Exclude the current directory and all sub directories from the thumbnail preview."));
+    actionCollection()->action("invertSourceDir")->setWhatsThis(i18n("Exclude the included directories and include the excluded directories of the current folder to the thumbnail view."));
+    actionCollection()->action("includeAllSourceDirs")->setWhatsThis(i18n("Include all source directories with all sub directories to the thumbnail view"));
+    actionCollection()->action("excludeAllSourceDirs")->setWhatsThis(i18n("Exclued all source directories with all sub directories from the thumbnail view."));
+    actionCollection()->action("invertAllSourceDirs")->setWhatsThis(i18n("Exclude the included directories and include the excluded directories to the thumbnail view."));
+    actionCollection()->action("expandSourceDir")->setWhatsThis(i18n("Expand the current source directory"));
+    actionCollection()->action("collapseSourceDir")->setWhatsThis(i18n("Collapse the current source directory"));
+    actionCollection()->action("expandAllSourceDirs")->setWhatsThis(i18n("Expand the the whole source directory tree"));
+    actionCollection()->action("collapseAllSourceDirs")->setWhatsThis(i18n("Collapse the whole source directory tree"));
 /*
     actionCollection()->action("")->setWhatsThis(i18n(""));
 
-    actionCollection(), "increasePreviewSize"
-    actionCollection(), "decreasePreviewSize"
-    actionCollection(), "addSourceDir"
     actionCollection(), "editSourceDir"
-    actionCollection(), "removeSourceDir"
-    actionCollection(), "includeWholeSourceDir"
-    actionCollection(), "excludeWholeSourceDir"
-    actionCollection(), "invertSourceDir"
-    actionCollection(), "includeAllSourceDirs"
-    actionCollection(), "excludeAllSourceDirs"
-    actionCollection(), "invertAllSourceDirs"
-    actionCollection(), "expandSourceDir"
-    actionCollection(), "collapseSourceDir"
-    actionCollection(), "expandAllSourceDirs"
-    actionCollection(), "collapseAllSourceDirs"
-    actionCollection(), "addMaintag"
+    
     actionCollection(), "createSubtag"
     actionCollection(), "editTag"
     actionCollection(), "deleteTag"
-    actionCollection(), "andifyTags"
-    actionCollection(), "orifyTags"
     actionCollection(), "deselectFilter"
     actionCollection(), "resetFilter"
     actionCollection(), "expandTag"
     actionCollection(), "collapseTag"
-    actionCollection(), "expandAllTags"
-    actionCollection(), "collapseAllTags"
 */
 }
 
