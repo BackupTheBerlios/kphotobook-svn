@@ -18,47 +18,54 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef XMLWRITER_H
-#define XMLWRITER_H
+#ifndef DIALOGEDITTAG_H
+#define DIALOGEDITTAG_H
 
-#include "exception.h"
-#include "xmlconstants.h"
+#include <kdialogbase.h>
+#include <klineedit.h>
+#include <kcombobox.h>
 
-#include <qfile.h>
 #include <qstring.h>
+#include <qpushbutton.h>
 
-class Engine;
-class File;
-class SourceDir;
-class TagNode;
-class FileTagNodeAssoc;
+class TagTreeNode;
 
 /**
- * This class is writing the xml-file containing all needed data of the engine.
+ * The dialog to create a now tag.
  *
- * CVS-ID $Id: xmlwriter.h,v 1.1 2004/03/07 18:52:45 starcube Exp $
+ * CVS-ID $Id$
  */
-class XmlWriter : public XmlConstants {
+class DialogEditTag : public KDialogBase {
+
+Q_OBJECT
 
 public:
-    XmlWriter(Engine* engine)
-        : XmlConstants()
-        , m_engine(engine) {
+    DialogEditTag(QWidget *parent, TagTreeNode* parentNode, const char *name);
+
+    ~DialogEditTag();
+
+    QString tagName() {
+        return m_nameLineEdit->text();
     }
 
-    ~XmlWriter() {
+    QString tagIcon() {
+        return m_iconLineEdit->text();
     }
 
-    void store(QFile* file) throw(PersistingException*);
+private slots:
+    void slotNameChanged(const QString& text);
+    void slotIconTextChanged(const QString& text);
+    void slotIconButtonClicked();
 
 private:
-    Engine* m_engine;
+    TagTreeNode* m_tagTreeNode;
 
-    void dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent);
-    void dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent);
-    void dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent);
-    void dumpFile(QTextStream& stream, File* file, QString indent);
-    void dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent);
+    KComboBox* m_typeComboBox;
+    KLineEdit* m_nameLineEdit;
+    KLineEdit* m_iconLineEdit;
+    QPushButton* m_iconButton;
+
+    void validate();
 };
 
 #endif

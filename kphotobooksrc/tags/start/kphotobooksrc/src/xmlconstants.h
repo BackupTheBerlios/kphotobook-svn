@@ -18,25 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TAGNODETITLE_H
-#define TAGNODETITLE_H
-
-#include "tagnode.h"
+#ifndef XMLCONSTANTS_H
+#define XMLCONSTANTS_H
 
 #include <qstring.h>
 
 /**
- * Concrete tagnode implementation representing a text only.
+ * Constants used by the xml parser and writer.
  *
- * CVS-ID $Id: tagnodetitle.h,v 1.1 2004/03/07 18:52:31 starcube Exp $
+ * CVS-ID $Id$
  */
-class TagNodeTitle : public TagNode {
+class XmlConstants{
 
 public:
-    TagNodeTitle(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
+    // the constants containg the element- and attribute-names
+    static const QString ELEMENT_KPHOTOBOOK;
+    static const QString ELEMENT_SOURCEDIRS;
+    static const QString ELEMENT_SOURCEDIR;
+    static const QString ELEMENT_TAGS;
+    static const QString ELEMENT_TAG;
+    static const QString ELEMENT_FILES;
+    static const QString ELEMENT_FILE;
+    static const QString ELEMENT_TAGASSOC;
 
-    ~TagNodeTitle() {
+    static const QString ATTRIBUTE_KPHOTOBOOK_NAME;
+
+    static const QString ATTRIBUTE_SOURCEDIR_ID;
+    static const QString ATTRIBUTE_SOURCEDIR_DIR;
+    static const QString ATTRIBUTE_SOURCEDIR_RECURSIVE;
+
+    static const QString ATTRIBUTE_TAG_ID;
+    static const QString ATTRIBUTE_TAG_NAME;
+    static const QString ATTRIBUTE_TAG_TYPE;
+    static const QString ATTRIBUTE_TAG_ICON;
+
+    static const QString ATTRIBUTE_FILES_SOURCEDIRID;
+
+    static const QString ATTRIBUTE_FILE_NAME;
+    static const QString ATTRIBUTE_FILE_ROTATE;
+
+    static const QString ATTRIBUTE_TAGASSOC_TAGID;
+    static const QString ATTRIBUTE_TAGASSOC_VALUE;
+
+public:
+    XmlConstants(){
     }
+
+    ~XmlConstants(){
+    }
+
 };
 
 #endif

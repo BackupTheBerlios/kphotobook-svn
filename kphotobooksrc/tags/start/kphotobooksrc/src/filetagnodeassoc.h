@@ -18,45 +18,60 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CONSTANTS_H_
-#define _CONSTANTS_H_
+#ifndef FILETAGNODEASSOC_H
+#define FILETAGNODEASSOC_H
 
 #include <qstring.h>
 
+class File;
+class TagNode;
+
 /**
- * Constants.
+ * Abstract superclass of all associations between a file and a node.
+ * This abstract class contains the reference to the associated file and the tagNode.
  *
- * CVS-ID $Id: constants.h,v 1.1 2004/03/07 18:52:06 starcube Exp $
+ * CVS-ID $Id$
  */
-class Constants {
+class FileTagNodeAssoc {
 
 public:
-    // icons
-    static const QString ICON_SOURCEDIR;
+    FileTagNodeAssoc(File* file, TagNode* tagNode);
 
-    static const QString ICON_CREATE_MAINTAG;
-    static const QString ICON_CREATE_SUBTAG;
-    static const QString ICON_EDIT_TAG;
-    static const QString ICON_DELETE_TAG;
+    /**
+     * Removes this assoc from the list in the tagnode and the file.
+     */
+    virtual ~FileTagNodeAssoc();
 
-    static const QString ICON_ADD_SOURCEDIR;
-    static const QString ICON_EDIT_SOURCEDIR;
-    static const QString ICON_REMOVE_SOURCEDIR;
+    void setFile(File* file) {
+        m_file = file;
+    }
 
-    static const QString ICON_RESCAN_FILESYSTEM;
+    File* file() {
+        return m_file;
+    }
 
-    static const QString ICON_AUTOREFRESH_VIEW;
-    static const QString ICON_REFRESH_VIEW;
+    void setTagNode(TagNode* tagNode) {
+        m_tagNode = tagNode;
+    }
 
-    static const QString ICON_INCLUDE_WHOLE_FOLDER;
-    static const QString ICON_EXCLUDE_WHOLE_FOLDER;
-    static const QString ICON_INVERT_FOLDER_SELECTION;
+    TagNode* tagNode() {
+        return m_tagNode;
+    }
 
-    static const QString ICON_EXPAND_FOLDER;
-    static const QString ICON_COLLAPSE_FOLDER;
+    virtual void update(FileTagNodeAssoc* assoc) = 0;
 
-    // file-extension
-    static const QString FILE_EXTENSION;
+    virtual QString valueAsString() = 0;
+
+protected:
+    /**
+      * The file this association belongs to.
+      */
+    File* m_file;
+
+    /**
+     * The tagNode this association belongs to.
+     */
+    TagNode* m_tagNode;
 };
 
 #endif

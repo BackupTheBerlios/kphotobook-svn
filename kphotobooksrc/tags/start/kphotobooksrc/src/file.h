@@ -34,7 +34,7 @@ class FileTagNodeAssoc;
 /**
  * Represents a file/image.
  *
- * CVS-ID $Id: file.h,v 1.1 2004/03/07 18:52:26 starcube Exp $
+ * CVS-ID $Id$
  */
 class File : public KFileItem {
 

@@ -18,57 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FILETAGNODEASSOCBOOLEAN_H
-#define FILETAGNODEASSOCBOOLEAN_H
+#ifndef DIALOGADDSOURCEDIR_H
+#define DIALOGADDSOURCEDIR_H
 
-#include "filetagnodeassoc.h"
+#include <kdialogbase.h>
+#include <klineedit.h>
 
-#include <qstring.h>
-
-class File;
-class TagNodeBoolean;
+#include <qcheckbox.h>
+#include <qdir.h>
 
 /**
- * Concrete class representing the association between a file and a TagNodeBoolean.
- * This associations contains a reference to the tagnode and the state of the association.
+ * Dialog for adding a source directory.
  *
- * CVS-ID $Id: filetagnodeassocboolean.h,v 1.1 2004/03/07 18:52:26 starcube Exp $
+ * CVS-ID $Id$
  */
-class FileTagNodeAssocBoolean : public FileTagNodeAssoc {
+class DialogAddSourceDir : public KDialogBase {
+
+Q_OBJECT
 
 public:
-    FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value = false);
+    DialogAddSourceDir(QWidget* parent = 0, const char* name = 0);
 
-    FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value);
+    ~DialogAddSourceDir();
 
-    ~FileTagNodeAssocBoolean() {
-        // we don't delete anything!
+    QDir* directory() {
+        return new QDir(m_currentDirectoryLineEdit->text());
     }
 
-    TagNodeBoolean* tagNodeBoolean();
-
-    void setValue(bool value) {
-        m_value = value;
+    bool recursive() {
+        return m_recursiveCheckBox->state();
     }
 
-    bool value() {
-        return m_value;
-    }
-
-    virtual QString valueAsString() {
-        return (m_value ? QString("true") : QString("false"));
-    }
-
-    /**
-     * Updates the value of this node with the value of the specified association.
-     */
-    void update(FileTagNodeAssoc* assoc);
+private slots:
+    void slotDirectoryButtonClicked();
+    void slotTextChanged(const QString& text);
 
 private:
-    /**
-     * The value of this association.
-     */
-    bool m_value;
+    KLineEdit* m_currentDirectoryLineEdit;
+    QCheckBox* m_recursiveCheckBox;
 };
 
 #endif

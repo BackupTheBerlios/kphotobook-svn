@@ -18,60 +18,56 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FILETAGNODEASSOC_H
-#define FILETAGNODEASSOC_H
+#ifndef _TAGTREENODE_H_
+#define _TAGTREENODE_H_
+
+#include <klistview.h>
+#include <kpopupmenu.h>
+#include <kdebug.h>
 
 #include <qstring.h>
+#include <qpixmap.h>
+#include <qpainter.h>
+#include <qpalette.h>
+#include <qrect.h>
 
-class File;
+class KPhotoBook;
 class TagNode;
+class TagTree;
 
 /**
- * Abstract superclass of all associations between a file and a node.
- * This abstract class contains the reference to the associated file and the tagNode.
+ * Superclass of all nodes to display in a tagtree.
  *
- * CVS-ID $Id: filetagnodeassoc.h,v 1.1 2004/03/07 18:52:17 starcube Exp $
+ * CVS-ID $Id$
  */
-class FileTagNodeAssoc {
+class TagTreeNode : public KListViewItem {
 
 public:
-    FileTagNodeAssoc(File* file, TagNode* tagNode);
+    TagTreeNode(KListView* parent, QString text, KPhotoBook* photobook, QPixmap* icon = 0, KPopupMenu* contextMenu = 0);
+    TagTreeNode(KListViewItem* parent, QString text, KPhotoBook* photobook, QPixmap* icon = 0, KPopupMenu* contextMenu = 0);
 
-    /**
-     * Removes this assoc from the list in the tagnode and the file.
-     */
-    virtual ~FileTagNodeAssoc();
-
-    void setFile(File* file) {
-        m_file = file;
+    virtual ~TagTreeNode() {
     }
 
-    File* file() {
-        return m_file;
+    void refresh();
+
+    KPopupMenu* contextMenu() {
+        return m_contextMenu;
     }
 
-    void setTagNode(TagNode* tagNode) {
-        m_tagNode = tagNode;
+    virtual TagNode* tagNode() = 0;
+
+    virtual void showContextMenu();
+
+    virtual void columnClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column) {
     }
-
-    TagNode* tagNode() {
-        return m_tagNode;
-    }
-
-    virtual void update(FileTagNodeAssoc* assoc) = 0;
-
-    virtual QString valueAsString() = 0;
 
 protected:
-    /**
-      * The file this association belongs to.
-      */
-    File* m_file;
+    void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked);
 
-    /**
-     * The tagNode this association belongs to.
-     */
-    TagNode* m_tagNode;
+    KPhotoBook* m_photobook;
+
+    KPopupMenu* m_contextMenu;
 };
 
 #endif

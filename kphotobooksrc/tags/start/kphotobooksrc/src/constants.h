@@ -18,55 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef XMLCONSTANTS_H
-#define XMLCONSTANTS_H
+#ifndef _CONSTANTS_H_
+#define _CONSTANTS_H_
 
 #include <qstring.h>
 
 /**
- * Constants used by the xml parser and writer.
+ * Constants.
  *
- * CVS-ID $Id: xmlconstants.h,v 1.1 2004/03/07 18:52:07 starcube Exp $
+ * CVS-ID $Id$
  */
-class XmlConstants{
+class Constants {
 
 public:
-    // the constants containg the element- and attribute-names
-    static const QString ELEMENT_KPHOTOBOOK;
-    static const QString ELEMENT_SOURCEDIRS;
-    static const QString ELEMENT_SOURCEDIR;
-    static const QString ELEMENT_TAGS;
-    static const QString ELEMENT_TAG;
-    static const QString ELEMENT_FILES;
-    static const QString ELEMENT_FILE;
-    static const QString ELEMENT_TAGASSOC;
+    // icons
+    static const QString ICON_SOURCEDIR;
 
-    static const QString ATTRIBUTE_KPHOTOBOOK_NAME;
+    static const QString ICON_CREATE_MAINTAG;
+    static const QString ICON_CREATE_SUBTAG;
+    static const QString ICON_EDIT_TAG;
+    static const QString ICON_DELETE_TAG;
 
-    static const QString ATTRIBUTE_SOURCEDIR_ID;
-    static const QString ATTRIBUTE_SOURCEDIR_DIR;
-    static const QString ATTRIBUTE_SOURCEDIR_RECURSIVE;
+    static const QString ICON_ADD_SOURCEDIR;
+    static const QString ICON_EDIT_SOURCEDIR;
+    static const QString ICON_REMOVE_SOURCEDIR;
 
-    static const QString ATTRIBUTE_TAG_ID;
-    static const QString ATTRIBUTE_TAG_NAME;
-    static const QString ATTRIBUTE_TAG_TYPE;
-    static const QString ATTRIBUTE_TAG_ICON;
+    static const QString ICON_RESCAN_FILESYSTEM;
 
-    static const QString ATTRIBUTE_FILES_SOURCEDIRID;
+    static const QString ICON_AUTOREFRESH_VIEW;
+    static const QString ICON_REFRESH_VIEW;
 
-    static const QString ATTRIBUTE_FILE_NAME;
-    static const QString ATTRIBUTE_FILE_ROTATE;
+    static const QString ICON_INCLUDE_WHOLE_FOLDER;
+    static const QString ICON_EXCLUDE_WHOLE_FOLDER;
+    static const QString ICON_INVERT_FOLDER_SELECTION;
 
-    static const QString ATTRIBUTE_TAGASSOC_TAGID;
-    static const QString ATTRIBUTE_TAGASSOC_VALUE;
+    static const QString ICON_EXPAND_FOLDER;
+    static const QString ICON_COLLAPSE_FOLDER;
 
-public:
-    XmlConstants(){
-    }
-
-    ~XmlConstants(){
-    }
-
+    // file-extension
+    static const QString FILE_EXTENSION;
 };
 
 #endif

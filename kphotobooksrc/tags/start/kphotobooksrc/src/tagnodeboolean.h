@@ -18,55 +18,50 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _TAGTREE_H_
-#define _TAGTREE_H_
+#ifndef TAGNODEBOOLEAN_H
+#define TAGNODEBOOLEAN_H
 
-#include <klistview.h>
-#include <kpopupmenu.h>
+#include "tagnode.h"
 
-#include <qptrlist.h>
 #include <qstring.h>
-#include <qlistview.h>
-#include <qpoint.h>
-
-class TagNode;
-class TagTreeNode;
-class KPhotoBook;
+#include <qfile.h>
 
 /**
- * The tagtree (can display checkboxes in the columns).
+ * Concrete tagnode implementation representing a boolean tag.
  *
- * CVS-ID $Id: tagtree.h,v 1.1 2004/03/07 18:52:42 starcube Exp $
+ * CVS-ID $Id$
  */
-class TagTree : public KListView {
-
-    Q_OBJECT
+class TagNodeBoolean : public TagNode {
 
 public:
-    static const int COLUMN_TEXT = 0;
-    static const int COLUMN_VALUE = 1;
-    static const int COLUMN_FILTER = 2;
+    TagNodeBoolean(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
 
-    TagTree(QWidget* parent, KPhotoBook* photobook, const char* name);
-    ~TagTree() {
+    ~TagNodeBoolean() {
     }
 
-    void addTagNodes(QPtrList<TagNode>* rootNodeList);
-    void addTagNode(TagNode* rootNode);
-    void addTagNode(TagTreeNode* parent, TagNode* child);
-
-    KPhotoBook* photobook() {
-        return m_photobook;
+    void setTagged(File* file, bool tagged) {
+        m_tagged = tagged;
+    }
+    bool tagged(File* file) {
+        return m_tagged;
     }
 
-private slots:
-    void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
-    void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
+    void setFiltered(bool filtered) {
+        m_filtered = filtered;
+    }
+    bool filtered() {
+        return m_filtered;
+    }
+
+    /**
+     * If this node is tagged (m_tagged = true) then 100 is returned.
+     * Else the percentage of the tagged children is returned.
+     */
+    int tagLevel();
 
 private:
-    void buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children);
-
-    KPhotoBook* m_photobook;
+    bool m_tagged;
+    bool m_filtered;
 };
 
 #endif
