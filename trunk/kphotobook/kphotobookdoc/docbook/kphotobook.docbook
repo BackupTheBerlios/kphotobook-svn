@@ -82,7 +82,7 @@
     </sect1>
     <sect1>
       <title>Why another application to manage photos?</title>
-      <para>It's not easy to manage hundreds or even thousands of images. Other applications promote themselves to solve this problem. They say it'd be easy to manage such a huge amount of photos. Having looked at those other applications, we found that it was not that easy and not nearly as straight forward as we think such an application should be. Beside this, it is also very important that it is not only easy to manage the photos but also to be fast. Other applications provide the function to tag the pictures but do not offer this function in a really easy and fast way. Some others have the same approach as &kmyapplication;, but waiting for an application to become usable when no work is done on it is not really a great thing to do. :-)</para>
+      <para>It's not easy to manage hundreds or even thousands of images. Other applications promote themselves to solve this problem. They say it'd be easy to manage such a huge amount of photos. Having looked at some of those other applications, we found that it was not <emphasis>that</emphasis> easy and not nearly as straight forward as we think such an application should be. Beside this, it is also very important that it is not only easy to manage the photos but also to be fast. Other applications provide the function to tag the pictures but do not offer this function in a really easy and fast way. Some others have the same approach as &kmyapplication;, but waiting for an application to become usable when no work is done on it is not really a great thing to do. :-)</para>
     </sect1>
     <sect1>
       <title>Evolution of &kmyapplication;</title>
@@ -93,7 +93,11 @@
       </sect2>
       <sect2>
       <title>Version 0.0.4</title>
-      <para>Version 0.0.4 was released in March 2004. Besides the features of Version 0.0.3, we provided a functional tag tree with title tags and boolean tags, improved filter abilities a few new icons and a new tool bar.</para>
+      <para>Version 0.0.4 was released in March 2004. Besides the features of Version 0.0.3, we provided a functional tag tree with title tags and boolean tags, improved filter abilities, a few new icons and a new tool bar.</para>
+      </sect2>
+      <sect2>
+      <title>Version 0.0.5</title>
+      <para>Version 0.0.5 was released on March 11, 2004. Version 0.0.5 is the firs release as a tarball and is now also registered at <ulink url="http://www.kde-apps.org/">kde-apps.org</ulink>. KPhotoBook is usable by now. The trees for the Source Directory and the Tags are in separate Tabs now. There are several new icons and functions like unmark all tags (for example to show the pictures which have no tags yet). There is also a new configure dialog with heaps of options (mostly for the visual appearance). The toolbars are configurable as well.</para>
       </sect2>
     </sect1>        
   </chapter>
@@ -138,10 +142,24 @@
       </tgroup>
       </informaltable>
       </sect1>
+      <sect1>
+      <title>Adding Source Directories</title>
+      <para>The &kmyapplication; database contains all images of one ore more source folders. Source folders can be added recursively or single. Adding them recursively makes &kmyapplication; add the selected directory and all directories below it. When adding a folder recursively, hard- and soft-links are followed by default. To prevent endless loops &kmyapplication; tries to detect and suppress loops in the file system directory structure.</para>
+      <itemizedlist>
+	<listitem><para>non-recursive: only the files in the selected folder will be added to the database.</para></listitem>
+	<listitem><para>recursive: all files in the selected folder and all sub-folders will be added to the database.</para></listitem>
+      </itemizedlist>
+      <para>When restarting &kmyapplication; every source folder will be rescanned and new found sub-folders and files will be added to the database. This function can also be executed manually. Missed directories of files will not automatically be removed from the database to prevent loss of the association between files and tags.</para>
+      </sect1>
+      
+      <sect1>
+      <title>Removing Source Directories</title>
+      <para>Removing source directories will only remove the directory and all it's files from the &kmyapplication;. No files will be deleted, however, you will lose all tags associated with those files.</para>
+      </sect1>
       
       <sect1>
       <title>Rescan Source Directories</title>
-      <para>text text text</para>
+      <para>Rescanning the source directory will check the source directories for new and deleted sub directories and files. New files and directories will automatically be added to the database. &kmyapplication; will ask for user input when directories and files are deleted.</para>
       </sect1>
   </chapter>
   
@@ -150,10 +168,6 @@
         <para>text text text</para>
       <sect1>
       <title>Refresh the Thumbnail Window</title>
-      <para>text text text</para>
-      </sect1>
-      <sect1>
-      <title>Setting the Size of the Thumbnails</title>
       <para>text text text</para>
       </sect1>
   </chapter>
@@ -170,11 +184,7 @@
       <title>Adding, Deleting and Editinig Tags</title>
       <para>text text text</para>
     <sect2>
-      <title>Tagging One Photo at a Time</title>
-      <para>text text text</para>
-      </sect2>
-    <sect2>
-      <title>Tagging Severl Photos at once</title>
+      <title>Tagging Images</title>
       <para>text text text</para>
       </sect2>
     </sect1>
@@ -228,16 +238,16 @@
         <para>text text text</para>
   </chapter>
   
-  <chapter id="configuring">
+  <chapter id="configuration">
     <title>Configuring &kmyapplication;</title>
         <para>text text text</para>
     <sect1>
-      <title>Dies und Das</title>
+      <title>The Configure Dialog</title>
       <para>text text text</para>
-    </sect1>
-    <sect1>
-      <title>Jenes und Eines</title>
+      <sect2>
+      <title>General</title>
       <para>text text text</para>
+    </sect2>
     </sect1>
   </chapter>
   
@@ -267,7 +277,7 @@
         <para>These are some answers to the most frequently asked questions. As soon as there are too many questions for one page, this chapter will be splitted.</para>
 	<variablelist>
 	  <varlistentry>
-	    <term>How can I report bugs in KPhotoBook?</term>
+	    <term>How can I report bugs in &kmyapplication;?</term>
 	    <listitem><para>Please visit the <ulink url="http://sourceforge.net/projects/kphotobook/">project homepage at sourceforge.net</ulink>. Please do not send an email concerning bugs to the developer directly.</para></listitem>
 	  </varlistentry>
 	  <varlistentry>
@@ -275,7 +285,7 @@
 	    <listitem><para>Please send an email to the maintainer of the <ulink url="http://kphotobook.sourceforge.net/">homepage</ulink>.</para></listitem>
 	  </varlistentry>
 	  <varlistentry>
-	    <term>Is the KPhotoBook database compatible with the KimDaBA or Fotoon database?</term>
+	    <term>Is the &kmyapplication; database compatible with the KimDaBA or Fotoon database?</term>
 	    <listitem><para>No, it is not. Maybe there will be an import function.</para></listitem>
 	  </varlistentry>
 	  <varlistentry>
