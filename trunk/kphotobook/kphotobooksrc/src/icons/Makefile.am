@@ -4,4 +4,4 @@ METASOURCES = AUTO
 
 KDE_ICON = kphotobook
 appicondir = $(kde_datadir)/kphotobook/icons
-appicon_ICON = sourcedir_add sourcedir_edit sourcedir_remove folder_green folder_red invert invertselection tag_add tag_edit tag_del view_autorefresh view_refresh filesystem_reload expand collapse
+appicon_ICON = andify collapse expand filenew fileopen filesaveas filesave filesystem_reload folder_green folder_red invert orify sourcedir_add sourcedir_edit sourcedir_remove tag_add tag_del tag_edit tag view_autorefresh view_refresh
