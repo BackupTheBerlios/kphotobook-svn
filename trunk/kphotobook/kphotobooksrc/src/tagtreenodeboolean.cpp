@@ -76,7 +76,7 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
 
     case TagTree::COLUMN_VALUE : {
     
-        // so nothing when tagging is locked
+        // do nothing when tagging is locked
         if (Settings::tagTreeLocked()) {
             return;
         }

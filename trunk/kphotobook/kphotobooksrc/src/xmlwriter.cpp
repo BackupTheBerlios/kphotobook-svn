@@ -53,7 +53,7 @@ void XmlWriter::store(QFile* file2write) throw(PersistingException*) {
 
     // write head of the file
     stream << "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" << "\n";
-    stream << "<" << ELEMENT_KPHOTOBOOK << " " << ATTRIBUTE_KPHOTOBOOK_NAME << "=\"" << entitize(*(m_engine->name())) << "\">" << "\n\n";
+    stream << "<" << ELEMENT_KPHOTOBOOK << " " << ATTRIBUTE_KPHOTOBOOK_UID << "=\"" << entitize(*(m_engine->uid())) << "\">" << "\n\n";
 
     // dump the sourcedirs
     stream << "  <!-- source directories -->" << "\n";

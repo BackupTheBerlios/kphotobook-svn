@@ -45,12 +45,13 @@
 #include <qintdict.h>
 #include <qptrlist.h>
 #include <qregexp.h>
+#include <qdatetime.h>
 
 
 Engine::Engine()
     : m_dirty(true)
     , m_fileinfo(0)
-    , m_name(0)
+    , m_uid(0)
     , m_nextSourceDirId(1)
     , m_nextTagNodeId(1) {
 
@@ -74,7 +75,7 @@ Engine::Engine()
 Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
     : m_dirty(false)
     , m_fileinfo(new QFileInfo(fileinfo))
-    , m_name(0)
+    , m_uid(0)
     , m_nextSourceDirId(1)
     , m_nextTagNodeId(1) {
 
@@ -144,7 +145,12 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
             throw new EngineException(i18n("Unknown error while parsing the xml file occured!"));
         }
     }
-
+    
+    // generate a uid if the file does not contain one (for compatibility reason with version 0.0.5)
+    if (!m_uid) {
+        m_uid = generateUid();
+    }
+    
     // read the files in all sourcedirectories
     if (Settings::generalRescanWhileStartup()) {
         rescanSourceDirs(m_sourceDirs);
@@ -163,7 +169,7 @@ Engine::~Engine() {
 void Engine::cleanUp() {
 
     delete m_fileinfo;
-    delete m_name;
+    delete m_uid;
 
     //
     // sourcedir members
@@ -455,7 +461,7 @@ void Engine::save() throw(PersistingException*) {
 void Engine::saveAs(QFileInfo& newFile) throw(PersistingException*) {
 
     m_fileinfo = new QFileInfo(newFile);
-    m_name = new QString(newFile.fileName());
+    m_uid = generateUid();
 
     // save
     XmlWriter writer = XmlWriter(this);
@@ -711,3 +717,9 @@ bool Engine::mustHandleDirectory(QString directoryName) {
     return true;
 }
 
+
+QString* Engine::generateUid() {
+    
+    QString uid = QString("%1").arg(QDateTime::currentDateTime().toTime_t());
+    return new QString(uid);
+}

@@ -40,7 +40,7 @@ class SourceDirTreeNode;
 /**
  * The SourceDirTree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: sourcedirtree.h,v 1.5 2004/03/30 21:44:31 starcube Exp $
+ * CVS-ID $Id: sourcedirtree.h,v 1.6 2004/06/01 21:47:48 starcube Exp $
  */
 class SourceDirTree : public KListView {
 
@@ -82,6 +82,16 @@ public:
     SourceDirTreeNode* selectedSourceDir();
 
     void doRepaintAll();
+
+    /**
+     * Returns a list containing the ids of the opened nodes. 
+     */
+    QStringList* getOpenNodes();
+    
+    /**
+     * Opens the nodes with the specified ids.
+     */
+    void openNodes(QStringList* nodes);
 
 public slots:
     void slotLoadSettings();

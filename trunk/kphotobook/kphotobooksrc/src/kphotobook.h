@@ -21,6 +21,7 @@
 #ifndef _KPHOTOBOOK_H_
 #define _KPHOTOBOOK_H_
 
+#include "settings.h"
 #include "exception.h"
 
 #include <kaction.h>
@@ -91,6 +92,29 @@ public:
     }
 
     void dirtyfy();
+    
+    /**
+     * This method is invoked for temporary unlocking the tagging.
+     * As soon as this method is invoked, tagging is possible, even
+     * it was lacked.
+     */
+    void startTemporaryUnlockTagging() {
+    
+        m_tagtreeWasLocked = Settings::tagTreeLocked();
+        Settings::setTagTreeLocked(false);
+        applyLockUnlockTaggingSettings();        
+    }
+    
+    /**
+     * This method must be invoked as soon, as the temporary unlocking must end.
+     * When this method has finished, tagging is no longer possible, if tagging
+     * was locked before the method 'startTemporaryUnlockTagging' was called.
+     */
+    void stopTemporaryUnlockTagging() {
+    
+        Settings::setTagTreeLocked(m_tagtreeWasLocked);
+        applyLockUnlockTaggingSettings();        
+    }
 
     /**
      * Tests if the specified tagtext is valid. There must not exist a sibling
@@ -281,6 +305,15 @@ private:
      */
     void applyAutorefreshSetting();
     
+    /**
+     * Stores the state (open/closed nodes) of the trees.
+     */
+    void storeTreeState();
+    
+    /**
+     * Loads the state (open/closed nodes) of the trees.
+     */
+    void loadTreeState();
 
 private:
     KPhotoBookView* m_view;
@@ -294,6 +327,12 @@ private:
     KMdiToolViewAccessor* m_metaInfoTreeToolView;
 
     Engine* m_engine;
+
+    /**
+     * Is true if tagging was locked before the method
+     * startTemporaryUnlockTagging was invoked.
+     */
+    bool m_tagtreeWasLocked;
 
     // toolbars above the trees
     KToolBar* m_tagTreeToolBar;

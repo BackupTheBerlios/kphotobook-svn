@@ -92,8 +92,6 @@ private:
     KFileIconView* m_fileView;
 
     int m_currentImagePreviewSize;
-    
-    bool m_tagtreeWasLocked;
 };
 
 #endif

@@ -47,8 +47,7 @@
 
 TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     : KListView( parent, name )
-    , m_photobook(photobook)
-    , m_tagtreeWasLocked(false) {
+    , m_photobook(photobook) {
 
     setFont(Settings::tagTreeFont());
 
@@ -205,6 +204,45 @@ void TagTree::doRepaintAll() {
 }
 
 
+QStringList* TagTree::getOpenNodes() {
+
+    QStringList* openNodes = new QStringList();
+
+    // loop over *all* nodes in the tree
+    QListViewItemIterator it(this);
+    while (it.current()) {
+
+        TagTreeNode* node = dynamic_cast<TagTreeNode*>(it.current());
+        // add the node to the list if it is open
+        if (node->isOpen()) {
+            openNodes->append(QString::number(node->tagNode()->id()));
+        }
+
+        ++it;
+    }
+    
+    return openNodes;
+}
+
+
+void TagTree::openNodes(QStringList* openNodes) {
+
+    // loop over *all* nodes in the tree
+    QListViewItemIterator it(this);
+    while (it.current()) {
+
+        TagTreeNode* node = dynamic_cast<TagTreeNode*>(it.current());
+        
+        // open the current node if it is in the list
+        QString nodeIdStr = QString::number(node->tagNode()->id());
+        uint removedItems = openNodes->remove(nodeIdStr);
+        node->setOpen(removedItems > 0);
+
+        ++it;
+    }
+}
+
+
 //
 // public slots
 //
@@ -221,9 +259,7 @@ void TagTree::slotLoadSettings() {
 void TagTree::keyPressEvent(QKeyEvent* e) {
 
     if (e->key() == Qt::Key_Control) {
-        m_tagtreeWasLocked = Settings::tagTreeLocked();
-        Settings::setTagTreeLocked(false);
-        m_photobook->applyLockUnlockTaggingSettings();
+        m_photobook->startTemporaryUnlockTagging();
     }
     
     e->ignore();
@@ -232,8 +268,7 @@ void TagTree::keyPressEvent(QKeyEvent* e) {
 void TagTree::keyReleaseEvent(QKeyEvent *e) {
 
     if (e->key() == Qt::Key_Control) {
-        Settings::setTagTreeLocked(m_tagtreeWasLocked);
-        m_photobook->applyLockUnlockTaggingSettings();
+        m_photobook->stopTemporaryUnlockTagging();
     }
     
     e->ignore();
@@ -241,8 +276,7 @@ void TagTree::keyReleaseEvent(QKeyEvent *e) {
 
 void TagTree::focusOutEvent(__attribute__((unused)) QFocusEvent *e) {
 
-    Settings::setTagTreeLocked(m_tagtreeWasLocked);
-    m_photobook->applyLockUnlockTaggingSettings();
+    m_photobook->stopTemporaryUnlockTagging();
 }
 
 //

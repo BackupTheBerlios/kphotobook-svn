@@ -90,6 +90,7 @@
 #include <qlayout.h>
 #include <qsizepolicy.h>
 #include <qheader.h>
+#include <qstringlist.h>
 
 
 KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
@@ -99,6 +100,8 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     , m_sourcedirTree(0)
     , m_metaInfoTree(0)
     , m_engine(new Engine())
+    
+    , m_tagtreeWasLocked(false)
 
     , m_tagTreeToolBar(0)
     , m_sourceDirTreeToolBar(0)
@@ -152,7 +155,7 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     setupToolWindowTagTree();
     setupToolWindowSourceDirTree();
     setupToolWindowMetaInfoTree();
-
+    
     // init some other things: statusbar,..
     init();
 
@@ -276,6 +279,9 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
         // add the sourcedirectories to the tagtree
         m_sourcedirTree->clear();
         m_sourcedirTree->addSourceDirs(m_engine->sourceDirs());
+
+        // restore the tree states
+        loadTreeState();
 
         // add the files to the view
         m_view->updateFiles();
@@ -652,7 +658,7 @@ bool KPhotoBook::queryClose() {
     // store the configuration
     m_view->storeConfiguration();
 
-    // we have to store the properties which aren't handled magically by framewotk (stringlist)
+    // we have to store the properties which aren't handled magically by framework (stringlist)
     QStringList stringList;
     if (m_settingsFileHandling) {
         for (uint i = 0; i < m_settingsFileHandling->kcfg_FileFilterFileToHandle->count(); i++) {
@@ -683,9 +689,12 @@ bool KPhotoBook::queryClose() {
             Settings::setGeneralViewMode(Settings::EnumGeneralViewMode::IDEAlMode);
             break;
     }
-
+    
     // force writing the settings
     Settings::writeConfig();
+
+    // store the tree states
+    storeTreeState();
 
     // store dock configuration
     writeDockConfig(KGlobal::config(), "DockConfig");
@@ -695,7 +704,7 @@ bool KPhotoBook::queryClose() {
 
         // show save, discard, abort dialog
         QString fileName = QString("");
-        if (m_engine->name()) {
+        if (m_engine->uid()) {
             fileName = QString("%1\n").arg(m_engine->fileinfo()->absFilePath());
         }
 
@@ -705,7 +714,7 @@ bool KPhotoBook::queryClose() {
                          this, // parent
                          text, // text
                          i18n("Save Document"), // caption
-                         (m_engine->name() ? KStdGuiItem::save() : KStdGuiItem::saveAs()),   // buttonYes
+                         (m_engine->uid() ? KStdGuiItem::save() : KStdGuiItem::saveAs()),   // buttonYes
                          KStdGuiItem::discard()  // buttonNo
                      );
 
@@ -766,7 +775,7 @@ void KPhotoBook::slotFileOpen() {
     if (m_engine && m_engine->dirty()) {
         // show save, discard, abort dialog
         QString fileName = QString("");
-        if (m_engine->name()) {
+        if (m_engine->uid()) {
             fileName = QString("%1\n").arg(m_engine->fileinfo()->absFilePath());
         }
 
@@ -776,7 +785,7 @@ void KPhotoBook::slotFileOpen() {
                          this, // parent
                          text, // text
                          i18n("Save Document"), // caption
-                         (m_engine->name() ? KStdGuiItem::save() : KStdGuiItem::saveAs()),   // buttonYes
+                         (m_engine->uid() ? KStdGuiItem::save() : KStdGuiItem::saveAs()),   // buttonYes
                          KStdGuiItem::discard()  // buttonNo
                      );
 
@@ -1684,6 +1693,41 @@ void KPhotoBook::applyLockUnlockTaggingSettings() {
     if (m_tagTree) {
         m_tagTree->doRepaintAll();
     }
+}
+
+
+void KPhotoBook::storeTreeState() {
+
+    KConfig* config = KGlobal::config();
+    QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
+    config->setGroup(group);
+    
+    QStringList* openNodes = m_tagTree->getOpenNodes();
+    config->writeEntry("OpenNodes:TagTree", *openNodes);
+    delete openNodes;
+    
+    openNodes = m_sourcedirTree->getOpenNodes();
+    config->writeEntry("OpenNodes:SourceDirTree", *openNodes);
+    delete openNodes;
+        
+    // force writing
+    config->sync();
+}
+ 
+   
+void KPhotoBook::loadTreeState() {
+
+    kdDebug() << "[KPhotoBook::loadTreeState] invoked..." << endl;
+
+    KConfig* config = KGlobal::config();
+    QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
+    config->setGroup(group);
+    
+    QStringList openNodes = config->readListEntry("OpenNodes:TagTree");
+    m_tagTree->openNodes(&openNodes);
+    
+    openNodes = config->readListEntry("OpenNodes:SourceDirTree");
+    m_sourcedirTree->openNodes(&openNodes);
 }
 
 

@@ -32,6 +32,7 @@ const QString XmlConstants::ELEMENT_FILE = QString("file");
 const QString XmlConstants::ELEMENT_TAGASSOC = QString("tagassoc");
 
 const QString XmlConstants::ATTRIBUTE_KPHOTOBOOK_NAME = QString("name");
+const QString XmlConstants::ATTRIBUTE_KPHOTOBOOK_UID = QString("uid");
 
 const QString XmlConstants::ATTRIBUTE_SOURCEDIR_ID = QString("id");
 const QString XmlConstants::ATTRIBUTE_SOURCEDIR_DIR = QString("dir");

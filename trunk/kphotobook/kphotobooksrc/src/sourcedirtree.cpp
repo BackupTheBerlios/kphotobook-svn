@@ -239,6 +239,45 @@ void SourceDirTree::doRepaintAll() {
 }
 
 
+QStringList* SourceDirTree::getOpenNodes() {
+
+    QStringList* openNodes = new QStringList();
+
+    // loop over *all* nodes in the tree
+    QListViewItemIterator it(this);
+    while (it.current()) {
+
+        SourceDirTreeNode* node = dynamic_cast<SourceDirTreeNode*>(it.current());
+        // add the node to the list if it is open
+        if (node->isOpen()) {
+            openNodes->append(QString::number(node->sourceDir()->id()));
+        }
+
+        ++it;
+    }
+    
+    return openNodes;
+}
+
+
+void SourceDirTree::openNodes(QStringList* openNodes) {
+
+    // loop over *all* nodes in the tree
+    QListViewItemIterator it(this);
+    while (it.current()) {
+
+        SourceDirTreeNode* node = dynamic_cast<SourceDirTreeNode*>(it.current());
+        
+        // open the current node if it is in the list
+        QString nodeIdStr = QString::number(node->sourceDir()->id());
+        uint removedItems = openNodes->remove(nodeIdStr);
+        node->setOpen(removedItems > 0);
+
+        ++it;
+    }
+}
+
+
 //
 // public slots
 //

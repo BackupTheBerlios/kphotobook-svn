@@ -26,7 +26,7 @@
 /**
  * Constants used by the xml parser and writer.
  *
- * CVS-ID $Id: xmlconstants.h,v 1.1 2004/03/07 18:52:07 starcube Exp $
+ * CVS-ID $Id: xmlconstants.h,v 1.2 2004/06/01 21:47:48 starcube Exp $
  */
 class XmlConstants{
 
@@ -42,6 +42,7 @@ public:
     static const QString ELEMENT_TAGASSOC;
 
     static const QString ATTRIBUTE_KPHOTOBOOK_NAME;
+    static const QString ATTRIBUTE_KPHOTOBOOK_UID;
 
     static const QString ATTRIBUTE_SOURCEDIR_ID;
     static const QString ATTRIBUTE_SOURCEDIR_DIR;

@@ -56,10 +56,11 @@ bool XmlParser::startElement(
             return false;
         }
 
-        // the only valid and mandatory attribute for kphotobook is 'name'
+        // the only valid and mandatory attribute for kphotobook is 'id'
+        // for compatibility reasons the attribute name is accepted and ignored
         if (atts.length() == 1) {
-            if (atts.localName(0) != ATTRIBUTE_KPHOTOBOOK_NAME) {
-                QString msg = QString("Tag 'kphotobook' must contain the attribute 'name' but attribute '%1' found.").arg(atts.localName(0));
+            if (atts.localName(0) != ATTRIBUTE_KPHOTOBOOK_NAME && atts.localName(0) != ATTRIBUTE_KPHOTOBOOK_UID) {
+                QString msg = QString("Tag 'kphotobook' must contain the attribute 'id' but attribute '%1' found.").arg(atts.localName(0));
                 m_exception = new EngineException(
                     msg,
                     "");
@@ -67,13 +68,15 @@ bool XmlParser::startElement(
             }
         } else {
             m_exception = new EngineException(
-                "Tag 'kphotobook' must contain the attribute 'name' exactly once.",
+                "Tag 'kphotobook' must contain the attribute 'id' exactly once.",
                 "");
             return false;
         }
 
         // everything is ok --> store the name
-        m_engine->m_name = new QString(atts.value(0));
+        if (atts.localName(0) == ATTRIBUTE_KPHOTOBOOK_UID) {
+            m_engine->m_uid = new QString(atts.value(0));
+        }
 
         // change the state to KPHOTOBOOK
         m_section = SECTION_KPHOTOBOOK;

@@ -38,7 +38,7 @@ class TagNode;
 /**
  * The engine managing all sourcedirs, tags and files/images.
  *
- * CVS-ID $Id: engine.h,v 1.5 2004/05/22 21:31:13 starcube Exp $
+ * CVS-ID $Id: engine.h,v 1.6 2004/06/01 21:47:48 starcube Exp $
  */
 class Engine {
 
@@ -60,15 +60,15 @@ public:
     }
 
     bool alreadySavedOnce() {
-        return m_name != 0;
+        return m_uid != 0;
     }
 
     const QFileInfo* fileinfo() {
         return m_fileinfo;
     }
 
-    const QString* name() {
-        return m_name;
+    const QString* uid() {
+        return m_uid;
     }
 
     void rescanSourceDirs();
@@ -158,9 +158,9 @@ private:
     QFileInfo* m_fileinfo;
 
     /**
-     * The name stored in the xml file.
+     * A unique identifier for this file.
      */
-    QString* m_name;
+    QString* m_uid;
 
     //
     // sourcedir members
@@ -246,6 +246,12 @@ private:
      * Deletes all memory allocated by this object.
      */
     void cleanUp();
+    
+    /**
+     * Generates a unique identifier.
+     * We simply return the seconds since 1970.
+     */
+    QString* generateUid();
 };
 
 #endif
