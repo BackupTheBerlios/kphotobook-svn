@@ -42,8 +42,8 @@ const QString Constants::ICON_INCLUDE_WHOLE_FOLDER = QString("folder_green");
 const QString Constants::ICON_EXCLUDE_WHOLE_FOLDER = QString("folder_red");
 const QString Constants::ICON_INVERT_FOLDER_SELECTION = QString("invert");
 
-const QString Constants::ICON_EXPAND_FOLDER = QString("foobar");
-const QString Constants::ICON_COLLAPSE_FOLDER = QString("foobar");
+const QString Constants::ICON_EXPAND_FOLDER = QString("expand");
+const QString Constants::ICON_COLLAPSE_FOLDER = QString("collapse");
 
 // file-extension
 const QString Constants::FILE_EXTENSION = QString("kpb");
