@@ -179,7 +179,7 @@ void KPhotoBookView::slotShowCurrentImage() {
 //
 void KPhotoBookView::removeAllFiles() {
 
-    // we must deselct all files before removing it to inprove the speed
+    // we must deselect all files before removing it to improve the speed
     m_fileView->clearSelection();
 
     QPtrList<QIconViewItem>* itemList = new QPtrList<QIconViewItem>();
@@ -193,6 +193,8 @@ void KPhotoBookView::removeAllFiles() {
     }
 
     delete itemList;
+
+    m_fileView->clearView();
 }
 
 
