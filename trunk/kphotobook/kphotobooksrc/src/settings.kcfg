@@ -16,6 +16,12 @@
   </group>
 
   <group name="TagTree">
+    <entry name="TagTreeToolBarIconSize" type="Int" key="ToolBarIconSize">
+      <label>The size of the icons in the ToolBar of the TagTree.</label>
+      <default>16</default>
+      <min>16</min>
+      <max>32</max>
+    </entry>
     <entry name="TagTreeIconSize" type="Int" key="IconSize">
       <label>The size of the icons in the TagTree.</label>
       <default>22</default>
@@ -42,6 +48,12 @@
   </group>
 
   <group name="SourceDirTree">
+    <entry name="SourceDirTreeToolBarIconSize" type="Int" key="ToolBarIconSize">
+      <label>The size of the icons in the ToolBar of the SourceDir.</label>
+      <default>16</default>
+      <min>16</min>
+      <max>32</max>
+    </entry>
     <entry name="SourceDirTreeIconSize" type="Enum" key="IconSize">
       <label>The size of the icons in the SourceDirTree.</label>
       <default>22</default>

@@ -73,10 +73,9 @@
 #include <kfileitem.h>
 #include <kconfigdialog.h>
 #include <kcombobox.h>
-
 #include <ktoolbar.h>
-#include <ktoolbarbutton.h>
-#include <kpushbutton.h>
+//#include <ktoolbarbutton.h>
+//#include <kpushbutton.h>
 
 #include <kdebug.h>
 
@@ -1278,6 +1277,9 @@ void KPhotoBook::slotLoadSettings() {
     applyZoomSetting();
     applyAutorefreshSetting();
 
+    m_tagTreeToolBar->setIconSize(Settings::tagTreeToolBarIconSize());
+    m_sourceDirTreeToolBar->setIconSize(Settings::sourceDirTreeToolBarIconSize());
+
     KMdi::MdiMode newMdiMode = KMdi::IDEAlMode;
     if (Settings::generalViewMode() == Settings::EnumGeneralViewMode::TabPageMode) {
         newMdiMode = KMdi::TabPageMode;
@@ -1319,27 +1321,27 @@ void KPhotoBook::setupToolWindowTagTree() {
     QVBoxLayout* tagTreePanelLayout = new QVBoxLayout(tagTreePanel, 0, 0, "tagTreePanelLayout");
     tagTreePanelLayout->setAutoAdd(true);
 
-    KToolBar* tagTreeToolBar = new KToolBar(tagTreePanel, "tagTreeToolBar", true, true);
-    tagTreeToolBar->setIconSize(16);
+    m_tagTreeToolBar = new KToolBar(tagTreePanel, "tagTreeToolBar", true, true);
+    m_tagTreeToolBar->setIconSize(Settings::tagTreeToolBarIconSize());
 
-    actionCollection()->action("addMaintag")->plug(tagTreeToolBar);
+    actionCollection()->action("addMaintag")->plug(m_tagTreeToolBar);
 
-    tagTreeToolBar->insertSeparator();
+    m_tagTreeToolBar->insertSeparator();
 
-    actionCollection()->action("expandAllTags")->plug(tagTreeToolBar);
-    actionCollection()->action("collapseAllTags")->plug(tagTreeToolBar);
+    actionCollection()->action("expandAllTags")->plug(m_tagTreeToolBar);
+    actionCollection()->action("collapseAllTags")->plug(m_tagTreeToolBar);
 
-    QWidget* spacer = new QWidget(tagTreeToolBar);
+    QWidget* spacer = new QWidget(m_tagTreeToolBar);
     QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     sizePolicy.setHorStretch(99);
     spacer->setSizePolicy(sizePolicy);
-    tagTreeToolBar->insertWidget(99999, 99999, spacer, -1);
+    m_tagTreeToolBar->insertWidget(99999, 99999, spacer, -1);
 
-    actionCollection()->action("andifyTags")->plug(tagTreeToolBar);
-    actionCollection()->action("orifyTags")->plug(tagTreeToolBar);
-    tagTreeToolBar->insertSeparator();
-    actionCollection()->action("deselectFilter")->plug(tagTreeToolBar);
-    actionCollection()->action("resetFilter")->plug(tagTreeToolBar);
+    actionCollection()->action("andifyTags")->plug(m_tagTreeToolBar);
+    actionCollection()->action("orifyTags")->plug(m_tagTreeToolBar);
+    m_tagTreeToolBar->insertSeparator();
+    actionCollection()->action("deselectFilter")->plug(m_tagTreeToolBar);
+    actionCollection()->action("resetFilter")->plug(m_tagTreeToolBar);
 
     m_tagTree = new TagTree(tagTreePanel, this, "tagtree");
     QIconSet tagTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
@@ -1359,25 +1361,25 @@ void KPhotoBook::setupToolWindowSourceDirTree() {
     QVBoxLayout* sourceDirTreePanelLayout = new QVBoxLayout(sourceDirTreePanel, 0, 0, "sourceDirTreePanelLayout");
     sourceDirTreePanelLayout->setAutoAdd(true);
 
-    KToolBar* sourceDirTreeToolBar = new KToolBar(sourceDirTreePanel, "sourceDirTreeToolBar", true, true);
-    sourceDirTreeToolBar->setIconSize(16);
+    m_sourceDirTreeToolBar = new KToolBar(sourceDirTreePanel, "sourceDirTreeToolBar", true, true);
+    m_sourceDirTreeToolBar->setIconSize(Settings::sourceDirTreeToolBarIconSize());
 
-    actionCollection()->action("addSourceDir")->plug(sourceDirTreeToolBar);
+    actionCollection()->action("addSourceDir")->plug(m_sourceDirTreeToolBar);
 
-    sourceDirTreeToolBar->insertSeparator();
+    m_sourceDirTreeToolBar->insertSeparator();
 
-    actionCollection()->action("expandAllSourceDirs")->plug(sourceDirTreeToolBar);
-    actionCollection()->action("collapseAllSourceDirs")->plug(sourceDirTreeToolBar);
+    actionCollection()->action("expandAllSourceDirs")->plug(m_sourceDirTreeToolBar);
+    actionCollection()->action("collapseAllSourceDirs")->plug(m_sourceDirTreeToolBar);
 
-    QWidget* spacer = new QWidget(sourceDirTreeToolBar);
+    QWidget* spacer = new QWidget(m_sourceDirTreeToolBar);
     QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     sizePolicy.setHorStretch(99);
     spacer->setSizePolicy(sizePolicy);
-    sourceDirTreeToolBar->insertWidget(99999, 99999, spacer, -1);
+    m_sourceDirTreeToolBar->insertWidget(99999, 99999, spacer, -1);
 
-    actionCollection()->action("includeAllSourceDirs")->plug(sourceDirTreeToolBar);
-    actionCollection()->action("excludeAllSourceDirs")->plug(sourceDirTreeToolBar);
-    actionCollection()->action("invertAllSourceDirs")->plug(sourceDirTreeToolBar);
+    actionCollection()->action("includeAllSourceDirs")->plug(m_sourceDirTreeToolBar);
+    actionCollection()->action("excludeAllSourceDirs")->plug(m_sourceDirTreeToolBar);
+    actionCollection()->action("invertAllSourceDirs")->plug(m_sourceDirTreeToolBar);
 
     m_sourcedirTree = new SourceDirTree(sourceDirTreePanel, this, "sourcedirTree");
     QIconSet sourcedirTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, Settings::sourceDirTreeIconSize(), true);

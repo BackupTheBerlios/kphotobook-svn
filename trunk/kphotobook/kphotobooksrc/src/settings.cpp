@@ -41,6 +41,11 @@ Settings::Settings(  )
 
   setCurrentGroup( "TagTree" );
 
+  KConfigSkeleton::ItemInt  *itemTagTreeToolBarIconSize;
+  itemTagTreeToolBarIconSize = new KConfigSkeleton::ItemInt( currentGroup(), "ToolBarIconSize", mTagTreeToolBarIconSize, 16 );
+  itemTagTreeToolBarIconSize->setMinValue(16);
+  itemTagTreeToolBarIconSize->setMaxValue(32);
+  addItem( itemTagTreeToolBarIconSize, "TagTreeToolBarIconSize" );
   KConfigSkeleton::ItemInt  *itemTagTreeIconSize;
   itemTagTreeIconSize = new KConfigSkeleton::ItemInt( currentGroup(), "IconSize", mTagTreeIconSize, 22 );
   itemTagTreeIconSize->setMinValue(16);
@@ -69,6 +74,11 @@ Settings::Settings(  )
 
   setCurrentGroup( "SourceDirTree" );
 
+  KConfigSkeleton::ItemInt  *itemSourceDirTreeToolBarIconSize;
+  itemSourceDirTreeToolBarIconSize = new KConfigSkeleton::ItemInt( currentGroup(), "ToolBarIconSize", mSourceDirTreeToolBarIconSize, 16 );
+  itemSourceDirTreeToolBarIconSize->setMinValue(16);
+  itemSourceDirTreeToolBarIconSize->setMaxValue(32);
+  addItem( itemSourceDirTreeToolBarIconSize, "SourceDirTreeToolBarIconSize" );
   QValueList<KConfigSkeleton::ItemEnum::Choice> valuesSourceDirTreeIconSize;
   KConfigSkeleton::ItemEnum  *itemSourceDirTreeIconSize;
   itemSourceDirTreeIconSize = new KConfigSkeleton::ItemEnum( currentGroup(), "IconSize", mSourceDirTreeIconSize, valuesSourceDirTreeIconSize, 22 );

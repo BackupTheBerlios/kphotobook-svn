@@ -28,6 +28,7 @@
 #include <kpopupmenu.h>
 
 #include <kmdimainfrm.h>
+class KToolBar;
 
 #include <qdir.h>
 
@@ -274,6 +275,10 @@ private:
     SourceDirTree* m_sourcedirTree;
 
     Engine* m_engine;
+
+    // toolbars above the trees
+    KToolBar* m_tagTreeToolBar;
+    KToolBar* m_sourceDirTreeToolBar;
 
     // actions
     KToggleAction* m_autoRefreshViewAction;

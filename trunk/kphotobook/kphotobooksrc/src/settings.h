@@ -47,6 +47,25 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+      Set The size of the icons in the ToolBar of the TagTree.
+    */
+    static
+    void setTagTreeToolBarIconSize( int v )
+    {
+      if (!self()->isImmutable( "TagTreeToolBarIconSize" ))
+        self()->mTagTreeToolBarIconSize = v;
+    }
+
+    /**
+      Get The size of the icons in the ToolBar of the TagTree.
+    */
+    static
+    int tagTreeToolBarIconSize()
+    {
+      return self()->mTagTreeToolBarIconSize;
+    }
+
+    /**
       Set The size of the icons in the TagTree.
     */
     static
@@ -120,6 +139,25 @@ class Settings : public KConfigSkeleton
     int tagTreeFilterOperator()
     {
       return self()->mTagTreeFilterOperator;
+    }
+
+    /**
+      Set The size of the icons in the ToolBar of the SourceDir.
+    */
+    static
+    void setSourceDirTreeToolBarIconSize( int v )
+    {
+      if (!self()->isImmutable( "SourceDirTreeToolBarIconSize" ))
+        self()->mSourceDirTreeToolBarIconSize = v;
+    }
+
+    /**
+      Get The size of the icons in the ToolBar of the SourceDir.
+    */
+    static
+    int sourceDirTreeToolBarIconSize()
+    {
+      return self()->mSourceDirTreeToolBarIconSize;
     }
 
     /**
@@ -402,12 +440,14 @@ class Settings : public KConfigSkeleton
     int mGeneralViewMode;
 
     // TagTree
+    int mTagTreeToolBarIconSize;
     int mTagTreeIconSize;
     QFont mTagTreeFont;
     bool mTagTreeShowIcons;
     int mTagTreeFilterOperator;
 
     // SourceDirTree
+    int mSourceDirTreeToolBarIconSize;
     int mSourceDirTreeIconSize;
     QFont mSourceDirTreeFont;
     bool mSourceDirTreeShowIcons;
