@@ -20,6 +20,7 @@
 
 #include "tagtreenodeboolean.h"
 
+#include "settings.h"
 #include "tagnodeboolean.h"
 #include "tagtree.h"
 #include "kphotobook.h"
@@ -74,6 +75,11 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
         break;
 
     case TagTree::COLUMN_VALUE : {
+    
+        // so nothing when tagging is locked
+        if (Settings::tagTreeLocked()) {
+            return;
+        }
 
         // get all selected files
         const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
@@ -227,10 +233,10 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
                 tristate = 1;
             }
 
-            TreeHelper::drawCheckBox(p, cg, rect, tristate);
+            TreeHelper::drawCheckBox(p, cg, rect, tristate, !Settings::tagTreeLocked());
         } else {
-            // no file is selected -> dtaw a disabled checkbox
-            TreeHelper::drawCheckBox(p, cg, rect);
+            // no file is selected -> draw a disabled checkbox
+            TreeHelper::drawCheckBox(p, cg, rect, false, false);
         }
         break;
     }
@@ -241,7 +247,7 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
         // draw the checkbox in the center of the cell
         QRect rect((width-this->height()+4)/2, 2, this->height()-4, this->height()-4);
 
-        TreeHelper::drawCheckBox(p, cg, rect, m_filterState);
+        TreeHelper::drawCheckBox(p, cg, rect, m_filterState, true);
 
         break;
     }

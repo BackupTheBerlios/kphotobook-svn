@@ -161,6 +161,25 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+      Set Defines if the tagtree is locked or not.
+    */
+    static
+    void setTagTreeLocked( bool v )
+    {
+      if (!self()->isImmutable( "TagTreeLocked" ))
+        self()->mTagTreeLocked = v;
+    }
+
+    /**
+      Get Defines if the tagtree is locked or not.
+    */
+    static
+    bool tagTreeLocked()
+    {
+      return self()->mTagTreeLocked;
+    }
+
+    /**
       Set The size of the icons in the ToolBar of the SourceDir.
     */
     static
@@ -465,6 +484,7 @@ class Settings : public KConfigSkeleton
     QFont mTagTreeFont;
     bool mTagTreeShowIcons;
     int mTagTreeFilterOperator;
+    bool mTagTreeLocked;
 
     // SourceDirTree
     int mSourceDirTreeToolBarIconSize;
@@ -495,3 +515,4 @@ class Settings : public KConfigSkeleton
 };
 
 #endif
+

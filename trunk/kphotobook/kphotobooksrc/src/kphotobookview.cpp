@@ -34,7 +34,8 @@
 
 KPhotoBookView::KPhotoBookView(QWidget *parent)
     : KMdiChildView(parent)
-    , m_currentImagePreviewSize(-1) {
+    , m_currentImagePreviewSize(-1)
+    , m_tagtreeWasLocked(false) {
 
     // store casted pointer to the photobook
     m_photobook = dynamic_cast<KPhotoBook*>(parent);
@@ -153,6 +154,48 @@ void KPhotoBookView::slotLoadSettings() {
     }
 
     m_fileView->setFont(Settings::imagePreviewFont());
+}
+
+
+//
+// protected
+//
+void KPhotoBookView::keyPressEvent(QKeyEvent* e) {
+
+    kdDebug() << "[KPhotoBookView::keyPressEvent] invoked..." << endl;
+
+    if (e->key() == Qt::Key_Control) {
+        m_tagtreeWasLocked = Settings::tagTreeLocked();
+        Settings::setTagTreeLocked(false);
+        m_photobook->applyLockUnlockTaggingSettings();
+//        m_photobook->tagTree()->doRepaintAll();
+    }
+    
+    e->ignore();
+}
+
+
+void KPhotoBookView::keyReleaseEvent(QKeyEvent *e) {
+
+    kdDebug() << "[KPhotoBookView::keyReleaseEvent] invoked..." << endl;
+    
+    if (e->key() == Qt::Key_Control) {
+        Settings::setTagTreeLocked(m_tagtreeWasLocked);
+        m_photobook->applyLockUnlockTaggingSettings();
+//        m_photobook->tagTree()->doRepaintAll();
+    }
+    
+    e->ignore();
+}
+
+
+void KPhotoBookView::focusOutEvent(__attribute__((unused)) QFocusEvent *e) {
+
+    kdDebug() << "[KPhotoBookView::focusOutEvent] invoked..." << endl;
+    
+    Settings::setTagTreeLocked(m_tagtreeWasLocked);
+    m_photobook->applyLockUnlockTaggingSettings();
+//    doRepaintAll();
 }
 
 

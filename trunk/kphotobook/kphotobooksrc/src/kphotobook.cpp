@@ -457,6 +457,14 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotDeleteTag()),
         actionCollection(), "deleteTag"
     );
+    
+    m_lockUnlockTaggingAction = new KToggleAction(
+        i18n("Lock Tagging"), 0,
+        0,
+        this, SLOT(slotToggleLockUnlockTagging()),
+        actionCollection(), "toggleLockUnlockTagging"
+    );
+    applyLockUnlockTaggingSettings();
 
     m_andifyTagsAction = new KToggleAction(
         i18n("Tag filter operator = AND"), Constants::ICON_OPERATOR_AND,
@@ -554,6 +562,7 @@ void KPhotoBook::setupWhatsThis() {
 
     actionCollection()->action("addSourceDir")->setWhatsThis(i18n("Add a source directory to the database. This can happen to a single directory or recursively. "));
     actionCollection()->action("addMaintag")->setWhatsThis(i18n("Add a new main tag to the database. This is a top level tag which can contain sub-tags."));
+    actionCollection()->action("toggleLockUnlockTagging")->setWhatsThis(i18n("If locking is enabled it is not possible to change the tags of an image. The lock is also disabled while the CTRL-key is pressed."));
     actionCollection()->action("andifyTags")->setWhatsThis(i18n("This sets the filter operator to 'AND', which means that only images which contain all in the filter marked tags will be shown."));
     actionCollection()->action("orifyTags")->setWhatsThis(i18n("This sets the filter operator to 'OR', which means that pictures with any in the filter marked tags will be shown."));
     actionCollection()->action("increasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window bigger."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
@@ -1147,6 +1156,16 @@ void KPhotoBook::slotDeleteTag() {
 }
 
 
+void KPhotoBook::slotToggleLockUnlockTagging() {
+
+    kdDebug() << "[KPhotoBook::slotToggleLockUnlockTagging] called... " << endl;
+    
+    Settings::setTagTreeLocked(!Settings::tagTreeLocked());
+    
+    applyLockUnlockTaggingSettings();
+}
+
+
 void KPhotoBook::slotRescanFilesystem() {
 
     kdDebug() << "[KPhotoBook::slotRescanFilesystem] called... " << endl;
@@ -1648,6 +1667,23 @@ void KPhotoBook::applyAutorefreshSetting() {
     }
 
     autoRefreshView();
+}
+
+
+void KPhotoBook::applyLockUnlockTaggingSettings() {
+
+    m_lockUnlockTaggingAction->setChecked(Settings::tagTreeLocked());
+    if (Settings::tagTreeLocked()) {
+        m_lockUnlockTaggingAction->setText("Unlock tagging");
+        m_lockUnlockTaggingAction->setIcon(Constants::ICON_TAG_LOCK);
+    } else {
+        m_lockUnlockTaggingAction->setText("Lock tagging");
+        m_lockUnlockTaggingAction->setIcon(Constants::ICON_TAG_UNLOCK);
+    }
+    
+    if (m_tagTree) {
+        m_tagTree->doRepaintAll();
+    }
 }
 
 

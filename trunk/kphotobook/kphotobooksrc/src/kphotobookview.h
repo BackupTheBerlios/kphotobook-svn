@@ -78,6 +78,11 @@ signals:
 public slots:
     void slotLoadSettings();
 
+protected:
+    void keyPressEvent(QKeyEvent* e);
+    void keyReleaseEvent(QKeyEvent *e);
+    void focusOutEvent(QFocusEvent *e);
+
 private slots:
     void slotShowCurrentImage();
 
@@ -87,6 +92,8 @@ private:
     KFileIconView* m_fileView;
 
     int m_currentImagePreviewSize;
+    
+    bool m_tagtreeWasLocked;
 };
 
 #endif

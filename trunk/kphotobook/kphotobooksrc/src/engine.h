@@ -38,7 +38,7 @@ class TagNode;
 /**
  * The engine managing all sourcedirs, tags and files/images.
  *
- * CVS-ID $Id: engine.h,v 1.4 2004/03/18 22:04:14 starcube Exp $
+ * CVS-ID $Id: engine.h,v 1.5 2004/05/22 21:31:13 starcube Exp $
  */
 class Engine {
 
@@ -151,7 +151,7 @@ private:
      * and it should be saved.
      */
     bool m_dirty;
-
+    
     /**
      * The url of the opened xml-file.
      */

@@ -74,6 +74,9 @@ Settings::Settings(  )
   KConfigSkeleton::ItemEnum  *itemTagTreeFilterOperator;
   itemTagTreeFilterOperator = new KConfigSkeleton::ItemEnum( currentGroup(), "FilterOperator", mTagTreeFilterOperator, valuesTagTreeFilterOperator, EnumTagTreeFilterOperator::And );
   addItem( itemTagTreeFilterOperator, "TagTreeFilterOperator" );
+  KConfigSkeleton::ItemBool  *itemTagTreeLocked;
+  itemTagTreeLocked = new KConfigSkeleton::ItemBool( currentGroup(), "Locked", mTagTreeLocked, false );
+  addItem( itemTagTreeLocked, "TagTreeLocked" );
 
   setCurrentGroup( "SourceDirTree" );
 

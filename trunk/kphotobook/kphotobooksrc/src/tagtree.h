@@ -28,6 +28,7 @@
 #include <qstring.h>
 #include <qlistview.h>
 #include <qpoint.h>
+#include <qnamespace.h>
 
 class TagNode;
 class TagTreeNode;
@@ -36,7 +37,7 @@ class KPhotoBook;
 /**
  * The tagtree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: tagtree.h,v 1.5 2004/04/05 16:23:46 starcube Exp $
+ * CVS-ID $Id: tagtree.h,v 1.6 2004/05/22 21:31:14 starcube Exp $
  */
 class TagTree : public KListView {
 
@@ -72,6 +73,11 @@ public:
 public slots:
     void slotLoadSettings();
 
+protected:
+    void keyPressEvent(QKeyEvent* e);
+    void keyReleaseEvent(QKeyEvent *e);
+    void focusOutEvent(QFocusEvent *e);
+    
 private slots:
     void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
     void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
@@ -80,6 +86,8 @@ private:
     void buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children);
 
     KPhotoBook* m_photobook;
+    
+    bool m_tagtreeWasLocked;
 };
 
 #endif

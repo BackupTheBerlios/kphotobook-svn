@@ -47,7 +47,8 @@
 
 TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     : KListView( parent, name )
-    , m_photobook(photobook) {
+    , m_photobook(photobook)
+    , m_tagtreeWasLocked(false) {
 
     setFont(Settings::tagTreeFont());
 
@@ -213,6 +214,36 @@ void TagTree::slotLoadSettings() {
     doRepaintAll();
 }
 
+
+//
+// protected slots
+//
+void TagTree::keyPressEvent(QKeyEvent* e) {
+
+    if (e->key() == Qt::Key_Control) {
+        m_tagtreeWasLocked = Settings::tagTreeLocked();
+        Settings::setTagTreeLocked(false);
+        m_photobook->applyLockUnlockTaggingSettings();
+    }
+    
+    e->ignore();
+}
+
+void TagTree::keyReleaseEvent(QKeyEvent *e) {
+
+    if (e->key() == Qt::Key_Control) {
+        Settings::setTagTreeLocked(m_tagtreeWasLocked);
+        m_photobook->applyLockUnlockTaggingSettings();
+    }
+    
+    e->ignore();
+}
+
+void TagTree::focusOutEvent(__attribute__((unused)) QFocusEvent *e) {
+
+    Settings::setTagTreeLocked(m_tagtreeWasLocked);
+    m_photobook->applyLockUnlockTaggingSettings();
+}
 
 //
 // private slots

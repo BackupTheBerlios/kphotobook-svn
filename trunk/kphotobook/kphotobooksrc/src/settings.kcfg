@@ -50,6 +50,11 @@
         <choice name="Or" />
       </choices>
     </entry>
+    
+    <entry name="TagTreeLocked" type="Bool" key="Locked">
+      <label>Defines if the tagtree is locked or not.</label>
+      <default>false</default>
+    </entry>
   </group>
 
   <group name="SourceDirTree">

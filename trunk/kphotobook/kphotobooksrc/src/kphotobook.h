@@ -150,6 +150,11 @@ public:
     KPopupMenu* contextMenuTagTreeItem() {
         return m_contextMenuTagTreeItem;
     }
+    
+    /**
+     * Enables or disables locking of tagging.
+     */
+    void applyLockUnlockTaggingSettings();
 
 protected:
     /**
@@ -182,6 +187,8 @@ private slots:
     void slotEditTag();
     void slotDeleteTag();
 
+    void slotToggleLockUnlockTagging();
+    
     void slotRescanFilesystem();
 
     void slotAutoRefreshView();
@@ -265,14 +272,15 @@ private:
     void applyZoomSetting();
 
     /**
-     * Aktivates or deactivates the operator (and / or) actions.
+     * Activates or deactivates the operator (and / or) actions.
      */
     void applyOperatorSetting();
 
     /**
-     * Aktivates or deactivates the autorefresh actions.
+     * Activates or deactivates the autorefresh actions.
      */
     void applyAutorefreshSetting();
+    
 
 private:
     KPhotoBookView* m_view;
@@ -298,6 +306,7 @@ private:
     KAction* m_save;
     KToggleAction* m_andifyTagsAction;
     KToggleAction* m_orifyTagsAction;
+    KToggleAction* m_lockUnlockTaggingAction;
 
     // contextMenus
     KPopupMenu* m_contextMenuSourceDirTree;

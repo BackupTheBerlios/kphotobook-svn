@@ -30,14 +30,13 @@
  * Static helper class for KListView (Tree) subclasses.
  * This class is not instantiable and contains static helper methods only.
  *
- * CVS-ID $Id: treehelper.h,v 1.1 2004/03/20 16:42:10 starcube Exp $
+ * CVS-ID $Id: treehelper.h,v 1.2 2004/05/22 21:31:14 starcube Exp $
  */
 class TreeHelper {
 
 public:
-    static void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect);
-    static void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked);
-    static void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate);
+    static void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked, bool enabled);
+    static void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled);
 
 protected:
     TreeHelper() {

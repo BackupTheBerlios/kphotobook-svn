@@ -29,42 +29,7 @@
 #include <qcheckbox.h>
 
 
-void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect) {
-
-    // we force the checkbox to  a maximum size of Constants::TREE_CHECKBOX_MAXSIZE
-    if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
-        rect.setTop(2 + (rect.height() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
-        rect.setLeft(rect.left() + (rect.width() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
-        rect.setHeight(Constants::TREE_CHECKBOX_MAXSIZE);
-        rect.setWidth(Constants::TREE_CHECKBOX_MAXSIZE);
-    }
-
-    static QCheckBox checkBox(0);
-    checkBox.setChecked(false);
-
-    QStyle& style = KApplication::kApplication()->style();
-
-    // copied from qcheckbox.cpp
-    QStyle::SFlags flags = QStyle::Style_Default;
-    if ( checkBox.hasFocus() )
-        flags |= QStyle::Style_HasFocus;
-    if ( checkBox.isDown() )
-        flags |= QStyle::Style_Down;
-    if ( checkBox.hasMouse() )
-        flags |= QStyle::Style_MouseOver;
-    if ( checkBox.state() == QButton::On )
-        flags |= QStyle::Style_On;
-    else if ( checkBox.state() == QButton::Off )
-        flags |= QStyle::Style_Off;
-    else if ( checkBox.state() == QButton::NoChange )
-        flags |= QStyle::Style_NoChange;
-
-    // draw the checkbox
-    style.drawControl(QStyle::CE_CheckBox, p, &checkBox, rect, cg, flags);
-}
-
-
-void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked) {
+void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked, bool enabled) {
 
     // we force the checkbox to  amaximu size of Constants::TREE_CHECKBOX_MAXSIZE
     if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
@@ -76,6 +41,7 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bo
 
     static QCheckBox checkBox(0);
     checkBox.setChecked(checked);
+    checkBox.setEnabled(enabled);
 
     QStyle& style = KApplication::kApplication()->style();
 
@@ -101,7 +67,7 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bo
 }
 
 
-void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate) {
+void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled) {
 
     // we force the checkbox to  amaximu size of Constants::TREE_CHECKBOX_MAXSIZE
     if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
@@ -118,6 +84,7 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, in
     } else {
         checkBox.setChecked(tristate > 0);
     }
+    checkBox.setEnabled(enabled);
 
     QStyle& style = KApplication::kApplication()->style();
 
