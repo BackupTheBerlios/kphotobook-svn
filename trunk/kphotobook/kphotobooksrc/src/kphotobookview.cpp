@@ -164,11 +164,13 @@ void KPhotoBookView::slotShowCurrentImage() {
     KFileItem* item = m_fileView->currentFileItem();
     KURL file = item->url();
 
-    kdDebug() << "Showing file in kuickshow. url=<" << file.url() << ">, path=<" << file.path() << ">" << endl;
+    QString tool = Settings::toolsDefaultExternalTool();
+
+    kdDebug() << "Showing file in " << tool << ". url=<" << file.url() << ">, path=<" << file.path() << ">" << endl;
 
     KProcess *proc = new KProcess();
 
-    *proc << "kuickshow";
+    *proc << tool;
     *proc << file.path();
     proc->start(KProcess::DontCare);
 }
