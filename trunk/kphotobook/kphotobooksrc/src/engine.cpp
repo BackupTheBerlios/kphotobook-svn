@@ -180,6 +180,7 @@ void Engine::cleanUp() {
     //
     delete m_fileList;
     delete m_fileDict;
+    delete m_fileList2display;
 }
 
 
