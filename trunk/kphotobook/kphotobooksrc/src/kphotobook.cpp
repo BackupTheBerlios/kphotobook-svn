@@ -19,25 +19,30 @@
  ***************************************************************************/
 
 #include "kphotobook.h"
+
+#include "configuration.h"
+#include "constants.h"
+
 #include "kphotobookview.h"
 #include "pref.h"
 #include "engine.h"
 #include "exception.h"
-#include "configuration.h"
 #include "dialogaddsourcedir.h"
 #include "dialogcreatetag.h"
 #include "dialogedittag.h"
-#include "constants.h"
-#include "tagtree.h"
-#include "sourcedirtree.h"
 #include "file.h"
-#include "sourcedir.h"
+
+#include "tagnode.h"
+#include "tagtree.h"
 #include "tagtreenode.h"
-#include "tagtreenodesourcedir.h"
 #include "tagtreenodetitle.h"
 #include "tagtreenodeboolean.h"
 #include "tagtreenode.h"
-#include "tagnode.h"
+
+#include "sourcedir.h"
+#include "sourcedirtree.h"
+#include "sourcedirtreenode.h"
+
 
 #include <kapplication.h>
 #include <kglobal.h>
@@ -102,17 +107,8 @@ KPhotoBook::KPhotoBook()
     mainDock->setEnableDocking(KDockWidget::DockNone);
     setView( mainDock); // central widget in a KDE mainwindow
     setMainDockWidget(mainDock); // master dockwidget
-    /*
-    ...
-    KDockWidget* dockLeft;
-    dockLeft = createDockWidget( "Intially left one", anyOtherPixmap, 0L, i18n("The left dockwidget"));
-    AnotherWidget* aw = new AnotherWidget( dockLeft);
-    dockLeft->setWidget( aw);
-    dockLeft->manualDock( mainDock,              // dock target
-                            KDockWidget::DockLeft, // dock site
-                            20 );                  // relation target/this (in percent)
-    */
 
+    /*
     KDockWidget* dock = this->createDockWidget("Any window caption", 0, 0, i18n("window caption"));
     TagTree* actualWidget = new TagTree(dock, this, "tagtree in dock");
     dock->setWidget(actualWidget); // embed it
@@ -120,7 +116,7 @@ KPhotoBook::KPhotoBook()
     dock->manualDock(mainDock,              // dock target
                      KDockWidget::DockLeft, // dock site
                      20 );                  // relation target/this (in percent)
-
+*/
     // tell the KMainWindow that this is indeed the main widget
     //setCentralWidget(m_view);
 
@@ -270,7 +266,7 @@ void KPhotoBook::setupActions() {
     //
     new KAction(
         i18n("&Rescan filesystem"), Constants::ICON_RESCAN_FILESYSTEM,
-        KStdAccel::shortcut(KStdAccel::Reload),
+        0,
         this, SLOT(slotRescanFilesystem()),
         actionCollection(), "rescanFilesystem"
     );
@@ -288,7 +284,7 @@ void KPhotoBook::setupActions() {
 
     new KAction(
         i18n("&Refresh view"), Constants::ICON_REFRESH_VIEW,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotRefreshView()),
         actionCollection(), "refreshView"
     );
@@ -654,7 +650,9 @@ bool KPhotoBook::slotFileSave() {
                 fileSaved = true;
             } catch(PersistingException* ex) {
                 KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
-                delete ex;
+                // TODO
+                // it's very strange, but the application crashes if a delete the exception!!!
+//                delete ex;
             }
         } else {
             return slotFileSaveAs();
@@ -696,7 +694,9 @@ bool KPhotoBook::slotFileSaveAs() {
                 fileSaved = true;
             } catch(PersistingException* ex) {
                 KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
-                delete ex;
+                // TODO
+                // it's very strange, but the application crashes if a delete the exception!!!
+//                delete ex;
             }
         }
     }
@@ -767,7 +767,10 @@ void KPhotoBook::slotAddSourcedir() {
             kdDebug() << "[KPhotoBook::slotAddSourcedir] adding choosen sourcedir failed, dir: " << dialog->directory()->absPath() << ", recursive: " << dialog->recursive() << endl;
 
             KMessageBox::detailedError(dialog, ex->message(), ex->detailMessage(), i18n("Adding sourcedir failed"));
-            delete ex;
+
+            // TODO
+            // it's very strange, but the application crashes if a delete the exception!!!
+            //delete ex;
         }
     }
     delete dialog;
@@ -788,7 +791,7 @@ void KPhotoBook::slotRemoveSourceDir() {
     kdDebug() << "[KPhotoBook::slotRemoveSourceDir] called... " << endl;
 
     // get the sourcedir to remove from the tagtree
-    TagTreeNodeSourceDir* currentNode = m_view->selectedSourceDir();
+    SourceDirTreeNode* currentNode = m_view->selectedSourceDir();
 
     // show a dialog to the user
     QString msg = QString(i18n("Do you want to remove the source directory?\n%1")).arg(currentNode->sourceDir()->dir()->absPath());

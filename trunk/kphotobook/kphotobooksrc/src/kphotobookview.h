@@ -16,7 +16,8 @@
 class KPhotoBook;
 class SourceDir;
 class SourceDirTree;
-class TagTreeNodeSourceDir;
+class SourceDirTreeNode;
+
 class TagTree;
 class TagTreeNode;
 class TagTreeNodeTitle;
@@ -59,7 +60,7 @@ public:
         return m_fileView;
     }
 
-    TagTreeNodeSourceDir* selectedSourceDir();
+    SourceDirTreeNode* selectedSourceDir();
 
     /**
      * Removes the specified node from the tagNodeTree.

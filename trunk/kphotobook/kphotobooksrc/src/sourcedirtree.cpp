@@ -21,16 +21,17 @@
 #include "sourcedirtree.h"
 
 #include "constants.h"
-#include "tagtreenode.h"
+
 #include "kphotobook.h"
-#include "sourcedir.h"
 #include "file.h"
-#include "tagtreenodesourcedir.h"
+
+#include "sourcedir.h"
+#include "sourcedirtreenode.h"
+
 
 #include <klocale.h>
 #include <kstdaccel.h>
 #include <kiconloader.h>
-
 #include <kdebug.h>
 
 #include <qwidget.h>
@@ -44,7 +45,8 @@
 SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     : KListView( parent, name )
     , m_photobook(photobook)
-    , m_sourceDirNodeDict(new QIntDict<TagTreeNodeSourceDir>) {
+    , m_sourceDirNodeDict(new QIntDict<SourceDirTreeNode>) {
+
     // create columns
     addColumn(i18n("Source directories"));
     addColumn(i18n("Selected"));
@@ -74,7 +76,7 @@ SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char
 void SourceDirTree::expandCurrent(bool recursive) {
 
     if (recursive) {
-        dynamic_cast<TagTreeNode*>(currentItem())->setOpenRecursive(true);
+        dynamic_cast<SourceDirTreeNode*>(currentItem())->setOpenRecursive(true);
     } else {
         currentItem()->setOpen(true);
     }
@@ -82,7 +84,7 @@ void SourceDirTree::expandCurrent(bool recursive) {
 void SourceDirTree::collapseCurrent(bool recursive) {
 
     if (recursive) {
-        dynamic_cast<TagTreeNode*>(currentItem())->setOpenRecursive(false);
+        dynamic_cast<SourceDirTreeNode*>(currentItem())->setOpenRecursive(false);
     } else {
         currentItem()->setOpen(false);
     }
@@ -91,7 +93,7 @@ void SourceDirTree::expandAll() {
 
     QListViewItemIterator it(this);
     while (it.current()) {
-        TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
+        SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
 
         item->setOpenRecursive(true);
 
@@ -102,7 +104,7 @@ void SourceDirTree::collapseAll() {
 
     QListViewItemIterator it(this);
     while (it.current()) {
-        TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
+        SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
 
         item->setOpenRecursive(false);
 
@@ -112,19 +114,19 @@ void SourceDirTree::collapseAll() {
 
 
 void SourceDirTree::includeWholeSourceDir() {
-    dynamic_cast<TagTreeNodeSourceDir*>(currentItem())->setIncludedRecursive(true);
+    dynamic_cast<SourceDirTreeNode*>(currentItem())->setIncludedRecursive(true);
 }
 void SourceDirTree::excludeWholeSourceDir() {
-    dynamic_cast<TagTreeNodeSourceDir*>(currentItem())->setIncludedRecursive(false);
+    dynamic_cast<SourceDirTreeNode*>(currentItem())->setIncludedRecursive(false);
 }
 void SourceDirTree::invertSourceDir() {
-    dynamic_cast<TagTreeNodeSourceDir*>(currentItem())->invertInclusionRecursive();
+    dynamic_cast<SourceDirTreeNode*>(currentItem())->invertInclusionRecursive();
 }
 void SourceDirTree::includeAllSourceDirs() {
 
     QListViewItemIterator it(this);
     while (it.current()) {
-        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
+        SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
 
         item->setIncluded(true);
 
@@ -135,7 +137,7 @@ void SourceDirTree::excludeAllSourceDirs() {
 
     QListViewItemIterator it(this);
     while (it.current()) {
-        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
+        SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
 
         item->setIncluded(false);
 
@@ -146,7 +148,7 @@ void SourceDirTree::invertAllSourceDirs() {
 
     QListViewItemIterator it(this);
     while (it.current()) {
-        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
+        SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
 
         item->invertInclusion();
 
@@ -168,17 +170,17 @@ void SourceDirTree::addSourceDir(SourceDir* rootNode) {
 
     kdDebug() << "[SourceDirTree::addSourceDir] handling sourcedir: '" << rootNode->dir()->absPath() << "'..." << endl;
 
-    TagTreeNodeSourceDir* treeTagNodeSourceDir = new TagTreeNodeSourceDir(this, rootNode, m_photobook, m_photobook->contextMenuSourceDir());
+    SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(this, rootNode, m_photobook, m_photobook->contextMenuSourceDir());
 
     // insert the just created node into the dictionary
-    m_sourceDirNodeDict->insert(rootNode->id(), treeTagNodeSourceDir);
+    m_sourceDirNodeDict->insert(rootNode->id(), sourceDirTreeNode);
 
     // build the whole tree
-    buildSourceDirTree(treeTagNodeSourceDir, rootNode->children());
+    buildSourceDirTree(sourceDirTreeNode, rootNode->children());
 }
 
 
-void SourceDirTree::removeSourceDir(TagTreeNodeSourceDir* node) {
+void SourceDirTree::removeSourceDir(SourceDirTreeNode* node) {
     m_sourceDirNodeDict->remove(node->sourceDir()->id());
     delete node;
 }
@@ -189,7 +191,7 @@ void SourceDirTree::reflectSelectedFiles(const KFileItemList* selectedFiles) {
     // reset the number of selected files on all sourcedirnodes to 0
     QListViewItemIterator it(this);
     while (it.current()) {
-        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
+        SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
 
         item->setSelectedFilesCount(0);
 
@@ -202,7 +204,7 @@ void SourceDirTree::reflectSelectedFiles(const KFileItemList* selectedFiles) {
         File* selectedFile = dynamic_cast<File*>(it1.current());
 
         // get the sourcedirnode we belong to and increase its number of selected files
-        TagTreeNodeSourceDir* item = m_sourceDirNodeDict->find(selectedFile->sourceDir()->id());
+        SourceDirTreeNode* item = m_sourceDirNodeDict->find(selectedFile->sourceDir()->id());
 
         item->increaseSelectedFilesCount(1);
         item->repaint();
@@ -232,14 +234,14 @@ void SourceDirTree::slotListViewClicked(int button, QListViewItem* item,__attrib
     }
 
     if (button == Qt::RightButton && item != 0) {
-        dynamic_cast<TagTreeNode*>(item)->rightClicked(0, column);
+        dynamic_cast<SourceDirTreeNode*>(item)->rightClicked(0, column);
         // info: we do not use SIGNAL(contextMenu(KListView*, QListViewItem*, const QPoint&)
         // because we want the contextMenu only displayed on column 0
     }
 
     // inform the tagtreenode about the click
     if (button == Qt::LeftButton && item != 0) {
-        dynamic_cast<TagTreeNodeSourceDir*>(item)->columnClicked(0, column);
+        dynamic_cast<SourceDirTreeNode*>(item)->leftClicked(0, column);
     }
 }
 
@@ -247,7 +249,7 @@ void SourceDirTree::slotListViewClicked(int button, QListViewItem* item,__attrib
 //
 // private methods
 //
-void SourceDirTree::buildSourceDirTree(TagTreeNodeSourceDir* parent, QPtrList<SourceDir>* children) {
+void SourceDirTree::buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<SourceDir>* children) {
 
     // test if there are children
     if (!children || !children->count()) {
@@ -258,13 +260,13 @@ void SourceDirTree::buildSourceDirTree(TagTreeNodeSourceDir* parent, QPtrList<So
     SourceDir* child;
     for (child = children->first(); child; child = children->next() ) {
 
-        TagTreeNodeSourceDir* treeTagNodeSourceDir = new TagTreeNodeSourceDir(parent, child, m_photobook, m_photobook->contextMenuSubDir());
+        SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(parent, child, m_photobook, m_photobook->contextMenuSubDir());
 
         // insert the just created node into the dictionary
-        m_sourceDirNodeDict->insert(child->id(), treeTagNodeSourceDir);
+        m_sourceDirNodeDict->insert(child->id(), sourceDirTreeNode);
 
         // build the whole tree
-        buildSourceDirTree(treeTagNodeSourceDir, child->children());
+        buildSourceDirTree(sourceDirTreeNode, child->children());
     }
 }
 

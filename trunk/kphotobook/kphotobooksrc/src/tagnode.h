@@ -35,7 +35,7 @@ class File;
 /**
  * The superclass for all different taypes of tagnodes.
  *
- * CVS-ID $Id: tagnode.h,v 1.2 2004/03/18 22:04:14 starcube Exp $
+ * CVS-ID $Id: tagnode.h,v 1.3 2004/03/20 16:37:13 starcube Exp $
  */
 class TagNode : public QObject {
 
@@ -173,7 +173,7 @@ public:
      * Returns the association between this tagnode and the specified file, if there
      * exists one.
      */
-    FileTagNodeAssoc* getAssoc(File* file);
+    FileTagNodeAssoc* getAssocToFile(File* file);
 
     /**
      * Tests if this tagnode or a tagnode below this tagnode has a association to the

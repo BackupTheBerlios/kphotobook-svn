@@ -4,14 +4,19 @@
 
 #include "kphotobookview.h"
 
-#include "configuration.h"
-#include "tagtree.h"
-#include "sourcedirtree.h"
-#include "kphotobook.h"
 #include "constants.h"
-#include "sourcedir.h"
+#include "configuration.h"
+
+#include "kphotobook.h"
 #include "file.h"
-#include "tagtreenodesourcedir.h"
+
+#include "tagtree.h"
+#include "tagtreenode.h"
+
+#include "sourcedir.h"
+#include "sourcedirtree.h"
+#include "sourcedirtreenode.h"
+
 
 #include <qobject.h>
 #include <qpainter.h>
@@ -19,10 +24,6 @@
 #include <qstring.h>
 #include <qpopupmenu.h>
 
-#include <kurl.h>
-
-#include <ktrader.h>
-#include <klibloader.h>
 #include <kmessagebox.h>
 #include <krun.h>
 #include <klocale.h>
@@ -109,15 +110,15 @@ KPhotoBookView::~KPhotoBookView() {
 }
 
 
-TagTreeNodeSourceDir* KPhotoBookView::selectedSourceDir() {
+SourceDirTreeNode* KPhotoBookView::selectedSourceDir() {
 
     QListViewItem* currentItem = m_sourcedirTree->currentItem();
-    if (typeid(*currentItem) != typeid(TagTreeNodeSourceDir)) {
-        kdDebug() << "[KPhotoBookView::selectedSourceDir] sourcedirTree contains a node of other type than 'TagTreeNodeSourceDir'" << endl;
+    if (typeid(*currentItem) != typeid(SourceDirTreeNode)) {
+        kdDebug() << "[KPhotoBookView::selectedSourceDir] sourcedirTree contains a node of other type than 'SourceDirTreeNode'" << endl;
         return 0;
     }
 
-    return dynamic_cast<TagTreeNodeSourceDir*>(currentItem);
+    return dynamic_cast<SourceDirTreeNode*>(currentItem);
 }
 
 

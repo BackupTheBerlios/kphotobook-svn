@@ -20,8 +20,9 @@
 
  #include "constants.h"
 
-
+//
 // icons
+//
 const QString Constants::ICON_SOURCEDIR = QString("folder");
 
 const QString Constants::ICON_CREATE_MAINTAG = QString("tag_add");
@@ -47,5 +48,8 @@ const QString Constants::ICON_INVERT_FOLDER_SELECTION = QString("invert");
 const QString Constants::ICON_EXPAND_FOLDER = QString("expand");
 const QString Constants::ICON_COLLAPSE_FOLDER = QString("collapse");
 
+
+//
 // file-extension
+//
 const QString Constants::FILE_EXTENSION = QString("kpb");

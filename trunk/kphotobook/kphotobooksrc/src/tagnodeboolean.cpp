@@ -35,7 +35,7 @@ TagNodeBoolean::TagNodeBoolean(unsigned int id, const QString& text, const QStri
 
 void TagNodeBoolean::setTagged(File* file, bool tagged) {
 
-    FileTagNodeAssoc* fileTagNodeAssoc = getAssoc(file);
+    FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
     if (fileTagNodeAssoc) {
         FileTagNodeAssocBoolean* fileTagNodeAssocBoolean = dynamic_cast<FileTagNodeAssocBoolean*>(fileTagNodeAssoc);
         fileTagNodeAssocBoolean->setValue(tagged);
@@ -47,7 +47,7 @@ void TagNodeBoolean::setTagged(File* file, bool tagged) {
 
 bool TagNodeBoolean::tagged(File* file) {
 
-    FileTagNodeAssoc* fileTagNodeAssoc = getAssoc(file);
+    FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
     if (fileTagNodeAssoc == 0) {
         return false;
     }

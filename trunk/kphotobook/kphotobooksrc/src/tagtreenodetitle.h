@@ -28,14 +28,14 @@ class TagNodeTitle;
 /**
  * Concrete tagtreenode for displaying a title.
  *
- * CVS-ID $Id: tagtreenodetitle.h,v 1.1 2004/03/07 18:52:19 starcube Exp $
+ * CVS-ID $Id: tagtreenodetitle.h,v 1.2 2004/03/20 16:37:13 starcube Exp $
  */
 class TagTreeNodeTitle : public TagTreeNode {
 
 public:
-    TagTreeNodeTitle(KListView* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+    TagTreeNodeTitle(TagTree* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
-    TagTreeNodeTitle(KListViewItem* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+    TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
     virtual ~TagTreeNodeTitle();
 

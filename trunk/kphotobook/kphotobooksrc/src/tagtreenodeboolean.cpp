@@ -25,17 +25,18 @@
 #include "kphotobook.h"
 #include "kphotobookview.h"
 #include "file.h"
+#include "treehelper.h"
 
 #include <kfileitem.h>
 
-TagTreeNodeBoolean::TagTreeNodeBoolean(KListView* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
+TagTreeNodeBoolean::TagTreeNodeBoolean(TagTree* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu)
     , m_tagNode(tagNode)
     , m_filterState(FILTERSTATE_IGNORE) {
 }
 
 
-TagTreeNodeBoolean::TagTreeNodeBoolean(KListViewItem* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
+TagTreeNodeBoolean::TagTreeNodeBoolean(TagTreeNode* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu)
     , m_tagNode(tagNode)
     , m_filterState(FILTERSTATE_IGNORE) {
@@ -71,7 +72,7 @@ QString TagTreeNodeBoolean::filter() {
 }
 
 
-void TagTreeNodeBoolean::columnClicked(__attribute__((unused)) TagTree* tagTree, int column) {
+void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, int column) {
 
     switch (column) {
     case TagTree::COLUMN_TEXT :
@@ -229,10 +230,10 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
                 tristate = 1;
             }
 
-            drawCheckBox(p, cg, rect, tristate);
+            TreeHelper::drawCheckBox(p, cg, rect, tristate);
         } else {
             // no file is selected -> dtaw a disabled checkbox
-            drawCheckBox(p, cg, rect);
+            TreeHelper::drawCheckBox(p, cg, rect);
         }
 
         break;
@@ -244,7 +245,7 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
         // draw the checkbox in the center of the cell
         QRect rect((width-this->height()+4)/2, 2, this->height()-4, this->height()-4);
 
-        drawCheckBox(p, cg, rect, m_filterState);
+        TreeHelper::drawCheckBox(p, cg, rect, m_filterState);
 
         break;
     }

@@ -23,13 +23,15 @@
 #include "tagnodetitle.h"
 
 
-TagTreeNodeTitle::TagTreeNodeTitle(KListView* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu), m_tagNode(tagNode) {
+TagTreeNodeTitle::TagTreeNodeTitle(TagTree* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
+    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu)
+    , m_tagNode(tagNode) {
 }
 
 
-TagTreeNodeTitle::TagTreeNodeTitle(KListViewItem* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu), m_tagNode(tagNode) {
+TagTreeNodeTitle::TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
+    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu)
+    , m_tagNode(tagNode) {
 }
 
 

@@ -34,21 +34,36 @@
 class KPhotoBook;
 class TagNode;
 class TagTree;
+class TagTreeNode;
 
 /**
- * Superclass of all nodes to display in a tagtree.
+ * Superclass of all nodes to display in the tagtree.
+ * It is a subclass of KListViewItem with some extensions.
  *
- * CVS-ID $Id: tagtreenode.h,v 1.5 2004/03/18 20:55:20 starcube Exp $
+ * CVS-ID $Id: tagtreenode.h,v 1.6 2004/03/20 16:37:13 starcube Exp $
  */
 class TagTreeNode : public KListViewItem {
 
 public:
-    TagTreeNode(KListView* parent, QString text, KPhotoBook* photobook, QPixmap* icon = 0, KPopupMenu* contextMenu = 0);
-    TagTreeNode(KListViewItem* parent, QString text, KPhotoBook* photobook, QPixmap* icon = 0, KPopupMenu* contextMenu = 0);
+    /**
+     * Creates a new toplevel tagtreenode in the specified TagTree.
+     * @param parent The TagTree to add the created TagTreeNode to.
+     * @param text The text to display in the first column of the KListView.
+     * @param photobook The photobook.
+     * @param icon The icon to display (optional). If not set, no icon is displayed.
+     * @param contextMenu The contextMenu to display on this TagTreeNode (optional). If not set, no contextMenu is shown.
+     */
+    TagTreeNode(TagTree* parent, QString text, KPhotoBook* photobook, QPixmap* icon = 0, KPopupMenu* contextMenu = 0);
+    TagTreeNode(TagTreeNode* parent, QString text, KPhotoBook* photobook, QPixmap* icon = 0, KPopupMenu* contextMenu = 0);
 
     virtual ~TagTreeNode() {
     }
 
+    /**
+     * Refreshes the displayed icon and text.
+     * Should be called after the represented TagNode has changed or another setting
+     * has changed which influences the appearance of this TagTreeNode.
+     */
     void refresh();
 
     KPopupMenu* contextMenu() {
@@ -61,17 +76,25 @@ public:
         return QString::null;
     }
 
+    /**
+     * Expands or collapses the whole subtree beginning with this TagTreeNode.
+     * @param open Indicates if the subtree must be expanded (true) or collapsed (false).
+     */
     void setOpenRecursive(bool open);
 
-    virtual void columnClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column) {
+    /**
+     * This method is called by the tagtree when this TagTreeNode is clicked with the
+     * left mouse button.
+     */
+    virtual void leftClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column) {
     }
+    /**
+     * This method is called by the tagtree when this TagTreeNode is clicked with the
+     * right mouse button.
+     */
     virtual void rightClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column);
 
 protected:
-    void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect);
-    void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked);
-    void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate);
-
     KPhotoBook* m_photobook;
 
     KPopupMenu* m_contextMenu;

@@ -202,7 +202,7 @@ void TagTree::slotListViewClicked(int button, QListViewItem* item,__attribute__(
 
     // inform the tagtreenode about the click
     if (button == Qt::LeftButton && item != 0) {
-        dynamic_cast<TagTreeNode*>(item)->columnClicked(this, column);
+        dynamic_cast<TagTreeNode*>(item)->leftClicked(this, column);
     }
 }
 

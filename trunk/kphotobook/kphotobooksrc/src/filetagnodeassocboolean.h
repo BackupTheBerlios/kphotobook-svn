@@ -32,9 +32,13 @@ class TagNodeBoolean;
  * Concrete class representing the association between a file and a TagNodeBoolean.
  * This associations contains a reference to the tagnode and the state of the association.
  *
- * CVS-ID $Id: filetagnodeassocboolean.h,v 1.1 2004/03/07 18:52:26 starcube Exp $
+ * CVS-ID $Id: filetagnodeassocboolean.h,v 1.2 2004/03/20 16:37:13 starcube Exp $
  */
 class FileTagNodeAssocBoolean : public FileTagNodeAssoc {
+
+public:
+    static const QString STRING_VALUE_TRUE;
+    static const QString STRING_VALUE_FALSE;
 
 public:
     FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value = false);
@@ -45,6 +49,9 @@ public:
         // we don't delete anything!
     }
 
+    /**
+     * Returns the tagNode associated with this association.
+     */
     TagNodeBoolean* tagNodeBoolean();
 
     void setValue(bool value) {
@@ -56,13 +63,23 @@ public:
     }
 
     virtual QString valueAsString() {
-        return (m_value ? QString("true") : QString("false"));
+        return (m_value ? STRING_VALUE_TRUE : STRING_VALUE_FALSE);
     }
 
     /**
      * Updates the value of this node with the value of the specified association.
      */
     void update(FileTagNodeAssoc* assoc);
+
+    bool equals(QString* value) {
+        return (valueAsString() == *value);
+    }
+    bool greaterThan(QString* value) {
+        return (valueAsString() != *value);
+    }
+    bool lesserThan(QString* value) {
+        return (valueAsString() != *value);
+    }
 
 private:
     /**

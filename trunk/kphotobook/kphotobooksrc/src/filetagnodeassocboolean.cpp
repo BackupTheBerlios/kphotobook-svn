@@ -28,6 +28,13 @@
 #include <typeinfo>
 
 
+//
+// initialize constants
+//
+const QString FileTagNodeAssocBoolean::STRING_VALUE_TRUE = QString("true");
+const QString FileTagNodeAssocBoolean::STRING_VALUE_FALSE = QString("false");
+
+
 FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value)
     : FileTagNodeAssoc(file, tagNodeBoolean)
     , m_value(value) {
@@ -36,7 +43,7 @@ FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tag
 
 FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value)
     : FileTagNodeAssoc(file, tagNodeBoolean)
-    , m_value(value == "true") {
+    , m_value(value == STRING_VALUE_TRUE) {
 }
 
 

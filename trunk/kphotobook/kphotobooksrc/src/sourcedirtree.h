@@ -31,15 +31,16 @@
 #include <qpoint.h>
 #include <qintdict.h>
 
-class SourceDir;
 class File;
 class KPhotoBook;
-class TagTreeNodeSourceDir;
+
+class SourceDir;
+class SourceDirTreeNode;
 
 /**
  * The SourceDirTree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: sourcedirtree.h,v 1.2 2004/03/10 21:42:54 starcube Exp $
+ * CVS-ID $Id: sourcedirtree.h,v 1.3 2004/03/20 16:37:13 starcube Exp $
  */
 class SourceDirTree : public KListView {
 
@@ -51,6 +52,7 @@ public:
     static const int COLUMN_INCLUDED = 2;
 
     SourceDirTree(QWidget* parent, KPhotoBook* photobook, const char* name);
+
     ~SourceDirTree() {
         delete m_sourceDirNodeDict;
     }
@@ -69,7 +71,7 @@ public:
 
     void addSourceDirs(QPtrList<SourceDir>* rootNodeList);
     void addSourceDir(SourceDir* rootNode);
-    void removeSourceDir(TagTreeNodeSourceDir* node);
+    void removeSourceDir(SourceDirTreeNode* node);
 
     void reflectSelectedFiles(const KFileItemList* selectedFiles);
 
@@ -82,11 +84,11 @@ private slots:
     void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
 
 private:
-    void buildSourceDirTree(TagTreeNodeSourceDir* parent, QPtrList<SourceDir>* children);
+    void buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<SourceDir>* children);
 
     KPhotoBook* m_photobook;
 
-    QIntDict<TagTreeNodeSourceDir>* m_sourceDirNodeDict;
+    QIntDict<SourceDirTreeNode>* m_sourceDirNodeDict;
 };
 
 #endif

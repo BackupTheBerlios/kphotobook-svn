@@ -194,7 +194,7 @@ void TagNode::removeAssoc(FileTagNodeAssoc* assoc) {
 }
 
 
-FileTagNodeAssoc* TagNode::getAssoc(File* file) {
+FileTagNodeAssoc* TagNode::getAssocToFile(File* file) {
 
     FileTagNodeAssoc* currentAssoc;
     for ( currentAssoc = m_assocs->first(); currentAssoc; currentAssoc = m_assocs->next() ) {
@@ -212,7 +212,7 @@ bool TagNode::isLinkedToFile(File* file) {
 
     bool isLinked = false;
 
-    FileTagNodeAssoc* fileTagNodeAssoc = getAssoc(file);
+    FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
     if (fileTagNodeAssoc != 0) {
         // a file is considered to be linked with this tag if there is an association between
         // but if the tag is of type boolean, the assoc must have the value 'true'

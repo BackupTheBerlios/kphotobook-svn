@@ -24,9 +24,9 @@
 #include <qstring.h>
 
 /**
- * Constants.
+ * Constants for kphotobook.
  *
- * CVS-ID $Id: constants.h,v 1.2 2004/03/17 19:40:37 starcube Exp $
+ * CVS-ID $Id: constants.h,v 1.3 2004/03/20 16:37:13 starcube Exp $
  */
 class Constants {
 
@@ -58,7 +58,7 @@ public:
     static const QString ICON_COLLAPSE_FOLDER;
 
     // file-extension
-    static const QString FILE_EXTENSION;
+    static const QString FILE_EXTENSION; /**< The default used fileextension for kphotobook files. */
 };
 
 #endif
