@@ -33,7 +33,8 @@
 
 
 KPhotoBookView::KPhotoBookView(QWidget *parent)
-    : QWidget(parent) {
+    : QWidget(parent)
+    , m_sliderPressed(false) {
 
     // store casted pointer to the photobook
     m_photobook = dynamic_cast<KPhotoBook*>(parent);
