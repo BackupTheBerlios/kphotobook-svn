@@ -20,12 +20,12 @@
 
 #include "tagtreenodeboolean.h"
 
-#include "settings.h"
-#include "tagnodeboolean.h"
+#include "../settings/settings.h"
+#include "../engine/tagnodeboolean.h"
 #include "tagtree.h"
-#include "kphotobook.h"
-#include "kphotobookview.h"
-#include "file.h"
+#include "../kphotobook.h"
+#include "../kphotobookview.h"
+#include "../engine/file.h"
 #include "treehelper.h"
 
 #include <kfileitem.h>

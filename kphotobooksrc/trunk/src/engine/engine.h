@@ -21,7 +21,7 @@
 #ifndef _ENGINE_H_
 #define _ENGINE_H_
 
-#include "exception.h"
+#include "../exception.h"
 
 #include <qfileinfo.h>
 #include <qdir.h>

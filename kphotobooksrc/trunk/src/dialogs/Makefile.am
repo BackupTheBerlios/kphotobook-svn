@@ -1,0 +1,6 @@
+INCLUDES = $(all_includes)
+METASOURCES = AUTO
+libdialogs_la_LDFLAGS = $(all_libraries)
+noinst_LTLIBRARIES = libdialogs.la
+libdialogs_la_SOURCES = dialogaddsourcedir.cpp dialogaddsourcedir.h\
+	dialogcreatetag.cpp dialogcreatetag.h dialogedittag.cpp dialogedittag.h

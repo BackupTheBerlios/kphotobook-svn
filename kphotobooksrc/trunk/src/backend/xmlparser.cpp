@@ -20,13 +20,13 @@
 
 #include "xmlparser.h"
 
-#include "engine.h"
-#include "file.h"
-#include "sourcedir.h"
-#include "tagnode.h"
-#include "tagnodetitle.h"
-#include "tagnodeboolean.h"
-#include "filetagnodeassocboolean.h"
+#include "../engine/engine.h"
+#include "../engine/file.h"
+#include "../engine/sourcedir.h"
+#include "../engine/tagnode.h"
+#include "../engine/tagnodetitle.h"
+#include "../engine/tagnodeboolean.h"
+#include "../engine/filetagnodeassocboolean.h"
 
 #include <kdebug.h>
 

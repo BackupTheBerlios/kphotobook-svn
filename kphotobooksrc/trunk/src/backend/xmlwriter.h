@@ -18,57 +18,52 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DIALOGEDITTAG_H
-#define DIALOGEDITTAG_H
+#ifndef XMLWRITER_H
+#define XMLWRITER_H
 
-#include "kphotobook.h"
+#include "../exception.h"
+#include "../backend/xmlconstants.h"
 
-#include <kdialogbase.h>
-#include <klineedit.h>
-#include <kcombobox.h>
-
+#include <qfile.h>
 #include <qstring.h>
-#include <qpushbutton.h>
 
-class TagTreeNode;
+class Engine;
+class File;
+class SourceDir;
+class TagNode;
+class FileTagNodeAssoc;
 
 /**
- * The dialog to create a now tag.
+ * This class is writing the xml-file containing all needed data of the engine.
  *
  * CVS-ID $Id$
  */
-class DialogEditTag : public KDialogBase {
-
-Q_OBJECT
+class XmlWriter : public XmlConstants {
 
 public:
-    DialogEditTag(QWidget *parent, TagTreeNode* parentNode, KPhotoBook* photobook, const char *name);
-
-    ~DialogEditTag();
-
-    QString tagName() {
-        return m_nameLineEdit->text();
+    XmlWriter(Engine* engine)
+        : XmlConstants()
+        , m_engine(engine) {
     }
 
-    QString tagIcon() {
-        return m_iconLineEdit->text();
+    ~XmlWriter() {
     }
 
-private slots:
-    void slotNameChanged(const QString& text);
-    void slotIconTextChanged(const QString& text);
-    void slotIconButtonClicked();
+    void store(QFile* file) throw(PersistingException*);
 
 private:
-    TagTreeNode* m_tagTreeNode;
-    KPhotoBook* m_photobook;
+    Engine* m_engine;
 
-    KComboBox* m_typeComboBox;
-    KLineEdit* m_nameLineEdit;
-    KLineEdit* m_iconLineEdit;
-    QPushButton* m_iconButton;
+    void dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent);
+    void dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent);
+    void dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent);
+    void dumpFile(QTextStream& stream, File* file, QString indent);
+    void dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent);
 
-    void validate();
+    /**
+     * Quotes all needed characters in the specified string for xml files.
+     */
+    QString entitize(const QString data);
 };
 
 #endif

@@ -21,7 +21,7 @@
 #ifndef _XMLPARSER_H_
 #define _XMLPARSER_H_
 
-#include "exception.h"
+#include "../exception.h"
 #include "xmlconstants.h"
 
 #include <qxml.h>

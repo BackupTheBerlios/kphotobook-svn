@@ -20,7 +20,7 @@
 
 #include "dialogaddsourcedir.h"
 
-#include "settings.h"
+#include "../settings/settings.h"
 
 #include <klocale.h>
 #include <kglobal.h>

@@ -20,11 +20,11 @@
 
 #include "xmlwriter.h"
 
-#include "engine.h"
-#include "sourcedir.h"
-#include "tagnode.h"
-#include "file.h"
-#include "filetagnodeassoc.h"
+#include "../engine/engine.h"
+#include "../engine/sourcedir.h"
+#include "../engine/tagnode.h"
+#include "../engine/file.h"
+#include "../engine/filetagnodeassoc.h"
 
 #include <kdebug.h>
 

@@ -20,18 +20,18 @@
 
 #include "engine.h"
 
-#include "constants.h"
-#include "settings.h"
+#include "../constants.h"
+#include "../settings/settings.h"
 
-#include "xmlparser.h"
-#include "xmlwriter.h"
-#include "sourcedir.h"
-#include "tagnode.h"
-#include "tagnodetitle.h"
-#include "tagnodeboolean.h"
-#include "filetagnodeassoc.h"
-#include "filetagnodeassocboolean.h"
-#include "file.h"
+#include "../backend/xmlparser.h"
+#include "../backend/xmlwriter.h"
+#include "../engine/sourcedir.h"
+#include "../engine/tagnode.h"
+#include "../engine/tagnodetitle.h"
+#include "../engine/tagnodeboolean.h"
+#include "../engine/filetagnodeassoc.h"
+#include "../engine/filetagnodeassocboolean.h"
+#include "../engine/file.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>

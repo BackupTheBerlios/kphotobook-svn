@@ -5,17 +5,17 @@
 #include "kphotobookview.h"
 
 #include "constants.h"
-#include "settings.h"
+#include "settings/settings.h"
 
 #include "kphotobook.h"
-#include "file.h"
+#include "engine/file.h"
 
-#include "tagtree.h"
-#include "tagtreenode.h"
+#include "uitrees/tagtree.h"
+#include "uitrees/tagtreenode.h"
 
-#include "sourcedir.h"
-#include "sourcedirtree.h"
-#include "sourcedirtreenode.h"
+#include "engine/sourcedir.h"
+#include "uitrees/sourcedirtree.h"
+#include "uitrees/sourcedirtreenode.h"
 
 #include "kfile.h"
 #include <kmessagebox.h>

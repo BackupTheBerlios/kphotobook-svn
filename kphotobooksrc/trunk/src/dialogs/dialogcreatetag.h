@@ -21,7 +21,7 @@
 #ifndef DIALOGCREATETAG_H
 #define DIALOGCREATETAG_H
 
-#include "kphotobook.h"
+#include "../kphotobook.h"
 
 #include <kdialogbase.h>
 #include <klineedit.h>

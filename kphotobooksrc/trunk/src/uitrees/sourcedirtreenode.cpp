@@ -20,13 +20,13 @@
 
 #include "sourcedirtreenode.h"
 
-#include "constants.h"
-#include "settings.h"
+#include "../constants.h"
+#include "../settings/settings.h"
 
-#include "kphotobook.h"
+#include "../kphotobook.h"
 #include "treehelper.h"
 
-#include "sourcedir.h"
+#include "../engine/sourcedir.h"
 #include "sourcedirtree.h"
 
 #include <kglobal.h>

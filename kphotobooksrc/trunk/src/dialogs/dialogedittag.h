@@ -18,21 +18,57 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "tagtreenodetitle.h"
+#ifndef DIALOGEDITTAG_H
+#define DIALOGEDITTAG_H
 
-#include "tagnodetitle.h"
+#include "../kphotobook.h"
 
+#include <kdialogbase.h>
+#include <klineedit.h>
+#include <kcombobox.h>
 
-TagTreeNodeTitle::TagTreeNodeTitle(TagTree* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, photobook, tagNode, contextMenu) {
-}
+#include <qstring.h>
+#include <qpushbutton.h>
 
+class TagTreeNode;
 
-TagTreeNodeTitle::TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, photobook, tagNode, contextMenu) {
-}
+/**
+ * The dialog to create a now tag.
+ *
+ * CVS-ID $Id$
+ */
+class DialogEditTag : public KDialogBase {
 
+Q_OBJECT
 
-TagTreeNodeTitle::~TagTreeNodeTitle() {
-}
+public:
+    DialogEditTag(QWidget *parent, TagTreeNode* parentNode, KPhotoBook* photobook, const char *name);
 
+    ~DialogEditTag();
+
+    QString tagName() {
+        return m_nameLineEdit->text();
+    }
+
+    QString tagIcon() {
+        return m_iconLineEdit->text();
+    }
+
+private slots:
+    void slotNameChanged(const QString& text);
+    void slotIconTextChanged(const QString& text);
+    void slotIconButtonClicked();
+
+private:
+    TagTreeNode* m_tagTreeNode;
+    KPhotoBook* m_photobook;
+
+    KComboBox* m_typeComboBox;
+    KLineEdit* m_nameLineEdit;
+    KLineEdit* m_iconLineEdit;
+    QPushButton* m_iconButton;
+
+    void validate();
+};
+
+#endif

@@ -20,7 +20,7 @@
 
 #include "treehelper.h"
 
-#include "constants.h"
+#include "../constants.h"
 
 #include <kapp.h>
 #include <kdebug.h>

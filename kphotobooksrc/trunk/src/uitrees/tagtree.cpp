@@ -20,14 +20,14 @@
 
 #include "tagtree.h"
 
-#include "constants.h"
-#include "settings.h"
+#include "../constants.h"
+#include "../settings/settings.h"
 
 #include "tagtreenode.h"
-#include "kphotobook.h"
-#include "tagnode.h"
-#include "tagnodetitle.h"
-#include "tagnodeboolean.h"
+#include "../kphotobook.h"
+#include "../engine/tagnode.h"
+#include "../engine/tagnodetitle.h"
+#include "../engine/tagnodeboolean.h"
 #include "tagtreenodetitle.h"
 #include "tagtreenodeboolean.h"
 

@@ -21,7 +21,7 @@
 #ifndef _KPHOTOBOOK_H_
 #define _KPHOTOBOOK_H_
 
-#include "settings.h"
+#include "settings/settings.h"
 #include "exception.h"
 
 #include <kaction.h>

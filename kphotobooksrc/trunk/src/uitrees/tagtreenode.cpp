@@ -20,12 +20,12 @@
 
 #include "tagtreenode.h"
 
-#include "kphotobook.h"
-#include "settings.h"
+#include "../kphotobook.h"
+#include "../settings/settings.h"
 #include "treehelper.h"
 
 #include "tagtree.h"
-#include "tagnode.h"
+#include "../engine/tagnode.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>

@@ -20,14 +20,13 @@
 
 #include "sourcedirtree.h"
 
-#include "constants.h"
-#include "settings.h"
+#include "../constants.h"
+#include "../settings/settings.h"
 
-#include "kphotobook.h"
-#include "file.h"
-
-#include "sourcedir.h"
-#include "sourcedirtreenode.h"
+#include "../kphotobook.h"
+#include "../engine/file.h"
+#include "../engine/sourcedir.h"
+#include "../uitrees/sourcedirtreenode.h"
 
 
 #include <klocale.h>

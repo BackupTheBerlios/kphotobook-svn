@@ -18,52 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef XMLWRITER_H
-#define XMLWRITER_H
+#include "tagtreenodetitle.h"
 
-#include "exception.h"
-#include "xmlconstants.h"
+#include "../engine/tagnodetitle.h"
 
-#include <qfile.h>
-#include <qstring.h>
 
-class Engine;
-class File;
-class SourceDir;
-class TagNode;
-class FileTagNodeAssoc;
+TagTreeNodeTitle::TagTreeNodeTitle(TagTree* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
+    : TagTreeNode(parent, photobook, tagNode, contextMenu) {
+}
 
-/**
- * This class is writing the xml-file containing all needed data of the engine.
- *
- * CVS-ID $Id$
- */
-class XmlWriter : public XmlConstants {
 
-public:
-    XmlWriter(Engine* engine)
-        : XmlConstants()
-        , m_engine(engine) {
-    }
+TagTreeNodeTitle::TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
+    : TagTreeNode(parent, photobook, tagNode, contextMenu) {
+}
 
-    ~XmlWriter() {
-    }
 
-    void store(QFile* file) throw(PersistingException*);
+TagTreeNodeTitle::~TagTreeNodeTitle() {
+}
 
-private:
-    Engine* m_engine;
-
-    void dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent);
-    void dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent);
-    void dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent);
-    void dumpFile(QTextStream& stream, File* file, QString indent);
-    void dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent);
-
-    /**
-     * Quotes all needed characters in the specified string for xml files.
-     */
-    QString entitize(const QString data);
-};
-
-#endif

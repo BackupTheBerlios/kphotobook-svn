@@ -18,11 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "dialogedittag.h"
+#include "dialogcreatetag.h"
 
-#include "settings.h"
-#include "tagtreenode.h"
-#include "tagnode.h"
+#include "../settings/settings.h"
+#include "../uitrees/tagtreenode.h"
+#include "../engine/tagnode.h"
+#include "../engine/tagnodetitle.h"
+#include "../engine/tagnodeboolean.h"
 
 #include <klocale.h>
 #include <kicondialog.h>
@@ -36,20 +38,71 @@
 #include <qfile.h>
 
 
-DialogEditTag::DialogEditTag(QWidget *parent, TagTreeNode* tagTreeNode, KPhotoBook* photobook, const char *name)
+DialogCreateTag::DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, KPhotoBook* photobook, const char *name)
     : KDialogBase(parent, name, true, "", KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, false )
-    , m_tagTreeNode(tagTreeNode)
+    , m_parentNode(parentNode)
     , m_photobook(photobook) {
 
-    this->setCaption(i18n("Edit tag"));
+    if (parentNode) {
+        this->setCaption(i18n("Create tag"));
+    } else {
+        this->setCaption(i18n("Create toplevel tag"));
+    }
 
     QWidget* mainPanel = new QWidget(this, "mainPanel");
     setMainWidget(mainPanel);
     QVBoxLayout* mainPanelLayout = new QVBoxLayout(mainPanel, 0, 5, "mainPanelLayout");
     mainPanelLayout->setAutoAdd(true);
 
+    // parent
+    if (parentNode) {
+        // newTagGroup
+        QGroupBox* parentTagGroup = new QGroupBox(i18n("Parent tag"), mainPanel, "parentTagGroup");
+        QGridLayout* parentTagGroupLayout = new QGridLayout(parentTagGroup, 4, 4, 20, 5, "parentTagGroupLayout");
+
+        parentTagGroupLayout->setRowSpacing(0, 10);
+
+        // type
+        QLabel* typeLabel = new QLabel(i18n("Type"), parentTagGroup, "typeLabel");
+        parentTagGroupLayout->addWidget(typeLabel, 1, 0);
+
+        KComboBox* typeComboBox = new KComboBox(false, parentTagGroup, "typeComboBox");
+        typeComboBox->insertItem(parentNode->tagNode()->typeName());
+        typeComboBox->setEnabled(false);
+        parentTagGroupLayout->addMultiCellWidget(typeComboBox, 1, 1, 1, 2);
+
+        // name
+        QLabel* nameLabel = new QLabel(i18n("Name"), parentTagGroup, "nameLabel");
+        parentTagGroupLayout->addWidget(nameLabel, 2, 0);
+
+        KLineEdit* nameLineEdit = new KLineEdit(parentTagGroup, "nameLineEdit");
+        nameLineEdit->setText(*parentNode->tagNode()->text());
+        nameLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        nameLineEdit->setReadOnly(true);
+        parentTagGroupLayout->addMultiCellWidget(nameLineEdit, 2, 2, 1, 2);
+
+        // icon
+        QLabel* iconLabel = new QLabel(i18n("Icon"), parentTagGroup, "iconLabel");
+        parentTagGroupLayout->addWidget(iconLabel, 3, 0);
+
+        KLineEdit* iconLineEdit = new KLineEdit(parentTagGroup, "iconLineEdit");
+        iconLineEdit->setText(*parentNode->tagNode()->iconName());
+        iconLineEdit->setMinimumWidth(300);
+        iconLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        iconLineEdit->setReadOnly(true);
+        parentTagGroupLayout->addWidget(iconLineEdit, 3, 1);
+
+        QPushButton* iconButton = new QPushButton(i18n("Icon"), parentTagGroup, "iconButton");
+        QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(iconLineEdit->text(), KIcon::Small, Settings::tagTreeIconSize(), true);
+        iconButton->setIconSet(iconSet);
+        iconButton->setText(QString::null);
+        iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        iconButton->setEnabled(true);
+        parentTagGroupLayout->addWidget(iconButton, 3, 2);
+    }
+
     // newTagGroup
-    QGroupBox* newTagGroup = new QGroupBox(i18n("Edit tag"), mainPanel, "newTagGroup");
+    QGroupBox* newTagGroup = new QGroupBox(i18n("New tag"), mainPanel, "newTagGroup");
     QGridLayout* newTagGroupLayout = new QGridLayout(newTagGroup, 4, 4, 20, 5, "newTagGroupLayout");
 
     newTagGroupLayout->setRowSpacing(0, 10);
@@ -59,8 +112,13 @@ DialogEditTag::DialogEditTag(QWidget *parent, TagTreeNode* tagTreeNode, KPhotoBo
     newTagGroupLayout->addWidget(typeLabel, 1, 0);
 
     m_typeComboBox = new KComboBox(false, newTagGroup, "typeComboBox");
-    m_typeComboBox->insertItem(tagTreeNode->tagNode()->typeName());
-    m_typeComboBox->setEnabled(false);
+    m_typeComboBoxEntries = new QValueList<int>;
+    if (!parentNode) {
+        m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_TITLE));
+        m_typeComboBoxEntries->append(TagNode::tagNodeTypeId(TagNode::TYPE_TITLE));
+    }
+    m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_BOOLEAN));
+    m_typeComboBoxEntries->append(TagNode::tagNodeTypeId(TagNode::TYPE_BOOLEAN));
     newTagGroupLayout->addMultiCellWidget(m_typeComboBox, 1, 1, 1, 2);
 
     // name
@@ -92,11 +150,7 @@ DialogEditTag::DialogEditTag(QWidget *parent, TagTreeNode* tagTreeNode, KPhotoBo
     QWidget* spacer = new QWidget(mainPanel, "spacer");
     spacer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
-    // set the texts
-    m_nameLineEdit->setText(*tagTreeNode->tagNode()->text());
-    m_iconLineEdit->setText(*tagTreeNode->tagNode()->iconName());
-
-    // validate
+    // disable ok button
     validate();
 
     // set the focus
@@ -104,24 +158,30 @@ DialogEditTag::DialogEditTag(QWidget *parent, TagTreeNode* tagTreeNode, KPhotoBo
 }
 
 
-DialogEditTag::~DialogEditTag() {
-
+DialogCreateTag::~DialogCreateTag() {
+    delete m_typeComboBoxEntries;
 }
 
 
-void DialogEditTag::slotNameChanged(__attribute__((unused)) const QString& text) {
+int DialogCreateTag::tagType() {
+
+    return (*m_typeComboBoxEntries)[m_typeComboBox->currentItem()];
+}
+
+
+void DialogCreateTag::slotNameChanged(__attribute__((unused)) const QString& text) {
 
     validate();
 }
 
 
-void DialogEditTag::slotIconTextChanged(__attribute__((unused)) const QString& text) {
+void DialogCreateTag::slotIconTextChanged(__attribute__((unused)) const QString& text) {
 
     validate();
 }
 
 
-void DialogEditTag::slotIconButtonClicked() {
+void DialogCreateTag::slotIconButtonClicked() {
 
     KIconDialog* iconDialog = new KIconDialog(this, "iconDialog");
     iconDialog->setup(
@@ -139,7 +199,7 @@ void DialogEditTag::slotIconButtonClicked() {
 }
 
 
-void DialogEditTag::validate() {
+void DialogCreateTag::validate() {
 
     QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet(m_iconLineEdit->text(), KIcon::Small, Settings::tagTreeIconSize(), true);
 
@@ -152,16 +212,10 @@ void DialogEditTag::validate() {
         m_iconButton->setText(i18n("Icon"));
     }
 
-    QString currentName(*m_tagTreeNode->tagNode()->text());
-    QString newName(m_nameLineEdit->text());
-    // the name is valid if it was not changed
-    bool nameIsValid = (newName == currentName);
-    if (!nameIsValid) {
-        // the name is valid only, if there is no sibling with the same name
-        nameIsValid = !newName.isEmpty() && m_photobook->isTagTextValid(dynamic_cast<TagTreeNode*>(m_tagTreeNode->parent()), newName);
-    }
+    QString name(m_nameLineEdit->text());
+    bool nameIsValid = !name.isEmpty() && m_photobook->isTagTextValid(m_parentNode, name);
 
     this->enableButtonOK(nameIsValid && (m_iconLineEdit->text().isEmpty() || !folderIconSet.isNull()));
 }
 
-#include "dialogedittag.moc"
+#include "dialogcreatetag.moc"
