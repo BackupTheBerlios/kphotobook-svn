@@ -356,6 +356,16 @@ private:
      * do not support writing/reading int dictionaries.
      */        
     QIntDict<QString>* stringList2intDict(QStringList stringList); 
+    
+    /**
+     * Lets the user choose an existing directory.
+     * If the user aborts QString::null is returned otherwise an
+     * existing and valid directory name is returned.
+     *
+     * @param startDirectory The directory to display as default.
+     * @return The selected directory or QString::null.
+     */
+    QString selectExportingDirectory(QString startDirectory);
 
 private:
     KPhotoBookView* m_view;

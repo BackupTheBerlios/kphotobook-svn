@@ -79,6 +79,7 @@
 #include <kfilemetainfo.h>
 #include <kedittoolbar.h>
 #include <kmditoolviewaccessor.h>
+#include <kurlrequesterdlg.h>
 
 #include <kdebug.h>
 
@@ -1527,23 +1528,13 @@ void KPhotoBook::slotShowToolViewMetaInfoTree() {
 }
 
 
-#include <kurlrequesterdlg.h>
-
 void KPhotoBook::slotExportMatchingFiles() {
 
     QDir dir(Settings::fileSystemLastExportedToDirectory());
+    
+    QString choosedDir = selectExportingDirectory(dir.absPath());
 
-    QString choosedDir = KURLRequesterDlg::getURL(dir.absPath(), this, i18n("Select the directory to export to")).path();
-    
     if (!choosedDir.isEmpty()) {
-    
-        // test if the choosen directory is really a directory
-        KFileItem fileItem(KFileItem::Unknown, KFileItem::Unknown, choosedDir);
-        if (!fileItem.isDir()) {
-          KMessageBox::sorry(this, i18n("You must select a directory not a file."), i18n("Export"));
-          return;
-        }        
-        
         Settings::setFileSystemLastExportedToDirectory(choosedDir);
 
         kdDebug() << "[KPhotoBook::slotExportSelectedFiles] exporting to '" << choosedDir << "'..." << endl;
@@ -1562,17 +1553,10 @@ void KPhotoBook::slotExportSelectedFiles() {
 
     QDir dir(Settings::fileSystemLastExportedToDirectory());
   
-    QString choosedDir = KURLRequesterDlg::getURL(dir.absPath(), this, i18n("Select the directory to export to")).path();
+    QString choosedDir = selectExportingDirectory(dir.absPath());
     
     if (!choosedDir.isEmpty()) {
     
-        // test if the choosen directory is really a directory
-        KFileItem fileItem(KFileItem::Unknown, KFileItem::Unknown, choosedDir);
-        if (!fileItem.isDir()) {
-          KMessageBox::sorry(this, i18n("You must select a directory not a file."), i18n("Export"));
-          return;
-        }        
-        
         Settings::setFileSystemLastExportedToDirectory(choosedDir);
 
         kdDebug() << "[KPhotoBook::slotExportSelectedFiles] exporting to '" << choosedDir << "'..." << endl;
@@ -1982,6 +1966,36 @@ QIntDict<QString>* KPhotoBook::stringList2intDict(QStringList stringList) {
     }
     
     return filterDict;
+}
+
+
+QString KPhotoBook::selectExportingDirectory(QString startDirectory) {
+
+  // prepare the directory chooser dialog
+  KURLRequesterDlg* dialog = new KURLRequesterDlg(startDirectory, i18n("Directory to export to:"), this, "exportingDirectoryDialog", true);
+  dialog->setCaption(i18n("Select the directory to export to"));
+  
+  // ok, this is not very beautiful code, but simple...
+  while (true) {
+    dialog->exec();
+    QString choosedDir = dialog->selectedURL().path();
+
+    // return QString::null if the user choosed 'cancel'
+    if (choosedDir.isEmpty()) {
+      delete dialog;
+      return QString::null;
+    }
+    
+    // test if the choosen directory exists and is really a directory
+    KFileItem fileItem(KFileItem::Unknown, KFileItem::Unknown, choosedDir);
+    if (fileItem.isDir()) {
+      delete dialog;
+      return choosedDir;
+    }
+    
+    // if we got here the choosen directory is invalid
+    KMessageBox::sorry(this, i18n("You must select an existing directory."), i18n("Export"));
+  }
 }
 
 
