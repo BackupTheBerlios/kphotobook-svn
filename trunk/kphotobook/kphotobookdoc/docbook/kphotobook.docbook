@@ -47,30 +47,98 @@
     <para>This handbook is intended to give an overview on the easy use of &kmyapplication;.</para>
     
     <sect1>
-      <title>About This Manual</title>
-      <para>text text text</para>
+      <title>What is &kmyapplication;?</title>
+      <para>&kmyapplication; is a powerful, easy to use, intuitive and fast application to manage and organize your photos. The main idea is to be able to annotate your photos with tags and to refind the photos using the given tags. The tags which can be created by yourself are arranged in a tree.</para>
+      <para>The &kmyapplication; GUI comes up with several points which makes the handling with many photos very easy. This is just a short excerpt of it's goodies:</para>
+      <itemizedlist>
+        <listitem><para>It is very easy to annotate tags to one or more images at a time</para></listitem>
+	<listitem><para>It is very easy to find images by the given tags (actually one mouse click only is needed)</para></listitem>
+	<listitem><para>It is very easy to edit the image database with an external program - it's saved as XML file</para></listitem>
+	<listitem><para>...</para></listitem>
+      </itemizedlist>
     </sect1>
     <sect1>
-      <title>Idea</title>
-      <para>text text text</para>
+      <title>History</title>
+      <para>The idea for a photo database and photo album program came up during September 2003. Having bought a digital camera a few months ago, the necessity for a program to manage all the taken photos became urgent.</para>
+      <para>At this time, we did not know about a comparable program for KDE. A few weeks later KimDaBa 1.0 was released. We looked into this program but decided to go on with the development of &kmyapplication; anyway because KimDaBa was not exactly what we needed.</para>
+      <para>In February 2004 a first alpha-version of Fotoon was released. Fotoon came closer to what our idea is... but not exactly. We decide - once again - to go on working on &kmyapplication; and to have a close eye on these other applications.</para>
     </sect1>
     <sect1>
-      <title>Licence</title>
-      <para>text text text</para>
+      <title>Basic Feature List</title>
+      <itemizedlist>
+        <listitem><para>creating an image database with images from several folders which can be added single or recursively</para></listitem>
+	<listitem><para>annotate tags to the photos - this can be done for one photo only or for several photos at once</para></listitem>
+	<listitem><para>there will be different kinds of tags: title, string, dates, numeric, enumeration and boolean</para></listitem>
+	<listitem><para>there can be written a description for each image</para></listitem>
+	<listitem><para>searching and filtering the photos using the given tags and description</para></listitem>
+	<listitem><para>all pictures matching the chosen filter are displayed as thumbnails</para></listitem>
+	<listitem><para>the pictures can be rotated (real, EXIF or database only)</para></listitem>
+	<listitem><para>showing the EXIF informations of a selected file</para></listitem>
+	<listitem><para>showing the pictures matching the filter in a slide show</para></listitem>
+	<listitem><para>opening the files with a any desired program</para></listitem>
+	<listitem><para>For a more complete feature and "to do" list, please visit the &kmyapplication; homepage.</para></listitem>
+	<listitem><para>...</para></listitem>
+      </itemizedlist>
     </sect1>
     <sect1>
-      <title>Technology</title>
-      <para>text text text</para>
+      <title>Why another application to manage photos?</title>
+      <para>It's not easy to manage hundreds or even thousands of images. Other applications promote themselves to solve this problem. They say it'd be easy to manage such a huge amount of photos. Having looked at those other applications, we found that it was not that easy and not nearly as straight forward as we think such an application should be. Beside this, it is also very important that it is not only easy to manage the photos but also to be fast. Other applications provide the function to tag the pictures but do not offer this function in a really easy and fast way. Some others have the same approach as &kmyapplication;, but waiting for an application to become usable when no work is done on it is not really a great thing to do. :-)</para>
+    </sect1>
+    <sect1>
+      <title>Evolution of &kmyapplication;</title>
+      <para>This is a quick overview of the evolution of &kmyapplication;</para>
+      <sect2>
+      <title>Version 0.0.3</title>
+      <para>Version 0.0.3 was the first release of &kmyapplication; and was released in February 2004. It did not provide many features but seemed quite stable already (probably because of the lack of features :-) ). The UI provided a source directory tree and a main window in which thumbnails of the images in the imported directories were shown. There was also a tag tree - it was hard coded at this time. V0.0.3 already had the ability to alter the thumbnail size with a ruler.</para>
+      </sect2>
+      <sect2>
+      <title>Version 0.0.4</title>
+      <para>Version 0.0.4 was released in March 2004. Besides the features of Version 0.0.3, we provided a functional tag tree with title tags and boolean tags, improved filter abilities a few new icons and a new tool bar.</para>
+      </sect2>
     </sect1>        
   </chapter>
 
+  <chapter id="database">
+    <title>Database</title>
+        <para>A &kmyapplication; database is stored as one XML-file. This file contains all source folders, tags and files belonging to this database. Of course it is possible to have several databases storing different types of photos (e.g. you could have a database for your private photos and a database for your business photos).</para>
+	<para>When a database has changed (tags or source folders were edited) the file must be saved. That means that changes are not automatically persisted. Each time a file is saved the old file is backed-up.</para>
+  </chapter>
+  
+  
   <chapter id="source-directories">
     <title>Source Directories</title>
-        <para>text text text</para>
+        <para>The &kmyapplication; database contains all images of one ore more source folders. Source folders can be added recursively or single. Adding them recursively makes &kmyapplication; add the selected directory and all directories below it. When adding a folder recursively, hard- and soft-links are followed by default. To prevent endless loops &kmyapplication; tries to detect and suppress loops in the file system directory structure.</para>
+	<para>When restarting &kmyapplication; every source folder will be rescanned and new found sub-folders and files will be added to the database. This function can also be executed manually. Missed directories of files will not automatically be removed from the database to prevent loss of the association between files and tags.</para>
       <sect1>
-      <title>Adding and Removing Source Directories</title>
-      <para>text text text</para>
+      <title>The Source Directory Tree</title>
+      <para>The Source Directory Tree shows all the source directories which are added to the database. As known from Konqueror directories with subdirectories can be expanded and collapsed. There are some very handy operations which are accessible through the directory tree context menu:</para>
+      <para>Beside Folders:</para>
+      <informaltable>
+      <tgroup cols="2">
+      <tbody>
+        <row><entry>Include All</entry><entry>Includes all source directories which are in the database to the preview</entry></row>
+	<row><entry>Exclude All</entry><entry>Excludes all source directories from the preview</entry></row>
+	<row><entry>Invert All</entry><entry>All folders which were included to the preview will be excluded and vice versa</entry></row>
+	<row><entry>Expand all Source Directories</entry><entry>The folder Tree will be expanded. All source directories are visible</entry></row>
+	<row><entry>Collapse all Source Directories</entry><entry>The folder tree will be collapsed. Only the top level directories are shown</entry></row>
+	<row><entry>Add Source Directory</entry><entry>Prompts the dialog to add a source directory (recursively or single)</entry></row>
+      </tbody>
+      </tgroup>
+      </informaltable>
+      <para>On Folders:</para>
+      <informaltable>
+      <tgroup cols="2">
+      <tbody>
+        <row><entry>Include Whole Folder</entry><entry>Includes the directory to the preview. Subdirectories will be included as well</entry></row>
+	<row><entry>Exclude Whole Folder</entry><entry>Excludes the directory from the preview. Subdirectories will be excluded as well</entry></row>
+	<row><entry>Invert Folder Selection</entry><entry>All subdirectories of the current folder which were included to the preview will be excluded and vice versa</entry></row>
+	<row><entry>Expand Source Directory</entry><entry>Expands the current folder</entry></row>
+	<row><entry>Collapse Source Directory</entry><entry>Collapses the current folder</entry></row>
+      </tbody>
+      </tgroup>
+      </informaltable>
       </sect1>
+      
       <sect1>
       <title>Rescan Source Directories</title>
       <para>text text text</para>
@@ -173,9 +241,52 @@
     </sect1>
   </chapter>
   
+  <chapter id="command-reference">
+    <title>Command Reference</title>
+    <informaltable>
+      <tgroup cols="2">
+      <thead>
+        <row><entry>Command</entry><entry>Shortcut</entry><entry>Alternate</entry></row>
+      </thead>
+      <tbody>
+        <row><entry>Close</entry><entry>Ctrl+W</entry><entry></entry></row>
+	<row><entry>New</entry><entry>Ctrl+N</entry><entry></entry></row>
+	<row><entry>Open</entry><entry>Ctrl+O</entry><entry></entry></row>
+	<row><entry>Refresh View</entry><entry>F5</entry><entry>Ctrl+R</entry></row>
+	<row><entry>Autorefresh View</entry><entry>Shift+F5</entry><entry>Ctrl+Shift+R</entry></row>
+	<row><entry>Save</entry><entry>Ctrl+S</entry><entry></entry></row>
+	<row><entry>What's This?</entry><entry>Shift+F1</entry><entry></entry></row>
+      </tbody>
+      </tgroup>
+      </informaltable>
+  </chapter>
+  
+  
   <chapter id="faq">
-    <title>F.A.Q.</title>
+    <title>F.A.Q. - frequently asked questions</title>
         <para>These are some answers to the most frequently asked questions. As soon as there are too many questions for one page, this chapter will be splitted.</para>
+	<variablelist>
+	  <varlistentry>
+	    <term>How can I report bugs in KPhotoBook?</term>
+	    <listitem><para>Please visit the <ulink url="http://sourceforge.net/projects/kphotobook/">project homepage at sourceforge.net</ulink>. Please do not send an email concerning bugs to the developer directly.</para></listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>How can I report issues within this homepage?</term>
+	    <listitem><para>Please send an email to the maintainer of the <ulink url="http://kphotobook.sourceforge.net/">homepage</ulink>.</para></listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>Is the KPhotoBook database compatible with the KimDaBA or Fotoon database?</term>
+	    <listitem><para>No, it is not. Maybe there will be an import function.</para></listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>Will there be a function to draw into the picture?</term>
+	    <listitem><para>We will see...</para></listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>When will it be released?</term>
+	    <listitem><para>It's done when it's done :-)</para></listitem>
+	  </varlistentry>
+	</variablelist>
   </chapter>
   
 </book>
