@@ -83,7 +83,7 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
 
     // file preview
     m_fileView = new KFileIconView(mainPanel, "fileIconView");
-    m_fileView->setSelectionMode(KFile::Extended);
+    m_fileView->setSelectionMode(Configuration::getInstance()->selectionMode());
     m_fileView->setResizeMode(KFileIconView::Adjust);
     m_fileView->showPreviews();
     m_fileView->setWordWrapIconText(false);

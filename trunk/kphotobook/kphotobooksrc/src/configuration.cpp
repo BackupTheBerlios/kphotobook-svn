@@ -23,7 +23,6 @@
 #include <kapplication.h>
 #include <kconfig.h>
 #include <kicontheme.h>
-#include <kfile.h>
 
 #include <kdebug.h>
 
@@ -39,7 +38,9 @@ const int Configuration::MIN_TAGTREEICON_SIZE = KIcon::SizeSmall;
 const int Configuration::DEFAULT_TAGTREEICON_SIZE = 22;
 const int Configuration::MAX_TAGTREEICON_SIZE = KIcon::SizeHuge;
 
-const int Configuration::DEFAULT_FILEPREVIEW_SELECTIONMODE = KFile::Multi;
+const QString Configuration::DEFAULT_FILEPREVIEW_SELECTIONMODE = QString("Extended");
+const QString Configuration::FILEPREVIEW_SELECTIONMODE_MULTI = QString("Multi");
+const QString Configuration::FILEPREVIEW_SELECTIONMODE_EXTENDED = QString("Extended");
 
 const bool Configuration::DEFAULT_AUTOREFRESH = false;
 
@@ -54,8 +55,8 @@ const QString Configuration::CONFIG_ENTRY_TREESPLITTERSIZES = QString("TreeSplit
 
 const QString Configuration::GROUP_FILEPREVIEW = QString("FilePreview");
 const QString Configuration::CONFIG_ENTRY_PREVIEWSIZE = QString("PreviewSize");
-const QString Configuration::CONFIG_ENTRY_SELECTIONMODE = QString("SelectionMode");
 const QString Configuration::CONFIG_ENTRY_AUTOREFRESH = QString("AutoRefresh");
+const QString Configuration::CONFIG_ENTRY_SELECTIONMODE = QString("SelectionMode");
 
 const QString Configuration::GROUP_FILTERS = QString("Filters");
 const QString Configuration::CONFIG_ENTRY_SUBDIRSTOIGNORE = QString("SubdirsToIgnore");
@@ -87,14 +88,19 @@ void Configuration::load() {
     // read filepreview settings
     conf->setGroup(GROUP_FILEPREVIEW);
     m_previewSize = conf->readNumEntry(CONFIG_ENTRY_PREVIEWSIZE, DEFAULT_PREVIEW_SIZE);
-    m_filetreeSelectionMode = conf->readNumEntry(CONFIG_ENTRY_SELECTIONMODE, DEFAULT_FILEPREVIEW_SELECTIONMODE);
     m_autoRefresh= conf->readBoolEntry(CONFIG_ENTRY_AUTOREFRESH, DEFAULT_AUTOREFRESH);
+    QString selectionMode = conf->readEntry(CONFIG_ENTRY_SELECTIONMODE, DEFAULT_FILEPREVIEW_SELECTIONMODE);
+    m_selectionMode = KFile::Extended;
+    if (selectionMode == FILEPREVIEW_SELECTIONMODE_MULTI) {
+        m_selectionMode = KFile::Multi;
+    }
 
     // read filters
     conf->setGroup(GROUP_FILTERS);
     m_subdirsToIgnore = conf->readListEntry(CONFIG_ENTRY_SUBDIRSTOIGNORE);
     m_filetypesToHandle = conf->readListEntry(CONFIG_ENTRY_FILETYPESTOHANDLE);
     m_tagfilterOperator = conf->readEntry(CONFIG_ENTRY_TAGFILTEROPERATOR);
+
 
     conf->setGroup(QString::null);
 
@@ -117,8 +123,8 @@ void Configuration::validate() {
     }
 
     // adjust selection mode
-    if (m_filetreeSelectionMode != KFile::Multi && m_filetreeSelectionMode != KFile::Extended) {
-        m_filetreeSelectionMode = DEFAULT_FILEPREVIEW_SELECTIONMODE;
+    if (m_selectionMode != KFile::Multi && m_selectionMode != KFile::Extended) {
+        m_selectionMode = KFile::Extended;
     }
 
     // set the default directories to ignore if none were set in the config
@@ -164,8 +170,12 @@ void Configuration::store() {
     // store display settings
     conf->setGroup(GROUP_FILEPREVIEW);
     conf->writeEntry(CONFIG_ENTRY_PREVIEWSIZE, m_previewSize);
-    conf->writeEntry(CONFIG_ENTRY_SELECTIONMODE, m_filetreeSelectionMode);
     conf->writeEntry(CONFIG_ENTRY_AUTOREFRESH, m_autoRefresh);
+    if (m_selectionMode == KFile::Multi) {
+        conf->writeEntry(CONFIG_ENTRY_SELECTIONMODE, FILEPREVIEW_SELECTIONMODE_MULTI);
+    } else {
+        conf->writeEntry(CONFIG_ENTRY_SELECTIONMODE, FILEPREVIEW_SELECTIONMODE_EXTENDED);
+    }
 
     // store filter settings
     conf->setGroup(GROUP_FILTERS);
@@ -196,8 +206,8 @@ void Configuration::trace() {
 
     kdDebug() << "[" << GROUP_FILEPREVIEW << "]" << endl;
     kdDebug() << CONFIG_ENTRY_PREVIEWSIZE << " = " << m_previewSize << endl;
-    kdDebug() << CONFIG_ENTRY_SELECTIONMODE << " = " << m_filetreeSelectionMode << endl;
     kdDebug() << CONFIG_ENTRY_AUTOREFRESH << " = " << m_autoRefresh << endl;
+    kdDebug() << CONFIG_ENTRY_SELECTIONMODE << " = " << m_selectionMode << endl;
 
     kdDebug() << "[" << GROUP_FILTERS << "]" << endl;
     kdDebug() << CONFIG_ENTRY_SUBDIRSTOIGNORE << " = " << m_subdirsToIgnore.join(",") << endl;

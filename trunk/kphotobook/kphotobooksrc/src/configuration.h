@@ -21,6 +21,8 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+#include <kfile.h>
+
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qvaluelist.h>
@@ -28,7 +30,7 @@
 /**
  * This class stores the configuration of the application.
  *
- * CVS-ID $Id: configuration.h,v 1.2 2004/03/11 22:44:50 starcube Exp $
+ * CVS-ID $Id: configuration.h,v 1.3 2004/03/16 19:59:13 starcube Exp $
  */
 class Configuration {
 
@@ -44,7 +46,10 @@ public:
     static const int MAX_TAGTREEICON_SIZE;
 
     // selection mode
-    static const int DEFAULT_FILEPREVIEW_SELECTIONMODE;
+    static const QString DEFAULT_FILEPREVIEW_SELECTIONMODE;
+    static const QString FILEPREVIEW_SELECTIONMODE_MULTI;
+    static const QString FILEPREVIEW_SELECTIONMODE_EXTENDED;
+
 
     // auto refresh default
     static const bool DEFAULT_AUTOREFRESH;
@@ -63,8 +68,8 @@ public:
     // file preview
     static const QString GROUP_FILEPREVIEW;
     static const QString CONFIG_ENTRY_PREVIEWSIZE;
-    static const QString CONFIG_ENTRY_SELECTIONMODE;
     static const QString CONFIG_ENTRY_AUTOREFRESH;
+    static const QString CONFIG_ENTRY_SELECTIONMODE;
 
     // filter settings
     static const QString GROUP_FILTERS;
@@ -131,19 +136,18 @@ public:
         return m_treeSplitterSizes;
     }
 
-    void setFileTreeSelectionMode(int filetreeSelectionMode) {
-        m_filetreeSelectionMode = filetreeSelectionMode;
-        validate();
-    }
-    int fileTreeSelectionMode() {
-        return m_filetreeSelectionMode;
-    }
-
     void setAutoRefresh(bool autoRefresh) {
         m_autoRefresh = autoRefresh;
     }
     bool autoRefresh() {
         return m_autoRefresh;
+    }
+
+    void setSelectionMode(KFile::SelectionMode selectionMode) {
+        m_selectionMode = selectionMode;
+    }
+    KFile::SelectionMode selectionMode() {
+        return m_selectionMode;
     }
 
     void setSubdirsToIgnore(QStringList subdirsToIgnore) {
@@ -192,8 +196,8 @@ private:
     QValueList<int> m_treeSplitterSizes;
 
     int m_previewSize;
-    int m_filetreeSelectionMode;
     bool m_autoRefresh;
+    KFile::SelectionMode m_selectionMode;
 
     QStringList m_subdirsToIgnore;
     QStringList m_filetypesToHandle;
