@@ -38,7 +38,7 @@ class TagTree;
 /**
  * Superclass of all nodes to display in a tagtree.
  *
- * CVS-ID $Id: tagtreenode.h,v 1.4 2004/03/11 22:45:47 starcube Exp $
+ * CVS-ID $Id: tagtreenode.h,v 1.5 2004/03/18 20:55:20 starcube Exp $
  */
 class TagTreeNode : public KListViewItem {
 
@@ -63,10 +63,9 @@ public:
 
     void setOpenRecursive(bool open);
 
-    virtual void showContextMenu();
-
     virtual void columnClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column) {
     }
+    virtual void rightClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column);
 
 protected:
     void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect);

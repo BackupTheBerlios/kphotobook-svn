@@ -82,9 +82,9 @@ void TagTreeNode::setOpenRecursive(bool open) {
 }
 
 
-void TagTreeNode::showContextMenu() {
+void TagTreeNode::rightClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column) {
 
-    if (m_contextMenu) {
+    if (column == TagTree::COLUMN_TEXT && m_contextMenu) {
         m_contextMenu->exec(QCursor::pos());
     }
 }

@@ -147,6 +147,39 @@ void TagTreeNodeBoolean::columnClicked(__attribute__((unused)) TagTree* tagTree,
     }
 }
 
+
+void TagTreeNodeBoolean::rightClicked(__attribute__((unused)) TagTree* tagTree, int column) {
+
+    switch (column) {
+    case TagTree::COLUMN_TEXT :
+        if (m_contextMenu) {
+            m_contextMenu->exec(QCursor::pos());
+        }
+        break;
+
+    case TagTree::COLUMN_FILTER :
+        // change state of the filter: exclude -> include -> ignore -> exclude -> ...
+        switch (m_filterState) {
+        case FILTERSTATE_EXCLUDE:
+            m_filterState = FILTERSTATE_INCLUDE;
+            break;
+        case FILTERSTATE_IGNORE:
+            m_filterState = FILTERSTATE_EXCLUDE;
+            break;
+        case FILTERSTATE_INCLUDE:
+            m_filterState = FILTERSTATE_IGNORE;
+            break;
+        }
+
+        // force redrawing of this listviewitem
+        this->repaint();
+
+        m_photobook->autoRefreshView();
+        break;
+    }
+}
+
+
 void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
 
     switch (column) {

@@ -194,11 +194,8 @@ void TagTree::slotListViewClicked(int button, QListViewItem* item,__attribute__(
         // because we want the contextMenu only displayed on column 0
     }
 
-    if (button == Qt::RightButton && item != 0 && column == 0) {
-
-        // show contextMenu if right clicked in the first column
-        dynamic_cast<TagTreeNode*>(item)->showContextMenu();
-
+    if (button == Qt::RightButton && item != 0) {
+        dynamic_cast<TagTreeNode*>(item)->rightClicked(this, column);
         // info: we do not use SIGNAL(contextMenu(KListView*, QListViewItem*, const QPoint&)
         // because we want the contextMenu only displayed on column 0
     }

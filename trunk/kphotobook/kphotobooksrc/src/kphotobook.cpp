@@ -68,7 +68,7 @@
 #include <qlistview.h>
 
 KPhotoBook::KPhotoBook()
-    : KMainWindow( 0, "KPhotoBook" )
+    : KDockMainWindow( 0, "KPhotoBook" )
     , m_view(0)
     , m_engine(new Engine()) {
 
@@ -88,10 +88,39 @@ KPhotoBook::KPhotoBook()
     setupContextMenus();
 
     // it is important to create the view after setting up context menus
+//    m_view = new KPhotoBookView(this);
+
+
+    KDockWidget* mainDock = createDockWidget( "Falk's MainDockWidget", 0, 0L, "main_dock_widget");
     m_view = new KPhotoBookView(this);
+    mainDock->setWidget(m_view);
+    // allow others to dock to the 4 sides
+    mainDock->setDockSite(KDockWidget::DockCorner);
+    // forbit docking abilities of mainDock itself
+    mainDock->setEnableDocking(KDockWidget::DockNone);
+    setView( mainDock); // central widget in a KDE mainwindow
+    setMainDockWidget(mainDock); // master dockwidget
+    /*
+    ...
+    KDockWidget* dockLeft;
+    dockLeft = createDockWidget( "Intially left one", anyOtherPixmap, 0L, i18n("The left dockwidget"));
+    AnotherWidget* aw = new AnotherWidget( dockLeft);
+    dockLeft->setWidget( aw);
+    dockLeft->manualDock( mainDock,              // dock target
+                            KDockWidget::DockLeft, // dock site
+                            20 );                  // relation target/this (in percent)
+    */
+
+    KDockWidget* dock = this->createDockWidget("Any window caption", 0, 0, i18n("window caption"));
+    TagTree* actualWidget = new TagTree(dock, this, "tagtree in dock");
+    dock->setWidget(actualWidget); // embed it
+    dock->setToolTipString(i18n("That's me")); // available when appearing as tab page
+    dock->manualDock(mainDock,              // dock target
+                     KDockWidget::DockLeft, // dock site
+                     20 );                  // relation target/this (in percent)
 
     // tell the KMainWindow that this is indeed the main widget
-    setCentralWidget(m_view);
+    //setCentralWidget(m_view);
 
     // init some other things: statusbar,..
     init();

@@ -25,8 +25,9 @@
 
 #include <kaction.h>
 #include <kapplication.h>
-#include <kmainwindow.h>
+//#include <kmainwindow.h>
 #include <kpopupmenu.h>
+#include <kdockwidget.h>
 
 #include <qdir.h>
 
@@ -46,7 +47,7 @@ class EngineException;
  * @author $AUTHOR <$EMAIL>
  * @version $APP_VERSION
  */
-class KPhotoBook : public KMainWindow {
+class KPhotoBook : public KDockMainWindow {
 
     Q_OBJECT
 
