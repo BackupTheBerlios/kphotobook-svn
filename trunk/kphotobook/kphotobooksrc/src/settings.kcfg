@@ -157,6 +157,9 @@
     <entry name="FileSystemLastAddedSourcedir" type="String" key="LastAddedSourcedir">
       <label>Contains the last added source directory.</label>
     </entry>
+    <entry name="FileSystemLastExportedToDirectory" type="String" key="LastExportedToDirectory">
+      <label>Contains the last directory images were exported to.</label>
+    </entry>
   </group>
 
 </kcfg>

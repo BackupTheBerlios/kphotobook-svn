@@ -540,6 +540,25 @@ class Settings : public KConfigSkeleton
       return self()->mFileSystemLastAddedSourcedir;
     }
 
+    /**
+      Set Contains the last directory images were exported to.
+    */
+    static
+    void setFileSystemLastExportedToDirectory( const QString & v )
+    {
+      if (!self()->isImmutable( "FileSystemLastExportedToDirectory" ))
+        self()->mFileSystemLastExportedToDirectory = v;
+    }
+
+    /**
+      Get Contains the last directory images were exported to.
+    */
+    static
+    QString fileSystemLastExportedToDirectory()
+    {
+      return self()->mFileSystemLastExportedToDirectory;
+    }
+
     static
     void writeConfig()
     {
@@ -590,6 +609,7 @@ class Settings : public KConfigSkeleton
     // FileSystem
     QString mFileSystemLastOpenedFile;
     QString mFileSystemLastAddedSourcedir;
+    QString mFileSystemLastExportedToDirectory;
 
   private:
 };

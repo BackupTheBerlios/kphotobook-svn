@@ -180,6 +180,9 @@ Settings::Settings(  )
   KConfigSkeleton::ItemString  *itemFileSystemLastAddedSourcedir;
   itemFileSystemLastAddedSourcedir = new KConfigSkeleton::ItemString( currentGroup(), "LastAddedSourcedir", mFileSystemLastAddedSourcedir );
   addItem( itemFileSystemLastAddedSourcedir, "FileSystemLastAddedSourcedir" );
+  KConfigSkeleton::ItemString  *itemFileSystemLastExportedToDirectory;
+  itemFileSystemLastExportedToDirectory = new KConfigSkeleton::ItemString( currentGroup(), "LastExportedToDirectory", mFileSystemLastExportedToDirectory );
+  addItem( itemFileSystemLastExportedToDirectory, "FileSystemLastExportedToDirectory" );
 }
 
 Settings::~Settings()
