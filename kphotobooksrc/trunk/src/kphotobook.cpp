@@ -802,8 +802,7 @@ bool KPhotoBook::queryClose() {
     }
     
     //at last check for untaged images
-    if ( checkForUntagged() )
-        return false;
+    return checkForUntagged();
   
     // if we got here there was nothing to save --> simply close
     return retval;
@@ -821,30 +820,32 @@ bool KPhotoBook::checkForUntagged()
     kdDebug() << "[KPhotoBook::checkForUntagged] invoked" << endl;
 
     // only perform the check if the user likes to have that feature
-    if (! Settings::generalCheckUntaggedOnExit() )
-        return false;
+    if (! Settings::generalCheckUntaggedOnExit() ) {
+        return true;
+    }
 
     //now switch the filter to 'and' and untagged images
     slotAndifyTags();
     m_tagTree->deselectFilter();
 
-    // refresg tge view
+    // refresh tag view
     slotRefreshView();
 
     // and check, if there are untagged images
     if ( m_engine->filteredNumberOfFiles() ) {
         int button = KMessageBox::warningYesNo(
             this, // parent
-            i18n("There are untagged images...\nDo you wan\'t to tag them now?" ), // text
+            i18n("There are untagged images...\nDo you want to exit anyway?" ), // text
             i18n("Untagged Images") );
 
-        if ( button == KMessageBox::Yes )
-            return true;
-    }
-    else
+        if ( button == KMessageBox::No ) {
+            return false;
+        }
+    } else {
          kdDebug() << "[KPhotoBook::checkForUntagged] No untagged files found." << endl;
+    }
 
-    return false;
+    return true;
 }
 
 

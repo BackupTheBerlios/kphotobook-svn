@@ -219,7 +219,7 @@ void SourceDirTreeNode::paintCell(QPainter *p, const QColorGroup &cg, int column
     }
     case SourceDirTree::COLUMN_INCLUDED :
         // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor());
+        p->fillRect(0, 0, width, this->height(), backgroundColor(0));
 
         // draw the checkbox in the center of the cell
         QRect rect((width-this->height()+4)/2, 2, this->height()-4, this->height()-4);

@@ -42,8 +42,8 @@ Settings::Settings(  )
   itemGeneralRescanWhileStartup = new KConfigSkeleton::ItemBool( currentGroup(), "RescanWhileStartup", mGeneralRescanWhileStartup, true );
   addItem( itemGeneralRescanWhileStartup, "GeneralRescanWhileStartup" );
   KConfigSkeleton::ItemBool  *itemGeneralCheckUntaggedOnExit;
-  itemGeneralRescanWhileStartup = new KConfigSkeleton::ItemBool( currentGroup(), "CheckUntaggedOnExit", mGeneralCheckUntaggedOnExit, true );
-  addItem( itemGeneralRescanWhileStartup, "GeneralCheckUntaggedOnExit" );
+  itemGeneralCheckUntaggedOnExit = new KConfigSkeleton::ItemBool( currentGroup(), "CheckUntaggedOnExit", mGeneralCheckUntaggedOnExit, true );
+  addItem( itemGeneralCheckUntaggedOnExit, "GeneralCheckUntaggedOnExit" );
 
   setCurrentGroup( "TagTree" );
 

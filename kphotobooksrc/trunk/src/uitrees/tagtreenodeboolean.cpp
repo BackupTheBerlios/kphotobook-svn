@@ -222,7 +222,7 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
 
     case TagTree::COLUMN_VALUE : {
         // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor());
+        p->fillRect(0, 0, width, this->height(), backgroundColor(0));
 
         // draw the checkbox in the center of the cell in the size of the font
         int size = p->fontInfo().pixelSize()+2;
@@ -272,7 +272,7 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
     }
     case TagTree::COLUMN_FILTER :
         // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor());
+        p->fillRect(0, 0, width, this->height(), backgroundColor(0));
 
         // draw the checkbox in the center of the cell in the size of the font
         int size = p->fontInfo().pixelSize()+2;
