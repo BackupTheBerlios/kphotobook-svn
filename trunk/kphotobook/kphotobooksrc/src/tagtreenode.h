@@ -40,7 +40,7 @@ class TagTreeNode;
  * Superclass of all nodes to display in the tagtree.
  * It is a subclass of KListViewItem with some extensions.
  *
- * CVS-ID $Id: tagtreenode.h,v 1.9 2004/06/04 20:59:02 starcube Exp $
+ * CVS-ID $Id: tagtreenode.h,v 1.10 2004/06/04 21:36:36 starcube Exp $
  */
 class TagTreeNode : public KListViewItem {
 
@@ -103,7 +103,7 @@ public:
     /**
      * Applies the filter returned by getFilter().
      */
-    virtual void applyFilterString(QString filter) {
+    virtual void applyFilterString(__attribute__((unused)) QString filter) {
     }
 
     /**
