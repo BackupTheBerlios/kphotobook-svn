@@ -1,6 +1,6 @@
 INCLUDES = $(all_includes)
 METASOURCES = AUTO
-libengine_la_LDFLAGS = $(all_libraries) ../backend/libbackend.la
+libengine_la_LDFLAGS = $(all_libraries) 
 noinst_LTLIBRARIES = libengine.la
 libengine_la_SOURCES = engine.cpp engine.h file.cpp file.h filetagnodeassoc.cpp\
 	filetagnodeassoc.h filetagnodeassocboolean.cpp filetagnodeassocboolean.h\
