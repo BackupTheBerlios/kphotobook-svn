@@ -36,7 +36,7 @@
  * It creates symbolic links in the set destination directory to the
  * specified images.
  *
- * CVS-ID $Id: exportsymlinks.h,v 1.1 2004/06/12 21:39:26 starcube Exp $
+ * CVS-ID $Id: exportsymlinks.h,v 1.2 2004/06/13 15:01:48 starcube Exp $
 */
 class ExportSymlinks : public QObject { //, public QThread {
 
@@ -86,6 +86,13 @@ private:
    * Just for keeping the start method a bit smaller.
    */
   void doExport();
+  
+  /**
+   * Does the actual job of creating the symbolic link.
+   * Also all needed user interaction (rename/skip/autoskip/overwrite,...)
+   * is done within this method.
+   */
+  void createSymlink(QString sourceFile, QString symlink);
 
 
 private:
@@ -97,7 +104,8 @@ private:
   KProgressDialog* m_progressDialog;
   
   bool m_cancelling;
-  
+  bool m_autoSkip;
+  bool m_overwriteAll;
 };
 
 #endif
