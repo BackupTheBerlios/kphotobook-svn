@@ -65,18 +65,18 @@ void ExportSymlinks::execute() {
 
   // test the destination directory
   if (m_destinationDir.isEmpty()) {
-    kdError() << "[ExportSymlinks::start] the specified 'destinationDir' is null or empty!" << endl;
+    kdError() << "[ExportSymlinks::execute] the specified 'destinationDir' is null or empty!" << endl;
     return;
   }
   QDir dir(m_destinationDir);
   if (!dir.exists()) {
-    kdError() << "[ExportSymlinks::start] the specified 'destinationDir' is null or empty!" << endl;
+    kdError() << "[ExportSymlinks::execute] the specified 'destinationDir' does not exist or is not a directory!" << endl;
     return;
   }
 
   // test the files to export
   if (!m_sourceFiles || m_sourceFiles->isEmpty()) {
-    kdWarning() << "[ExportSymlinks::start] no files to export!" << endl;
+    kdWarning() << "[ExportSymlinks::execute] no files to export!" << endl;
     return;
   }
   
