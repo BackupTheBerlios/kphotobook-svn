@@ -28,7 +28,7 @@ class TagNodeBoolean;
 /**
  * Concrete tagtreenode for displaying a boolean tagnode.
  *
- * CVS-ID $Id: tagtreenodeboolean.h,v 1.4 2004/03/20 16:37:13 starcube Exp $
+ * CVS-ID $Id: tagtreenodeboolean.h,v 1.5 2004/03/22 21:51:39 starcube Exp $
  */
 class TagTreeNodeBoolean : public TagTreeNode {
 
@@ -44,8 +44,6 @@ public:
 
     virtual ~TagTreeNodeBoolean();
 
-    TagNode* tagNode();
-
     QString filter();
 
     virtual void leftClicked(TagTree* tagTree, int column);
@@ -53,8 +51,6 @@ public:
     virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
 
 private:
-    TagNodeBoolean* m_tagNode;
-
     int m_filterState;
 };
 

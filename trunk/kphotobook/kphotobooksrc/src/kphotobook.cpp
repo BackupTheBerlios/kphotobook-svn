@@ -23,6 +23,9 @@
 #include "configuration.h"
 #include "constants.h"
 
+#include "settings.h"
+#include "settingstagtree.h"
+
 #include "kphotobookview.h"
 #include "pref.h"
 #include "engine.h"
@@ -64,6 +67,7 @@
 #include <kaction.h>
 #include <kstdaction.h>
 #include <kfileitem.h>
+#include <kconfigdialog.h>
 
 #include <kdebug.h>
 
@@ -95,17 +99,17 @@ KPhotoBook::KPhotoBook()
     setupContextMenus();
 
     // it is important to create the view after setting up context menus
-//    m_view = new KPhotoBookView(this);
-
-
-    KDockWidget* mainDock = createDockWidget( "Falk's MainDockWidget", 0, 0L, "main_dock_widget");
     m_view = new KPhotoBookView(this);
+
+    // create the maindock widget
+    KDockWidget* mainDock = createDockWidget( "KPhotoBook'sMainDockWidget", 0, 0L, "mainDockWidget");
+//    m_view = new KPhotoBookView(this);
     mainDock->setWidget(m_view);
     // allow others to dock to the 4 sides
     mainDock->setDockSite(KDockWidget::DockCorner);
     // forbit docking abilities of mainDock itself
     mainDock->setEnableDocking(KDockWidget::DockNone);
-    setView( mainDock); // central widget in a KDE mainwindow
+    setView(mainDock); // central widget in a KDE mainwindow
     setMainDockWidget(mainDock); // master dockwidget
 
     /*
@@ -209,7 +213,7 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
         KMessageBox::detailedSorry(m_view, msg, ex->toString(), i18n("Opening file failed"));
 
         // TODO
-        // it's very strange, but the application crashes if a delete the exception!!!
+        // it's very strange, but the application crashes if I delete the exception!!!
 //        delete ex;
     }
 
@@ -653,7 +657,7 @@ bool KPhotoBook::slotFileSave() {
             } catch(PersistingException* ex) {
                 KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
                 // TODO
-                // it's very strange, but the application crashes if a delete the exception!!!
+                // it's very strange, but the application crashes if I delete the exception!!!
 //                delete ex;
             }
         } else {
@@ -697,7 +701,7 @@ bool KPhotoBook::slotFileSaveAs() {
             } catch(PersistingException* ex) {
                 KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
                 // TODO
-                // it's very strange, but the application crashes if a delete the exception!!!
+                // it's very strange, but the application crashes if I delete the exception!!!
 //                delete ex;
             }
         }
@@ -723,11 +727,18 @@ void KPhotoBook::slotOptionsConfigureToolbars() {
 
 void KPhotoBook::slotOptionsPreferences() {
 
-    // popup some sort of preference dialog, here
-    KPhotoBookPreferences dlg;
-    if (dlg.exec()) {
-        // redo your settings
+    // try to show the same settings dialog as last time
+    if(KConfigDialog::showDialog("settings")) {
+        return;
     }
+
+    // first time --> create the settings dialog
+    KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self(), KDialogBase::IconList);
+    dialog->addPage(new SettingsTagTree(0, "Tagtree"), i18n("TagTree"), Constants::ICON_EDIT_TAG);
+//    dialog->addPage(new Appearance(0, "Style"), i18n("Appearance") );
+    connect(dialog, SIGNAL(settingsChanged()), view()->tagTree(), SLOT(slotLoadSettings()));
+//    connect(dialog, SIGNAL(settingsChanged()), this, SLOT(loadSettings()));
+    dialog->show();
 }
 
 
@@ -771,7 +782,7 @@ void KPhotoBook::slotAddSourcedir() {
             KMessageBox::detailedError(dialog, ex->message(), ex->detailMessage(), i18n("Adding sourcedir failed"));
 
             // TODO
-            // it's very strange, but the application crashes if a delete the exception!!!
+            // it's very strange, but the application crashes if I delete the exception!!!
             //delete ex;
         }
     }

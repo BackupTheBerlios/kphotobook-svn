@@ -11,12 +11,12 @@
       <min>16</min>
       <max>48</max>
     </entry>
-    <entry name="TagTreeShowIcons" type="Bool" key="ShowIcons">
-      <label>Defines if the icons in the TagTree are shown.</label>
-      <default>true</default>
-    </entry>
     <entry name="TagTreeFont" type="Font" key="Font">
       <default code="true">KGlobalSettings::generalFont()</default>
+    </entry>
+    <entry name="TagTreeHideIcons" type="Bool" key="HideIcons">
+      <label>Defines if the icons in the TagTree are shown.</label>
+      <default>false</default>
     </entry>
   </group>
 <!--

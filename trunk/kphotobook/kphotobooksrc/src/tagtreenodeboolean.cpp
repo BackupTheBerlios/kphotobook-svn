@@ -30,25 +30,18 @@
 #include <kfileitem.h>
 
 TagTreeNodeBoolean::TagTreeNodeBoolean(TagTree* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu)
-    , m_tagNode(tagNode)
+    : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , m_filterState(FILTERSTATE_IGNORE) {
 }
 
 
 TagTreeNodeBoolean::TagTreeNodeBoolean(TagTreeNode* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu)
-    , m_tagNode(tagNode)
+    : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , m_filterState(FILTERSTATE_IGNORE) {
 }
 
 
 TagTreeNodeBoolean::~TagTreeNodeBoolean() {
-}
-
-
-TagNode* TagTreeNodeBoolean::tagNode() {
-    return m_tagNode;
 }
 
 
@@ -74,6 +67,8 @@ QString TagTreeNodeBoolean::filter() {
 
 void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, int column) {
 
+    TagNodeBoolean* tagNode = dynamic_cast<TagNodeBoolean*>(m_tagNode);
+
     switch (column) {
     case TagTree::COLUMN_TEXT :
         break;
@@ -92,7 +87,7 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
             for (; it.current(); ++it) {
                 File* selectedFile = dynamic_cast<File*>(it.current());
 
-                if (m_tagNode->tagged(selectedFile)) {
+                if (tagNode->tagged(selectedFile)) {
                     taggedFilesCount++;
                 } else {
                     untaggedFilesCount++;
@@ -116,7 +111,7 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
             for (; it.current(); ++it) {
                 File* selectedFile = dynamic_cast<File*>(it.current());
 
-                m_tagNode->setTagged(selectedFile, tagged);
+                tagNode->setTagged(selectedFile, tagged);
             }
 
             m_photobook->dirtyfy();
@@ -183,6 +178,8 @@ void TagTreeNodeBoolean::rightClicked(__attribute__((unused)) TagTree* tagTree, 
 
 void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
 
+    TagNodeBoolean* tagNode = dynamic_cast<TagNodeBoolean*>(m_tagNode);
+
     switch (column) {
     case TagTree::COLUMN_TEXT :
         KListViewItem::paintCell(p, cg, column, width, alignment);
@@ -207,7 +204,7 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
             for (; it.current(); ++it) {
                 File* selectedFile = dynamic_cast<File*>(it.current());
 
-                if (m_tagNode->tagged(selectedFile)) {
+                if (tagNode->tagged(selectedFile)) {
                     taggedFilesCount++;
                 } else {
                     untaggedFilesCount++;

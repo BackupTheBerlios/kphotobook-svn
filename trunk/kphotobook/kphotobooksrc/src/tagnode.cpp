@@ -67,7 +67,6 @@ TagNode::TagNode(unsigned int id, const QString& text, const QString& iconName, 
     , m_id(id)
     , m_text(new QString(text))
     , m_iconName(0)
-    , m_icon(0)
     , m_parent(0)
     , m_children(0)
     , m_assocs(new QPtrList<FileTagNodeAssoc>()) {
@@ -111,7 +110,6 @@ TagNode::~TagNode() {
     delete m_typeName;
     delete m_text;
     delete m_iconName;
-    delete m_icon;
     delete m_children;
 }
 
@@ -144,16 +142,6 @@ void TagNode::setIconName(const QString& iconName) {
 
     delete m_iconName;
     m_iconName = new QString(iconName);
-
-    delete m_icon;
-    m_icon = 0;
-
-    QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(iconName, KIcon::Small, Configuration::getInstance()->tagtreeIconSize(), true);
-    if (!iconSet.isNull()) {
-        m_icon = new QPixmap(iconSet.pixmap());
-    } else {
-        kdDebug() << "[TagNode::setIconName] Could not load isconset with iconname: '" << iconName << "'" << endl;
-    }
 }
 
 

@@ -28,7 +28,7 @@ class TagNodeTitle;
 /**
  * Concrete tagtreenode for displaying a title.
  *
- * CVS-ID $Id: tagtreenodetitle.h,v 1.2 2004/03/20 16:37:13 starcube Exp $
+ * CVS-ID $Id: tagtreenodetitle.h,v 1.3 2004/03/22 21:51:39 starcube Exp $
  */
 class TagTreeNodeTitle : public TagTreeNode {
 
@@ -39,14 +39,9 @@ public:
 
     virtual ~TagTreeNodeTitle();
 
-    TagNode* tagNode();
-
     virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment) {
         KListViewItem::paintCell(p, cg, column, width, alignment);
     }
-
-private:
-    TagNodeTitle* m_tagNode;
 };
 
 #endif

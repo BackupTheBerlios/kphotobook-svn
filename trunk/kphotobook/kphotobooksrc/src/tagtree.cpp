@@ -21,6 +21,8 @@
 #include "tagtree.h"
 
 #include "constants.h"
+#include "settings.h"
+
 #include "tagtreenode.h"
 #include "kphotobook.h"
 #include "tagnode.h"
@@ -46,6 +48,8 @@
 TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     : KListView( parent, name )
     , m_photobook(photobook) {
+
+    setFont(Settings::tagTreeFont());
 
     // create columns
     addColumn(i18n("Tags"));
@@ -166,10 +170,21 @@ void TagTree::doRepaintAll() {
     QListViewItemIterator it(this);
     while (it.current()) {
 
+        dynamic_cast<TagTreeNode*>(it.current())->refresh();
         this->repaintItem(it.current());
 
         ++it;
     }
+}
+
+
+//
+// public slots
+//
+void TagTree::slotLoadSettings() {
+
+    setFont(Settings::tagTreeFont());
+    doRepaintAll();
 }
 
 

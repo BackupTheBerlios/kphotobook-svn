@@ -24,22 +24,15 @@
 
 
 TagTreeNodeTitle::TagTreeNodeTitle(TagTree* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu)
-    , m_tagNode(tagNode) {
+    : TagTreeNode(parent, photobook, tagNode, contextMenu) {
 }
 
 
 TagTreeNodeTitle::TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, *tagNode->text(), photobook, tagNode->icon(), contextMenu)
-    , m_tagNode(tagNode) {
+    : TagTreeNode(parent, photobook, tagNode, contextMenu) {
 }
 
 
 TagTreeNodeTitle::~TagTreeNodeTitle() {
-}
-
-
-TagNode* TagTreeNodeTitle::tagNode() {
-    return m_tagNode;
 }
 

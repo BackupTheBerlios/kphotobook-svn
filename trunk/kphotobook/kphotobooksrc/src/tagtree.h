@@ -36,7 +36,7 @@ class KPhotoBook;
 /**
  * The tagtree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: tagtree.h,v 1.3 2004/03/10 21:42:54 starcube Exp $
+ * CVS-ID $Id: tagtree.h,v 1.4 2004/03/22 21:51:39 starcube Exp $
  */
 class TagTree : public KListView {
 
@@ -65,6 +65,9 @@ public:
     }
 
     void doRepaintAll();
+
+public slots:
+    void slotLoadSettings();
 
 private slots:
     void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);

@@ -35,7 +35,7 @@ class File;
 /**
  * The superclass for all different taypes of tagnodes.
  *
- * CVS-ID $Id: tagnode.h,v 1.3 2004/03/20 16:37:13 starcube Exp $
+ * CVS-ID $Id: tagnode.h,v 1.4 2004/03/22 21:51:39 starcube Exp $
  */
 class TagNode : public QObject {
 
@@ -155,10 +155,6 @@ public:
         return m_iconName;
     }
 
-    QPixmap* icon() {
-        return m_icon;
-    }
-
     /**
      * Appends the specified assoc to the list of associations for this tagnode.
      */
@@ -225,11 +221,6 @@ protected:
      * The name or the path of the icon to use.
      */
     QString* m_iconName;
-
-    /**
-     * The icon to be displayed. Can be null if no icon is set.
-     */
-    QPixmap* m_icon;
 
     /**
      * The parent of this tagnode. May be null.

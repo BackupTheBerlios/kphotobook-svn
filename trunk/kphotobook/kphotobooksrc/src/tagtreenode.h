@@ -40,7 +40,7 @@ class TagTreeNode;
  * Superclass of all nodes to display in the tagtree.
  * It is a subclass of KListViewItem with some extensions.
  *
- * CVS-ID $Id: tagtreenode.h,v 1.6 2004/03/20 16:37:13 starcube Exp $
+ * CVS-ID $Id: tagtreenode.h,v 1.7 2004/03/22 21:51:39 starcube Exp $
  */
 class TagTreeNode : public KListViewItem {
 
@@ -48,13 +48,12 @@ public:
     /**
      * Creates a new toplevel tagtreenode in the specified TagTree.
      * @param parent The TagTree to add the created TagTreeNode to.
-     * @param text The text to display in the first column of the KListView.
      * @param photobook The photobook.
-     * @param icon The icon to display (optional). If not set, no icon is displayed.
+     * @param tagNode The tagNode represented by this TagTreeNode.
      * @param contextMenu The contextMenu to display on this TagTreeNode (optional). If not set, no contextMenu is shown.
      */
-    TagTreeNode(TagTree* parent, QString text, KPhotoBook* photobook, QPixmap* icon = 0, KPopupMenu* contextMenu = 0);
-    TagTreeNode(TagTreeNode* parent, QString text, KPhotoBook* photobook, QPixmap* icon = 0, KPopupMenu* contextMenu = 0);
+    TagTreeNode(TagTree* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu = 0);
+    TagTreeNode(TagTreeNode* parent,  KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu = 0);
 
     virtual ~TagTreeNode() {
     }
@@ -70,7 +69,9 @@ public:
         return m_contextMenu;
     }
 
-    virtual TagNode* tagNode() = 0;
+    virtual TagNode* tagNode() {
+        return m_tagNode;
+    }
 
     virtual QString filter() {
         return QString::null;
@@ -96,6 +97,7 @@ public:
 
 protected:
     KPhotoBook* m_photobook;
+    TagNode* m_tagNode;
 
     KPopupMenu* m_contextMenu;
 };

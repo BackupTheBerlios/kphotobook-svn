@@ -21,11 +21,14 @@
 #include "tagtreenode.h"
 
 #include "kphotobook.h"
+#include "settings.h"
 #include "treehelper.h"
 
 #include "tagtree.h"
 #include "tagnode.h"
 
+#include <kglobal.h>
+#include <kiconloader.h>
 
 #include <qstyle.h>
 #include <qcheckbox.h>
@@ -35,41 +38,47 @@
 #include <typeinfo>
 
 
-TagTreeNode::TagTreeNode(TagTree* parent, QString text, KPhotoBook* photobook, QPixmap* icon, KPopupMenu* contextMenu)
-    : KListViewItem(parent, text.prepend(" ")), m_photobook(photobook), m_contextMenu(contextMenu) {
-
-    // set the icon if specified
-    if (icon) {
-        this->setPixmap(TagTree::COLUMN_TEXT, *icon);
-    }
+TagTreeNode::TagTreeNode(TagTree* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu)
+    : KListViewItem(parent)//, text.prepend(" "))
+    , m_photobook(photobook)
+    , m_tagNode(tagNode)
+    , m_contextMenu(contextMenu) {
 
     this->setText(TagTree::COLUMN_VALUE, "");
     this->setText(TagTree::COLUMN_FILTER, "");
+
+    refresh();
 }
 
 
-TagTreeNode::TagTreeNode(TagTreeNode* parent, QString text, KPhotoBook* photobook, QPixmap* icon, KPopupMenu* contextMenu)
-    : KListViewItem(parent, text.prepend(" ")), m_photobook(photobook), m_contextMenu(contextMenu) {
-
-    // set the icon if specified
-    if (icon) {
-        this->setPixmap(TagTree::COLUMN_TEXT, *icon);
-    }
+TagTreeNode::TagTreeNode(TagTreeNode* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu)
+    : KListViewItem(parent)//, text.prepend(" "))
+    , m_photobook(photobook)
+    , m_tagNode(tagNode)
+    , m_contextMenu(contextMenu) {
 
     this->setText(TagTree::COLUMN_VALUE, "");
     this->setText(TagTree::COLUMN_FILTER, "");
+
+    refresh();
 }
 
 
 void TagTreeNode::refresh() {
 
-    if (tagNode()->icon()) {
-        this->setPixmap(TagTree::COLUMN_TEXT, *tagNode()->icon());
-    } else {
+    if (Settings::tagTreeHideIcons()) {
         this->setPixmap(TagTree::COLUMN_TEXT, 0);
+    } else {
+        QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(*m_tagNode->iconName(), KIcon::Small, Settings::tagTreeIconSize(), true);
+        if (iconSet.isNull()) {
+            kdDebug() << "[TagTreeNode::refresh] Could not load isconset with iconname: '" << *m_tagNode->iconName() << "'" << endl;
+            this->setPixmap(TagTree::COLUMN_TEXT, 0);
+        } else {
+            this->setPixmap(TagTree::COLUMN_TEXT, iconSet.pixmap());
+        }
     }
 
-    this->setText(TagTree::COLUMN_TEXT, QString(*tagNode()->text()).prepend(" "));
+    this->setText(TagTree::COLUMN_TEXT, QString(*m_tagNode->text()).prepend(" "));
 }
 
 
