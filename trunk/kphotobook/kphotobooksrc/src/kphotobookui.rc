@@ -1,8 +1,14 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<gui name="kphotobook" version="9">
+<gui name="kphotobook" version="12">
 
 <MenuBar>
     <Menu name="file">
+        <Menu name="export">
+            <text>&amp;Export</text>
+            <Action name="exportMatchingFiles" />
+            <Action name="exportSelectedFiles" />
+        </Menu>
+        <Separator/>
         <Action name="rescanFilesystem" />
     </Menu>
     <Menu name="manage">
@@ -63,6 +69,13 @@
   <Separator/>
   <Action name="increasePreviewSize" />
   <Action name="decreasePreviewSize" />
+</ToolBar>
+
+<ToolBar name="helpToolBar" fullWidth="false" newline="false" >
+  <text>Help</text>
+  <Action name="help_contents" />
+  <Action name="help_whats_this" />
+  <Action name="help_about_app" />
 </ToolBar>
 
 <Menu name="contextMenu_tagTree">
