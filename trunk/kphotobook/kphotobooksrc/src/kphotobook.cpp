@@ -297,15 +297,15 @@ void KPhotoBook::setupActions() {
         actionCollection(), "refreshView"
     );
 
-    new KAction(
+    m_zoomIn = new KAction(
         i18n("&Increase Previewsize"), Constants::ICON_INCREASE_PREVIEWSIZE,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        KStdAccel::shortcut(KStdAccel::ZoomIn),
         this, SLOT(slotIncreasePreviewSize()),
         actionCollection(), "increasePreviewSize"
     );
-        new KAction(
+    m_zoomOut = new KAction(
         i18n("&Decrease Previewsize"), Constants::ICON_DECREASE_PREVIEWSIZE,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        KStdAccel::shortcut(KStdAccel::ZoomOut),
         this, SLOT(slotDecreasePreviewSize()),
         actionCollection(), "decreasePreviewSize"
     );
@@ -429,7 +429,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotAndifyTags()),
         actionCollection(), "andifyTags"
     );
-    m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == QString::number(Settings::EnumTagTreeFilterOperator::And));
+    m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::And);
 
     new KAction(
         i18n("Expand tag"), Constants::ICON_EXPAND_FOLDER,
@@ -472,7 +472,7 @@ void KPhotoBook::setupContextMenus() {
 QPtrList<File>* KPhotoBook::files(QString filter) {
 
     QString op = "&";
-    if (Settings::tagTreeFilterOperator() == QString::number(Settings::EnumTagTreeFilterOperator::Or)) {
+    if (Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::Or) {
         op = "|";
     }
 
@@ -1048,10 +1048,10 @@ void KPhotoBook::slotCollapseAllSourceDirs() {
 
 void KPhotoBook::slotAndifyTags() {
 
-    if (Settings::tagTreeFilterOperator() == QString::number(Settings::EnumTagTreeFilterOperator::And)) {
-        Settings::setTagTreeFilterOperator(QString::number(Settings::EnumTagTreeFilterOperator::Or));
+    if (Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::And) {
+        Settings::setTagTreeFilterOperator(Settings::EnumTagTreeFilterOperator::Or);
     } else {
-        Settings::setTagTreeFilterOperator(QString::number(Settings::EnumTagTreeFilterOperator::And));
+        Settings::setTagTreeFilterOperator(Settings::EnumTagTreeFilterOperator::And);
     }
 
     autoRefreshView();
@@ -1085,7 +1085,10 @@ void KPhotoBook::slotFileSelectionChanged() {
 
 void KPhotoBook::slotLoadSettings() {
 
-    m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == QString::number(Settings::EnumTagTreeFilterOperator::And));
+    m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::And);
+
+    m_zoomIn->setEnabled(Settings::imagePreviewSize() < Constants::SETTINGS_MAX_PREVIEW_SIZE);
+    m_zoomOut->setEnabled(Settings::imagePreviewSize() > Constants::SETTINGS_MIN_PREVIEW_SIZE);
 }
 
 

@@ -34,8 +34,8 @@
 
 
 KPhotoBookView::KPhotoBookView(QWidget *parent)
-    : QWidget(parent)
-    , m_sliderPressed(false) {
+    : QWidget(parent) {
+//    , m_sliderPressed(false) {
 
     // store casted pointer to the photobook
     m_photobook = dynamic_cast<KPhotoBook*>(parent);
@@ -68,25 +68,9 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
     QVBoxLayout* mainLayout = new QVBoxLayout(mainPanel, 5, 5, "mainLayout");
     mainLayout->setAutoAdd(true);
 
-    // image size panel
-    QWidget* imageSizePanel = new QWidget(mainPanel, "imageSizePanel");
-    QHBoxLayout* imageSizePanelLayout = new QHBoxLayout(imageSizePanel, 5, 5, "imageSizePanelLayout");
-    imageSizePanelLayout->setAutoAdd(true);
-
-    new QLabel(i18n("Image size:"), imageSizePanel, "imageSizeLabel");
-
-    m_imageSizeSlider = new QSlider(4, 20, 1, Settings::imagePreviewSize()/8, Qt::Horizontal, imageSizePanel, "imageSizeSlider");
-    m_imageSizeSlider->setTickmarks(QSlider::Above);
-    QObject::connect(m_imageSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(slotImageSizeSliderChanged(int)));
-    QObject::connect(m_imageSizeSlider, SIGNAL(sliderPressed()), this, SLOT(slotImageSizeSliderPressed()));
-    QObject::connect(m_imageSizeSlider, SIGNAL(sliderReleased()), this, SLOT(slotImageSizeSliderReleased()));
-
-    m_currentImageSize = new QLabel("", imageSizePanel, "currentImageSize");
-    updateCurrentImageSizeLabel();
-
     // file preview
     m_fileView = new KFileIconView(mainPanel, "fileIconView");
-    if (Settings::imagePreviewSelectionMode() == "Extended") {
+    if (Settings::imagePreviewSelectionMode() == Settings::EnumImagePreviewSelectionMode::Extended) {
         m_fileView->setSelectionMode(KFile::Extended);
     } else {
         m_fileView->setSelectionMode(KFile::Multi);
@@ -174,20 +158,23 @@ void KPhotoBookView::storeConfiguration() {
 
 void KPhotoBookView::increasePreviewSize() {
 
-    int position = m_imageSizeSlider->value();
-    if (position < m_imageSizeSlider->maxValue()) {
+    Settings::setImagePreviewSize(Settings::imagePreviewSize() + 8);
 
-        m_imageSizeSlider->setValue(position + 1);
-    }
+    m_photobook->enableZoomIn(Settings::imagePreviewSize() < Constants::SETTINGS_MAX_PREVIEW_SIZE);
+    m_photobook->enableZoomOut(Settings::imagePreviewSize() > Constants::SETTINGS_MIN_PREVIEW_SIZE);
+
+    updateCurrentImageSize();
 }
 
 
 void KPhotoBookView::decreasePreviewSize() {
 
-    int position = m_imageSizeSlider->value();
-    if (position > m_imageSizeSlider->minValue()) {
-        m_imageSizeSlider->setValue(position - 1);
-    }
+    Settings::setImagePreviewSize(Settings::imagePreviewSize() - 8);
+
+    m_photobook->enableZoomIn(Settings::imagePreviewSize() < Constants::SETTINGS_MAX_PREVIEW_SIZE);
+    m_photobook->enableZoomOut(Settings::imagePreviewSize() > Constants::SETTINGS_MIN_PREVIEW_SIZE);
+
+    updateCurrentImageSize();
 }
 
 
@@ -198,7 +185,7 @@ void KPhotoBookView::slotLoadSettings() {
 
     updateCurrentImageSize();
 
-    if (Settings::imagePreviewSelectionMode() == "Extended") {
+    if (Settings::imagePreviewSelectionMode() == Settings::EnumImagePreviewSelectionMode::Extended) {
         m_fileView->setSelectionMode(KFile::Extended);
     } else {
         m_fileView->setSelectionMode(KFile::Multi);
@@ -211,40 +198,6 @@ void KPhotoBookView::slotLoadSettings() {
 //
 // private slots
 //
-void KPhotoBookView::slotImageSizeSliderPressed() {
-
-    m_sliderPressed = true;
-}
-
-
-void KPhotoBookView::slotImageSizeSliderReleased() {
-
-    m_sliderPressed = false;
-
-    updateCurrentImageSizeLabel();
-
-    // store the current preview size
-    Settings::setImagePreviewSize(8*m_imageSizeSlider->value());
-
-    // slider released after dragging it --> redraw previews
-    updateCurrentImageSize();
-}
-
-
-void KPhotoBookView::slotImageSizeSliderChanged(__attribute__((unused)) int size) {
-
-    updateCurrentImageSizeLabel();
-
-    // slider position changed without dragging it --> redraw previews
-    if (!m_sliderPressed) {
-        // store the current preview size
-        Settings::setImagePreviewSize(8*m_imageSizeSlider->value());
-
-        updateCurrentImageSize();
-    }
-}
-
-
 void KPhotoBookView::slotShowCurrentImage() {
 
     KFileItem* item = m_fileView->currentFileItem();
@@ -263,13 +216,6 @@ void KPhotoBookView::slotShowCurrentImage() {
 //
 // private methods
 //
-void KPhotoBookView::updateCurrentImageSizeLabel() {
-
-    QString text = QString("%1 x %2").arg(8*m_imageSizeSlider->value()).arg(8*m_imageSizeSlider->value());
-    m_currentImageSize->setText(text);
-}
-
-
 void KPhotoBookView::updateCurrentImageSize() {
 
     // remember all selected files

@@ -8,7 +8,7 @@
 #include <kfileiconview.h>
 
 #include <qwidget.h>
-#include <qslider.h>
+//#include <qslider.h>
 #include <qsplitter.h>
 #include <qlabel.h>
 #include <qptrlist.h>
@@ -88,15 +88,9 @@ public slots:
     void slotLoadSettings();
 
 private slots:
-    void slotImageSizeSliderChanged(int size);
-    void slotImageSizeSliderPressed();
-    void slotImageSizeSliderReleased();
-
     void slotShowCurrentImage();
 
 private:
-    bool m_sliderPressed;
-
     KPhotoBook* m_photobook;
 
     QSplitter* m_split;
@@ -106,10 +100,6 @@ private:
     SourceDirTree* m_sourcedirTree;
     KFileIconView* m_fileView;
 
-    QSlider* m_imageSizeSlider;
-    QLabel* m_currentImageSize;
-
-    void updateCurrentImageSizeLabel();
     void updateCurrentImageSize();
 };
 

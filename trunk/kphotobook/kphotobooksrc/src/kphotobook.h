@@ -134,6 +134,13 @@ public:
         return m_contextMenuTagTreeItem;
     }
 
+    void enableZoomIn(bool enable) {
+        m_zoomIn->setEnabled(enable);
+    }
+    void enableZoomOut(bool enable) {
+        m_zoomOut->setEnabled(enable);
+    }
+
 protected:
     /**
      * This method is called after close is called on the instance.
@@ -235,6 +242,8 @@ private:
     Configuration* m_configuration;
 
     // actions
+    KAction* m_zoomIn;
+    KAction* m_zoomOut;
     KAction* m_save;
     KToggleAction* m_andifyTagsAction;
 
