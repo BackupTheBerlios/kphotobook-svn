@@ -20,7 +20,7 @@
       <default>true</default>
     </entry>
 
-    <entry name="TagTreeFilterOperator" type="String" key="FilterOperator">
+    <entry name="TagTreeFilterOperator" type="Enum" key="FilterOperator">
       <label>Defines the operator when filtering images by the TagTree.</label>
       <default>And</default>
       <choices>
@@ -31,7 +31,7 @@
   </group>
 
   <group name="SourceDirTree">
-    <entry name="SourceDirTreeIconSize" type="Int" key="IconSize">
+    <entry name="SourceDirTreeIconSize" type="Enum" key="IconSize">
       <label>The size of the icons in the SourceDirTree.</label>
       <default>22</default>
       <min>16</min>
@@ -50,8 +50,8 @@
   <group name="ImagePreview">
     <entry name="ImagePreviewSize" type="Int" key="Size">
       <label>The size of the image previews.</label>
-      <default>32</default>
-      <min>64</min>
+      <default>48</default>
+      <min>32</min>
       <max>160</max>
     </entry>
     <entry name="ImagePreviewFont" type="Font" key="Font">
@@ -67,7 +67,7 @@
       <label>Defines if the preview is refreshed autiomatically if the user changes something.</label>
       <default>true</default>
     </entry>
-    <entry name="ImagePreviewSelectionMode" type="String" key="SelectionMode">
+    <entry name="ImagePreviewSelectionMode" type="Enum" key="SelectionMode">
       <label>Defines the selectionmode for the image previews.</label>
       <default>Extended</default>
       <choices>
