@@ -32,6 +32,8 @@
 
 class Engine;
 class Configuration;
+class SettingsFileHandling;
+class SettingsTools;
 class KPhotoBookView;
 class SourceDir;
 class File;
@@ -133,14 +135,7 @@ public:
     KPopupMenu* contextMenuTagTreeItem() {
         return m_contextMenuTagTreeItem;
     }
-/*
-    void enableZoomIn(bool enable) {
-        m_zoomIn->setEnabled(enable);
-    }
-    void enableZoomOut(bool enable) {
-        m_zoomOut->setEnabled(enable);
-    }
-*/
+
 protected:
     /**
      * This method is called after close is called on the instance.
@@ -259,6 +254,11 @@ private:
     KPopupMenu* m_contextMenuSubDir;
     KPopupMenu* m_contextMenuTagTree;
     KPopupMenu* m_contextMenuTagTreeItem;
+
+    // settings pages
+    SettingsFileHandling* m_settingsFileHandling;
+    SettingsTools* m_settingsTools;
+
 };
 
 #endif // _KPHOTOBOOK_H_

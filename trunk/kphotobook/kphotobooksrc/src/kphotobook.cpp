@@ -27,6 +27,8 @@
 #include "settingstagtree.h"
 #include "settingssourcedirtree.h"
 #include "settingsimagepreview.h"
+#include "settingstools.h"
+#include "settingsfilehandling.h"
 
 #include "kphotobookview.h"
 #include "pref.h"
@@ -80,10 +82,23 @@
 #include <qptrlist.h>
 #include <qlistview.h>
 
+#include <qlistview.h>
+
 KPhotoBook::KPhotoBook()
     : KDockMainWindow( 0, "KPhotoBook" )
     , m_view(0)
-    , m_engine(new Engine()) {
+    , m_engine(new Engine())
+    , m_zoomIn(0)
+    , m_zoomOut(0)
+    , m_save(0)
+    , m_andifyTagsAction(0)
+    , m_contextMenuSourceDirTree(0)
+    , m_contextMenuSourceDir(0)
+    , m_contextMenuSubDir(0)
+    , m_contextMenuTagTree(0)
+    , m_contextMenuTagTreeItem(0)
+    , m_settingsFileHandling(0)
+    , m_settingsTools(0) {
 
     // accept dnd
     setAcceptDrops(false);
@@ -517,6 +532,32 @@ bool KPhotoBook::queryClose() {
     m_view->storeConfiguration();
     Configuration::getInstance()->store();
 
+    // we have to store the properties which aren't handled magically by framewotk (stringlist)
+    QStringList stringList;
+    if (m_settingsFileHandling) {
+        for (uint i = 0; i < m_settingsFileHandling->kcfg_FileFilterFileToHandle->count(); i++) {
+            stringList.append(m_settingsFileHandling->kcfg_FileFilterFileToHandle->text(i));
+        }
+        Settings::setFileFilterFileToHandle(stringList);
+
+        stringList.clear();
+        for (uint i = 0; i < m_settingsFileHandling->kcfg_FileFilterSubdirsToIgnore->count(); i++) {
+            stringList.append(m_settingsFileHandling->kcfg_FileFilterSubdirsToIgnore->text(i));
+        }
+        Settings::setFileFilterSubdirsToIgnore(stringList);
+    }
+
+    if (m_settingsTools) {
+        stringList.clear();
+        for (uint i = 0; i < m_settingsTools->kcfg_ToolsExternalTools->count(); i++) {
+            stringList.append(m_settingsTools->kcfg_ToolsExternalTools->text(i));
+        }
+        Settings::setToolsExternalTools(stringList);
+    }
+
+    // force writing the settings
+    Settings::writeConfig();
+
     // store the data if necessary
     if (m_engine && m_engine->dirty()) {
 
@@ -745,14 +786,27 @@ void KPhotoBook::slotOptionsPreferences() {
     // first time --> create the settings dialog
     KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self(), KDialogBase::IconList);
 
+    dialog->addPage(new SettingsImagePreview(0, "SettingsImagePreview"), i18n("ImagePreview"), Constants::ICON_SETTINGS_IMAGEPREVIEW);
     dialog->addPage(new SettingsTagTree(0, "SettingsTagtree"), i18n("TagTree"), Constants::ICON_SETTINGS_TAG);
     dialog->addPage(new SettingsSourceDirTree(0, "SettingsSourceDirTree"), i18n("SourceDirTree"), Constants::ICON_SETTINGS_SOURCEDIR);
-    dialog->addPage(new SettingsImagePreview(0, "SettingsImagePreview"), i18n("ImagePreview"), Constants::ICON_SETTINGS_IMAGEPREVIEW);
+
+    m_settingsFileHandling = new SettingsFileHandling(0, "SettingsFileHandling");
+    m_settingsFileHandling->kcfg_FileFilterFileToHandle->insertStringList(Settings::fileFilterFileToHandle());
+    m_settingsFileHandling->kcfg_FileFilterFileToHandle->setSelected(0, true);
+    m_settingsFileHandling->kcfg_FileFilterSubdirsToIgnore->insertStringList(Settings::fileFilterSubdirsToIgnore());
+    m_settingsFileHandling->kcfg_FileFilterSubdirsToIgnore->setSelected(0, true);
+    dialog->addPage(m_settingsFileHandling, i18n("FileHandling"), Constants::ICON_SETTINGS_FILEHANDLING);
+
+    m_settingsTools = new SettingsTools(0, "SettingsTools");
+    m_settingsTools->kcfg_ToolsExternalTools->insertStringList(Settings::toolsExternalTools());
+    m_settingsTools->kcfg_ToolsExternalTools->setSelected(0, true);
+    dialog->addPage(m_settingsTools, i18n("Tools"), Constants::ICON_SETTINGS_TOOLS);
 
     connect(dialog, SIGNAL(settingsChanged()), this, SLOT(slotLoadSettings()));
     connect(dialog, SIGNAL(settingsChanged()), view()->tagTree(), SLOT(slotLoadSettings()));
     connect(dialog, SIGNAL(settingsChanged()), view()->sourceDirTree(), SLOT(slotLoadSettings()));
     connect(dialog, SIGNAL(settingsChanged()), view(), SLOT(slotLoadSettings()));
+
 
     dialog->show();
 }
