@@ -36,7 +36,6 @@
 KPhotoBookView::KPhotoBookView(QWidget *parent)
     : QWidget(parent)
     , m_currentImagePreviewSize(-1) {
-//    , m_sliderPressed(false) {
 
     // store casted pointer to the photobook
     m_photobook = dynamic_cast<KPhotoBook*>(parent);
@@ -53,6 +52,9 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
     QWidget* outerPanel = new QWidget(m_split, "outerPanel");
     QVBoxLayout* outerPanelLayout = new QVBoxLayout(outerPanel, 5, 5, "outerPanelLayout");
     outerPanelLayout->setAutoAdd(true);
+
+    // do not resize the tree width when resizing the window
+    m_split->setResizeMode(outerPanel, QSplitter::KeepSize);
 
     // treesplitter
     m_treesplit = new QSplitter(Qt::Vertical, outerPanel, "treesplit");
@@ -77,6 +79,7 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
         m_fileView->setSelectionMode(KFile::Multi);
     }
     m_fileView->setResizeMode(KFileIconView::Adjust);
+    m_fileView->setFont(Settings::imagePreviewFont());
     m_fileView->showPreviews();
     m_fileView->setWordWrapIconText(false);
     updateCurrentImageSize();

@@ -48,6 +48,8 @@ SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char
     , m_photobook(photobook)
     , m_sourceDirNodeDict(new QIntDict<SourceDirTreeNode>) {
 
+    setFont(Settings::sourceDirTreeFont());
+
     // create columns
     addColumn(i18n("Source directories"));
     addColumn(i18n("Selected"));
