@@ -28,6 +28,8 @@
 <col width="100">
 </colgroup>
 
+
+
 <tr class="done"><td colspan="4">Done</td></tr>
 <tr class="done"><td>Feature</td><td>Description</td><td>Done on</td><td>Version</td></tr>
 
@@ -61,7 +63,6 @@
 
 
 
-
 <tr class="progress"><td colspan="4">Work in Progress</td></tr>
 <tr class="progress"><td>Features</td><td>Description</td><td>Planned</td><td>Version</td></tr>
 
@@ -75,6 +76,7 @@
         <li>Font size for SourceDirTree</li>
         <li>Selection mode for image preview (multi or extended)</li>
         <li>Preview size, selecting with a slider</li>
+        <li>GUI mode is changeable between IDEAl and TabPage mode</li>
     </ul>
 
     <ul>
@@ -82,7 +84,6 @@
         <li>List of regular expressions of file names to handle (e.g. *.jpg, *.jpeg)</li>
         <li>List of viewer programs and editing programs to open a photo with</li>
         <li>Show/hide filename in image preview</li>
-        <li>Autosave option - configurable interval</li>
     </ul>
 </td>
 <td class="scheduler_date">April 2003</td>
@@ -100,34 +101,18 @@
         <li>Ctrl+R as alternate shortcut for "refresh view"</li>
         <li>Use right mouse button on tag filters to cycle backwards through the options</li>
         <li>Slider for thumbnail preview size will be removed from the current position. The slider is located in the settings dialog now.</li>
+        <li>Source directory tree and tag tree will be moved to separate tabs</li>
     </ul>
 
     <ul>
         <li>I must not add KFiles to the KFileIconView but use a custom KFileIconViewItem!</li>
-        <li>Source directory tree and tag tree will be moved to separate tabs</li>
         <li>There will be a toolbar above every tree with the most important features</li>
         <li>Some icons will be added and improved</li>
         <li>There will be new filter operation for the tag tree like reset filter and such...</li>
         <li>Status bar displays information about the currently selected photo</li>
         <li>Make a toolbar for chosing the preview-size of the images</li>
-        <li>Remember the filter and the layout (open, closed tags) of the tag tree from the last session when starting <em>KPhotoBook</em></li>
-        <li>Remember the filter and the layout (open, closed directories) of the sourcedirectory tree from the last session when starting <em>KPhotoBook</em></li>
     </ul>
 </td>
-<td class="scheduler_date">April 2003</td>
-<td class="scheduler_version">0.0.5</td>
-</tr>
-
-<tr class="scheduler">
-<td class="scheduler_title">Write doxygen</td>
-<td class="scheduler_desc">Write doxygen comments for all methods and members. This is a big effort, but it should be done as soon as possible.</td>
-<td class="scheduler_date">April 2003</td>
-<td class="scheduler_version">0.0.5</td>
-</tr>
-
-<tr class="scheduler">
-<td class="scheduler_title">Cleaning Code</td>
-<td class="scheduler_desc">Check the code for mistakes described in <a target="_top" href="http://developer.kde.org/documentation/other/mistakes.html">Common Programming Mistakes</a>.</td>
 <td class="scheduler_date">April 2003</td>
 <td class="scheduler_version">0.0.5</td>
 </tr>
@@ -138,6 +123,21 @@
 <td class="scheduler_date">April 2003</td>
 <td class="scheduler_version">0.0.5</td>
 </tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Write doxygen</td>
+<td class="scheduler_desc">Write doxygen comments for all methods and members. This is a big effort, but it should be done as soon as possible.</td>
+<td class="scheduler_date">Mai 2003</td>
+<td class="scheduler_version">0.0.6</td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Cleaning Code</td>
+<td class="scheduler_desc">Check the code for mistakes described in <a target="_top" href="http://developer.kde.org/documentation/other/mistakes.html">Common Programming Mistakes</a>.</td>
+<td class="scheduler_date">Mai 2003</td>
+<td class="scheduler_version">0.0.6</td>
+</tr>
+
 
 
 <tr class="todo"><td colspan="4">To Do</td></tr>
@@ -151,6 +151,18 @@
 <td class="scheduler_version"></td>
 </tr>
 -->
+
+<tr class="scheduler">
+<td class="scheduler_title">Remember trees</td>
+<td class="scheduler_desc">
+    <ul>
+        <li>Remember the filter and the layout (open, closed tags) of the tag tree from the last session when starting <em>KPhotoBook</em></li>
+        <li>Remember the filter and the layout (open, closed directories) of the sourcedirectory tree from the last session when starting <em>KPhotoBook</em></li>
+    </ul>
+</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version">0.2.0</td>
+</tr>
 
 <tr class="scheduler">
 <td class="scheduler_title">Tag Types</td>
@@ -245,6 +257,13 @@
 
 <tr class="nyd"><td colspan="4">Not Yet Decided</td></tr>
 <tr class="nyd"><td>Feature</td><td>Description</td><td>Planned</td><td>Version</td></tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Autosave</td>
+<td class="scheduler_desc">Automatically save the database in a defined interval</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version"></td>
+</tr>
 
 <tr class="scheduler">
 <td class="scheduler_title">HTML Export</td>
