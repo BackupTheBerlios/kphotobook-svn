@@ -127,6 +127,7 @@ protected:
 private slots:
     void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
     void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
+    void slotItemRenamed(QListViewItem* item, int col, const QString& text);
 
 private:
     void buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children);

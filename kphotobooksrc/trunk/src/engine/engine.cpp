@@ -349,7 +349,7 @@ QPtrList<File>* Engine::files(QString filter) {
 
     kdDebug() << "[Engine::files] invoked with filter '" << filter << "'"<< endl;
 
-    // prepare filter
+    // split the filter at the & and | operators
     QStringList filterItems = QStringList::split(QRegExp("\\&|\\|"), filter, false);
 
     // determine operator
@@ -366,11 +366,12 @@ QPtrList<File>* Engine::files(QString filter) {
     for ( ; sourceDirIt.current(); ++sourceDirIt ) {
         SourceDir* sourceDir = sourceDirIt.current();
 
+        // handle the files in this directory only if it is selected
         if (sourceDir->include()) {
-            QPtrList<File>* fileList = sourceDir->files();
 
-            File* file;
-            for (file = fileList->first(); file; file = fileList->next()) {
+            // loop over all files in the current sourcedirectory
+            QPtrList<File>* fileList = sourceDir->files();
+            for (File* file = fileList->first(); file; file = fileList->next()) {
 
                 bool match = andOperator;
 

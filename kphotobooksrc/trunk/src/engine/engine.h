@@ -138,8 +138,19 @@ public:
     bool isTagTextValid(TagNode* parent, QString& text);
 
     /**
-    * Returns all files matching the specified filter.
-    */
+     * Returns all files matching the specified filter.
+     * A filter is just a string with the following syntax:
+     *
+     * filter = expression (operator expression)*
+     *
+     * expression = boolexpression | stringexpression
+     *
+     * boolexpression = ['!']<booltagid>
+     *
+     * stringexpression = <stringtagid>=='regular expression'
+     *
+     * operator = '&' | '|'
+     */
     QPtrList<File>* files(QString filter);
 
     void save() throw(PersistingException*);

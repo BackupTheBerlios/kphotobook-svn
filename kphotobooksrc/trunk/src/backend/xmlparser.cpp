@@ -26,7 +26,9 @@
 #include "../engine/tagnode.h"
 #include "../engine/tagnodetitle.h"
 #include "../engine/tagnodeboolean.h"
+#include "../engine/tagnodestring.h"
 #include "../engine/filetagnodeassocboolean.h"
+#include "../engine/filetagnodeassocstring.h"
 
 #include <kdebug.h>
 
@@ -867,6 +869,9 @@ bool XmlParser::handleTagAssoc(const QXmlAttributes& atts) {
     // link the current file to the found tagNode
     if (typeid(*tagNode) == typeid(TagNodeBoolean)) {
         new FileTagNodeAssocBoolean(m_currentFile, dynamic_cast<TagNodeBoolean*>(tagNode), value);
+    }
+    if (typeid(*tagNode) == typeid(TagNodeString)) {
+        new FileTagNodeAssocString(m_currentFile, dynamic_cast<TagNodeString*>(tagNode), value);
     }
 
     return true;

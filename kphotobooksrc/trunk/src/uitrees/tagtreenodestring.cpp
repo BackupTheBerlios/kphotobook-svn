@@ -22,6 +22,7 @@
 
 #include "../settings/settings.h"
 #include "../engine/tagnodestring.h"
+#include "../engine/filetagnodeassocstring.h"
 #include "tagtree.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
@@ -34,6 +35,7 @@ TagTreeNodeString::TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KP
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , m_filterValue(QString::null) {
 
+    // enable editing of value and filter
     setRenameEnabled(TagTree::COLUMN_VALUE, true);
     setRenameEnabled(TagTree::COLUMN_FILTER, true);
 }
@@ -43,6 +45,7 @@ TagTreeNodeString::TagTreeNodeString(TagTreeNode* parent, TagNodeString* tagNode
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , m_filterValue(QString::null) {
 
+    // enable editing of value and filter
     setRenameEnabled(TagTree::COLUMN_VALUE, true);
     setRenameEnabled(TagTree::COLUMN_FILTER, true);
 }
@@ -71,12 +74,11 @@ QString TagTreeNodeString::getFilterString() {
 void TagTreeNodeString::applyFilterString(QString filter) {
 
     m_filterValue = filter;
+    setText(TagTree::COLUMN_FILTER, filter);
 }
 
 
 void TagTreeNodeString::leftClicked(__attribute__((unused)) TagTree* tagTree, int column) {
-
-//    TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
 
     switch (column) {
     case TagTree::COLUMN_TEXT :
@@ -121,24 +123,15 @@ void TagTreeNodeString::rightClicked(__attribute__((unused)) TagTree* tagTree, i
 }
 
 
-void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
+void TagTreeNodeString::handleRenaming(int column, const QString& text) {
 
-    KListViewItem::paintCell(p, cg, column, width, alignment);
-/*
-    TagNodeBoolean* tagNode = dynamic_cast<TagNodeBoolean*>(m_tagNode);
+    TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
 
     switch (column) {
     case TagTree::COLUMN_TEXT :
-        KListViewItem::paintCell(p, cg, column, width, alignment);
         break;
 
     case TagTree::COLUMN_VALUE : {
-        // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor(0));
-
-        // draw the checkbox in the center of the cell in the size of the font
-        int size = p->fontInfo().pixelSize()+2;
-        QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
 
         // get all selected files
         const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
@@ -152,47 +145,105 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
             for (; it.current(); ++it) {
                 File* selectedFile = dynamic_cast<File*>(it.current());
 
-                if (tagNode->tagged(selectedFile)) {
+                if (tagNode->tagged(selectedFile, text)) {
                     taggedFilesCount++;
                 } else {
                     untaggedFilesCount++;
                 }
 
-                // we can abort the loop if we found a tagged and utagged file
+                // we can abort the loop if we found a tagged and untagged file
                 if (taggedFilesCount && untaggedFilesCount) {
                     break;
                 }
             }
 
-            // we assume that some files are tagged, some not
-            int tristate = 0;
-            // no file is tagged
-            if (!taggedFilesCount && untaggedFilesCount) {
-                tristate = -1;
-            } else
+            // if not all files are tagged, we tag all files
+            bool tagged = true;
             // all files are tagged
             if (taggedFilesCount && !untaggedFilesCount) {
-                tristate = 1;
+                tagged = false;
             }
 
-            TreeHelper::drawCheckBox(p, cg, rect, tristate, !Settings::tagTreeLocked());
-        } else {
-            // no file is selected -> draw a disabled checkbox
-            TreeHelper::drawCheckBox(p, cg, rect, false, false);
+            // loop over all selected files and change their state
+            it.toFirst();
+            for (; it.current(); ++it) {
+                File* selectedFile = dynamic_cast<File*>(it.current());
+
+                tagNode->setTagged(selectedFile, text);
+            }
+
+            m_photobook->dirtyfy();
+
+            // force redrawing of this listviewitem
+            this->repaint();
         }
         break;
     }
     case TagTree::COLUMN_FILTER :
-        // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor(0));
+        // filter has changed --> update the text in the node and auto refresh view
+        setFilterValue(text);
 
-        // draw the checkbox in the center of the cell in the size of the font
-        int size = p->fontInfo().pixelSize()+2;
-        QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
-
-        TreeHelper::drawCheckBox(p, cg, rect, m_filterState, true);
-
+        m_photobook->autoRefreshView();
         break;
     }
-*/
+}
+
+
+void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
+
+    TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
+
+    switch (column) {
+    case TagTree::COLUMN_TEXT :
+        KListViewItem::paintCell(p, cg, column, width, alignment);
+        break;
+
+    case TagTree::COLUMN_VALUE : {
+
+        // get all selected files
+        const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
+
+        if (selectedFiles->count()) {
+
+            QString text = QString::null;
+
+            QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
+            for (; it.current(); ++it) {
+                File* selectedFile = dynamic_cast<File*>(it.current());
+
+                FileTagNodeAssocString* assoc = dynamic_cast<FileTagNodeAssocString*>(tagNode->getAssocToFile(selectedFile));
+                if (assoc) {
+                    // ok we got an assoc remember it
+
+                    if (!text.isNull() && assoc->valueAsString() != text) {
+                        // abort is not all selected images have the same tagvalue!
+                        text = "---";
+                        break;
+                    }
+                    text = assoc->valueAsString();
+                } else {
+                    // no assoc found -> remove the text
+
+                    if (!text.isEmpty()) {
+                        // abort is not all selected images have the same tagvalue!
+                        text = "---";
+                        break;
+                    }
+                    text = "";
+                }
+            }
+
+            setText(TagTree::COLUMN_VALUE, text);
+        } else {
+            // no file is selected -> remove the text
+            setText(TagTree::COLUMN_VALUE, "");
+        }
+
+        KListViewItem::paintCell(p, cg, column, width, alignment);
+        break;
+    }
+    case TagTree::COLUMN_FILTER :
+        KListViewItem::paintCell(p, cg, column, width, alignment);
+        break;
+    }
 }

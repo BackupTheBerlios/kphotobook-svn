@@ -142,18 +142,13 @@ DialogManageTag::DialogManageTag(QWidget *parent, MODE mode, TagTreeNode* parent
             m_typeComboBoxEntries->append(TagNode::tagNodeTypeId(TagNode::TYPE_TITLE));
         }
 
-        // boolean tag can be top-level, below title and below other booleantag
+        // each tag (but the title tag) can be top-level, below title and below other booleantag
         if (!parentNode
             || parentNode->tagNode()->typeId() == TagNode::TYPE_TITLE
             || parentNode->tagNode()->typeId() == TagNode::TYPE_BOOLEAN) {
 
             m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_BOOLEAN));
             m_typeComboBoxEntries->append(TagNode::tagNodeTypeId(TagNode::TYPE_BOOLEAN));
-        }
-
-        // string tag can be top-level or below title tag
-        if (!parentNode
-            || parentNode->tagNode()->typeId() == TagNode::TYPE_TITLE) {
 
             m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_STRING));
             m_typeComboBoxEntries->append(TagNode::tagNodeTypeId(TagNode::TYPE_STRING));

@@ -41,7 +41,7 @@
         <envvar value="2.5" name="WANT_AUTOCONF" />
         <envvar value="1.6" name="WANT_AUTOMAKE" />
       </envvars>
-      <abortonerror>false</abortonerror>
+      <abortonerror>true</abortonerror>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
       <makebin></makebin>
@@ -56,20 +56,20 @@
         <cxxflags>-O2 -g0</cxxflags>
       </optimized>
       <debug>
-        <configargs>--enable-debug=full --prefix=/usr/kde/3.4 --with-qt-libraries=/usr/qt/3/lib64/</configargs>
+        <configargs>--enable-debug=full --prefix=/usr/kde/3.4</configargs>
         <builddir>debug</builddir>
         <ccompiler>kdevgccoptions</ccompiler>
         <cxxcompiler>kdevgppoptions</cxxcompiler>
-        <f77compiler>kdevg77options</f77compiler>
+        <f77compiler>kdevpgf77options</f77compiler>
         <cxxflags>-O0 -g3</cxxflags>
-        <topsourcedir>/home/choenig/misc/make/kphotobook/kphotobook/kphotobooksrc/trunk</topsourcedir>
-        <cppflags></cppflags>
-        <ldflags></ldflags>
-        <ccompilerbinary></ccompilerbinary>
-        <cxxcompilerbinary></cxxcompilerbinary>
-        <f77compilerbinary></f77compilerbinary>
-        <cflags></cflags>
-        <f77flags></f77flags>
+        <topsourcedir>/data/home/mike/Documents/develop/kphotobook/kphotobooksrc/trunk</topsourcedir>
+        <cppflags/>
+        <ldflags/>
+        <ccompilerbinary/>
+        <cxxcompilerbinary/>
+        <f77compilerbinary/>
+        <cflags/>
+        <f77flags/>
         <envvars/>
       </debug>
     </configurations>
@@ -192,8 +192,8 @@
   </kdevclassview>
   <kdevcppsupport>
     <references>
-      <pcs>KDE-x</pcs>
       <pcs>Qt</pcs>
+      <pcs>KDE 3</pcs>
     </references>
     <codecompletion>
       <includeGlobalFunctions>true</includeGlobalFunctions>
@@ -249,13 +249,9 @@
   </dist>
   <kdevdocumentation>
     <projectdoc>
-      <docsystem></docsystem>
-      <docurl></docurl>
-      <usermanualurl></usermanualurl>
+      <docsystem/>
+      <docurl/>
+      <usermanualurl/>
     </projectdoc>
   </kdevdocumentation>
-  <ctagspart>
-    <customArguments></customArguments>
-    <customTagfilePath></customTagfilePath>
-  </ctagspart>
 </kdevelop>

@@ -39,6 +39,11 @@ public:
 
     virtual ~TagTreeNodeString();
 
+    void setFilterValue(QString filterValue) {
+
+        m_filterValue = filterValue;
+    }
+
     /**
      * Returns an expression used to describe this filter.
      * This expression is used to create the filter used by the engine to determine which images to display.
@@ -79,6 +84,12 @@ public:
 
     virtual void leftClicked(TagTree* tagTree, int column);
     virtual void rightClicked(TagTree* tagTree, int column);
+
+    /**
+     * This method is called by the tagtree after the value or filter
+     * was changed by the user.
+     */
+    void handleRenaming(int column, const QString& text);
 
     virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
 private:

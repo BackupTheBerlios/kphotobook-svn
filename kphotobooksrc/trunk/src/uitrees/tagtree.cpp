@@ -76,6 +76,10 @@ TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
                      this, SLOT(slotListViewClicked(int, QListViewItem*, const QPoint&, int)));
     QObject::connect(this, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)),
                      this, SLOT(slotListViewDoubleClicked(QListViewItem*, const QPoint&, int)));
+
+    // append the listener for renaming items
+    QObject::connect(this, SIGNAL(itemRenamed(QListViewItem*, int, const QString&)),
+                     this, SLOT(slotItemRenamed(QListViewItem*, int, const QString&)));
 }
 
 
@@ -365,6 +369,20 @@ void TagTree::slotListViewClicked(int button, QListViewItem* item,__attribute__(
 }
 
 
+void TagTree::slotItemRenamed(QListViewItem* item, int column, const QString& text) {
+
+    kdDebug() << "[TagTree::slotItemRenamed] invoked with text: >" << text << "<" << endl;
+
+    if (typeid(*item) == typeid(TagTreeNodeString)) {
+
+        TagTreeNodeString* tagTreeNode = dynamic_cast<TagTreeNodeString*>(item);
+        tagTreeNode->handleRenaming(column, text);
+    } else {
+        kdWarning() << "[TagTree::slotItemRenamed] unknown item received: " << item->text(0) << endl;
+    }
+}
+
+
 //
 // private
 //
@@ -382,7 +400,6 @@ void TagTree::buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children)
         this->addTagNode(parent, child);
     }
 }
-
 
 
 //
