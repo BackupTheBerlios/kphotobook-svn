@@ -56,13 +56,14 @@ SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char
     addColumn(i18n("Include"));
 
     // we set the alignment to center to force redrawing the wohle cell always
-    setColumnAlignment (COLUMN_TEXT, Qt::AlignLeft);
-    setColumnAlignment (COLUMN_SELECTED, Qt::AlignCenter);
-    setColumnAlignment (COLUMN_INCLUDED, Qt::AlignCenter);
+    setColumnAlignment(COLUMN_TEXT, Qt::AlignLeft);
+    setColumnAlignment(COLUMN_SELECTED, Qt::AlignCenter);
+    setColumnAlignment(COLUMN_INCLUDED, Qt::AlignCenter);
 
     // we want that the first column gets as big as possible
-    header()->setStretchEnabled( true, 0);
+    header()->setStretchEnabled(true, COLUMN_TEXT);
 
+    // we cannot select a row
     setSelectionMode(QListView::NoSelection);
 
     // the root node must be closeable
