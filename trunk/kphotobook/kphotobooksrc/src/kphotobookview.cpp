@@ -34,7 +34,8 @@
 
 
 KPhotoBookView::KPhotoBookView(QWidget *parent)
-    : QWidget(parent) {
+    : QWidget(parent)
+    , m_currentImagePreviewSize(-1) {
 //    , m_sliderPressed(false) {
 
     // store casted pointer to the photobook
@@ -158,13 +159,20 @@ void KPhotoBookView::storeConfiguration() {
 
 void KPhotoBookView::updateCurrentImageSize() {
 
+    if (m_currentImagePreviewSize == Settings::imagePreviewSize()) {
+        // preview size has not changed --> do not update the view
+        return;
+    }
+
+    m_currentImagePreviewSize = Settings::imagePreviewSize();
+
     // remember all selected files
     QPtrList<KFileItem> selectedFiles(*m_fileView->selectedItems());
 
     // remove all displayed images
     removeAllFiles();
 
-    m_fileView->setPreviewSize(Settings::imagePreviewSize());
+    m_fileView->setPreviewSize(m_currentImagePreviewSize);
     m_fileView->showPreviews();
     m_fileView->setGridX(Settings::imagePreviewSize()+10);
     m_fileView->setGridY(Settings::imagePreviewSize()+10);

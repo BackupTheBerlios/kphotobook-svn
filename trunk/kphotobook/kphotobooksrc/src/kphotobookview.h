@@ -99,6 +99,8 @@ private:
     TagTree* m_tagtree;
     SourceDirTree* m_sourcedirTree;
     KFileIconView* m_fileView;
+
+    int m_currentImagePreviewSize;
 };
 
 #endif
