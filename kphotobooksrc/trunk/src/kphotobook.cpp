@@ -386,15 +386,26 @@ void KPhotoBook::setupActions() {
     );
     actionCollection()->action("refreshView")->setWhatsThis(i18n("This may, for example, be needed after having changed the tag filter or the source directory to be shown."));
 
-    m_zoomIn = new KAction(
+    m_zoomIn = new KToolBarPopupAction (
         i18n("&Increase Previewsize"), Constants::ICON_INCREASE_PREVIEWSIZE,
         KStdAccel::shortcut(KStdAccel::ZoomIn),
         this, SLOT(slotIncreasePreviewSize()),
         actionCollection(), "increasePreviewSize"
     );
     actionCollection()->action("increasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window bigger."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
+
+    connect(((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu(), SIGNAL(activated(int)),
+              this, SLOT(slotChangePreviewSizeActivated(int)));
+
+    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertTitle(i18n("Size:"));
+    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertItem("100 %", 100);
+    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertItem("75 %", 75);
+    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertItem("50 %", 50);
+    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertItem("25 %", 25);
+    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertItem("10 %", 10);
+
     
-    m_zoomOut = new KAction(
+    m_zoomOut = new KToolBarPopupAction(
         i18n("&Decrease Previewsize"), Constants::ICON_DECREASE_PREVIEWSIZE,
         KStdAccel::shortcut(KStdAccel::ZoomOut),
         this, SLOT(slotDecreasePreviewSize()),
@@ -403,6 +414,15 @@ void KPhotoBook::setupActions() {
     actionCollection()->action("decreasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window smaller."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
     applyZoomSetting();
 
+    connect(((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu(), SIGNAL(activated(int)),
+              this, SLOT(slotChangePreviewSizeActivated(int)));
+
+    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertTitle(i18n("Size:"));
+    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertItem("100 %", 100);
+    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertItem("75 %", 75);
+    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertItem("50 %", 50);
+    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertItem("25 %", 25);
+    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertItem("10 %", 10);
     
     //
     // sourcedir actions
@@ -583,7 +603,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "deselectFilter"
     );
     actionCollection()->action("deselectFilter")->setWhatsThis(i18n("Deselects all filters. In the filters 'AND' mode, all images without a associated tag are shown only. This is useful for finding new added images without having a tag yet."));
-    
+
     new KAction(
         i18n("Reset Filter"), Constants::ICON_TAG_FILTER_RESET,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -1319,6 +1339,26 @@ void KPhotoBook::slotIncreasePreviewSize() {
 }
 void KPhotoBook::slotDecreasePreviewSize() {
     Settings::setImagePreviewSize(Settings::imagePreviewSize() - 8);
+
+    applyZoomSetting();
+
+    m_view->updateCurrentImageSize();
+}
+
+
+void KPhotoBook::slotChangePreviewSizeActivated(int percent)
+{
+    //calculate the new size
+    int newSize = Constants::SETTINGS_MAX_PREVIEW_SIZE * percent / 100;
+
+    //but limit its lower boundry
+    if (newSize < Constants::SETTINGS_MIN_PREVIEW_SIZE) {
+        newSize = Constants::SETTINGS_MIN_PREVIEW_SIZE;
+    }
+
+    kdDebug() << "[KPhotoBook::slotChangePreviewSizeActivated()] New preview size is " << newSize << " pixels." << endl;
+
+    Settings::setImagePreviewSize(newSize);
 
     applyZoomSetting();
 

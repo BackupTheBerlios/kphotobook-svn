@@ -256,6 +256,8 @@ private slots:
     void slotIncreasePreviewSize();
     void slotDecreasePreviewSize();
 
+    void slotChangePreviewSizeActivated(int percent);
+
     void slotFileSelectionChanged();
 
     void changeStatusbar(const QString& text);
@@ -399,8 +401,8 @@ private:
 
     // actions
     KToggleAction* m_autoRefreshViewAction;
-    KAction* m_zoomIn;
-    KAction* m_zoomOut;
+    KToolBarPopupAction* m_zoomIn;
+    KToolBarPopupAction* m_zoomOut;
     KAction* m_save;
     KAction* m_exportMatchingFiles;
     KAction* m_exportSelectedFiles;
