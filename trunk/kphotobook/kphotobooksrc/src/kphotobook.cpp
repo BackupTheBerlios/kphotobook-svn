@@ -72,6 +72,7 @@
 #include <kstdaction.h>
 #include <kfileitem.h>
 #include <kconfigdialog.h>
+#include <kcombobox.h>
 
 #include <kdebug.h>
 
@@ -299,13 +300,13 @@ void KPhotoBook::setupActions() {
     //
     // view actions
     //
-    KToggleAction* autoRefreshViewAction = new KToggleAction(
+    m_autoRefreshViewAction = new KToggleAction(
         i18n("&Autorefresh view"), Constants::ICON_AUTOREFRESH_VIEW,
         0,
         this, SLOT(slotAutoRefreshView()),
         actionCollection(), "autoRefreshView"
     );
-    autoRefreshViewAction->setChecked(Settings::imagePreviewAutoRefresh());
+    applyAutorefreshSetting();
 
     KShortcut refreshViewShortCut(KStdAccel::shortcut(KStdAccel::Reload));
     refreshViewShortCut.append(KKey("CTRL+r"));
@@ -794,9 +795,12 @@ void KPhotoBook::slotOptionsPreferences() {
     // first time --> create the settings dialog
     KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self(), KDialogBase::IconList);
 
-    dialog->addPage(new SettingsImagePreview(0, "SettingsImagePreview"), i18n("ImagePreview"), Constants::ICON_SETTINGS_IMAGEPREVIEW);
-    dialog->addPage(new SettingsTagTree(0, "SettingsTagtree"), i18n("TagTree"), Constants::ICON_SETTINGS_TAG);
-    dialog->addPage(new SettingsSourceDirTree(0, "SettingsSourceDirTree"), i18n("SourceDirTree"), Constants::ICON_SETTINGS_SOURCEDIR);
+    m_settingsImagePreview = new SettingsImagePreview(0, "SettingsImagePreview");
+    dialog->addPage(m_settingsImagePreview, i18n("ImagePreview"), Constants::ICON_SETTINGS_IMAGEPREVIEW);
+    m_settingsTagTree = new SettingsTagTree(0, "SettingsTagtree");
+    dialog->addPage(m_settingsTagTree, i18n("TagTree"), Constants::ICON_SETTINGS_TAG);
+    m_settingsSourceDirTree = new SettingsSourceDirTree(0, "SettingsSourceDirTree");
+    dialog->addPage(m_settingsSourceDirTree, i18n("SourceDirTree"), Constants::ICON_SETTINGS_SOURCEDIR);
 
     m_settingsFileHandling = new SettingsFileHandling(0, "SettingsFileHandling");
     m_settingsFileHandling->kcfg_FileFilterFileToHandle->insertStringList(Settings::fileFilterFileToHandle());
@@ -1051,7 +1055,7 @@ void KPhotoBook::slotRescanFilesystem() {
 void KPhotoBook::slotAutoRefreshView() {
     Settings::setImagePreviewAutoRefresh(!Settings::imagePreviewAutoRefresh());
 
-    autoRefreshView();
+    applyAutorefreshSetting();
 }
 void KPhotoBook::slotRefreshView() {
     m_view->updateFiles();
@@ -1173,6 +1177,7 @@ void KPhotoBook::slotLoadSettings() {
 
     applyOperatorSetting();
     applyZoomSetting();
+    applyAutorefreshSetting();
 }
 
 
@@ -1181,8 +1186,8 @@ void KPhotoBook::slotLoadSettings() {
 //
 void KPhotoBook::autoRefreshView() {
 
-    if (Settings::imagePreviewAutoRefresh()) {
-        view()->updateFiles();
+    if (m_view && Settings::imagePreviewAutoRefresh()) {
+        m_view->updateFiles();
     }
 }
 
@@ -1256,6 +1261,22 @@ void KPhotoBook::applyOperatorSetting() {
 
     m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::And);
     m_orifyTagsAction->setChecked(Settings::tagTreeFilterOperator() != Settings::EnumTagTreeFilterOperator::And);
+
+    if (m_settingsTagTree) {
+        m_settingsTagTree->kcfg_TagTreeFilterOperator->setCurrentItem(Settings::tagTreeFilterOperator());
+    }
+}
+
+
+void KPhotoBook::applyAutorefreshSetting() {
+
+    m_autoRefreshViewAction->setChecked(Settings::imagePreviewAutoRefresh());
+
+    if (m_settingsImagePreview) {
+        m_settingsImagePreview->kcfg_ImagePreviewAutoRefresh->setChecked(Settings::imagePreviewAutoRefresh());
+    }
+
+    autoRefreshView();
 }
 
 

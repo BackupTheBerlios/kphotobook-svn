@@ -32,6 +32,9 @@
 
 class Engine;
 class Configuration;
+class SettingsImagePreview;
+class SettingsTagTree;
+class SettingsSourceDirTree;
 class SettingsFileHandling;
 class SettingsTools;
 class KPhotoBookView;
@@ -238,9 +241,14 @@ private:
     void applyZoomSetting();
 
     /**
-     * Enables or disables the operator (and / or) actions.
+     * Aktivates or deactivates the operator (and / or) actions.
      */
     void applyOperatorSetting();
+
+    /**
+     * Aktivates or deactivates the autorefresh actions.
+     */
+    void applyAutorefreshSetting();
 
 private:
     KPhotoBookView* m_view;
@@ -249,6 +257,7 @@ private:
     Configuration* m_configuration;
 
     // actions
+    KToggleAction* m_autoRefreshViewAction;
     KAction* m_zoomIn;
     KAction* m_zoomOut;
     KAction* m_save;
@@ -263,6 +272,9 @@ private:
     KPopupMenu* m_contextMenuTagTreeItem;
 
     // settings pages
+    SettingsImagePreview* m_settingsImagePreview;
+    SettingsTagTree* m_settingsTagTree;
+    SettingsSourceDirTree* m_settingsSourceDirTree;
     SettingsFileHandling* m_settingsFileHandling;
     SettingsTools* m_settingsTools;
 
