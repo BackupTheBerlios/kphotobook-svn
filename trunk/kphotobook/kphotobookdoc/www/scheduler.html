@@ -32,6 +32,13 @@
 <tr class="done"><td>Feature</td><td>Description</td><td>Done on</td><td>Version</td></tr>
 
 <tr class="scheduler">
+<td class="scheduler_title">Handle Tags Recursively</td>
+<td class="scheduler_desc">When setting filters on a parent tags, files associated with the sub tags must be considered too. E.g. if dog is a sub tag of animal then, when searching for images containing an animal, the images tagged with dog must be displayed too.</td>
+<td class="scheduler_date">March 2003</td>
+<td class="scheduler_version">0.0.5</td>
+</tr>
+
+<tr class="scheduler">
 <td class="scheduler_title">Tag Tree</td>
 <td class="scheduler_desc">The tag tree is one of the main elements wich makes the work with <em>KPhotoBook</em> easy. The tag tree allows you to create your own tags which are also sorted hierarchical. The tags can be labelled with a text and an individual icon. </td>
 <td class="scheduler_date">March 2004</td>
@@ -40,23 +47,16 @@
 
 <tr class="scheduler">
 <td class="scheduler_title">Show Photos</td>
-<td class="scheduler_desc">The images themselves are shown in a separate frame of the program. The images are shown konqueror-like. It is possible to change the size of the thumbnails with a ruler. </td>
+<td class="scheduler_desc">The images themselves are shown in a separate frame of the program <em>Konqueror</em>-like. It is possible to change the size of the thumbnails.</td>
 <td class="scheduler_date">February 2004</td>
 <td class="scheduler_version">0.0.3</td>
 </tr>
 
 <tr class="scheduler">
 <td class="scheduler_title">Directory Tree</td>
-<td class="scheduler_desc">The directory tree is one of the main elements of the userfriendly interface. It allows you to add and remove folders containting images for the current database. The folders can be added single or recursively. The directory tree also allows you to filter the images so that only the pictures of the chosen directory are shown.</td>
+<td class="scheduler_desc">The directory tree is one of the main elements of the userfriendly interface. It allows you to add and remove folders containting images for the current database. The folders can be added single or recursively. The directory tree also allows you to filter the images so that only the pictures of the chosen directories are shown.</td>
 <td class="scheduler_date">February 2004</td>
 <td class="scheduler_version">0.0.3</td>
-</tr>
-
-<tr class="scheduler">
-<td class="scheduler_title">Handle Tags Recursively</td>
-<td class="scheduler_desc">When setting filter on a parent tags, files associated with the sub tags must be considered too. E.g. if dog is a sub tag of animal then when searching for images containing an animal the images tagged with dog must be displayed too.</td>
-<td class="scheduler_date">March 2003</td>
-<td class="scheduler_version">0.0.5</td>
 </tr>
 
 
@@ -69,9 +69,9 @@
 <td class="scheduler_title">Config Dialog</td>
 <td class="scheduler_desc">
     <ul style="list-style-image:url(pics/yes.png)">
-        <li>Iconsize in Tag tree</li>
-        <li>Font size for TagTree</li>
-        <li>Show/Hide icons in the Tag tree</li>
+        <li>Iconsize in tag tree</li>
+        <li>Font size for tag tree</li>
+        <li>Show/Hide icons in the tag tree</li>
         <li>Font size for SourceDirTree</li>
         <li>Selection mode for image preview (multi or extended)</li>
         <li>Preview size, selecting with a slider</li>
@@ -93,20 +93,20 @@
 <td class="scheduler_desc">
     <ul style="list-style-image:url(pics/yes.png)">
         <li>Remember the selected files whenever possible (changing filter, changing preview size, ...)</li>
-        <li>When switching on "autorefresh", refresh the view immediately</li>
+        <li>When switching to "autorefresh", refresh the view immediately</li>
         <li>To change the preview size, there will be magnyfiers in the toolbar</li>
         <li>Set F5 as shortcut for "refresh view" not for "rescan filesystem".</li>
         <li>Ctrl+R as alternate shortcut for "refresh view"</li>
         <li>Use right mouse button on tag filters to cycle backwards through the options</li>
-        <li>Slider for icon preview size will be removed from the current position. The slider is located in the settings dialog now.</li>
+        <li>Slider for thumbnail preview size will be removed from the current position. The slider is located in the settings dialog now.</li>
     </ul>
 
     <ul>
         <li>I must not add KFiles to the KFileIconView but use a custom KFileIconViewItem!</li>
-        <li>Source directory tree and Tag tree will be moved to separate tabs</li>
+        <li>Source directory tree and tag tree will be moved to separate tabs</li>
         <li>There will be a toolbar above every tree with the most important features</li>
         <li>Some icons will be added and improved</li>
-        <li>There will be new filter operation for the Tag tree like reset filter and such...</li>
+        <li>There will be new filter operation for the tag tree like reset filter and such...</li>
         <li>Status bar displays information about the currently selected photo</li>
         <li>Make a toolbar for chosing the preview-size of the images</li>
         <li>Remember the filter and the layout (open, closed tags) of the tag tree from the last session when starting <em>KPhotoBook</em></li>

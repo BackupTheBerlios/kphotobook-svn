@@ -26,27 +26,26 @@
 
 <p>These are some topics which will be in cluded in the handbook:
 </p>
-<h2>&#039;Database&#039;</h2>
+<h2>Database</h2>
 <p>
-A <em>KPhotoBook</em> database is stored as one XML-file. This file contains all source-directories, tags and files belonging to this database. Of course it is possible to have several databases storing different types of photos (e.g. you could have a database for your private photos and a database for your business photos).
-</p>
-<p>
-When a database has changed (tags or source-folders were edited) the file must be saved. That means that changes are not automatically persisted. Each time a file is saved the old file is backed-up.
+<p>A KPhotoBook database is stored as one XML-file. This file contains all source folders, tags and files belonging to this database. Of course it is possible to have several databases storing different types of photos (e.g. you could have a database for your private photos and a database for your business photos).</p>
+
+<p>When a database has changed (tags or source folders were edited) the file must be saved. That means that changes are not automatically persisted. Each time a file is saved the old file is backed-up.
 </p>
 
 <h2>Source Folders</h2>
+
 <p>
-A database can contain all images of one or more source folders. Source folders can be added non-recursively or recursively:
+The KPhotoBook database contains all images of one ore more source folders. Source folders can be added recursively or single. Adding them recursively makes KPhotoBook add the selected directory and all directories below it. When adding a folder recursively, hard- and soft-links are followed by default. To prevent endless loops KPhotoBook tries to detect and suppress loops in the file system directory structure.
 </p>
+
 <ul>
 <li><strong>non-recursive</strong>: only the files in the selected folder will be added to the database.</li>
 <li><strong>recursive</strong>: all files in the selected folder and all sub-folders will be added to the database.</li>
 </ul>
+
 <p>
-When adding a folder recursively hard- <strong>and</strong> soft-links are followed by default. To prevent endless-loops <em>KPhotoBook</em> tries to detect and suppress loops in the filesystem directory structure.
-</p>
-<p>
-When restarting <em>KPhotoBook</em> every source folder will be scanned and new found sub-directories and files are addded to the database. This function can also be executed manually. Missed directories or files will not automatically be removed from the database to prevent loss of the association between files and tags.
+When restarting KPhotoBook every source folder will be rescanned and new found sub-folders and files will be added to the database. This function can also be executed manually. Missed directories of files will not automatically be removed from the database to prevent loss of the association between files and tags.
 </p>
 
 
