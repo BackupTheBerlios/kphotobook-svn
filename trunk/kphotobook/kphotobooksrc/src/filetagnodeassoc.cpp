@@ -35,8 +35,6 @@ FileTagNodeAssoc::FileTagNodeAssoc(File* file, TagNode* tagNode)
 
 FileTagNodeAssoc::~FileTagNodeAssoc() {
 
-    kdDebug() << "Deleting assoc to file '" << m_file->fileInfo()->absFilePath() << "'" << endl;
-
     m_tagNode->removeAssoc(this);
     m_file->removeAssoc(this);
 }

@@ -40,6 +40,8 @@ SourceDir::SourceDir(unsigned int id, QDir* dir, bool recursive)
 
 SourceDir::~SourceDir() {
 
+    kdDebug() << "[SourceDir::~SourceDir] invoked on sourcedir '" << m_dir->absPath() << "'." << endl;
+
     m_deleteInProgress = true;
 
     // remove this sourcedir from the children list of the parent
@@ -59,6 +61,7 @@ SourceDir::~SourceDir() {
     // delete members
     delete m_dir;
     delete m_children;
+
     m_files->setAutoDelete(true);
     delete m_files;
 }
