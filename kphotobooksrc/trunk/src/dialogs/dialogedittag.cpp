@@ -50,49 +50,49 @@ DialogEditTag::DialogEditTag(QWidget *parent, TagTreeNode* tagTreeNode, KPhotoBo
 
     // newTagGroup
     QGroupBox* newTagGroup = new QGroupBox(i18n("Edit tag"), mainPanel, "newTagGroup");
-    QGridLayout* newTagGroupLayout = new QGridLayout(newTagGroup, 4, 4, 20, 5, "newTagGroupLayout");
+    QGridLayout* newTagGroupLayout = new QGridLayout(newTagGroup, 4, 3, 20, 5, "newTagGroupLayout");
 
     newTagGroupLayout->setRowSpacing(0, 10);
 
     // type
     QLabel* typeLabel = new QLabel(i18n("Type"), newTagGroup, "typeLabel");
-    newTagGroupLayout->addWidget(typeLabel, 1, 0);
+    newTagGroupLayout->addWidget(typeLabel, 0, 0);
 
     m_typeComboBox = new KComboBox(false, newTagGroup, "typeComboBox");
     m_typeComboBox->insertItem(tagTreeNode->tagNode()->typeName());
     m_typeComboBox->setEnabled(false);
-    newTagGroupLayout->addMultiCellWidget(m_typeComboBox, 1, 1, 1, 2);
+    newTagGroupLayout->addMultiCellWidget(m_typeComboBox, 0, 0, 1, 2);
 
     // name
     QLabel* nameLabel = new QLabel(i18n("Name"), newTagGroup, "nameLabel");
-    newTagGroupLayout->addWidget(nameLabel, 2, 0);
+    newTagGroupLayout->addWidget(nameLabel, 1, 0);
 
     m_nameLineEdit = new KLineEdit(newTagGroup, "nameLineEdit");
     m_nameLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     QObject::connect(m_nameLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotNameChanged(const QString&)));
-    newTagGroupLayout->addMultiCellWidget(m_nameLineEdit, 2, 2, 1, 2);
+    newTagGroupLayout->addMultiCellWidget(m_nameLineEdit, 1, 1, 1, 2);
 
     // comment
     QLabel* commentLabel = new QLabel(i18n("Comment"), newTagGroup, "commentLabel");
-    newTagGroupLayout->addWidget(commentLabel, 3, 0);
+    newTagGroupLayout->addWidget(commentLabel, 2, 0);
 
     m_commentLineEdit = new KLineEdit(newTagGroup, "commentLineEdit");
     m_commentLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    newTagGroupLayout->addMultiCellWidget(m_commentLineEdit, 3, 3, 1, 2);
+    newTagGroupLayout->addMultiCellWidget(m_commentLineEdit, 2, 2, 1, 2);
 
     // icon
     QLabel* iconLabel = new QLabel(i18n("Icon"), newTagGroup, "iconLabel");
-    newTagGroupLayout->addWidget(iconLabel, 4, 0);
+    newTagGroupLayout->addWidget(iconLabel, 3, 0);
 
     m_iconLineEdit = new KLineEdit(newTagGroup, "iconLineEdit");
     m_iconLineEdit->setMinimumWidth(300);
     m_iconLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     QObject::connect(m_iconLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotIconTextChanged(const QString&)));
-    newTagGroupLayout->addWidget(m_iconLineEdit, 4, 1);
+    newTagGroupLayout->addWidget(m_iconLineEdit, 3, 1);
 
     m_iconButton = new QPushButton(i18n("Icon"), newTagGroup, "iconButton");
     m_iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    newTagGroupLayout->addWidget(m_iconButton, 4, 2);
+    newTagGroupLayout->addWidget(m_iconButton, 3, 2);
 
     QObject::connect(m_iconButton, SIGNAL(clicked()), this, SLOT(slotIconButtonClicked()));
 
