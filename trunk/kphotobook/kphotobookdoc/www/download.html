@@ -28,6 +28,20 @@ Sorry, there is no release yet.
 Downloads and cvs access are available on the projectsite at sourceforce.net: <a href="http://sourceforge.net/projects/kphotobook/" target="_top">KPhotoBook at sourceforge.net</a>
 </p>
 
+<h1>Building from CVS</h1>
+<p>
+Follow these instructions to build the application from the repository:
+</p>
+<ul>
+<li>Login to the cvs-repository at sourceforge: <code>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/kphotobook login</code></li>
+<li>Checkout the sourcecode: <code>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/kphotobook co kphotobooksrc</code></li>
+<li>Create the makefile: <code>make -f Makefile.cvs</code></li>
+<li>Start configure: <code>./configure --prefix='KDE-installation-path'</code> (where KDE-installation-path is '/opt/kde3' for example)</li>
+<li>Build the application: <code>make</code></li>
+<li>Change to root: <code>su</code></li>
+<li>Install the application: <code>make install</code></li>
+</ul>
+
 
 
 </td>
