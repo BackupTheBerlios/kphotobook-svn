@@ -1,0 +1,95 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui name="kphotobook" version="1">
+
+<MenuBar>
+    <Menu name="file">
+        <Action name="rescanFilesystem" />
+    </Menu>
+    <Menu name="manage">
+        <text>&amp;Manage</text>
+        <Action name="addSourceDir" />
+        <Separator/>
+        <Action name="addMaintag" />
+        <Separator/>
+        <Action name="andifyTags" />
+    </Menu>
+    <Menu name="view">
+        <text>&amp;View</text>
+        <Action name="refreshView" />
+        <Separator/>
+        <Action name="expandAllTags" />
+        <Action name="collapseAllTags" />
+        <Separator/>
+        <Action name="expandAllSourceDirs" />
+        <Action name="collapseAllSourceDirs" />
+    </Menu>
+    <Menu name="settings">
+        <Action name="autoRefreshView" />
+    </Menu>
+</MenuBar>
+
+<ToolBar name="mainToolBar" fullWidth="true" newline="true" >
+  <text>file</text>
+  <Action name="rescanFilesystem" />
+</ToolBar>
+
+<ToolBar name="manageToolBar" fullWidth="true" newline="true" >
+  <text>Manage</text>
+  <Action name="addSourceDir" />
+  <Action name="addMaintag" />
+  <Separator/>
+  <Action name="autoRefreshView" />
+  <Action name="refreshView" />
+  <Separator/>
+  <Action name="andifyTags" />
+</ToolBar>
+
+<Menu name="contextMenu_tagTree">
+    <Action name="addMaintag" />
+    <Separator/>
+    <Action name="expandAllTags" />
+    <Action name="collapseAllTags" />
+</Menu>
+
+<Menu name="contextMenu_tagTreeItem">
+    <Action name="createSubtag" />
+    <Action name="editTag" />
+    <Action name="deleteTag" />
+    <Separator/>
+    <Action name="expandTag" />
+    <Action name="collapseTag" />
+</Menu>
+
+<Menu name="contextMenu_sourceDirTree">
+    <Action name="includeAllSourceDirs" />
+    <Action name="excludeAllSourceDirs" />
+    <Action name="invertAllSourceDirs" />
+    <Separator/>
+    <Action name="expandAllSourceDirs" />
+    <Action name="collapseAllSourceDirs" />
+    <Separator/>
+    <Action name="addSourceDir" />
+</Menu>
+
+<Menu name="contextMenu_sourceDir">
+    <Action name="includeWholeSourceDir" />
+    <Action name="excludeWholeSourceDir" />
+    <Action name="invertSourceDir" />
+    <Separator/>
+    <Action name="expandSourceDir" />
+    <Action name="collapseSourceDir" />
+    <Separator/>
+    <Action name="editSourceDir" />
+    <Action name="removeSourceDir" />
+</Menu>
+
+<Menu name="contextMenu_subDir">
+    <Action name="includeWholeSourceDir" />
+    <Action name="excludeWholeSourceDir" />
+    <Action name="invertSourceDir" />
+    <Separator/>
+    <Action name="expandSourceDir" />
+    <Action name="collapseSourceDir" />
+</Menu>
+
+</kpartgui>
