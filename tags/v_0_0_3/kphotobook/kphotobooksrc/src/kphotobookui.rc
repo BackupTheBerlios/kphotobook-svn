@@ -1,0 +1,78 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui name="kphotobook" version="1">
+
+<MenuBar>
+    <Menu name="file">
+        <Action name="rescanFilesystem" />
+    </Menu>
+    <Menu name="manage">
+        <text>&amp;Manage</text>
+        <Action name="addSourceDir" />
+        <Separator/>
+        <Action name="addMaintag" />
+    </Menu>
+    <Menu name="view">
+        <text>&amp;View</text>
+        <Action name="refreshView" />
+    </Menu>
+    <Menu name="settings">
+        <Action name="autoRefreshView" />
+    </Menu>
+</MenuBar>
+
+<ToolBar name="mainToolBar" fullWidth="true" newline="true" >
+  <Action name="rescanFilesystem" />
+</ToolBar>
+
+<ToolBar name="manageToolBar" fullWidth="true" newline="true" >
+  <text>Manage</text>
+  <Action name="addSourceDir" />
+  <Action name="addMaintag" />
+  <Separator/>
+  <Action name="autoRefreshView" />
+  <Action name="refreshView" />
+</ToolBar>
+
+<Menu name="contextMenu_sourceDirTree">
+    <Action name="includeAllSourceDirs" />
+    <Action name="excludeAllSourceDirs" />
+    <Action name="invertAllSourceDirs" />
+    <Separator/>
+    <Action name="expandAllFolder" />
+    <Action name="collapseAllFolder" />
+    <Separator/>
+    <Action name="addSourceDir" />
+</Menu>
+
+<Menu name="contextMenu_sourceDir">
+    <Action name="includeWholeFolder" />
+    <Action name="excludeWholeFolder" />
+    <Action name="invertFolderSelection" />
+    <Separator/>
+    <Action name="expandFolder" />
+    <Action name="collapseFolder" />
+    <Separator/>
+    <Action name="editSourceDir" />
+    <Action name="removeSourceDir" />
+</Menu>
+
+<Menu name="contextMenu_subDir">
+    <Action name="includeWholeFolder" />
+    <Action name="excludeWholeFolder" />
+    <Action name="invertFolderSelection" />
+    <Separator/>
+    <Action name="expandFolder" />
+    <Action name="collapseFolder" />
+</Menu>
+
+<Menu name="contextMenu_tagTree">
+    <Action name="addMaintag" />
+</Menu>
+
+<Menu name="contextMenu_tagTreeItem">
+    <Action name="createSubtag" />
+    <Action name="editTag" />
+    <Action name="deleteTag" />
+</Menu>
+
+</kpartgui>
