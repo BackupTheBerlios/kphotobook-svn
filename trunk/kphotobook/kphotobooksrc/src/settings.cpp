@@ -36,8 +36,11 @@ Settings::Settings(  )
     valuesGeneralViewMode.append( choice );
   }
   KConfigSkeleton::ItemEnum  *itemGeneralViewMode;
-  itemGeneralViewMode = new KConfigSkeleton::ItemEnum( currentGroup(), "ViewMode", mGeneralViewMode, valuesGeneralViewMode, EnumGeneralViewMode::IDEAlMode );
+  itemGeneralViewMode = new KConfigSkeleton::ItemEnum( currentGroup(), "ViewMode", mGeneralViewMode, valuesGeneralViewMode, EnumGeneralViewMode::TabPageMode );
   addItem( itemGeneralViewMode, "GeneralViewMode" );
+  KConfigSkeleton::ItemBool  *itemGeneralRescanWhileStartup;
+  itemGeneralRescanWhileStartup = new KConfigSkeleton::ItemBool( currentGroup(), "RescanWhileStartup", mGeneralRescanWhileStartup, true );
+  addItem( itemGeneralRescanWhileStartup, "GeneralRescanWhileStartup" );
 
   setCurrentGroup( "TagTree" );
 

@@ -77,6 +77,27 @@
                 </widget>
             </hbox>
         </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox2</cstring>
+            </property>
+            <property name="title">
+                <string>Actions while starting</string>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_GeneralRescanWhileStartup</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Rescan directories on startup</string>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
         <spacer>
             <property name="name">
                 <cstring>spacer2</cstring>
@@ -90,7 +111,7 @@
             <property name="sizeHint">
                 <size>
                     <width>20</width>
-                    <height>40</height>
+                    <height>290</height>
                 </size>
             </property>
         </spacer>

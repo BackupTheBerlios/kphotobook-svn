@@ -146,7 +146,9 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
     }
 
     // read the files in all sourcedirectories
-    rescanSourceDirs(m_sourceDirs);
+    if (Settings::generalRescanWhileStartup()) {
+        rescanSourceDirs(m_sourceDirs);
+    }
 
     // trace a little
     kdDebug() << "[Engine::Engine] " << m_fileList->count() << " images added" << endl;

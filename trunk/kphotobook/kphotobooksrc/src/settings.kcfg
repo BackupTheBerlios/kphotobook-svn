@@ -7,11 +7,16 @@
   <group name="General">
     <entry name="GeneralViewMode" type="Enum" key="ViewMode">
       <label>Defines the mdi view mode.</label>
-      <default>IDEAlMode</default>
+      <default>TabPageMode</default>
       <choices>
         <choice name="IDEAlMode" />
         <choice name="TabPageMode" />
       </choices>
+    </entry>
+
+    <entry name="GeneralRescanWhileStartup" type="Bool" key="RescanWhileStartup">
+      <label>Defines if the filesystem is rescanned while starting up KPhotoBook.</label>
+      <default>true</default>
     </entry>
   </group>
 

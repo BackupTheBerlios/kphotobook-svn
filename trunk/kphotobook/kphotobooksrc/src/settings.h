@@ -47,6 +47,25 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+      Set Defines if the filesystem is rescanned while starting up KPhotoBook.
+    */
+    static
+    void setGeneralRescanWhileStartup( bool v )
+    {
+      if (!self()->isImmutable( "GeneralRescanWhileStartup" ))
+        self()->mGeneralRescanWhileStartup = v;
+    }
+
+    /**
+      Get Defines if the filesystem is rescanned while starting up KPhotoBook.
+    */
+    static
+    bool generalRescanWhileStartup()
+    {
+      return self()->mGeneralRescanWhileStartup;
+    }
+
+    /**
       Set The size of the icons in the ToolBar of the TagTree.
     */
     static
@@ -438,6 +457,7 @@ class Settings : public KConfigSkeleton
 
     // General
     int mGeneralViewMode;
+    bool mGeneralRescanWhileStartup;
 
     // TagTree
     int mTagTreeToolBarIconSize;
