@@ -114,6 +114,9 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     , m_settingsFileHandling(0)
     , m_settingsTools(0) {
 
+
+    fakeSDIApplication();
+
     // accept dnd
     setAcceptDrops(false);
 
@@ -157,7 +160,7 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     } else {
         tagTreePanel->setIcon(tagTreeIconSet.pixmap());
     }
-    addToolWindow(tagTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("TagTree"), i18n("TagTree"));
+    addToolWindow(tagTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Tags"), i18n("Tags"));
 
     // create sourcedirtree toolwindow
     QWidget* sourceDirTreePanel = new QWidget(this, "sourceDirTreePanel");
@@ -182,7 +185,7 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     } else {
         sourceDirTreePanel->setIcon(sourcedirTreeIconSet.pixmap());
     }
-    addToolWindow(sourceDirTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("SourceDirTree"), i18n("SourceDirTree"));
+    addToolWindow(sourceDirTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Source"), i18n("Source"));
 
     // init some other things: statusbar,..
     init();
@@ -191,6 +194,9 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     // to automatically save settings if changed: window size, toolbar
     // position, icon size, etc.
     setAutoSaveSettings();
+
+    // read dock configuration
+    readDockConfig(KGlobal::config(), "DockConfig");
 }
 
 
@@ -615,6 +621,9 @@ bool KPhotoBook::queryClose() {
 
     // force writing the settings
     Settings::writeConfig();
+
+    // store dock configuration
+    writeDockConfig(KGlobal::config(), "DockConfig");
 
     // store the data if necessary
     if (m_engine && m_engine->dirty()) {
