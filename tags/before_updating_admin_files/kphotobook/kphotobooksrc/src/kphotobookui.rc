@@ -1,0 +1,106 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<gui name="kphotobook" version="5">
+
+<MenuBar>
+    <Menu name="file">
+        <Action name="rescanFilesystem" />
+    </Menu>
+    <Menu name="manage">
+        <text>&amp;Manage</text>
+        <Action name="addSourceDir" />
+        <Separator/>
+        <Action name="addMaintag" />
+        <Separator/>
+        <Action name="andifyTags" />
+        <Action name="orifyTags" />
+    </Menu>
+    <Menu name="view">
+        <text>&amp;View</text>
+        <Action name="refreshView" />
+        <Separator/>
+        <Action name="increasePreviewSize" />
+        <Action name="decreasePreviewSize" />
+        <Separator/>
+        <Action name="expandAllTags" />
+        <Action name="collapseAllTags" />
+        <Separator/>
+        <Action name="expandAllSourceDirs" />
+        <Action name="collapseAllSourceDirs" />
+    </Menu>
+    <Menu name="settings">
+        <Action name="autoRefreshView" />
+    </Menu>
+</MenuBar>
+
+<ToolBar name="mainToolBar" fullWidth="false" newline="false" >
+  <text>file</text>
+  <Action name="rescanFilesystem" />
+</ToolBar>
+
+<ToolBar name="manageToolBar" fullWidth="false" newline="false" >
+  <text>Manage</text>
+  <Action name="addSourceDir" />
+  <Action name="addMaintag" />
+  <Separator/>
+  <Action name="andifyTags" />
+  <Action name="orifyTags" />
+</ToolBar>
+
+<ToolBar name="previewToolBar" fullWidth="false" newline="false" >
+  <text>Preview</text>
+  <Action name="autoRefreshView" />
+  <Action name="refreshView" />
+  <Separator/>
+  <Action name="increasePreviewSize" />
+  <Action name="decreasePreviewSize" />
+</ToolBar>
+
+<Menu name="contextMenu_tagTree">
+    <Action name="addMaintag" />
+    <Separator/>
+    <Action name="expandAllTags" />
+    <Action name="collapseAllTags" />
+</Menu>
+
+<Menu name="contextMenu_tagTreeItem">
+    <Action name="createSubtag" />
+    <Action name="editTag" />
+    <Action name="deleteTag" />
+    <Separator/>
+    <Action name="expandTag" />
+    <Action name="collapseTag" />
+</Menu>
+
+<Menu name="contextMenu_sourceDirTree">
+    <Action name="includeAllSourceDirs" />
+    <Action name="excludeAllSourceDirs" />
+    <Action name="invertAllSourceDirs" />
+    <Separator/>
+    <Action name="expandAllSourceDirs" />
+    <Action name="collapseAllSourceDirs" />
+    <Separator/>
+    <Action name="addSourceDir" />
+</Menu>
+
+<Menu name="contextMenu_sourceDir">
+    <Action name="includeWholeSourceDir" />
+    <Action name="excludeWholeSourceDir" />
+    <Action name="invertSourceDir" />
+    <Separator/>
+    <Action name="expandSourceDir" />
+    <Action name="collapseSourceDir" />
+    <Separator/>
+    <Action name="editSourceDir" />
+    <Action name="removeSourceDir" />
+</Menu>
+
+<Menu name="contextMenu_subDir">
+    <Action name="includeWholeSourceDir" />
+    <Action name="excludeWholeSourceDir" />
+    <Action name="invertSourceDir" />
+    <Separator/>
+    <Action name="expandSourceDir" />
+    <Action name="collapseSourceDir" />
+</Menu>
+
+</gui>
