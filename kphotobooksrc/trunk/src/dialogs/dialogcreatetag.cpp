@@ -83,7 +83,7 @@ DialogCreateTag::DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, KPhot
 
         // comment
         QLabel* commentLabel = new QLabel(i18n("Comment"), parentTagGroup, "commentLabel");
-        parentTagGroupLayout->addWidget(commentLabel, 2, 0);
+        parentTagGroupLayout->addWidget(commentLabel, 3, 0);
 
         KLineEdit* commentLineEdit = new KLineEdit(parentTagGroup, "commentLineEdit");
         commentLineEdit->setText(*parentNode->tagNode()->comment());
