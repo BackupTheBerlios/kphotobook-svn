@@ -30,7 +30,7 @@
 /**
  * This class stores the configuration of the application kphotobook.
  *
- * CVS-ID $Id: configuration.h,v 1.4 2004/03/20 16:37:13 starcube Exp $
+ * CVS-ID $Id: configuration.h,v 1.5 2004/03/23 22:19:39 starcube Exp $
  */
 class Configuration {
 
@@ -144,6 +144,7 @@ public:
         return m_lastAddedSourcedir;
     }
 
+    /*
     void setPreviewSize(int previewSize) {
         m_previewSize = previewSize;
         validate();
@@ -159,7 +160,7 @@ public:
     int tagtreeIconSize() {
         return m_tagtreeIconSize;
     }
-
+*/
     void setMainSplitterSizes(QValueList<int> splitterSizes) {
         m_mainSplitterSizes = splitterSizes;
     }
@@ -173,7 +174,7 @@ public:
     QValueList<int>& treeSplitterSizes() {
         return m_treeSplitterSizes;
     }
-
+/*
     void setAutoRefresh(bool autoRefresh) {
         m_autoRefresh = autoRefresh;
     }
@@ -187,7 +188,7 @@ public:
     KFile::SelectionMode selectionMode() {
         return m_selectionMode;
     }
-
+*/
     void setSubdirsToIgnore(QStringList subdirsToIgnore) {
         m_subdirsToIgnore = subdirsToIgnore;
     }
@@ -207,20 +208,25 @@ public:
      * The operator must be '&' or '|'.
      * @param op The operator used when filtering the files.
      */
+     /*
     void setTagfilterOperator(QString op) {
         m_tagfilterOperator = op;
     }
+    */
     /**
      * Returns the current set operator for the filter.
      * @return The current set operator for the filter.
      */
+     /*
     QString tagfilterOperator() {
         return m_tagfilterOperator;
     }
+    */
     /**
      * Inverts the current set operator.
      * If currently '&' is set it is changed to '|' and vice versa.
      */
+     /*
     void invertTagfilterOperation() {
         if (m_tagfilterOperator == "&") {
             m_tagfilterOperator = "|";
@@ -228,6 +234,7 @@ public:
             m_tagfilterOperator = "&";
         }
     }
+    */
 
 protected:
     /**

@@ -40,7 +40,7 @@ class SourceDirTreeNode;
 /**
  * The SourceDirTree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: sourcedirtree.h,v 1.3 2004/03/20 16:37:13 starcube Exp $
+ * CVS-ID $Id: sourcedirtree.h,v 1.4 2004/03/23 22:19:39 starcube Exp $
  */
 class SourceDirTree : public KListView {
 
@@ -78,6 +78,11 @@ public:
     KPhotoBook* photobook() {
         return m_photobook;
     }
+
+    void doRepaintAll();
+
+public slots:
+    void slotLoadSettings();
 
 private slots:
     void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);

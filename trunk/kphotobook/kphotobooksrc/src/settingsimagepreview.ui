@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>SettingsTagTree</class>
+<class>SettingsImagePreview</class>
 <widget class="QWidget">
     <property name="name">
-        <cstring>SettingsTagTree</cstring>
+        <cstring>SettingsImagePreview</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -54,7 +54,7 @@
                                 </property>
                                 <widget class="KIntSpinBox">
                                     <property name="name">
-                                        <cstring>kcfg_TagTreeIconSize</cstring>
+                                        <cstring>kcfg_ImagePreviewSize</cstring>
                                     </property>
                                 </widget>
                                 <spacer>
@@ -78,7 +78,7 @@
                         </widget>
                         <widget class="KFontRequester" row="1" column="1">
                             <property name="name">
-                                <cstring>kcfg_TagTreeFont</cstring>
+                                <cstring>kcfg_ImagePreviewFont</cstring>
                             </property>
                         </widget>
                         <widget class="QLabel" row="1" column="0">
@@ -94,17 +94,20 @@
                                 <cstring>textLabel1</cstring>
                             </property>
                             <property name="text">
-                                <string>Icon size</string>
+                                <string>Preview size</string>
                             </property>
                         </widget>
                     </grid>
                 </widget>
                 <widget class="QCheckBox">
                     <property name="name">
-                        <cstring>kcfg_TagTreeShowIcons</cstring>
+                        <cstring>kcfg_ImagePreviewShowName</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
                     </property>
                     <property name="text">
-                        <string>Show icons in the TagTree</string>
+                        <string>Show the filename below the image preview</string>
                     </property>
                 </widget>
             </vbox>
@@ -116,55 +119,73 @@
             <property name="title">
                 <string>Behavior</string>
             </property>
-            <hbox>
+            <vbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QLabel">
+                <widget class="QCheckBox">
                     <property name="name">
-                        <cstring>textLabel1_2</cstring>
+                        <cstring>kcfg_ImagePreviewAutoRefresh</cstring>
                     </property>
                     <property name="text">
-                        <string>Filter operator</string>
+                        <string>Autorefresh the image preview</string>
                     </property>
                 </widget>
-                <widget class="KComboBox">
-                    <item>
-                        <property name="text">
-                            <string>And</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>Or</string>
-                        </property>
-                    </item>
+                <widget class="QLayoutWidget">
                     <property name="name">
-                        <cstring>kcfg_TagTreeFilterOperator</cstring>
+                        <cstring>layout3</cstring>
                     </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>textLabel1_2</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Selection mode</string>
+                            </property>
+                        </widget>
+                        <widget class="KComboBox">
+                            <item>
+                                <property name="text">
+                                    <string>Extended</string>
+                                </property>
+                            </item>
+                            <item>
+                                <property name="text">
+                                    <string>Multi</string>
+                                </property>
+                            </item>
+                            <property name="name">
+                                <cstring>kcfg_ImagePreviewSelectionMode</cstring>
+                            </property>
+                        </widget>
+                        <spacer>
+                            <property name="name">
+                                <cstring>spacer3</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                    </hbox>
                 </widget>
-                <spacer>
-                    <property name="name">
-                        <cstring>spacer3</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>40</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-            </hbox>
+            </vbox>
         </widget>
         <spacer>
             <property name="name">
-                <cstring>spacer1</cstring>
+                <cstring>spacer3_2</cstring>
             </property>
             <property name="orientation">
                 <enum>Vertical</enum>
@@ -175,7 +196,7 @@
             <property name="sizeHint">
                 <size>
                     <width>20</width>
-                    <height>190</height>
+                    <height>40</height>
                 </size>
             </property>
         </spacer>

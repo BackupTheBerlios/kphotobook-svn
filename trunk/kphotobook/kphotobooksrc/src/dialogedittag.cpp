@@ -21,6 +21,7 @@
 #include "dialogedittag.h"
 
 #include "configuration.h"
+#include "settings.h"
 #include "tagtreenode.h"
 #include "tagnode.h"
 
@@ -141,7 +142,7 @@ void DialogEditTag::slotIconButtonClicked() {
 
 void DialogEditTag::validate() {
 
-    QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet(m_iconLineEdit->text(), KIcon::Small, Configuration::getInstance()->tagtreeIconSize(), true);
+    QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet(m_iconLineEdit->text(), KIcon::Small, Settings::tagTreeIconSize(), true);
 
     if (!folderIconSet.isNull()) {
         m_iconButton->setIconSet(folderIconSet);

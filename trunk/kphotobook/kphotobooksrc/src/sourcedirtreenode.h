@@ -36,7 +36,7 @@ class SourceDir;
 /**
  * Specialized KListViewItem representing a SourceDir to be used in the SourceDirTree.
  *
- * CVS-ID $Id: sourcedirtreenode.h,v 1.1 2004/03/20 16:42:10 starcube Exp $
+ * CVS-ID $Id: sourcedirtreenode.h,v 1.2 2004/03/23 22:19:39 starcube Exp $
  */
 class SourceDirTreeNode : public KListViewItem {
 
@@ -44,15 +44,20 @@ public:
     /**
      * Creates a new toplevel SourceDirTreeNode in the specified SourceDirTree.
      * @param parent The KListView to add the created SourceDirTreeNode to.
-     * @param sourceDir The SourceDir to represent in the SourceDirTree.
      * @param photobook The photobook.
+     * @param sourceDir The SourceDir to represent in the SourceDirTree.
      * @param contextMenu The contextMenu to display on this SourceDirTreeNode (optional). If not set, no contextMenu is shown.
      */
-    SourceDirTreeNode(SourceDirTree* parent, SourceDir* sourceDir, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-    SourceDirTreeNode(SourceDirTreeNode* parent, SourceDir* sourceDir, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+    SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu = 0);
+    SourceDirTreeNode(SourceDirTreeNode* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu = 0);
 
     virtual ~SourceDirTreeNode() {
     }
+
+    /**
+     * Refreshes the displayed icon.
+     */
+    void refreshIcon();
 
     /**
      * Expands or collapses the whole subtree beginning with this TagTreeNode.
@@ -102,8 +107,9 @@ public:
     void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
 
 private:
-    SourceDir* m_sourceDir;
     KPhotoBook* m_photobook;
+    SourceDir* m_sourceDir;
+
     unsigned int m_selectedFilesCount;
 
     KPopupMenu* m_contextMenu;

@@ -48,6 +48,10 @@ const QString Constants::ICON_INVERT_FOLDER_SELECTION = QString("invert");
 const QString Constants::ICON_EXPAND_FOLDER = QString("expand");
 const QString Constants::ICON_COLLAPSE_FOLDER = QString("collapse");
 
+const QString Constants::ICON_SETTINGS_TAG = QString("tag_edit");
+const QString Constants::ICON_SETTINGS_SOURCEDIR = QString("folder");
+const QString Constants::ICON_SETTINGS_IMAGEPREVIEW = QString("view_refresh");
+
 
 //
 // file-extension

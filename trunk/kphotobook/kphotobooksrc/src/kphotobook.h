@@ -198,6 +198,8 @@ private slots:
 
     void changeStatusbar(const QString& text);
 
+    void slotLoadSettings();
+
 private:
     void init();
     void setupAccel();
@@ -234,6 +236,7 @@ private:
 
     // actions
     KAction* m_save;
+    KToggleAction* m_andifyTagsAction;
 
     // contextMenus
     KPopupMenu* m_contextMenuSourceDirTree;
@@ -241,7 +244,6 @@ private:
     KPopupMenu* m_contextMenuSubDir;
     KPopupMenu* m_contextMenuTagTree;
     KPopupMenu* m_contextMenuTagTreeItem;
-
 };
 
 #endif // _KPHOTOBOOK_H_

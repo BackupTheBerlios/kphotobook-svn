@@ -21,6 +21,7 @@
 #include "sourcedirtree.h"
 
 #include "constants.h"
+#include "settings.h"
 
 #include "kphotobook.h"
 #include "file.h"
@@ -170,7 +171,7 @@ void SourceDirTree::addSourceDir(SourceDir* rootNode) {
 
     kdDebug() << "[SourceDirTree::addSourceDir] handling sourcedir: '" << rootNode->dir()->absPath() << "'..." << endl;
 
-    SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(this, rootNode, m_photobook, m_photobook->contextMenuSourceDir());
+    SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(this, m_photobook, rootNode, m_photobook->contextMenuSourceDir());
 
     // insert the just created node into the dictionary
     m_sourceDirNodeDict->insert(rootNode->id(), sourceDirTreeNode);
@@ -209,6 +210,28 @@ void SourceDirTree::reflectSelectedFiles(const KFileItemList* selectedFiles) {
         item->increaseSelectedFilesCount(1);
         item->repaint();
     }
+}
+
+
+void SourceDirTree::doRepaintAll() {
+    QListViewItemIterator it(this);
+    while (it.current()) {
+
+        dynamic_cast<SourceDirTreeNode*>(it.current())->refreshIcon();
+        this->repaintItem(it.current());
+
+        ++it;
+    }
+}
+
+
+//
+// public slots
+//
+void SourceDirTree::slotLoadSettings() {
+
+    setFont(Settings::sourceDirTreeFont());
+    doRepaintAll();
 }
 
 
@@ -260,7 +283,7 @@ void SourceDirTree::buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<Sourc
     SourceDir* child;
     for (child = children->first(); child; child = children->next() ) {
 
-        SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(parent, child, m_photobook, m_photobook->contextMenuSubDir());
+        SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(parent, m_photobook, child, m_photobook->contextMenuSubDir());
 
         // insert the just created node into the dictionary
         m_sourceDirNodeDict->insert(child->id(), sourceDirTreeNode);

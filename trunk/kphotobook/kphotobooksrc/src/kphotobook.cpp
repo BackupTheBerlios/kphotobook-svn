@@ -25,6 +25,8 @@
 
 #include "settings.h"
 #include "settingstagtree.h"
+#include "settingssourcedirtree.h"
+#include "settingsimagepreview.h"
 
 #include "kphotobookview.h"
 #include "pref.h"
@@ -284,7 +286,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotAutoRefreshView()),
         actionCollection(), "autoRefreshView"
     );
-    autoRefreshViewAction->setChecked(Configuration::getInstance()->autoRefresh());
+    autoRefreshViewAction->setChecked(Settings::imagePreviewAutoRefresh());
 
     KShortcut refreshViewShortCut(KStdAccel::shortcut(KStdAccel::Reload));
     refreshViewShortCut.append(KKey("CTRL+r"));
@@ -421,13 +423,13 @@ void KPhotoBook::setupActions() {
         actionCollection(), "deleteTag"
     );
 
-    KToggleAction* andifyTagsAction = new KToggleAction(
+    m_andifyTagsAction = new KToggleAction(
         i18n("Andify tags"), "attach",
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotAndifyTags()),
         actionCollection(), "andifyTags"
     );
-    andifyTagsAction->setChecked(Configuration::getInstance()->tagfilterOperator() == "&");
+    m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == QString::number(Settings::EnumTagTreeFilterOperator::And));
 
     new KAction(
         i18n("Expand tag"), Constants::ICON_EXPAND_FOLDER,
@@ -469,6 +471,11 @@ void KPhotoBook::setupContextMenus() {
 
 QPtrList<File>* KPhotoBook::files(QString filter) {
 
+    QString op = "&";
+    if (Settings::tagTreeFilterOperator() == QString::number(Settings::EnumTagTreeFilterOperator::Or)) {
+        op = "|";
+    }
+
     // build the filter from the tagtree if the specified filter is empty
     if (filter.isNull() && m_view) {
         TagTreeNode* lastItem = 0;
@@ -478,7 +485,7 @@ QPtrList<File>* KPhotoBook::files(QString filter) {
 
             if (!item->filter().isNull()) {
                 if (lastItem) {
-                    filter.append(Configuration::getInstance()->tagfilterOperator());
+                    filter.append(op);
                 }
                 filter.append(item->filter());
                 lastItem = item;
@@ -734,10 +741,16 @@ void KPhotoBook::slotOptionsPreferences() {
 
     // first time --> create the settings dialog
     KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self(), KDialogBase::IconList);
-    dialog->addPage(new SettingsTagTree(0, "Tagtree"), i18n("TagTree"), Constants::ICON_EDIT_TAG);
-//    dialog->addPage(new Appearance(0, "Style"), i18n("Appearance") );
+
+    dialog->addPage(new SettingsTagTree(0, "SettingsTagtree"), i18n("TagTree"), Constants::ICON_SETTINGS_TAG);
+    dialog->addPage(new SettingsSourceDirTree(0, "SettingsSourceDirTree"), i18n("SourceDirTree"), Constants::ICON_SETTINGS_SOURCEDIR);
+    dialog->addPage(new SettingsImagePreview(0, "SettingsImagePreview"), i18n("ImagePreview"), Constants::ICON_SETTINGS_IMAGEPREVIEW);
+
+    connect(dialog, SIGNAL(settingsChanged()), this, SLOT(slotLoadSettings()));
     connect(dialog, SIGNAL(settingsChanged()), view()->tagTree(), SLOT(slotLoadSettings()));
-//    connect(dialog, SIGNAL(settingsChanged()), this, SLOT(loadSettings()));
+    connect(dialog, SIGNAL(settingsChanged()), view()->sourceDirTree(), SLOT(slotLoadSettings()));
+    connect(dialog, SIGNAL(settingsChanged()), view(), SLOT(slotLoadSettings()));
+
     dialog->show();
 }
 
@@ -971,7 +984,7 @@ void KPhotoBook::slotRescanFilesystem() {
 
 
 void KPhotoBook::slotAutoRefreshView() {
-    Configuration::getInstance()->setAutoRefresh(!Configuration::getInstance()->autoRefresh());
+    Settings::setImagePreviewAutoRefresh(!Settings::imagePreviewAutoRefresh());
 
     autoRefreshView();
 }
@@ -1034,7 +1047,12 @@ void KPhotoBook::slotCollapseAllSourceDirs() {
 
 
 void KPhotoBook::slotAndifyTags() {
-    Configuration::getInstance()->invertTagfilterOperation();
+
+    if (Settings::tagTreeFilterOperator() == QString::number(Settings::EnumTagTreeFilterOperator::And)) {
+        Settings::setTagTreeFilterOperator(QString::number(Settings::EnumTagTreeFilterOperator::Or));
+    } else {
+        Settings::setTagTreeFilterOperator(QString::number(Settings::EnumTagTreeFilterOperator::And));
+    }
 
     autoRefreshView();
 }
@@ -1065,12 +1083,18 @@ void KPhotoBook::slotFileSelectionChanged() {
 }
 
 
+void KPhotoBook::slotLoadSettings() {
+
+    m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == QString::number(Settings::EnumTagTreeFilterOperator::And));
+}
+
+
 //
 // private
 //
 void KPhotoBook::autoRefreshView() {
 
-    if (Configuration::getInstance()->autoRefresh()) {
+    if (Settings::imagePreviewAutoRefresh()) {
         view()->updateFiles();
     }
 }

@@ -21,6 +21,7 @@
 #include "dialogcreatetag.h"
 
 #include "configuration.h"
+#include "settings.h"
 #include "tagtreenode.h"
 #include "tagnode.h"
 #include "tagnodetitle.h"
@@ -93,7 +94,7 @@ DialogCreateTag::DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, KPhot
         parentTagGroupLayout->addWidget(iconLineEdit, 3, 1);
 
         QPushButton* iconButton = new QPushButton(i18n("Icon"), parentTagGroup, "iconButton");
-        QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(iconLineEdit->text(), KIcon::Small, Configuration::getInstance()->tagtreeIconSize(), true);
+        QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(iconLineEdit->text(), KIcon::Small, Settings::tagTreeIconSize(), true);
         iconButton->setIconSet(iconSet);
         iconButton->setText(QString::null);
         iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -201,7 +202,7 @@ void DialogCreateTag::slotIconButtonClicked() {
 
 void DialogCreateTag::validate() {
 
-    QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet(m_iconLineEdit->text(), KIcon::Small, Configuration::getInstance()->tagtreeIconSize(), true);
+    QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet(m_iconLineEdit->text(), KIcon::Small, Settings::tagTreeIconSize(), true);
 
     if (!folderIconSet.isNull()) {
         m_iconButton->setIconSet(folderIconSet);

@@ -84,6 +84,9 @@ signals:
      */
     void signalChangeStatusbar(const QString& text);
 
+public slots:
+    void slotLoadSettings();
+
 private slots:
     void slotImageSizeSliderChanged(int size);
     void slotImageSizeSliderPressed();

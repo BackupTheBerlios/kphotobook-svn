@@ -22,6 +22,7 @@
 
 #include "constants.h"
 #include "configuration.h"
+#include "settings.h"
 
 #include "kphotobook.h"
 #include "treehelper.h"
@@ -39,10 +40,10 @@
 #include <qpainter.h>
 
 
-SourceDirTreeNode::SourceDirTreeNode(SourceDirTree* parent, SourceDir* sourceDir, KPhotoBook* photobook, KPopupMenu* contextMenu)
+SourceDirTreeNode::SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu)
     : KListViewItem(parent)
-    , m_sourceDir(sourceDir)
     , m_photobook(photobook)
+    , m_sourceDir(sourceDir)
     , m_selectedFilesCount(0)
     , m_contextMenu(contextMenu) {
 
@@ -50,14 +51,30 @@ SourceDirTreeNode::SourceDirTreeNode(SourceDirTree* parent, SourceDir* sourceDir
 }
 
 
-SourceDirTreeNode::SourceDirTreeNode(SourceDirTreeNode* parent, SourceDir* sourceDir, KPhotoBook* photobook, KPopupMenu* contextMenu)
+SourceDirTreeNode::SourceDirTreeNode(SourceDirTreeNode* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu)
     : KListViewItem(parent)
-    , m_sourceDir(sourceDir)
     , m_photobook(photobook)
+    , m_sourceDir(sourceDir)
     , m_selectedFilesCount(0)
     , m_contextMenu(contextMenu) {
 
     init(true);
+}
+
+
+void SourceDirTreeNode::refreshIcon() {
+
+    if (Settings::sourceDirTreeShowIcons()) {
+        QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
+        if (iconSet.isNull()) {
+            kdDebug() << "[SourceDirTreeNode::refresh] Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
+            this->setPixmap(SourceDirTree::COLUMN_TEXT, 0);
+        } else {
+            this->setPixmap(SourceDirTree::COLUMN_TEXT, iconSet.pixmap());
+        }
+    } else {
+        this->setPixmap(SourceDirTree::COLUMN_TEXT, 0);
+    }
 }
 
 
@@ -202,8 +219,7 @@ void SourceDirTreeNode::paintCell(QPainter *p, const QColorGroup &cg, int column
 //
 void SourceDirTreeNode::init(bool showRelativePath) {
 
-    static QPixmap directoryIcon = QPixmap(KGlobal::iconLoader()->loadIcon(Constants::ICON_SOURCEDIR, KIcon::Small, Configuration::getInstance()->tagtreeIconSize()));
-    this->setPixmap(SourceDirTree::COLUMN_TEXT, directoryIcon);
+    refreshIcon();
 
     // create and set text for text column
     QString text = m_sourceDir->dir()->absPath();

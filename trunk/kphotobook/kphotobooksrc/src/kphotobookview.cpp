@@ -6,6 +6,7 @@
 
 #include "constants.h"
 #include "configuration.h"
+#include "settings.h"
 
 #include "kphotobook.h"
 #include "file.h"
@@ -17,19 +18,19 @@
 #include "sourcedirtree.h"
 #include "sourcedirtreenode.h"
 
-
-#include <qobject.h>
-#include <qpainter.h>
-#include <qlayout.h>
-#include <qstring.h>
-#include <qpopupmenu.h>
-
+#include "kfile.h"
 #include <kmessagebox.h>
 #include <krun.h>
 #include <klocale.h>
 #include <kdebug.h>
 #include <kprocess.h>
 #include <kfileiconview.h>
+
+#include <qobject.h>
+#include <qpainter.h>
+#include <qlayout.h>
+#include <qstring.h>
+#include <qpopupmenu.h>
 
 
 KPhotoBookView::KPhotoBookView(QWidget *parent)
@@ -74,7 +75,7 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
 
     new QLabel(i18n("Image size:"), imageSizePanel, "imageSizeLabel");
 
-    m_imageSizeSlider = new QSlider(4, 20, 1, Configuration::getInstance()->previewSize()/8, Qt::Horizontal, imageSizePanel, "imageSizeSlider");
+    m_imageSizeSlider = new QSlider(4, 20, 1, Settings::imagePreviewSize()/8, Qt::Horizontal, imageSizePanel, "imageSizeSlider");
     m_imageSizeSlider->setTickmarks(QSlider::Above);
     QObject::connect(m_imageSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(slotImageSizeSliderChanged(int)));
     QObject::connect(m_imageSizeSlider, SIGNAL(sliderPressed()), this, SLOT(slotImageSizeSliderPressed()));
@@ -85,7 +86,11 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
 
     // file preview
     m_fileView = new KFileIconView(mainPanel, "fileIconView");
-    m_fileView->setSelectionMode(Configuration::getInstance()->selectionMode());
+    if (Settings::imagePreviewSelectionMode() == "Extended") {
+        m_fileView->setSelectionMode(KFile::Extended);
+    } else {
+        m_fileView->setSelectionMode(KFile::Multi);
+    }
     m_fileView->setResizeMode(KFileIconView::Adjust);
     m_fileView->showPreviews();
     m_fileView->setWordWrapIconText(false);
@@ -161,8 +166,6 @@ void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
 
 
 void KPhotoBookView::storeConfiguration() {
-    // store slider position
-    Configuration::getInstance()->setPreviewSize(8*m_imageSizeSlider->value());
     // store splitter sizes
     Configuration::getInstance()->setMainSplitterSizes(m_split->sizes());
     Configuration::getInstance()->setTreeSplitterSizes(m_treesplit->sizes());
@@ -189,6 +192,23 @@ void KPhotoBookView::decreasePreviewSize() {
 
 
 //
+// public slots
+//
+void KPhotoBookView::slotLoadSettings() {
+
+    updateCurrentImageSize();
+
+    if (Settings::imagePreviewSelectionMode() == "Extended") {
+        m_fileView->setSelectionMode(KFile::Extended);
+    } else {
+        m_fileView->setSelectionMode(KFile::Multi);
+    }
+
+    m_fileView->setFont(Settings::imagePreviewFont());
+}
+
+
+//
 // private slots
 //
 void KPhotoBookView::slotImageSizeSliderPressed() {
@@ -203,6 +223,9 @@ void KPhotoBookView::slotImageSizeSliderReleased() {
 
     updateCurrentImageSizeLabel();
 
+    // store the current preview size
+    Settings::setImagePreviewSize(8*m_imageSizeSlider->value());
+
     // slider released after dragging it --> redraw previews
     updateCurrentImageSize();
 }
@@ -214,6 +237,9 @@ void KPhotoBookView::slotImageSizeSliderChanged(__attribute__((unused)) int size
 
     // slider position changed without dragging it --> redraw previews
     if (!m_sliderPressed) {
+        // store the current preview size
+        Settings::setImagePreviewSize(8*m_imageSizeSlider->value());
+
         updateCurrentImageSize();
     }
 }
@@ -252,10 +278,10 @@ void KPhotoBookView::updateCurrentImageSize() {
     // remove all displayed images
     removeAllFiles();
 
-    m_fileView->setPreviewSize(8*m_imageSizeSlider->value());
+    m_fileView->setPreviewSize(Settings::imagePreviewSize());
     m_fileView->showPreviews();
-    m_fileView->setGridX(8*m_imageSizeSlider->value()+10);
-    m_fileView->setGridY(8*m_imageSizeSlider->value()+10);
+    m_fileView->setGridX(Settings::imagePreviewSize()+10);
+    m_fileView->setGridY(Settings::imagePreviewSize()+10);
 
     // force redrawing all files by removing them and adding them again
     updateFiles(&selectedFiles);

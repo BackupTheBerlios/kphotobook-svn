@@ -66,16 +66,16 @@ TagTreeNode::TagTreeNode(TagTreeNode* parent, KPhotoBook* photobook, TagNode* ta
 
 void TagTreeNode::refresh() {
 
-    if (Settings::tagTreeHideIcons()) {
-        this->setPixmap(TagTree::COLUMN_TEXT, 0);
-    } else {
+    if (Settings::tagTreeShowIcons()) {
         QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(*m_tagNode->iconName(), KIcon::Small, Settings::tagTreeIconSize(), true);
         if (iconSet.isNull()) {
-            kdDebug() << "[TagTreeNode::refresh] Could not load isconset with iconname: '" << *m_tagNode->iconName() << "'" << endl;
+            kdDebug() << "[TagTreeNode::refresh] Could not load iconset with iconname: '" << *m_tagNode->iconName() << "'" << endl;
             this->setPixmap(TagTree::COLUMN_TEXT, 0);
         } else {
             this->setPixmap(TagTree::COLUMN_TEXT, iconSet.pixmap());
         }
+    } else {
+        this->setPixmap(TagTree::COLUMN_TEXT, 0);
     }
 
     this->setText(TagTree::COLUMN_TEXT, QString(*m_tagNode->text()).prepend(" "));
