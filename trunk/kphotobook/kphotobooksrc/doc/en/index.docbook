@@ -1,58 +1,28 @@
 <?xml version="1.0" ?>
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
-  <!ENTITY kphotobook "<application>KPhotoBook 0&#46;0&#46;1</application>">
-  <!ENTITY kappname "&kphotobook;"><!-- Do *not* replace kappname-->
+  <!ENTITY kmyapplication "<application>KPhotoBook</application>"> 
+  <!ENTITY kphotobook "<application>KPhotoBook 0&#46;0&#46;5</application>">
+  <!ENTITY kappname "&kmyapplication;"><!-- Do *not* replace kappname-->
   <!ENTITY package "kde-module"><!-- kdebase, kdeadmin, etc -->
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % English "INCLUDE"><!-- change language only here -->
+  <!ENTITY author.name "<firstname>Michael</firstname><surname>Christen</surname>">
+  <!ENTITY author.mail "<email>starcube@users.sourceforge.net</email>">
+  <!ENTITY author2.name "<firstname>Thomas</firstname><surname>Christen</surname>">
+  <!ENTITY author2.mail "<email>chtom@users.sourceforge.net</email>">
   
-  
-  <!-- Do not define any other entities; instead, use the entities
-       from kde-genent.entities and $LANG/user.entities. -->
 ]>
-<!-- kdoctemplate v0.8 October 1 1999 
-     Minor update to "Credits and Licenses" section on August 24, 2000
-     Removed "Revision history" section on 22 January 2001
-     Changed to Installation/Help menu entities 18 October 2001
-     Other minor cleanup and changes 18 October 2001 -->
-
-
-<!--
-This template was designed by: David Rugge davidrugge@mindspring.com
-with lots of help from: Eric Bischoff ebisch@cybercable.tm.fr
-and Frederik Fouvry fouvry@sfs.nphil.uni-tuebingen.de
-of the KDE DocBook team.
-
-You may freely use this template for writing any sort of KDE documentation.
-If you have any changes or improvements, please let us know.
-
-Remember:
-- in XML, the case of the <tags> and attributes is relevant ;
-- also, quote all attributes.
-
-Please don't forget to remove all these comments in your final documentation,
-thanks ;-).
--->
-
-<!-- ................................................................ -->
-
-<!-- The language must NOT be changed here. -->
 
 <book lang="&language;">
-
-<!-- This header contains all of the meta-information for the document such
-as Authors, publish date, the abstract, and Keywords -->
 
 <bookinfo>
 <title>The &kphotobook; Handbook</title>
 
 <authorgroup>
 <author>
-<firstname></firstname>
-<othername></othername>
-<surname>Michael Christen</surname>
+&author.name;
 <affiliation>
-<address><email>starcube&#64;my&#45;mail&#46;ch</email></address>
+<address>&author.mail;</address>
 </affiliation>
 </author>
 </authorgroup>
@@ -61,7 +31,7 @@ as Authors, publish date, the abstract, and Keywords -->
 
 <copyright>
 <year>1999</year>
-<year>2003</year>
+<year>2004</year>
 <holder>Michael Christen</holder>
 </copyright>
 <!-- Translators: put here the copyright notice of the translation -->
@@ -69,120 +39,265 @@ as Authors, publish date, the abstract, and Keywords -->
      and in the FDL itself on how to use it. -->
 <legalnotice>&FDLNotice;</legalnotice>
 
-<!-- Date and version information of the documentation
-Don't forget to include this last date and this last revision number, we
-need them for translation coordination !
-Please respect the format of the date (YYYY-MM-DD) and of the version
-(V.MM.LL), it could be used by automation scripts.
-Do NOT change these in the translation. -->
-
-<date>2001-10-18</date>
-<releaseinfo>0&#46;0&#46;1</releaseinfo>
+<date>2004-04-13</date>
+<releaseinfo>0&#46;0&#46;5</releaseinfo>
 
 <!-- Abstract about this handbook -->
 
 <abstract>
 <para>
-&kphotobook; is an application specially designed to do nothing you would
-ever want.
+This is the handbook for &kmyapplication;, an easy to use, straight forward and fast application for managing all your photos.
 </para>
 </abstract>
-
-<!-- This is a set of Keywords for indexing by search engines.
-Please at least include KDE, the KDE package it is in, the name
- of your application, and a few relevant keywords. -->
 
 <keywordset>
 <keyword>KDE</keyword>
 <keyword>KPhotoBook</keyword>
-<keyword>nothing</keyword>
-<keyword>nothing else</keyword>
+<keyword>photox</keyword>
+<keyword>images</keyword>
+<keyword>pictures</keyword>
+<keyword>album</keyword>
+<keyword>photobook</keyword>
+<keyword>tag</keyword>
 </keywordset>
 
 </bookinfo>
 
-<!-- The contents of the documentation begin here.  Label
-each chapter so with the id attribute. This is necessary for two reasons: it
-allows you to easily reference the chapter from other chapters of your
-document, and if there is no ID, the name of the generated HTML files will vary
-from time to time making it hard to manage for maintainers and for the CVS
-system. Any chapter labelled (OPTIONAL) may be left out at the author's
-discretion. Other chapters should not be left out in order to maintain a
-consistent documentation style across all KDE apps. -->
 
 <chapter id="introduction">
 <title>Introduction</title>
 
-<!-- The introduction chapter contains a brief introduction for the
-application that explains what it does and where to report
-problems. Basically a long version of the abstract.  Don't include a
-revision history. (see installation appendix comment) -->
-
 <para>
-&kphotobook; is a program that lets you do absolutely nothing. Please report
-any problems or feature requests to the &kde; mailing lists.
+This handbook is intended to give an overview on the easy use of &kmyapplication;.
 </para>
+
+
+<sect1 id="what_is_kpb">
+  <title>What is &kmyapplication;?</title>
+  <para>&kmyapplication; is a powerful, easy to use, intuitive and fast application to manage and organize your photos. The main idea is to be able to annotate your photos with tags and to refind the photos using the given tags. The tags which can be created by yourself are arranged in a tree.</para>
+  <para>The &kmyapplication; GUI comes up with several points which makes the handling with many photos very easy. This is just a short excerpt of it's goodies:</para>
+  <itemizedlist>
+    <listitem><para>It is very easy to annotate tags to one or more images at a time</para></listitem>
+    <listitem><para>It is very easy to find images by the given tags (actually one mouse click only is needed)</para></listitem>
+    <listitem><para>It is very easy to edit the image database with an external program - it's saved as XML file</para></listitem>
+    <listitem><para>...</para></listitem>
+  </itemizedlist>
+</sect1>
+
+<sect1 id="history">
+  <title>History</title>
+  <para>The idea for a photo database and photo album program came up during September 2003. Having bought a digital camera a few months ago, the necessity for a program to manage all the taken photos became urgent.</para>
+  <para>At this time, we did not know about a comparable program for KDE. A few weeks later KimDaBa 1.0 was released. We looked into this program but decided to go on with the development of &kmyapplication; anyway because KimDaBa was not exactly what we needed.</para>
+  <para>In February 2004 a first alpha-version of Fotoon was released. Fotoon came closer to what our idea is... but not exactly. We decide - once again - to go on working on &kmyapplication; and to have a close eye on these other applications.</para>
+</sect1>
+
+<sect1 id="why_kpb">
+  <title>Why another application to manage photos?</title>
+  <para>It's not easy to manage hundreds or even thousands of images. Other applications promote themselves to solve this problem. They say it'd be easy to manage such a huge amount of photos. Having looked at some of those other applications, we found that it was not <emphasis>that</emphasis> easy and not nearly as straight forward as we think such an application should be. Beside this, it is also very important that it is not only easy to manage the photos but also to be fast. Other applications provide the function to tag the pictures but do not offer this function in a really easy and fast way. Some others have the same approach as &kmyapplication;, but waiting for an application to become usable when no work is done on it is not really a great thing to do. :-)</para>
+</sect1>
+
+<sect1 id="feature_list">
+  <title>Basic Feature List</title>
+  <itemizedlist>
+    <listitem><para>creating an image database with images from several folders which can be added single or recursively</para></listitem>
+    <listitem><para>annotate tags to the photos - this can be done for one photo only or for several photos at once</para></listitem>
+    <listitem><para>there will be different kinds of tags: title, string, dates, numeric, enumeration and boolean</para></listitem>
+    <listitem><para>there can be written a description for each image</para></listitem>
+    <listitem><para>searching and filtering the photos using the given tags and description</para></listitem>
+    <listitem><para>all pictures matching the chosen filter are displayed as thumbnails</para></listitem>
+    <listitem><para>the pictures can be rotated (real, EXIF or database only)</para></listitem>
+    <listitem><para>showing the EXIF informations of a selected file</para></listitem>
+    <listitem><para>showing the pictures matching the filter in a slide show</para></listitem>
+    <listitem><para>opening the files with a any desired program</para></listitem>
+    <listitem><para>For a more complete feature and "to do" list, please visit the &kmyapplication; homepage.</para></listitem>
+    <listitem><para>...</para></listitem>
+  </itemizedlist>
+</sect1>
+
+<sect1 id="evolution">
+  <title>Evolution of &kmyapplication;</title>
+  <para>This is a quick overview of the evolution of &kmyapplication;</para>
+  <sect2>
+  <title>Version 0.0.3</title>
+  <para>Version 0.0.3 was the first release of &kmyapplication; and was released in February 2004. It did not provide many features but seemed quite stable already (probably because of the lack of features :-) ). The UI provided a source directory tree and a main window in which thumbnails of the images in the imported directories were shown. There was also a tag tree - it was hard coded at this time. V0.0.3 already had the ability to alter the thumbnail size with a ruler.</para>
+  </sect2>
+  <sect2>
+  <title>Version 0.0.4</title>
+  <para>Version 0.0.4 was released in March 2004. Besides the features of Version 0.0.3, we provided a functional tag tree with title tags and boolean tags, improved filter abilities, a few new icons and a new tool bar.</para>
+  </sect2>
+  <sect2>
+  <title>Version 0.0.5</title>
+  <para>Version 0.0.5 was released on March 11, 2004. Version 0.0.5 is the firs release as a tarball and is now also registered at <ulink url="http://www.kde-apps.org/">kde-apps.org</ulink>. KPhotoBook is usable by now. The trees for the Source Directory and the Tags are in separate Tabs now. There are several new icons and functions like unmark all tags (for example to show the pictures which have no tags yet). There is also a new configure dialog with heaps of options (mostly for the visual appearance). The toolbars are configurable as well.</para>
+  </sect2>
+</sect1>        
+
 </chapter>
+
+
+
+
+
+
 
 <chapter id="using-kphotobook">
 <title>Using &kphotobook;</title>
 
-<!-- This chapter should tell the user how to use your app. You should use as
-many sections (Chapter, Sect1, Sect3, etc...) as is necessary to fully document
-your application. -->
 
-<para>
+<sect1 id="database">
+  <title>The &kmyapplication; database</title>
+  <para>A &kmyapplication; database is stored as one XML-file. This file contains all source folders, tags and files belonging to this database. Of course it is possible to have several databases storing different types of photos (e.g. you could have a database for your private photos and a database for your business photos).</para>
+  <para>When a database has changed (tags or source folders were edited) the file must be saved. That means that changes are not automatically persisted. Each time a file is saved the old file is backed-up.</para>
+</sect1>
 
-<!-- Note that all graphics should be in .png format. Use no gifs because of
-patent issues. -->
+<sect1 id="source_directories">
+  <title>Source Directories</title>
+    <para>The &kmyapplication; database contains all images of one ore more source folders. Source folders can be added recursively or single. Adding them recursively makes &kmyapplication; add the selected directory and all directories below it. When adding a folder recursively, hard- and soft-links are followed by default. To prevent endless loops &kmyapplication; tries to detect and suppress loops in the file system directory structure.</para>
+    <para>When restarting &kmyapplication; every source folder will be rescanned and new found sub-folders and files will be added to the database. This function can also be executed manually. Missed directories of files will not automatically be removed from the database to prevent loss of the association between files and tags.</para>
+    <sect2>
+      <title>The Source Directory Tree</title>
+      <para>The Source Directory Tree shows all the source directories which are added to the database. As known from Konqueror directories with subdirectories can be expanded and collapsed. There are some very handy operations which are accessible through the directory tree context menu:</para>
+      <para>Beside Folders:</para>
+      <informaltable>
+      <tgroup cols="2">
+      <tbody>
+        <row><entry>Include All</entry><entry>Includes all source directories which are in the database to the preview</entry></row>
+	<row><entry>Exclude All</entry><entry>Excludes all source directories from the preview</entry></row>
+	<row><entry>Invert All</entry><entry>All folders which were included to the preview will be excluded and vice versa</entry></row>
+	<row><entry>Expand all Source Directories</entry><entry>The folder Tree will be expanded. All source directories are visible</entry></row>
+	<row><entry>Collapse all Source Directories</entry><entry>The folder tree will be collapsed. Only the top level directories are shown</entry></row>
+	<row><entry>Add Source Directory</entry><entry>Prompts the dialog to add a source directory (recursively or single)</entry></row>
+      </tbody>
+      </tgroup>
+      </informaltable>
+      <para>On Folders:</para>
+      <informaltable>
+      <tgroup cols="2">
+      <tbody>
+        <row><entry>Include Whole Folder</entry><entry>Includes the directory to the preview. Subdirectories will be included as well</entry></row>
+	<row><entry>Exclude Whole Folder</entry><entry>Excludes the directory from the preview. Subdirectories will be excluded as well</entry></row>
+	<row><entry>Invert Folder Selection</entry><entry>All subdirectories of the current folder which were included to the preview will be excluded and vice versa</entry></row>
+	<row><entry>Expand Source Directory</entry><entry>Expands the current folder</entry></row>
+	<row><entry>Collapse Source Directory</entry><entry>Collapses the current folder</entry></row>
+      </tbody>
+    </tgroup>
+    </informaltable>
+    </sect2>
+    <sect2>
+    <title>Adding Source Directories</title>
+    <para>The &kmyapplication; database contains all images of one ore more source folders. Source folders can be added recursively or single. Adding them recursively makes &kmyapplication; add the selected directory and all directories below it. When adding a folder recursively, hard- and soft-links are followed by default. To prevent endless loops &kmyapplication; tries to detect and suppress loops in the file system directory structure.</para>
+      <itemizedlist>
+      <listitem><para>non-recursive: only the files in the selected folder will be added to the database.</para></listitem>
+      <listitem><para>recursive: all files in the selected folder and all sub-folders will be added to the database.</para></listitem>
+    </itemizedlist>
+    <para>When restarting &kmyapplication; every source folder will be rescanned and new found sub-folders and files will be added to the database. This function can also be executed manually. Missed directories of files will not automatically be removed from the database to prevent loss of the association between files and tags.</para>
+    </sect2>
+      
+    <sect2>
+    <title>Removing Source Directories</title>
+    <para>Removing source directories will only remove the directory and all it's files from the &kmyapplication;. No files will be deleted, however, you will lose all tags associated with those files.</para>
+    </sect2>
+      
+    <sect2>
+    <title>Rescan Source Directories</title>
+    <para>Rescanning the source directory will check the source directories for new and deleted sub directories and files. New files and directories will automatically be added to the database. &kmyapplication; will ask for user input when directories and files are deleted.</para>
+    </sect2>
+</sect1>
 
-<screenshot>
-<screeninfo>Here's a screenshot of &kphotobook;</screeninfo>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="screenshot.png" format="PNG"/>
-	  </imageobject>
-	  <imageobject>
-	    <imagedata fileref="screenshot.eps" format="EPS"/>
-	  </imageobject>
-	  <textobject>
-	    <phrase>Screenshot</phrase>
-	  </textobject>
-	</mediaobject>
-</screenshot>
-</para>
+<sect1 id="thumb_win">
+  <title>Thumbnail Window</title>
+  <para>text text text</para>
+    <sect2>
+    <title>Refresh the Thumbnail Window</title>
+    <para>text text text</para>
+    </sect2>
+</sect1>
+
+<sect1 id="tags">
+  <title>Tags</title>
+      <para>text text text</para>
+  <sect2>
+    <title>Tag Tree</title>
+    <para>text text text</para>
+  </sect2>
+  
+  <sect2>
+    <title>Adding, Deleting and Editinig Tags</title>
+    <para>text text text</para>
+  <sect3>
+    <title>Tagging Images</title>
+    <para>text text text</para>
+    </sect3>
+  </sect2>
+  
+  <sect2>
+    <title>Tag Types</title>
+    <para>text text text</para>
+    <sect3>
+    <title>Title Tags</title>
+    <para>text text text</para>
+    </sect3>
+    <sect3>
+    <title>Boolean Tags</title>
+    <para>text text text</para>
+    </sect3>
+    <sect3>
+    <title>Enumeration Tags</title>
+    <para>text text text</para>
+    </sect3>
+    <sect3>
+    <title>String Tags</title>
+    <para>text text text</para>
+    </sect3>
+    <sect3>
+    <title>Numeric Tags</title>
+    <para>text text text</para>
+    </sect3>
+  </sect2>
+</sect1>
+
+<sect1 id="comment">
+  <title>Image Comments</title>
+      <para>text text text</para>
+  <sect2>
+    <title>Adding, Editing and Removing Comments</title>
+    <para>text text text</para>
+  </sect2>
+</sect1>
+
+  
+<sect1 id="filtering">
+  <title>Filtering the Photo Database</title>
+  <para>text text text</para>
+    <sect2>
+      <title>Filtering using the Tag Tree</title>
+      <para>text text text</para>
+    </sect2>
+    <sect2>
+      <title>Filtering using the Source Directory Tree</title>
+      <para>text text text</para>
+    </sect2>
+</sect1>
+  
+</chapter>
 
 
-<sect1 id="kphotobook-features">
-<title>More &kphotobook; features</title>
-
-<para>It slices! It dices! and it comes with a free toaster!</para>
-<para>
-The Squiggle Tool <guiicon><inlinemediaobject>
-	  <imageobject>
-	    <imagedata fileref="squiggle.png" format="PNG"/>
-	  </imageobject>
-	  <imageobject>
-	    <imagedata fileref="squiggle.eps" format="EPS"/>
-	  </imageobject>
-	  <textobject>
-	    <phrase>Squiggle</phrase>
-	  </textobject>
-</inlinemediaobject></guiicon> is used to draw squiggly lines all over
-the &kphotobook; main window. It's not a bug, it's a feature!
-</para>
-
+<chapter id="kpb_configuration">
+  <title>Configuring &kmyapplication;</title>
+    <para>text text text</para>
+<sect1 id="config_dialog">
+  <title>The Configure Dialog</title>
+  <para>text text text</para>
+  <sect2>
+    <title>General</title>
+    <para>text text text</para>
+  </sect2>
 </sect1>
 </chapter>
+
 
 <chapter id="commands">
 <title>Command Reference</title>
 
-<!-- (OPTIONAL, BUT RECOMMENDED) This chapter should list all of the
-application windows and their menubar and toolbar commands for easy reference.
-Also include any keys that have a special function but have no equivalent in the
-menus or toolbars. This may not be necessary for small apps or apps with no tool
-or menu bars. -->
 
 <sect1 id="kphotobook-mainwindow">
 <title>The main &kphotobook; window</title>
@@ -191,6 +306,7 @@ or menu bars. -->
 <title>The File Menu</title>
 <para>
 <variablelist>
+
 <varlistentry>
 <term><menuchoice>
 <shortcut>
@@ -199,8 +315,47 @@ or menu bars. -->
 <guimenu>File</guimenu>
 <guimenuitem>New</guimenuitem>
 </menuchoice></term>
-<listitem><para><action>Creates a new document</action></para></listitem>
+<listitem><para><action>Creates a new &kmyapplication; database</action></para></listitem>
 </varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>O</keycap></keycombo>
+</shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Open</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Opens an existing &kmyapplication; database</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>S</keycap></keycombo>
+</shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Save</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Saves the current &kmyapplication; database</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>Save As</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Saves the current &kmyapplication; database in a new location</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>Rescan Filesystem</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Rescans the source directories which are added to the database for new files and - if added recursively - for sub-folders</action></para></listitem>
+</varlistentry>
+
 <varlistentry>
 <term><menuchoice>
 <shortcut>
@@ -211,20 +366,222 @@ or menu bars. -->
 </menuchoice></term>
 <listitem><para><action>Saves the document</action></para></listitem>
 </varlistentry>
+
 <varlistentry>
 <term><menuchoice>
 <shortcut>
-<keycombo action="simul">&Ctrl;<keycap>Q</keycap></keycombo>
+<keycombo action="simul">&Ctrl;<keycap>Q; </keycap></keycombo>
+<keycombo action="simul">&Ctrl;<keycap>W</keycap></keycombo>
 </shortcut>
 <guimenu>File</guimenu>
-<guimenuitem>Quit</guimenuitem>
+<guimenuitem>Close</guimenuitem>
 </menuchoice></term>
 <listitem><para><action>Quits</action> &kphotobook;</para></listitem>
 </varlistentry>
+
 </variablelist>
 </para>
-
 </sect2>
+
+
+<sect2>
+<title>The View Menu</title>
+<para>
+<variablelist>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul"><keycap>F5; </keycap></keycombo>
+<keycombo action="simul">&Ctrl;<keycap>R</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Refresh View</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Refreshes the thumbnail view. This may - for example - be necessary after having changed the tag or source directory filter.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>+</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Increase Preview Size</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>increases the thumbnail preview size.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>-</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Decrease Preview Size</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>decreases the thumbnail preview size.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Expand All Tags</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Expands the whole tag tree with all its sub-tags so that the whole tree is visible.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Collapse All Tags</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Collapses the whole tag tree with all its sub-tags so that only the main tags are visible.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Expand All Source Directories</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Expands the whole source directory tree with all its sub-trees so that the whole tree is visible.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Collapse All Source Directories</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Collapses the whole source directory tree with all its sub-trees so that only the main directories are visible.</action></para></listitem>
+</varlistentry>
+
+</variablelist>
+</para>
+</sect2>
+
+
+<sect2>
+<title>The Manage Menu</title>
+<para>
+<variablelist>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Add Source Directory</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Adds a new source directory to the database. This can happen to a single directory or recursively.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Add Main Tag</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Adds a new main tag to the database. A main tag is a top level tag which can contain sub-tags</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Tag Filter Operator = AND</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Sets the tag filter operator to "AND". After refreshing, only the images which contain all the selected tags will be shown.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Tag Filter Operator = OR</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Sets the tag filter operator to "OR". After refreshing, all the images which contain any of the selected tags will be shown.</action></para></listitem>
+</varlistentry>
+
+</variablelist>
+</para>
+</sect2>
+
+
+
+<sect2>
+<title>The Settings Menu</title>
+<para>
+<variablelist>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Toolbars</guimenuitem>
+<guimenuitem>Show Main Toolbar</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Main Toolbar.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Toolbars</guimenuitem>
+<guimenuitem>Show Manage</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Manage Toolbar.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Toolbars</guimenuitem>
+<guimenuitem>Show Preview</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Preview Toolbar.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Show Toolbar</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Statusbar.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Configure Shortcuts</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Opens the shortcut configure dialog.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Configure Toolbars</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Opens the toolbar configure dialog.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Configure &kmyapplication;</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Opens the &kmyapplication; configure dialog.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Shift;<keycap>F5</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Autorefresh View</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Refreshes the thumbnail view automatically after changes.</action></para></listitem>
+</varlistentry>
+
+</variablelist>
+</para>
+</sect2>
+
 
 <sect2>
 <title>The <guimenu>Help</guimenu> Menu</title>
@@ -241,149 +598,7 @@ or menu bars. -->
 </sect1>
 </chapter>
 
-<chapter id="developers">
-<title>Developer's Guide to &kphotobook;</title>
 
-<!-- (OPTIONAL) A Programming/Scripting reference chapter should be
-used for apps that use plugins or that provide their own scripting hooks
-and/or development libraries. -->
-
-<para>
-Programming &kphotobook; plugins is a joy to behold. Just read through the next
-66 pages of API's to learn how!
-</para>
-
-<!-- Use refentries to describe APIs.  Refentries are fairly complicated and you
-should consult the docbook reference for further details. The example below was
-taken from that reference and shortened a bit for readability. -->
-
-<refentry id="re-1007-unmanagechildren-1">
-<refmeta>
-<refentrytitle>XtUnmanageChildren</refentrytitle>
-<refmiscinfo>Xt - Geometry Management</refmiscinfo>
-</refmeta>
-<refnamediv>
-<refname>XtUnmanageChildren
-</refname>
-<refpurpose>remove a list of children from a parent widget's managed
-list.
-<indexterm id="ix-1007-unmanagechildren-1"><primary>widgets</primary><secondary>removing</secondary></indexterm>
-<indexterm id="ix-1007-unmanagechildren-2"><primary>XtUnmanageChildren</primary></indexterm> 
-</refpurpose>
-
-</refnamediv>
-<refsynopsisdiv>
-<refsynopsisdivinfo>
-<date>4 March 1996</date>
-</refsynopsisdivinfo>
-<synopsis>
-void XtUnmanageChildren(<replaceable class="parameter">children</replaceable>, <replaceable class="parameter">num_children</replaceable>)
-    WidgetList <replaceable class="parameter">children</replaceable>;
-    Cardinal <replaceable class="parameter">num_children</replaceable>;
-</synopsis>
-
-<refsect2 id="r2-1007-unmanagechildren-1">
-<title>Inputs</title>
-<variablelist>
-<varlistentry>
-<term><replaceable class="parameter">children</replaceable>
-</term>
-<listitem>
-<para>Specifies an array of child widgets. Each child must be of
-class RectObj or any subclass thereof.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><replaceable class="parameter">num_children</replaceable>
-</term>
-<listitem>
-<para>Specifies the number of elements in <replaceable class="parameter">children</replaceable>.
-</para>
-</listitem>
-</varlistentry>
-</variablelist>
-</refsect2></refsynopsisdiv>
-
-<refsect1 id="r1-1007-unmanagechildren-1">
-<title>Description
-</title>
-<para><function>XtUnmanageChildren()</function> unmaps the specified widgets
-and removes them from their parent's geometry management.
-The widgets will disappear from the screen, and (depending
-on its parent) may no longer have screen space allocated for
-them.
-</para>
-<para>Each of the widgets in the <replaceable class="parameter">children</replaceable> array must have
-the same parent.
-</para>
-<para>See the &ldquo;Algorithm&rdquo; section below for full details of the
-widget unmanagement procedure.
-</para>
-</refsect1>
-
-<refsect1 id="r1-1007-unmanagechildren-2">
-<title>Usage</title>
-<para>Unmanaging widgets is the usual method for temporarily
-making them invisible.  They can be re-managed with
-<function>XtManageChildren()</function>.
-</para>
-<para>You can unmap a widget, but leave it under geometry
-management by calling <function>XtUnmapWidget()</function>.  You can
-destroy a widget's window without destroying the widget by
-calling <function>XtUnrealizeWidget()</function>.  You can destroy a
-widget completely with <function>XtDestroyWidget()</function>.
-</para>
-<para>If you are only going to unmanage a single widget, it is
-more convenient to call <function>XtUnmanageChild()</function>.  It is
-often more convenient to call <function>XtUnmanageChild()</function>
-several times than it is to declare and initialize an array
-of widgets to pass to <function>XtUnmanageChildren()</function>.  Calling
-<function>XtUnmanageChildren()</function> is more efficient, however,
-because it only calls the parent's <function>change_managed()</function>
-method once.
-</para>
-</refsect1>
-
-<refsect1 id="r1-1007-unmanagechildren-3">
-<title>Algorithm
-</title>
-<para><function>XtUnmanageChildren()</function> performs the following:
-</para>
-<variablelist>
-<varlistentry>
-<term>-
-</term>
-<listitem>
-<para>Ignores the child if it already is unmanaged or is being
-destroyed.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>-
-</term>
-<listitem>
-<para>Otherwise, if the child is realized, it makes it nonvisible
-by unmapping it.
-</para>
-</listitem>
-</varlistentry>
-</variablelist>
-<para>
-</para>
-</refsect1>
-
-<refsect1 id="r1-1007-unmanagechildren-4">
-<title>Structures</title>
-<para>The <type>WidgetList</type> type is simply an array of widgets:
-</para>
-<screen id="sc-1007-unmanagechildren-1">typedef Widget *WidgetList;
-</screen>
-</refsect1>
-</refentry>
-
-</chapter>
 
 <chapter id="faq">
 <title>Questions and Answers</title>
@@ -402,24 +617,52 @@ application work. -->
 &updating.documentation;
 
 <qandaset id="faqlist">
+
 <qandaentry>
 <question>
-<para>My Mouse doesn't work. How do I quit &kphotobook;?</para>
+<para>How can I report bugs in &kmyapplication;?</para>
 </question>
 <answer>
-<para>You silly goose! Check out the <link linkend="commands">Commands
-Section</link> for the answer.</para>
+<para>Please visit the <ulink url="http://sourceforge.net/projects/kphotobook/">project homepage at sourceforge.net</ulink>. Please do not send an email concerning bugs to the developer directly.</para>
 </answer>
 </qandaentry>
+
 <qandaentry>
 <question>
-<para>Why can't I twiddle my documents?</para>
+<para>How can I report issues within this homepage?</para>
 </question>
 <answer>
-<para>You can only twiddle your documents if you have the foobar.lib
-installed.</para>
+<para>Please send an email to the maintainer of the <ulink url="http://kphotobook.sourceforge.net/">homepage</ulink>.</para>
 </answer>
 </qandaentry>
+
+<qandaentry>
+<question>
+<para>Is the &kmyapplication; database compatible with the KimDaBA or Fotoon database?</para>
+</question>
+<answer>
+<para>No, it is not. Maybe there will be an import function.</para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para>Will there be a function to draw into the picture?</para>
+</question>
+<answer>
+<para>We will see...</para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para>When will the next version be released?</para>
+</question>
+<answer>
+<para>It's done when it's done :-)</para>
+</answer>
+</qandaentry>
+
 </qandaset>
 </chapter>
 
@@ -436,20 +679,20 @@ distribution. -->
 &kphotobook;
 </para>
 <para>
-Program copyright 2003 Michael Christen <email>starcube&#64;my&#45;mail&#46;ch</email>
+Program copyright 2004 &author.name; &author.mail;
 </para>
 <para>
 Contributors:
 <itemizedlist>
-<listitem><para>Konqui the KDE Dragon <email>konqui@kde.org</email></para>
+<listitem><para>Thomas Christen &author2.mail;</para>
 </listitem>
-<listitem><para>Tux the Linux Penguin <email>tux@linux.org</email></para>
+<listitem><para>Daniel Gerber</para>
 </listitem>
 </itemizedlist>
 </para>
 
 <para>
-Documentation copyright 2003 Michael Christen <email>starcube&#64;my&#45;mail&#46;ch</email>
+Documentation copyright 2004 &author2.name; &author2.mail;
 </para>
 
 <!-- TRANS:CREDIT_FOR_TRANSLATORS -->
@@ -463,9 +706,6 @@ Documentation copyright 2003 Michael Christen <email>starcube&#64;my&#45;mail&#4
      regardless of what license the application uses) -->
 
 &underGPL;        	 <!-- GPL License -->
-&underBSDLicense;        <!-- BSD License -->
-&underArtisticLicense;   <!-- BSD Artistic License -->
-&underX11License;        <!-- X11 License  -->
 
 </chapter>
 
@@ -527,6 +767,7 @@ url="http://apps.kde.org/kphotobook">http://apps.kde.org/kphotobook</ulink>.
 &install.compile.documentation;
 
 </sect1>
+
 
 <sect1 id="configuration">
 <title>Configuration</title>
