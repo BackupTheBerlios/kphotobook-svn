@@ -5,6 +5,7 @@ Name[xx]=xxKPhotoBookxx
 Exec=kphotobook %i %m -caption "%c"
 Icon=kphotobook
 Type=Application
+MimeType=application/x-kphotobook
 DocPath=kphotobook/kphotobook.html
 Comment=An imaging managing application
 Comment[de]=Eine Bilderverwaltungs-Anwendung
