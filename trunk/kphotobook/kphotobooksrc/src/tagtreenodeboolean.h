@@ -28,7 +28,7 @@ class TagNodeBoolean;
 /**
  * Concrete tagtreenode for displaying a boolean tagnode.
  *
- * CVS-ID $Id: tagtreenodeboolean.h,v 1.6 2004/03/28 13:42:46 starcube Exp $
+ * CVS-ID $Id: tagtreenodeboolean.h,v 1.7 2004/04/05 16:23:46 starcube Exp $
  */
 class TagTreeNodeBoolean : public TagTreeNode {
 
@@ -45,6 +45,26 @@ public:
     virtual ~TagTreeNodeBoolean();
 
     QString filter();
+
+    /**
+     * Sets the filter to find images without this tag set.
+     */
+    virtual void deselectFilter() {
+        m_filterState = FILTERSTATE_EXCLUDE;
+
+        // force redrawing of this listviewitem
+        this->repaint();
+    }
+
+    /**
+     * Resets the filter.
+     */
+    virtual void resetFilter() {
+        m_filterState = FILTERSTATE_IGNORE;
+
+        // force redrawing of this listviewitem
+        this->repaint();
+    }
 
     virtual void leftClicked(TagTree* tagTree, int column);
     virtual void rightClicked(TagTree* tagTree, int column);

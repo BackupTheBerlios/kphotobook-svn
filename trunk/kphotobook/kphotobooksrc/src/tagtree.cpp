@@ -166,6 +166,32 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
 }
 
 
+void TagTree::deselectFilter() {
+
+    QListViewItemIterator it(this);
+    while (it.current()) {
+        TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
+
+        item->deselectFilter();
+
+        ++it;
+    }
+}
+
+
+void TagTree::resetFilter() {
+
+    QListViewItemIterator it(this);
+    while (it.current()) {
+        TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
+
+        item->resetFilter();
+
+        ++it;
+    }
+}
+
+
 void TagTree::doRepaintAll() {
     QListViewItemIterator it(this);
     while (it.current()) {

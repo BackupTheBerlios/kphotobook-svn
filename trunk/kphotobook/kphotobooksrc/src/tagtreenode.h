@@ -40,7 +40,7 @@ class TagTreeNode;
  * Superclass of all nodes to display in the tagtree.
  * It is a subclass of KListViewItem with some extensions.
  *
- * CVS-ID $Id: tagtreenode.h,v 1.7 2004/03/22 21:51:39 starcube Exp $
+ * CVS-ID $Id: tagtreenode.h,v 1.8 2004/04/05 16:23:46 starcube Exp $
  */
 class TagTreeNode : public KListViewItem {
 
@@ -82,6 +82,16 @@ public:
      * @param open Indicates if the subtree must be expanded (true) or collapsed (false).
      */
     void setOpenRecursive(bool open);
+
+    /**
+     * Sets the filter to find images without this tag set.
+     */
+    virtual void deselectFilter() = 0;
+
+    /**
+     * Resets the filter.
+     */
+    virtual void resetFilter() = 0;
 
     /**
      * This method is called by the tagtree when this TagTreeNode is clicked with the

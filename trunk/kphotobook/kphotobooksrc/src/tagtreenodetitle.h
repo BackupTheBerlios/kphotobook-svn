@@ -28,7 +28,7 @@ class TagNodeTitle;
 /**
  * Concrete tagtreenode for displaying a title.
  *
- * CVS-ID $Id: tagtreenodetitle.h,v 1.3 2004/03/22 21:51:39 starcube Exp $
+ * CVS-ID $Id: tagtreenodetitle.h,v 1.4 2004/04/05 16:23:46 starcube Exp $
  */
 class TagTreeNodeTitle : public TagTreeNode {
 
@@ -38,6 +38,20 @@ public:
     TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
     virtual ~TagTreeNodeTitle();
+
+    /**
+     * Sets the filter to find images without this tag set.
+     */
+    virtual void deselectFilter() {
+        // we do nothing, because we cannot yet filtertitles
+    }
+
+    /**
+     * Resets the filter.
+     */
+    virtual void resetFilter() {
+        // we do nothing, because we cannot yet filtertitles
+    }
 
     virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment) {
         KListViewItem::paintCell(p, cg, column, width, alignment);
