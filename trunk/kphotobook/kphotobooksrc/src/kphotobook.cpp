@@ -31,7 +31,6 @@
 #include "settingsfilehandling.h"
 
 #include "kphotobookview.h"
-#include "pref.h"
 #include "engine.h"
 #include "exception.h"
 #include "dialogaddsourcedir.h"
@@ -303,25 +302,27 @@ void KPhotoBook::setupActions() {
     //
     KStdAction::openNew(this, SLOT(slotFileNew()), actionCollection())->setWhatsThis(i18n("Create a new KPhotoBook database."));
     
-    KStdAction::open(this, SLOT(slotFileOpen()), actionCollection())->setWhatsThis(i18n("Open an existing KPhotoBook database for editing."));
+    KStdAction::open(this, SLOT(slotFileOpen()), actionCollection())->setWhatsThis(i18n("Open an existing KPhotoBook database."));
     
     m_save = KStdAction::save(this, SLOT(slotFileSave()), actionCollection());
     m_save->setWhatsThis(i18n("Save the current KPhotoBook database."));
     m_save->setEnabled(false);
     
-    KStdAction::saveAs(this, SLOT(slotFileSaveAs()), actionCollection());
+    KStdAction::saveAs(this, SLOT(slotFileSaveAs()), actionCollection())->setWhatsThis(i18n("Save the current KPhotoBook database as a new file."));
     
-    KStdAction::close(this, SLOT(close()), actionCollection());
+    KStdAction::close(this, SLOT(close()), actionCollection())->setWhatsThis(i18n("Close this window."));
+    
+    KStdAction::quit(kapp, SLOT(closeAllWindows()), actionCollection())->setWhatsThis(i18n("Close all windows and quit."));
 
 
     //
     // settings menu
     //
-    KStdAction::keyBindings(this, SLOT(slotOptionsConfigureKeys()), actionCollection());
+    KStdAction::keyBindings(this, SLOT(slotOptionsConfigureKeys()), actionCollection())->setWhatsThis(i18n("Configure the application's keyboard shortcut assignments."));
     
-    KStdAction::configureToolbars(this, SLOT(slotOptionsConfigureToolbars()), actionCollection());
+    KStdAction::configureToolbars(this, SLOT(slotOptionsConfigureToolbars()), actionCollection())->setWhatsThis(i18n("Configure which items should appear in the toolbars."));
     
-    KStdAction::preferences(this, SLOT(slotOptionsPreferences()), actionCollection());
+    KStdAction::preferences(this, SLOT(slotOptionsPreferences()), actionCollection())->setWhatsThis(i18n("Configure KPhotoBook."));
 
     
     //
@@ -483,15 +484,15 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotExpandSourceDir()),
         actionCollection(), "expandSourceDir"
     );
-    actionCollection()->action("expandSourceDir")->setWhatsThis(i18n("Expand the current source directory."));
-    
+    actionCollection()->action("expandSourceDir")->setWhatsThis(i18n("Expand all children of the source directory."));
+        
     new KAction(
         i18n("Collapse sourcedir"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotCollapseSourceDir()),
         actionCollection(), "collapseSourceDir"
     );
-    actionCollection()->action("collapseSourceDir")->setWhatsThis(i18n("Collapse the current source directory."));
+    actionCollection()->action("collapseSourceDir")->setWhatsThis(i18n("Hide the subtree of the source directory."));
     
     new KAction(
         i18n("Expand all sourcedirs"), Constants::ICON_EXPAND_FOLDER,
@@ -527,6 +528,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotCreateSubtag()),
         actionCollection(), "createSubtag"
     );
+    actionCollection()->action("createSubtag")->setWhatsThis(i18n("Creates a tag as child of the selected tag."));
     
     KShortcut editTagShortCut(KKey("F2"));
     new KAction(
@@ -535,6 +537,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotEditTag()),
         actionCollection(), "editTag"
     );
+    actionCollection()->action("editTag")->setWhatsThis(i18n("Change the attributes of this tag."));
 
     new KAction(
         i18n("&Delete tag"), Constants::ICON_DELETE_TAG,
@@ -542,6 +545,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotDeleteTag()),
         actionCollection(), "deleteTag"
     );
+    actionCollection()->action("deleteTag")->setWhatsThis(i18n("Deletes the tag after accepting a confirmation dialog."));
     
     m_lockUnlockTaggingAction = new KToggleAction(
         i18n("Lock Tagging"), 0,
@@ -575,6 +579,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotDeselectFilter()),
         actionCollection(), "deselectFilter"
     );
+    actionCollection()->action("deselectFilter")->setWhatsThis(i18n("Deselects all filters. In the filters 'AND' mode, all images without a associated tag are shown only. This is useful for finding new added images without having a tag yet."));
     
     new KAction(
         i18n("Reset Filter"), Constants::ICON_TAG_FILTER_RESET,
@@ -582,6 +587,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotResetFilter()),
         actionCollection(), "resetFilter"
     );
+    actionCollection()->action("resetFilter")->setWhatsThis(i18n("Sets the filter that every image is shown."));
 
     new KAction(
         i18n("Expand tag"), Constants::ICON_EXPAND_FOLDER,
@@ -589,6 +595,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotExpandTag()),
         actionCollection(), "expandTag"
     );
+    actionCollection()->action("expandTag")->setWhatsThis(i18n("Expand all children of the tag."));
     
     new KAction(
         i18n("Collapse tag"), Constants::ICON_COLLAPSE_FOLDER,
@@ -596,6 +603,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotCollapseTag()),
         actionCollection(), "collapseTag"
     );
+    actionCollection()->action("collapseTag")->setWhatsThis(i18n("Hide the subtree of the tag."));
     
     new KAction(
         i18n("Expand all tags"), Constants::ICON_EXPAND_FOLDER,
@@ -619,10 +627,11 @@ void KPhotoBook::setupActions() {
     //
     new KAction(
         i18n("Restore toolviews"), Constants::ICON_RESTORE_TOOL_VIEWS,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),m_sourcedirTree
+        0,
         this, SLOT(slotRestoreToolViews()),
         actionCollection(), "restoreToolViews"
     );
+    actionCollection()->action("restoreToolViews")->setWhatsThis(i18n("Rearrange the toolviews (Tagtree, ...) to their default position."));
     
     new KAction(
         i18n("Show Tagtree"), 0,
@@ -630,6 +639,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotShowToolViewTagTree()),
         actionCollection(), "showToolViewTagTree"
     );
+    actionCollection()->action("showToolViewTagTree")->setWhatsThis(i18n("Display the Tagtree toolview."));
 
     new KAction(
         i18n("Show Sourcedirtree"), 0,
@@ -637,6 +647,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotShowToolViewSourceDirTree()),
         actionCollection(), "showToolViewSourceDirTree"
     );
+    actionCollection()->action("showToolViewSourceDirTree")->setWhatsThis(i18n("Display the Sourcedirectory toolview."));
 
     new KAction(
         i18n("Show EXIF"), 0,
@@ -644,6 +655,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotShowToolViewMetaInfoTree()),
         actionCollection(), "showToolViewMetaInfoTree"
     );    
+    actionCollection()->action("showToolViewMetaInfoTree")->setWhatsThis(i18n("Display the EXIF toolview."));
 }
 
 
@@ -716,7 +728,7 @@ bool KPhotoBook::queryClose() {
         }
         Settings::setFileFilterSubdirsToIgnore(stringList);
     }
-
+    
     if (m_settingsTools) {
         stringList.clear();
         for (uint i = 0; i < m_settingsTools->kcfg_ToolsExternalTools->count(); i++) {
@@ -724,7 +736,7 @@ bool KPhotoBook::queryClose() {
         }
         Settings::setToolsExternalTools(stringList);
     }
-
+    
     switch (mdiMode()) {
         case KMdi::TabPageMode:
             Settings::setGeneralViewMode(Settings::EnumGeneralViewMode::TabPageMode);
@@ -736,11 +748,7 @@ bool KPhotoBook::queryClose() {
     
     // force writing the settings
     Settings::writeConfig();
-
-    // store the tree states
-    storeTreeState();
-    storeFilter();
-
+    
     // store dock configuration
     writeDockConfig(KGlobal::config(), "DockConfig");
 
@@ -781,6 +789,12 @@ bool KPhotoBook::queryClose() {
         }
     }
 
+    // store the tree states
+    if (m_engine->uid()) {
+      storeTreeState();
+      storeFilter();
+    }
+    
     // if we got here there was nothing to save --> simply close
     return true;
 }
@@ -1382,11 +1396,11 @@ void KPhotoBook::slotFileSelectionChanged() {
 
     // show EXIF info if only one image is seleced
     if (m_view->fileView()->selectedItems()->count() == 1) {
-        kdDebug() << "one file is selected" << endl;
+        kdDebug() << "one file is selected --> getting meta infos" << endl;
         
         QPtrListIterator<KFileItem> tempIt(*m_view->fileView()->selectedItems());
-        KFileItem* selectedFile = tempIt.current() ;
-
+        KFileItem* selectedFile = tempIt.current();
+        
         KFileMetaInfo metaInfo = selectedFile->metaInfo();
 
         // iterate over groups
