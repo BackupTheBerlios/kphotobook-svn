@@ -28,6 +28,8 @@ const QString Constants::ICON_CREATE_MAINTAG = QString("tag_add");
 const QString Constants::ICON_CREATE_SUBTAG = QString("tag_add");
 const QString Constants::ICON_EDIT_TAG = QString("tag_edit");
 const QString Constants::ICON_DELETE_TAG = QString("tag_del");
+const QString Constants::ICON_TAG_FILTER_DESELECT = QString("filter_deselect");
+const QString Constants::ICON_TAG_FILTER_RESET = QString("filter_reset");
 
 const QString Constants::ICON_SOURCEDIR = QString("folder");
 const QString Constants::ICON_ADD_SOURCEDIR = QString("sourcedir_add");

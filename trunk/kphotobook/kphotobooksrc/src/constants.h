@@ -26,7 +26,7 @@
 /**
  * Constants for kphotobook.
  *
- * CVS-ID $Id: constants.h,v 1.8 2004/03/30 21:44:31 starcube Exp $
+ * CVS-ID $Id: constants.h,v 1.9 2004/04/05 16:19:29 starcube Exp $
  */
 class Constants {
 
@@ -37,6 +37,8 @@ public:
     static const QString ICON_CREATE_SUBTAG;
     static const QString ICON_EDIT_TAG;
     static const QString ICON_DELETE_TAG;
+    static const QString ICON_TAG_FILTER_DESELECT;
+    static const QString ICON_TAG_FILTER_RESET;
 
     static const QString ICON_SOURCEDIR;
     static const QString ICON_ADD_SOURCEDIR;
