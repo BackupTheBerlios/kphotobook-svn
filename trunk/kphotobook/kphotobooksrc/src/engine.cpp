@@ -49,7 +49,7 @@
 
 
 Engine::Engine()
-    : m_dirty(true)
+    : m_dirty(false)
     , m_fileinfo(0)
     , m_uid(0)
     , m_nextSourceDirId(1)
