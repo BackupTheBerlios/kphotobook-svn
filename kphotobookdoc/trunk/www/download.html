@@ -21,20 +21,20 @@
 <tr>
 <td>
 
+<h2>Building from CVS</h2>
 <p>
-Downloads and cvs access are available on the projectsite at sourceforce.net: <a href="http://sourceforge.net/projects/kphotobook/" target="_top">KPhotoBook at sourceforge.net</a>
+Since we moved to subversion it is no longer possible to get <em>KPhotoBook</em> via CVS.
 </p>
 
-<h1>Building from CVS</h1>
+<h2>Building from Subversion</h2>
+<em>Subversion</em> is the successor of CVS. Please consider the <a target="_top" href="http://subversion.tigris.org/"><em>Subversion</em> homepage</a> or the superb <a target="_top" href="http://svnbook.red-bean.com/"><em>Subversion</em> book</a> for more informations about <em>Subversion</em>.
 <p>
-Follow these instructions to build the application from the repository:
+Follow these instructions to build the application from the <em>Subversion</em> repository (of course you must have installed a subversion client for that):
 </p>
 <ul>
-<li>Login to the cvs-repository at sourceforge (no password is required):
-<pre>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/kphotobook login</pre></li>
-<li>Checkout the sourcecode:
-<pre>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/kphotobook co kphotobooksrc</pre></li>
-<li>Change into the checked out directory<pre>cd kphotobooksrc</pre></li>
+<li>Get the sourcecode:
+<pre>svn export -r HEAD svn://svn.berlios.de/kphotobook/kphotobooksrc/trunk kphotobook</pre></li>
+<li>Change into the checked out directory<pre>cd kphotobook</pre></li>
 
 <li>Create the makefile:
 <pre>make -f Makefile.cvs</pre></li>
@@ -48,12 +48,15 @@ Follow these instructions to build the application from the repository:
 <pre>make install</pre></li>
 </ul>
 
-<h1>Building from the tarball</h1>
+<h2>Building from the tarball</h2>
+<p>
+NOTE: The tarball is still fetched from <a target="_top" href="http://sourceforge.net">sourceforge.net</a> since there is not yet a tarball on <a href="http://developer.berlios.de">berliOS</a>.
+</p>
 <p>
 Follow these instructions to build the application from the tarball:
 </p>
 <ul>
-<li>Downloaded the tarball from <a href="http://sourceforge.net/projects/kphotobook/" target="_top">KPhotoBook at sourceforge.net</a>.</li>
+<li>Downloaded the tarball from <a target="_top" href="http://sourceforge.net/projects/kphotobook/">KPhotoBook at sourceforge.net</a>.</li>
 <li>Extract the downloaded tarball: <pre>tar -xzf kphotobook-x.x.x.tar.gz</pre></li>
 <li>Go into the extracted directory: <pre>cd kphotobook-x.x.x</pre></li>
 <li>Start configure (where KDE-installation-path is '/opt/kde3' for example):
@@ -66,9 +69,9 @@ Follow these instructions to build the application from the tarball:
 <pre>make install</pre></li>
 </ul>
 
-<h1>Gentoo installation</h1>
+<h2>Gentoo installation</h2>
 <p>
-An ebuild request was submitted to gentoo bugzilla: <a href="http://bugs.gentoo.org/show_bug.cgi?id=47560">#47560</a>.
+An ebuild request was submitted to gentoo bugzilla: <a target="_top" href="http://bugs.gentoo.org/show_bug.cgi?id=47560">#47560</a>.
 Hopefully, it will soon be in the official portage tree.
 </p>
 <p>
