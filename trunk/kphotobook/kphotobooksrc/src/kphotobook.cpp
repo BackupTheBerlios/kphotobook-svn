@@ -94,6 +94,8 @@
 #include <qheader.h>
 #include <qstringlist.h>
 
+#include <typeinfo>
+
 
 KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     : KMdiMainFrm(0, "kphotobookMainWindow", mdiMode)

@@ -32,6 +32,8 @@
 
 #include <qiconset.h>
 
+#include <typeinfo>
+
 
 TagNode* TagNode::createInstance(int typeId, unsigned int id, const QString& text, const QString& iconName, TagNode* parent) {
 
