@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<gui name="kphotobook" version="4">
+<gui name="kphotobook" version="5">
 
 <MenuBar>
     <Menu name="file">
@@ -32,12 +32,12 @@
     </Menu>
 </MenuBar>
 
-<ToolBar name="mainToolBar" fullWidth="true" newline="true" >
+<ToolBar name="mainToolBar" fullWidth="false" newline="false" >
   <text>file</text>
   <Action name="rescanFilesystem" />
 </ToolBar>
 
-<ToolBar name="manageToolBar" fullWidth="true" newline="true" >
+<ToolBar name="manageToolBar" fullWidth="false" newline="false" >
   <text>Manage</text>
   <Action name="addSourceDir" />
   <Action name="addMaintag" />
@@ -46,7 +46,7 @@
   <Action name="orifyTags" />
 </ToolBar>
 
-<ToolBar name="previewToolBar" fullWidth="true" newline="true" >
+<ToolBar name="previewToolBar" fullWidth="false" newline="false" >
   <text>Preview</text>
   <Action name="autoRefreshView" />
   <Action name="refreshView" />
