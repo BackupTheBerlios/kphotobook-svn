@@ -20,6 +20,6 @@
 
 #include "tagnodetitle.h"
 
-TagNodeTitle::TagNodeTitle(unsigned int id, const QString& text, const QString& iconName, TagNode* parent)
-    : TagNode(id, text, iconName, parent) {
+TagNodeTitle::TagNodeTitle(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
+    : TagNode(id, text, comment, iconName, parent) {
 }

@@ -35,17 +35,17 @@
 #include <typeinfo>
 
 
-TagNode* TagNode::createInstance(int typeId, unsigned int id, const QString& text, const QString& iconName, TagNode* parent) {
+TagNode* TagNode::createInstance(int typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent) {
 
     TagNode* newTagNode = 0;
 
     // create the new tagnode
     switch(typeId) {
     case TYPE_TITLE:
-        newTagNode = new TagNodeTitle(id, text, iconName, parent);
+        newTagNode = new TagNodeTitle(id, text, comment, iconName, parent);
         break;
     case TYPE_BOOLEAN:
-        newTagNode = new TagNodeBoolean(id, text, iconName, parent);
+        newTagNode = new TagNodeBoolean(id, text, comment, iconName, parent);
         break;
     default:
         return 0;
@@ -60,13 +60,14 @@ TagNode* TagNode::createInstance(int typeId, unsigned int id, const QString& tex
 }
 
 
-TagNode::TagNode(unsigned int id, const QString& text, const QString& iconName, TagNode* parent)
+TagNode::TagNode(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
     : QObject(0, text.ascii())
     , m_typeId(0)
     , m_type(0)
     , m_typeName(0)
     , m_id(id)
     , m_text(new QString(text))
+    , m_comment(new QString(comment))
     , m_iconName(0)
     , m_parent(0)
     , m_children(0)

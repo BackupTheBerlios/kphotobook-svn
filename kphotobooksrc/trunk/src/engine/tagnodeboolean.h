@@ -34,7 +34,7 @@
 class TagNodeBoolean : public TagNode {
 
 public:
-    TagNodeBoolean(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
+    TagNodeBoolean(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
 
     ~TagNodeBoolean() {
     }

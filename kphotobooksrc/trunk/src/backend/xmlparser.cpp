@@ -594,7 +594,8 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
     // />
 
     int id = -1;
-    QString name = QString::null;
+    QString name    = QString::null;
+    QString comment = "";
     int tagNodeTypeId = TagNode::TYPE_INVALID;
     QString icon;
 
@@ -617,6 +618,9 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
         }
         else if (curKey == ATTRIBUTE_TAG_NAME) {
             name = curVal;
+        }
+        else if (curKey == ATTRIBUTE_TAG_COMMENT) {
+            comment = curVal;
         }
         else if (curKey == ATTRIBUTE_TAG_TYPE) {
             QString tagnodeTypeStr = curVal;
@@ -658,6 +662,11 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
         return false;
     }
     
+    // comment is optional`
+    if (comment.length() <= 0) {
+        kdDebug() << "Optional attribute 'comment' of tagnode with the name '" << name << "' is empty." << endl;
+    }
+    
     // icon is optional`
     if (icon.length() <= 0) {
         kdDebug() << "Optional attribute 'icon' of tagnode with the name '" << name << "' is empty." << endl;
@@ -687,7 +696,7 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
     }
 
     // everything is ok --> create the concrete tagnode
-    TagNode* tagNode = TagNode::createInstance(tagNodeTypeId, id, name, icon, parentTagNode);
+    TagNode* tagNode = TagNode::createInstance(tagNodeTypeId, id, name, comment, icon, parentTagNode);
 
     if (!parentTagNode) {
         // the current tagNode seems to be a toplevel tagNode --> add the tagNode to the engine

@@ -118,12 +118,12 @@ public:
      * Creates a new tag with the specified parameters.
      * If parent is not null, the new tag is a child of the specified parent.
      */
-    TagNode* createTag(TagNode* parent, int type, const QString& text, const QString& iconName);
+    TagNode* createTag(TagNode* parent, int type, const QString& text, const QString& comment, const QString& iconName);
 
     /**
      * Updates the specified tag with the spacified name and icon.
      */
-    void editTag(TagNode* tag, const QString& text, const QString& iconName);
+    void editTag(TagNode* tag, const QString& text, const QString& comment, const QString& iconName);
 
     /**
      * Remove the specified tag and all associations linked to it.

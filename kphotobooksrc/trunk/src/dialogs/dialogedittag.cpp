@@ -72,19 +72,27 @@ DialogEditTag::DialogEditTag(QWidget *parent, TagTreeNode* tagTreeNode, KPhotoBo
     QObject::connect(m_nameLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotNameChanged(const QString&)));
     newTagGroupLayout->addMultiCellWidget(m_nameLineEdit, 2, 2, 1, 2);
 
+    // comment
+    QLabel* commentLabel = new QLabel(i18n("Comment"), newTagGroup, "commentLabel");
+    newTagGroupLayout->addWidget(commentLabel, 3, 0);
+
+    m_commentLineEdit = new KLineEdit(newTagGroup, "commentLineEdit");
+    m_commentLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    newTagGroupLayout->addMultiCellWidget(m_commentLineEdit, 3, 3, 1, 2);
+
     // icon
     QLabel* iconLabel = new QLabel(i18n("Icon"), newTagGroup, "iconLabel");
-    newTagGroupLayout->addWidget(iconLabel, 3, 0);
+    newTagGroupLayout->addWidget(iconLabel, 4, 0);
 
     m_iconLineEdit = new KLineEdit(newTagGroup, "iconLineEdit");
     m_iconLineEdit->setMinimumWidth(300);
     m_iconLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     QObject::connect(m_iconLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotIconTextChanged(const QString&)));
-    newTagGroupLayout->addWidget(m_iconLineEdit, 3, 1);
+    newTagGroupLayout->addWidget(m_iconLineEdit, 4, 1);
 
     m_iconButton = new QPushButton(i18n("Icon"), newTagGroup, "iconButton");
     m_iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    newTagGroupLayout->addWidget(m_iconButton, 3, 2);
+    newTagGroupLayout->addWidget(m_iconButton, 4, 2);
 
     QObject::connect(m_iconButton, SIGNAL(clicked()), this, SLOT(slotIconButtonClicked()));
 
@@ -94,6 +102,7 @@ DialogEditTag::DialogEditTag(QWidget *parent, TagTreeNode* tagTreeNode, KPhotoBo
 
     // set the texts
     m_nameLineEdit->setText(*tagTreeNode->tagNode()->text());
+    m_commentLineEdit->setText(*tagTreeNode->tagNode()->comment());
     m_iconLineEdit->setText(*tagTreeNode->tagNode()->iconName());
 
     // validate

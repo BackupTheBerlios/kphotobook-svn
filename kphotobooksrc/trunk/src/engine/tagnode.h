@@ -50,7 +50,7 @@ public:
     /**
      * Instantiates a concrete subclass of this class TagNode.
      */
-    static TagNode* createInstance(int typeId, unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
+    static TagNode* createInstance(int typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
 
     /**
      * Returns the unequivocal string describing the type of the specified tagnode.
@@ -103,7 +103,7 @@ public:
     }
 
 protected:
-    TagNode(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
+    TagNode(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
 
 public:
     virtual ~TagNode();
@@ -148,6 +148,14 @@ public:
     }
     QString* text() {
         return m_text;
+    }
+    
+    void setComment(const QString& comment) {
+        delete m_comment;
+        m_comment = new QString(comment);
+    }
+    QString* comment() {
+        return m_comment;
     }
 
     void setIconName(const QString& iconName);
@@ -216,6 +224,11 @@ protected:
      * The text to display for this tagnode.
      */
     QString* m_text;
+
+    /**
+     * The comment of this tagnode.
+     */
+    QString* m_comment;
 
     /**
      * The name or the path of the icon to use.

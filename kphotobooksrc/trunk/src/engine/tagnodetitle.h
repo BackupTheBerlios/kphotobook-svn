@@ -33,7 +33,7 @@
 class TagNodeTitle : public TagNode {
 
 public:
-    TagNodeTitle(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
+    TagNodeTitle(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
 
     ~TagNodeTitle() {
     }

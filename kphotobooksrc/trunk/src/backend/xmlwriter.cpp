@@ -131,7 +131,16 @@ void XmlWriter::dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QStrin
 void XmlWriter::dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent) {
 
     // dump the specified tagnode
-    stream << indent << "<" << ELEMENT_TAG << " " << ATTRIBUTE_TAG_ID << "=\"" << tagnode->id() << "\" " << ATTRIBUTE_TAG_NAME << "=\"" << entitize(*(tagnode->text())) << "\" " << ATTRIBUTE_TAG_TYPE << "=\"" << *(tagnode->type()) << "\"";
+    stream << indent << "<"
+            << ELEMENT_TAG << " "
+            << ATTRIBUTE_TAG_ID << "=\"" << tagnode->id() << "\" "
+            << ATTRIBUTE_TAG_NAME << "=\"" << entitize(*(tagnode->text())) << "\" "
+            << ATTRIBUTE_TAG_TYPE << "=\"" << *(tagnode->type()) << "\"";
+
+    if (tagnode->comment()) {
+        stream << " " << ATTRIBUTE_TAG_COMMENT << "=\"" << entitize(*(tagnode->comment())) << "\"";
+    }
+    
     if (tagnode->iconName()) {
         stream << " " << ATTRIBUTE_TAG_ICON << "=\"" << *(tagnode->iconName()) << "\"";
     }

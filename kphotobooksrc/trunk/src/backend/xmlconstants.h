@@ -50,6 +50,7 @@ public:
 
     static const QString ATTRIBUTE_TAG_ID;
     static const QString ATTRIBUTE_TAG_NAME;
+    static const QString ATTRIBUTE_TAG_COMMENT;
     static const QString ATTRIBUTE_TAG_TYPE;
     static const QString ATTRIBUTE_TAG_ICON;
 

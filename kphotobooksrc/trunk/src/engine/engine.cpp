@@ -259,11 +259,15 @@ void Engine::removeSourceDir(SourceDir* sourceDir) {
 }
 
 
-TagNode* Engine::createTag(TagNode* parent, int type, const QString& text, const QString& iconName) {
+TagNode* Engine::createTag(TagNode* parent, int type, const QString& text, const QString& comment, const QString& iconName) {
 
-    kdDebug() << "[Engine::createTag] creating tag with type: " << type << ", text: " << text << ", icon: " << iconName << endl;
+    kdDebug() << "[Engine::createTag] creating tag with type: " << type
+            << ", text: " << text
+            << ", comment: " << comment
+            << ", icon: " << iconName
+            << endl;
 
-    TagNode* tagNode = TagNode::createInstance(type, m_nextTagNodeId++, text, iconName, parent);
+    TagNode* tagNode = TagNode::createInstance(type, m_nextTagNodeId++, text, comment, iconName, parent);
 
     // put the tagNode into the tree
     if (!parent) {
@@ -278,9 +282,10 @@ TagNode* Engine::createTag(TagNode* parent, int type, const QString& text, const
     return tagNode;
 }
 
-void Engine::editTag(TagNode* tag, const QString& text, const QString& iconName) {
+void Engine::editTag(TagNode* tag, const QString& text, const QString& comment, const QString& iconName) {
 
     tag->setText(text);
+    tag->setComment(comment);
     tag->setIconName(iconName);
 
     m_dirty = true;

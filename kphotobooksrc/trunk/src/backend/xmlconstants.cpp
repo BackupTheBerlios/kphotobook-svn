@@ -40,6 +40,7 @@ const QString XmlConstants::ATTRIBUTE_SOURCEDIR_RECURSIVE = QString("recursive")
 
 const QString XmlConstants::ATTRIBUTE_TAG_ID = QString("id");
 const QString XmlConstants::ATTRIBUTE_TAG_NAME = QString("name");
+const QString XmlConstants::ATTRIBUTE_TAG_COMMENT = QString("comment");
 const QString XmlConstants::ATTRIBUTE_TAG_TYPE = QString("type");
 const QString XmlConstants::ATTRIBUTE_TAG_ICON = QString("icon");
 

@@ -1170,7 +1170,7 @@ void KPhotoBook::slotAddMaintag() {
         kdDebug() << "[KPhotoBook::slotRemoveSourceDir] dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
 
         // let the engine create the new tagnode
-        TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagIcon());
+        TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon());
 
         // add the new tagnode to the tagnodetree
         m_tagTree->addTagNode(newTagNode);
@@ -1198,7 +1198,7 @@ void KPhotoBook::slotCreateSubtag() {
         kdDebug() << "[KPhotoBook::slotCreateSubtag] dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
 
         // let the engine create the new tagnode
-        TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagIcon(), parent->tagNode());
+        TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon(), parent->tagNode());
 
         // add the new tagnode to the tagnodetree
         m_tagTree->addTagNode(parent, newTagNode);
@@ -1227,7 +1227,7 @@ void KPhotoBook::slotEditTag() {
         kdDebug() << "[KPhotoBook::slotEditTag] dialog exited with OK, newname: " << dialog->tagName() << ", newicon: " << dialog->tagIcon() << endl;
 
         // update the tagnode and the tagtreenode
-        m_engine->editTag(tagTreeNode->tagNode(), dialog->tagName(), dialog->tagIcon());
+        m_engine->editTag(tagTreeNode->tagNode(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon());
         tagTreeNode->refresh();
 
     }
@@ -1800,11 +1800,11 @@ void KPhotoBook::removeSourceDir(SourceDir* sourceDir) {
 }
 
 
-TagNode* KPhotoBook::createTag(int type, const QString& name, const QString& iconName, TagNode* parent) {
+TagNode* KPhotoBook::createTag(int type, const QString& name, const QString& comment, const QString& iconName, TagNode* parent) {
 
     kdDebug() << "[KPhotoBook::createTag] invoked with type: " << type << ", name: " << name << ", icon: " << iconName << endl;
 
-    TagNode* tagNode = m_engine->createTag(parent, type, name, iconName);
+    TagNode* tagNode = m_engine->createTag(parent, type, name, comment, iconName);
 
     updateState();
     return tagNode;

@@ -49,6 +49,10 @@ public:
     QString tagName() {
         return m_nameLineEdit->text();
     }
+    
+    QString tagComment() {
+        return m_commentLineEdit->text();
+    }
 
     QString tagIcon() {
         return m_iconLineEdit->text();
@@ -65,6 +69,7 @@ private:
 
     KComboBox* m_typeComboBox;
     KLineEdit* m_nameLineEdit;
+    KLineEdit* m_commentLineEdit;
     KLineEdit* m_iconLineEdit;
     QPushButton* m_iconButton;
 
