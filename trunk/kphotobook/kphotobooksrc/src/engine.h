@@ -38,7 +38,7 @@ class TagNode;
 /**
  * The engine managing all sourcedirs, tags and files/images.
  *
- * CVS-ID $Id: engine.h,v 1.1 2004/03/07 18:52:25 starcube Exp $
+ * CVS-ID $Id: engine.h,v 1.2 2004/03/09 22:59:25 starcube Exp $
  */
 class Engine {
 
@@ -52,6 +52,9 @@ public:
 
     ~Engine();
 
+    void dirtyfy() {
+        m_dirty = true;
+    }
     bool dirty() {
         return m_dirty;
     }

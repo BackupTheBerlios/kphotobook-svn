@@ -72,6 +72,8 @@ public:
         return m_configuration;
     }
 
+    void dirtyfy();
+
     /**
      * Use this method to load whatever file/URL you have
      */

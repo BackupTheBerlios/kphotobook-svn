@@ -151,6 +151,13 @@ QPtrList<TagNode>* KPhotoBook::tagForest() {
 }
 
 
+void KPhotoBook::dirtyfy() {
+
+    m_engine->dirtyfy();
+    updateState();
+}
+
+
 void KPhotoBook::load(QFileInfo& fileinfo) {
 
     kdDebug() << "[KPhotoBook::load] invoked with file: " << fileinfo.absFilePath() << endl;
@@ -985,6 +992,8 @@ void KPhotoBook::slotFileSelectionChanged() {
     statusBar()->changeItem(selectedMsg, 4);
 
     m_view->sourceDirTree()->reflectSelectedFiles(m_view->fileView()->selectedItems());
+
+    m_view->tagTree()->doRepaintAll();
 }
 
 
