@@ -113,11 +113,11 @@ padding:       0px;
 width:         100%;
 }
 
-a.logolink 		{ font-size: 7pt; text-decoration: none;}
-a.logolink:link		{ font-size: 7pt;color: white; font-weight: none;}
-a.logolink:visited	{ font-size: 7pt;color: white; font-weight: none;}
-a.logolink:active	{ font-size: 7pt;color: white; font-weight: none;}
-a.logolink:hover	{ font-size: 7pt;color: black; font-weight: none;}
+a.logolink 		{ font-size: 9pt; text-decoration: none;}
+a.logolink:link		{ font-size: 9pt;color: white; font-weight: none;}
+a.logolink:visited	{ font-size: 9pt;color: white; font-weight: none;}
+a.logolink:active	{ font-size: 9pt;color: white; font-weight: none;}
+a.logolink:hover	{ font-size: 9pt;color: black; font-weight: none;}
 
 
 /*Menu#####################################################*/
