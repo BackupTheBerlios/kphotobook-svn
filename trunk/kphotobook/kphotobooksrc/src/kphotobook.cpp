@@ -87,6 +87,7 @@
 #include <qptrlist.h>
 #include <qlistview.h>
 #include <qlayout.h>
+#include <qsizepolicy.h>
 
 KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     : KMdiMainFrm(0, "kphotobookMainWindow", mdiMode)
@@ -114,7 +115,7 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     , m_settingsFileHandling(0)
     , m_settingsTools(0) {
 
-
+    // no idea why i call this, but it sounds good (because i do not really want an mdi application...)
     fakeSDIApplication();
 
     // accept dnd
@@ -152,6 +153,9 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     tagTreeToolBar->insertSeparator();
     actionCollection()->action("andifyTags")->plug(tagTreeToolBar);
     actionCollection()->action("orifyTags")->plug(tagTreeToolBar);
+    tagTreeToolBar->insertSeparator();
+    actionCollection()->action("deselectFilter")->plug(tagTreeToolBar);
+    actionCollection()->action("resetFilter")->plug(tagTreeToolBar);
 
     m_tagTree = new TagTree(tagTreePanel, this, "tagtree");
     QIconSet tagTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
@@ -173,10 +177,23 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     sourceDirTreeToolBar->insertSeparator();
     actionCollection()->action("expandAllSourceDirs")->plug(sourceDirTreeToolBar);
     actionCollection()->action("collapseAllSourceDirs")->plug(sourceDirTreeToolBar);
-    sourceDirTreeToolBar->insertSeparator();
+
+    /*
+    QWidget* spacer = new QWidget(sourceDirTreeToolBar);
+    QSizePolicy horPolicy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    horPolicy.setHorStretch(99);
+    spacer->setSizePolicy(horPolicy, QSizePolicy::Fixed);
+    sourceDirTreeToolBar->insertWidget(99999, 99999, spacer, -1);
+    */
+
     actionCollection()->action("includeAllSourceDirs")->plug(sourceDirTreeToolBar);
+//    sourceDirTreeToolBar->alignItemRight(KAction::getToolButtonID());
     actionCollection()->action("excludeAllSourceDirs")->plug(sourceDirTreeToolBar);
     actionCollection()->action("invertAllSourceDirs")->plug(sourceDirTreeToolBar);
+
+    sourceDirTreeToolBar->alignItemRight(sourceDirTreeToolBar->idAt(6));
+    sourceDirTreeToolBar->alignItemRight(sourceDirTreeToolBar->idAt(7));
+    sourceDirTreeToolBar->alignItemRight(sourceDirTreeToolBar->idAt(8));
 
     m_sourcedirTree = new SourceDirTree(sourceDirTreePanel, this, "sourcedirTree");
     QIconSet sourcedirTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
@@ -187,6 +204,9 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     }
     addToolWindow(sourceDirTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Source"), i18n("Source"));
 
+    // read dock configuration
+    readDockConfig(KGlobal::config(), "DockConfig");
+
     // init some other things: statusbar,..
     init();
 
@@ -194,9 +214,6 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     // to automatically save settings if changed: window size, toolbar
     // position, icon size, etc.
     setAutoSaveSettings();
-
-    // read dock configuration
-    readDockConfig(KGlobal::config(), "DockConfig");
 }
 
 
@@ -492,18 +509,31 @@ void KPhotoBook::setupActions() {
     );
 
     m_andifyTagsAction = new KToggleAction(
-        i18n("Andify tags"), Constants::ICON_OPERATOR_AND,
+        i18n("Tag filter operator = AND"), Constants::ICON_OPERATOR_AND,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotAndifyTags()),
         actionCollection(), "andifyTags"
     );
     m_orifyTagsAction = new KToggleAction(
-        i18n("Orify tags"), Constants::ICON_OPERATOR_OR,
+        i18n("Tag filter operator = OR"), Constants::ICON_OPERATOR_OR,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotOrifyTags()),
         actionCollection(), "orifyTags"
     );
     applyOperatorSetting();
+
+    new KAction(
+        i18n("Set filter to show all untagged images"), Constants::ICON_TAG_FILTER_DESELECT,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotDeselectFilter()),
+        actionCollection(), "deselectFilter"
+    );
+    new KAction(
+        i18n("Reset Filter"), Constants::ICON_TAG_FILTER_RESET,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotResetFilter()),
+        actionCollection(), "resetFilter"
+    );
 
     new KAction(
         i18n("Expand tag"), Constants::ICON_EXPAND_FOLDER,
@@ -1209,6 +1239,20 @@ void KPhotoBook::slotOrifyTags() {
         autoRefreshView();
     }
 }
+
+
+void KPhotoBook::slotDeselectFilter() {
+    m_tagTree->deselectFilter();
+
+    autoRefreshView();
+}
+
+void KPhotoBook::slotResetFilter() {
+    m_tagTree->resetFilter();
+
+    autoRefreshView();
+}
+
 
 void KPhotoBook::slotExpandTag() {
     m_tagTree->expandCurrent();

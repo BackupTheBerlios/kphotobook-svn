@@ -202,6 +202,9 @@ private slots:
     void slotAndifyTags();
     void slotOrifyTags();
 
+    void slotDeselectFilter();
+    void slotResetFilter();
+
     void slotExpandTag();
     void slotCollapseTag();
     void slotExpandAllTags();
