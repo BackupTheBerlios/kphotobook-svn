@@ -57,3 +57,11 @@ const QString Constants::ICON_SETTINGS_IMAGEPREVIEW = QString("view_refresh");
 // file-extension
 //
 const QString Constants::FILE_EXTENSION = QString("kpb");
+
+
+//
+// constants for settings
+//
+const int Constants::SETTINGS_MIN_PREVIEW_SIZE = 32;
+const int Constants::SETTINGS_MAX_PREVIEW_SIZE = 160;
+
