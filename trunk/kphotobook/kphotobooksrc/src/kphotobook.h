@@ -219,6 +219,7 @@ private slots:
     void changeStatusbar(const QString& text);
 
     void slotLoadSettings();
+    void slotConfigDefaultClicked();
 
 private:
     void init();

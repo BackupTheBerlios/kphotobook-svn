@@ -904,6 +904,8 @@ void KPhotoBook::slotOptionsPreferences() {
     connect(dialog, SIGNAL(settingsChanged()), m_sourcedirTree, SLOT(slotLoadSettings()));
     connect(dialog, SIGNAL(settingsChanged()), m_view, SLOT(slotLoadSettings()));
 
+    connect(dialog, SIGNAL(defaultClicked()), this, SLOT(slotConfigDefaultClicked()));
+
     dialog->show();
 }
 
@@ -1294,6 +1296,27 @@ void KPhotoBook::slotLoadSettings() {
                 break;
         }
     }
+}
+
+
+void KPhotoBook::slotConfigDefaultClicked() {
+
+    Settings* defaultSettings = Settings::self();
+    defaultSettings->useDefaults(true);
+
+    m_settingsFileHandling->kcfg_FileFilterFileToHandle->clear();
+    m_settingsFileHandling->kcfg_FileFilterFileToHandle->insertStringList(Settings::fileFilterFileToHandle());
+    m_settingsFileHandling->kcfg_FileFilterFileToHandle->setSelected(0, true);
+
+    m_settingsFileHandling->kcfg_FileFilterSubdirsToIgnore->clear();
+    m_settingsFileHandling->kcfg_FileFilterSubdirsToIgnore->insertStringList(Settings::fileFilterSubdirsToIgnore());
+    m_settingsFileHandling->kcfg_FileFilterSubdirsToIgnore->setSelected(0, true);
+
+    m_settingsTools->kcfg_ToolsExternalTools->clear();
+    m_settingsTools->kcfg_ToolsExternalTools->insertStringList(Settings::toolsExternalTools());
+    m_settingsTools->kcfg_ToolsExternalTools->setSelected(0, true);
+
+    defaultSettings->useDefaults(false);
 }
 
 
