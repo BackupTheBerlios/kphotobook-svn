@@ -36,7 +36,7 @@ class FileTagNodeAssoc;
 /**
  * This class is writing the xml-file containing all needed data of the engine.
  *
- * CVS-ID $Id: xmlwriter.h,v 1.1 2004/03/07 18:52:45 starcube Exp $
+ * CVS-ID $Id: xmlwriter.h,v 1.2 2004/03/14 18:14:46 starcube Exp $
  */
 class XmlWriter : public XmlConstants {
 
@@ -59,6 +59,11 @@ private:
     void dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent);
     void dumpFile(QTextStream& stream, File* file, QString indent);
     void dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent);
+
+    /**
+     * Quotes all needed characters in the specified string for xml files.
+     */
+    QString entitize(const QString data);
 };
 
 #endif

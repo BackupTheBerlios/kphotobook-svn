@@ -29,6 +29,7 @@
 #include <kdebug.h>
 
 #include <qfileinfo.h>
+#include <qregexp.h>
 
 #include <typeinfo>
 
@@ -52,7 +53,7 @@ void XmlWriter::store(QFile* file2write) throw(PersistingException*) {
 
     // write head of the file
     stream << "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" << "\n";
-    stream << "<" << ELEMENT_KPHOTOBOOK << " " << ATTRIBUTE_KPHOTOBOOK_NAME << "=\"" << *(m_engine->name()) << "\">" << "\n\n";
+    stream << "<" << ELEMENT_KPHOTOBOOK << " " << ATTRIBUTE_KPHOTOBOOK_NAME << "=\"" << entitize(*(m_engine->name())) << "\">" << "\n\n";
 
     // dump the sourcedirs
     stream << "  <!-- source directories -->" << "\n";
@@ -64,7 +65,7 @@ void XmlWriter::store(QFile* file2write) throw(PersistingException*) {
         if (sourceDir->recursive()) {
             recursive = QString("true");
         }
-        stream << "    <" << ELEMENT_SOURCEDIR << " " << ATTRIBUTE_SOURCEDIR_ID << "=\"" << sourceDir->id() << "\" " << ATTRIBUTE_SOURCEDIR_DIR << "=\"" << sourceDir->dir()->absPath() << "\" " << ATTRIBUTE_SOURCEDIR_RECURSIVE << "=\"" << recursive << "\"";
+        stream << "    <" << ELEMENT_SOURCEDIR << " " << ATTRIBUTE_SOURCEDIR_ID << "=\"" << sourceDir->id() << "\" " << ATTRIBUTE_SOURCEDIR_DIR << "=\"" << entitize(sourceDir->dir()->absPath()) << "\" " << ATTRIBUTE_SOURCEDIR_RECURSIVE << "=\"" << recursive << "\"";
 
         if (sourceDir->children() && sourceDir->children()->count() > 0) {
             stream << ">" << "\n";
@@ -111,7 +112,7 @@ void XmlWriter::dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QStrin
     SourceDir* child;
     for ( child = sourceDir->children()->first(); child; child = sourceDir->children()->next() ) {
 
-        stream << indent << "<" << ELEMENT_SOURCEDIR << " " << ATTRIBUTE_SOURCEDIR_ID << "=\"" << child->id() << "\" " << ATTRIBUTE_SOURCEDIR_DIR << "=\"" << child->dir()->absPath() << "\"";
+        stream << indent << "<" << ELEMENT_SOURCEDIR << " " << ATTRIBUTE_SOURCEDIR_ID << "=\"" << child->id() << "\" " << ATTRIBUTE_SOURCEDIR_DIR << "=\"" << entitize(child->dir()->absPath()) << "\"";
 
         if (child->children() && child->children()->count() > 0) {
             stream << ">" << "\n";
@@ -130,7 +131,7 @@ void XmlWriter::dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QStrin
 void XmlWriter::dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent) {
 
     // dump the specified tagnode
-    stream << indent << "<" << ELEMENT_TAG << " " << ATTRIBUTE_TAG_ID << "=\"" << tagnode->id() << "\" " << ATTRIBUTE_TAG_NAME << "=\"" << *(tagnode->text()) << "\" " << ATTRIBUTE_TAG_TYPE << "=\"" << *(tagnode->type()) << "\"";
+    stream << indent << "<" << ELEMENT_TAG << " " << ATTRIBUTE_TAG_ID << "=\"" << tagnode->id() << "\" " << ATTRIBUTE_TAG_NAME << "=\"" << entitize(*(tagnode->text())) << "\" " << ATTRIBUTE_TAG_TYPE << "=\"" << *(tagnode->type()) << "\"";
     if (tagnode->iconName()) {
         stream << " " << ATTRIBUTE_TAG_ICON << "=\"" << *(tagnode->iconName()) << "\"";
     }
@@ -180,7 +181,7 @@ void XmlWriter::dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString ind
 void XmlWriter::dumpFile(QTextStream& stream, File* file, QString indent) {
 
     // dump the specified tagnode
-    stream << indent << "<" << ELEMENT_FILE << " " << ATTRIBUTE_FILE_NAME << "=\"" << file->fileInfo()->fileName() << "\" " << ATTRIBUTE_FILE_ROTATE << "=\"" << file->rotate() << "\">\n";
+    stream << indent << "<" << ELEMENT_FILE << " " << ATTRIBUTE_FILE_NAME << "=\"" << entitize(file->fileInfo()->fileName()) << "\" " << ATTRIBUTE_FILE_ROTATE << "=\"" << file->rotate() << "\">\n";
 
     // dump all tag associations
     if (file->assocs() && file->assocs()->count()) {
@@ -198,5 +199,19 @@ void XmlWriter::dumpFile(QTextStream& stream, File* file, QString indent) {
 
 void XmlWriter::dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent) {
 
-    stream << indent << "<" << ELEMENT_TAGASSOC << " " << ATTRIBUTE_TAGASSOC_TAGID << "=\"" << assoc->tagNode()->id() << "\" " << ATTRIBUTE_TAGASSOC_VALUE << "=\"" << assoc->valueAsString() << "\"/>\n";
+    stream << indent << "<" << ELEMENT_TAGASSOC << " " << ATTRIBUTE_TAGASSOC_TAGID << "=\"" << assoc->tagNode()->id() << "\" " << ATTRIBUTE_TAGASSOC_VALUE << "=\"" << entitize(assoc->valueAsString()) << "\"/>\n";
+}
+
+
+QString XmlWriter::entitize(const QString data) {
+
+    QString temp = QString(data);
+
+    temp.replace('&', "&amp;"); // This _must_ come first
+    temp.replace('<', "&lt;");
+    temp.replace('>', "&gt;");
+    temp.replace('"', "&quot;");
+    temp.replace('\'', "&apos;");
+
+    return temp;
 }
