@@ -98,7 +98,31 @@
                 </widget>
             </hbox>
         </widget>
-        <spacer>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox3</cstring>
+            </property>
+            <property name="title">
+                <string>Actions while exiting</string>
+            </property>
+            <widget class="QCheckBox">
+                <property name="name">
+                    <cstring>kcfg_GeneralCheckUntaggedOnExit</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>20</y>
+                        <width>560</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Check for untagged Images</string>
+                </property>
+            </widget>
+        </widget>
+	<spacer>
             <property name="name">
                 <cstring>spacer2</cstring>
             </property>

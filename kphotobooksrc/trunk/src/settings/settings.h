@@ -66,6 +66,25 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+        Set if a check for untagged Images is performed on exit.
+    */
+    static
+    void setGeneralCheckUntaggedOnExit( bool v )
+    {
+        if (!self()->isImmutable( "GeneralCheckUntaggedOnExit" ))
+            self()->mGeneralCheckUntaggedOnExit = v;
+    }
+
+    /**
+        Get if a check for untagged images is performed on exit.
+    */
+    static
+    bool generalCheckUntaggedOnExit()
+    {
+        return self()->mGeneralCheckUntaggedOnExit;
+    }
+
+    /**
       Set The size of the icons in the ToolBar of the TagTree.
     */
     static
@@ -572,7 +591,8 @@ class Settings : public KConfigSkeleton
     // General
     int mGeneralViewMode;
     bool mGeneralRescanWhileStartup;
-
+    bool mGeneralCheckUntaggedOnExit;
+    
     // TagTree
     int mTagTreeToolBarIconSize;
     int mTagTreeIconSize;

@@ -283,6 +283,8 @@ private:
 
     void updateState();
     void updateStatusBar();
+    
+    bool checkForUntagged();
 
     /**
      * Adds the specified sourcedir and all images in it to the engine.

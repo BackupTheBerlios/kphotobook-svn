@@ -714,6 +714,9 @@ bool KPhotoBook::queryClose() {
 
     kdDebug() << "[KPhotoBook::queryClose] invoked" << endl;
 
+    //store returnvalue temporary...
+    bool retval = true;
+
     // store the configuration
     m_view->storeConfiguration();
 
@@ -777,7 +780,7 @@ bool KPhotoBook::queryClose() {
         // analyze the clicked button
         switch (button) {
         case KMessageBox::Yes :
-            return slotFileSave();
+            retval = slotFileSave();
             break;
 
         case KMessageBox::No :
@@ -798,9 +801,52 @@ bool KPhotoBook::queryClose() {
       storeFilter();
     }
     
+    //at last check for untaged images
+    if ( checkForUntagged() )
+        return false;
+  
     // if we got here there was nothing to save --> simply close
-    return true;
+    return retval;
 }
+
+
+//this checks, if there are untagged images, and if so, informs the user about that
+// problems: if there are untagged images, and the users decides to not exit kpb,
+// the old treestatefilter is set to the new one on exit. but there is no suitable
+// sollution for this, i think. On the other hand this is not a real problem, as we
+// most probably can consider the user to change his filtersettings while tagging
+// the images.
+bool KPhotoBook::checkForUntagged()
+{
+    kdDebug() << "[KPhotoBook::checkForUntagged] invoked" << endl;
+
+    // only perform the check if the user likes to have that feature
+    if (! Settings::generalCheckUntaggedOnExit() )
+        return false;
+
+    //now switch the filter to 'and' and untagged images
+    slotAndifyTags();
+    m_tagTree->deselectFilter();
+
+    // refresg tge view
+    slotRefreshView();
+
+    // and check, if there are untagged images
+    if ( m_engine->filteredNumberOfFiles() ) {
+        int button = KMessageBox::warningYesNo(
+            this, // parent
+            i18n("There are untagged images...\nDo you wan\'t to tag them now?" ), // text
+            i18n("Untagged Images") );
+
+        if ( button == KMessageBox::Yes )
+            return true;
+    }
+    else
+         kdDebug() << "[KPhotoBook::checkForUntagged] No untagged files found." << endl;
+
+    return false;
+}
+
 
 
 bool KPhotoBook::queryExit() {
