@@ -71,6 +71,90 @@ SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char
 }
 
 
+void SourceDirTree::expandCurrent(bool recursive) {
+
+    if (recursive) {
+        dynamic_cast<TagTreeNode*>(currentItem())->setOpenRecursive(true);
+    } else {
+        currentItem()->setOpen(true);
+    }
+}
+void SourceDirTree::collapseCurrent(bool recursive) {
+
+    if (recursive) {
+        dynamic_cast<TagTreeNode*>(currentItem())->setOpenRecursive(false);
+    } else {
+        currentItem()->setOpen(false);
+    }
+}
+void SourceDirTree::expandAll() {
+
+    QListViewItemIterator it(this);
+    while (it.current()) {
+        TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
+
+        item->setOpenRecursive(true);
+
+        ++it;
+    }
+}
+void SourceDirTree::collapseAll() {
+
+    QListViewItemIterator it(this);
+    while (it.current()) {
+        TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
+
+        item->setOpenRecursive(false);
+
+        ++it;
+    }
+}
+
+
+void SourceDirTree::includeWholeSourceDir() {
+    dynamic_cast<TagTreeNodeSourceDir*>(currentItem())->setIncludedRecursive(true);
+}
+void SourceDirTree::excludeWholeSourceDir() {
+    dynamic_cast<TagTreeNodeSourceDir*>(currentItem())->setIncludedRecursive(false);
+}
+void SourceDirTree::invertSourceDir() {
+    dynamic_cast<TagTreeNodeSourceDir*>(currentItem())->invertInclusionRecursive();
+}
+void SourceDirTree::includeAllSourceDirs() {
+
+    QListViewItemIterator it(this);
+    while (it.current()) {
+        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
+
+        item->setIncluded(true);
+
+        ++it;
+    }
+}
+void SourceDirTree::excludeAllSourceDirs() {
+
+    QListViewItemIterator it(this);
+    while (it.current()) {
+        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
+
+        item->setIncluded(false);
+
+        ++it;
+    }
+}
+void SourceDirTree::invertAllSourceDirs() {
+
+    QListViewItemIterator it(this);
+    while (it.current()) {
+        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
+
+        item->invertInclusion();
+
+        ++it;
+    }
+}
+
+
 void SourceDirTree::addSourceDirs(QPtrList<SourceDir>* rootNodeList) {
 
     SourceDir* rootNode;

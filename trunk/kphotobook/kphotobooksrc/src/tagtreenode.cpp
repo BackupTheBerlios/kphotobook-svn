@@ -70,6 +70,18 @@ void TagTreeNode::refresh() {
 }
 
 
+void TagTreeNode::setOpenRecursive(bool open) {
+    setOpen(open);
+
+    // do recursive call on every child
+    TagTreeNode* child = dynamic_cast<TagTreeNode*>(this->firstChild());
+    while(child) {
+        child->setOpen(open);
+        child = dynamic_cast<TagTreeNode*>(child->nextSibling());
+    }
+}
+
+
 void TagTreeNode::showContextMenu() {
 
     if (m_contextMenu) {

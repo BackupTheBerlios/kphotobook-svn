@@ -28,11 +28,12 @@
 #include "sourcedir.h"
 #include "tagtreenode.h"
 
-#include "kglobal.h"
-#include "kiconloader.h"
-#include "klocale.h"
+#include <kglobal.h>
+#include <kiconloader.h>
+#include <klocale.h>
 
-#include "qpixmap.h"
+#include <qpixmap.h>
+#include <qfont.h>
 
 TagTreeNodeSourceDir::TagTreeNodeSourceDir(KListView* parent, SourceDir* sourceDir, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, QString::null, photobook, 0, contextMenu)
@@ -100,18 +101,6 @@ void TagTreeNodeSourceDir::invertInclusionRecursive() {
 }
 
 
-void TagTreeNodeSourceDir::setOpenRecursive(bool open) {
-    setOpen(open);
-
-    // do recursive call on every child
-    TagTreeNodeSourceDir* child = dynamic_cast<TagTreeNodeSourceDir*>(this->firstChild());
-    while(child) {
-        child->setOpen(open);
-        child = dynamic_cast<TagTreeNodeSourceDir*>(child->nextSibling());
-    }
-}
-
-
 void TagTreeNodeSourceDir::columnClicked(__attribute__((unused)) TagTree* tagTree, int column) {
 
     switch (column) {
@@ -144,10 +133,17 @@ void TagTreeNodeSourceDir::paintCell(QPainter *p, const QColorGroup &cg, int col
         KListViewItem::paintCell(p, myCg, column, width, alignment);
         break;
 
-    case SourceDirTree::COLUMN_SELECTED :
+    case SourceDirTree::COLUMN_SELECTED : {
+        QFont oldFont = p->font();
+        if  (m_selectedFilesCount > 0) {
+            QFont font = QFont(oldFont);
+            font.setBold(true);
+            p->setFont(font);
+        }
         KListViewItem::paintCell(p, myCg, column, width, alignment);
+        p->setFont(oldFont);
         break;
-
+    }
     case SourceDirTree::COLUMN_INCLUDED :
         // paint the cell with the alternating background color
         p->fillRect(0, 0, width, this->height(), backgroundColor());

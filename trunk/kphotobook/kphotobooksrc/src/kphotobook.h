@@ -163,19 +163,22 @@ private slots:
     void slotAutoRefreshView();
     void slotRefreshView();
 
-    void slotIncludeWholeFolder();
-    void slotExcludeWholeFolder();
-    void slotInvertFolderSelection();
-
+    void slotIncludeWholeSourceDir();
+    void slotExcludeWholeSourceDir();
+    void slotInvertSourceDir();
     void slotIncludeAllSourceDirs();
     void slotExcludeAllSourceDirs();
     void slotInvertAllSourceDirs();
 
-    void slotExpandFolder();
-    void slotCollapseFolder();
+    void slotExpandSourceDir();
+    void slotCollapseSourceDir();
+    void slotExpandAllSourceDirs();
+    void slotCollapseAllSourceDirs();
 
-    void slotExpandAllFolder();
-    void slotCollapseAllFolder();
+    void slotExpandTag();
+    void slotCollapseTag();
+    void slotExpandAllTags();
+    void slotCollapseAllTags();
 
     void slotFileSelectionChanged();
 

@@ -14,6 +14,12 @@
     <Menu name="view">
         <text>&amp;View</text>
         <Action name="refreshView" />
+        <Separator/>
+        <Action name="expandAllTags" />
+        <Action name="collapseAllTags" />
+        <Separator/>
+        <Action name="expandAllSourceDirs" />
+        <Action name="collapseAllSourceDirs" />
     </Menu>
     <Menu name="settings">
         <Action name="autoRefreshView" />
@@ -21,6 +27,7 @@
 </MenuBar>
 
 <ToolBar name="mainToolBar" fullWidth="true" newline="true" >
+  <text>file</text>
   <Action name="rescanFilesystem" />
 </ToolBar>
 
@@ -33,46 +40,52 @@
   <Action name="refreshView" />
 </ToolBar>
 
-<Menu name="contextMenu_sourceDirTree">
-    <Action name="includeAllSourceDirs" />
-    <Action name="excludeAllSourceDirs" />
-    <Action name="invertAllSourceDirs" />
-    <Separator/>
-    <Action name="expandAllFolder" />
-    <Action name="collapseAllFolder" />
-    <Separator/>
-    <Action name="addSourceDir" />
-</Menu>
-
-<Menu name="contextMenu_sourceDir">
-    <Action name="includeWholeFolder" />
-    <Action name="excludeWholeFolder" />
-    <Action name="invertFolderSelection" />
-    <Separator/>
-    <Action name="expandFolder" />
-    <Action name="collapseFolder" />
-    <Separator/>
-    <Action name="editSourceDir" />
-    <Action name="removeSourceDir" />
-</Menu>
-
-<Menu name="contextMenu_subDir">
-    <Action name="includeWholeFolder" />
-    <Action name="excludeWholeFolder" />
-    <Action name="invertFolderSelection" />
-    <Separator/>
-    <Action name="expandFolder" />
-    <Action name="collapseFolder" />
-</Menu>
-
 <Menu name="contextMenu_tagTree">
     <Action name="addMaintag" />
+    <Separator/>
+    <Action name="expandAllTags" />
+    <Action name="collapseAllTags" />
 </Menu>
 
 <Menu name="contextMenu_tagTreeItem">
     <Action name="createSubtag" />
     <Action name="editTag" />
     <Action name="deleteTag" />
+    <Separator/>
+    <Action name="expandTag" />
+    <Action name="collapseTag" />
+</Menu>
+
+<Menu name="contextMenu_sourceDirTree">
+    <Action name="includeAllSourceDirs" />
+    <Action name="excludeAllSourceDirs" />
+    <Action name="invertAllSourceDirs" />
+    <Separator/>
+    <Action name="expandAllSourceDirs" />
+    <Action name="collapseAllSourceDirs" />
+    <Separator/>
+    <Action name="addSourceDir" />
+</Menu>
+
+<Menu name="contextMenu_sourceDir">
+    <Action name="includeWholeSourceDir" />
+    <Action name="excludeWholeSourceDir" />
+    <Action name="invertSourceDir" />
+    <Separator/>
+    <Action name="expandSourceDir" />
+    <Action name="collapseSourceDir" />
+    <Separator/>
+    <Action name="editSourceDir" />
+    <Action name="removeSourceDir" />
+</Menu>
+
+<Menu name="contextMenu_subDir">
+    <Action name="includeWholeSourceDir" />
+    <Action name="excludeWholeSourceDir" />
+    <Action name="invertSourceDir" />
+    <Separator/>
+    <Action name="expandSourceDir" />
+    <Action name="collapseSourceDir" />
 </Menu>
 
 </kpartgui>

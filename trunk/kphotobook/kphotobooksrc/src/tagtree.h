@@ -36,7 +36,7 @@ class KPhotoBook;
 /**
  * The tagtree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: tagtree.h,v 1.2 2004/03/09 23:01:07 starcube Exp $
+ * CVS-ID $Id: tagtree.h,v 1.3 2004/03/10 21:42:54 starcube Exp $
  */
 class TagTree : public KListView {
 
@@ -51,6 +51,11 @@ public:
     ~TagTree() {
     }
 
+    void expandCurrent(bool recursive = true);
+    void collapseCurrent(bool recursive = true);
+    void expandAll();
+    void collapseAll();
+
     void addTagNodes(QPtrList<TagNode>* rootNodeList);
     void addTagNode(TagNode* rootNode);
     void addTagNode(TagTreeNode* parent, TagNode* child);
@@ -59,16 +64,7 @@ public:
         return m_photobook;
     }
 
-    void doRepaintAll() {
-        // reset the number of selected files on all sourcedirnodes to 0
-        QListViewItemIterator it(this);
-        while (it.current()) {
-
-            this->repaintItem(it.current());
-
-            ++it;
-        }
-    }
+    void doRepaintAll();
 
 private slots:
     void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);

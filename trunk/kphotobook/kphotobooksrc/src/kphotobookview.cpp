@@ -140,12 +140,8 @@ void KPhotoBookView::updateFiles() {
 
     File* file;
     for ( file = fileList->first(); file; file = fileList->next() ) {
-        // kdDebug() << "Adding file: " << file->fileInfo()->absFilePath() << endl;
-
         m_fileView->insertItem(file);
-//        m_fileView->arrangeItemsInGrid();
     }
-    kdDebug() << "[KPhotoBookView::updateFiles] ended." << endl;
 }
 
 
@@ -217,6 +213,8 @@ void KPhotoBookView::updateCurrentImageSizeLabel() {
 
 void KPhotoBookView::updateCurrentImageSize() {
 
+    // TODO: remember all selected files
+
     // remove all displayed images
     removeAllFiles();
 
@@ -225,8 +223,10 @@ void KPhotoBookView::updateCurrentImageSize() {
     m_fileView->setGridX(8*m_imageSizeSlider->value()+10);
     m_fileView->setGridY(8*m_imageSizeSlider->value()+10);
 
-    // force redrwaing all files by removing them and adding them again
+    // force redrawing all files by removing them and adding them again
     updateFiles();
+
+    // TODO: reselect all previously selected files
 }
 
 

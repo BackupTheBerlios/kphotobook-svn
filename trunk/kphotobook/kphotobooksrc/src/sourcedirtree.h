@@ -39,7 +39,7 @@ class TagTreeNodeSourceDir;
 /**
  * The SourceDirTree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: sourcedirtree.h,v 1.1 2004/03/07 18:52:04 starcube Exp $
+ * CVS-ID $Id: sourcedirtree.h,v 1.2 2004/03/10 21:42:54 starcube Exp $
  */
 class SourceDirTree : public KListView {
 
@@ -54,6 +54,18 @@ public:
     ~SourceDirTree() {
         delete m_sourceDirNodeDict;
     }
+
+    void expandCurrent(bool recursive = true);
+    void collapseCurrent(bool recursive = true);
+    void expandAll();
+    void collapseAll();
+
+    void includeWholeSourceDir();
+    void excludeWholeSourceDir();
+    void invertSourceDir();
+    void includeAllSourceDirs();
+    void excludeAllSourceDirs();
+    void invertAllSourceDirs();
 
     void addSourceDirs(QPtrList<SourceDir>* rootNodeList);
     void addSourceDir(SourceDir* rootNode);

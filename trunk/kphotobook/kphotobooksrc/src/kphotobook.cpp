@@ -223,7 +223,37 @@ void KPhotoBook::setupActions() {
     KStdAction::configureToolbars(this, SLOT(slotOptionsConfigureToolbars()), actionCollection());
     KStdAction::preferences(this, SLOT(slotOptionsPreferences()), actionCollection());
 
+    //
+    // engine actions
+    //
+    new KAction(
+        i18n("&Rescan filesystem"), Constants::ICON_RESCAN_FILESYSTEM,
+        KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotRescanFilesystem()),
+        actionCollection(), "rescanFilesystem"
+    );
+
+    //
+    // view actions
+    //
+    KToggleAction* autoRefreshViewAction = new KToggleAction(
+        i18n("&Autorefresh view"), Constants::ICON_AUTOREFRESH_VIEW,
+        0,
+        this, SLOT(slotAutoRefreshView()),
+        actionCollection(), "autoRefreshView"
+    );
+    autoRefreshViewAction->setChecked(Configuration::getInstance()->autoRefresh());
+
+    new KAction(
+        i18n("&Refresh view"), Constants::ICON_REFRESH_VIEW,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotRefreshView()),
+        actionCollection(), "refreshView"
+    );
+
+    //
     // sourcedir actions
+    //
     new KAction(
         i18n("Add &sourcedirectory"), Constants::ICON_ADD_SOURCEDIR,
         0, //KStdAccel::shortcut(KStdAccel::New),
@@ -243,7 +273,79 @@ void KPhotoBook::setupActions() {
         actionCollection(), "removeSourceDir"
     );
 
+    new KAction(
+        i18n("&Include whole folder"), Constants::ICON_INCLUDE_WHOLE_FOLDER,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotIncludeWholeSourceDir()),
+        actionCollection(), "includeWholeSourceDir"
+    );
+
+    new KAction(
+        i18n("&Exclude whole folder"), Constants::ICON_EXCLUDE_WHOLE_FOLDER,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotExcludeWholeSourceDir()),
+        actionCollection(), "excludeWholeSourceDir"
+    );
+
+    new KAction(
+        i18n("In&vert folder selection"), Constants::ICON_INVERT_FOLDER_SELECTION,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotInvertSourceDir()),
+        actionCollection(), "invertSourceDir"
+    );
+
+    new KAction(
+        i18n("&Include all"), Constants::ICON_INCLUDE_WHOLE_FOLDER,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotIncludeAllSourceDirs()),
+        actionCollection(), "includeAllSourceDirs"
+    );
+
+    new KAction(
+        i18n("&Exclude all"), Constants::ICON_EXCLUDE_WHOLE_FOLDER,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotExcludeAllSourceDirs()),
+        actionCollection(), "excludeAllSourceDirs"
+    );
+
+    new KAction(
+        i18n("In&vert all"), Constants::ICON_INVERT_FOLDER_SELECTION,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotInvertAllSourceDirs()),
+        actionCollection(), "invertAllSourceDirs"
+    );
+
+    new KAction(
+        i18n("Expand sourcedir"), Constants::ICON_EXPAND_FOLDER,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotExpandSourceDir()),
+        actionCollection(), "expandSourceDir"
+    );
+
+    new KAction(
+        i18n("Collapse sourcedir"), Constants::ICON_COLLAPSE_FOLDER,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotCollapseSourceDir()),
+        actionCollection(), "collapseSourceDir"
+    );
+
+    new KAction(
+        i18n("Expand all sourcedirs"), Constants::ICON_EXPAND_FOLDER,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotExpandAllSourceDirs()),
+        actionCollection(), "expandAllSourceDirs"
+    );
+
+    new KAction(
+        i18n("Collapse all sourcedirs"), Constants::ICON_COLLAPSE_FOLDER,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotCollapseAllSourceDirs()),
+        actionCollection(), "collapseAllSourceDirs"
+    );
+
+    //
     // tag actions
+    //
     new KAction(
         i18n("Add &maintag"), Constants::ICON_CREATE_MAINTAG,
         0, //KStdAccel::shortcut(KStdAccel::New),
@@ -269,99 +371,32 @@ void KPhotoBook::setupActions() {
         actionCollection(), "deleteTag"
     );
 
-    // engine actions
     new KAction(
-        i18n("&Rescan filesystem"), Constants::ICON_RESCAN_FILESYSTEM,
-        KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotRescanFilesystem()),
-        actionCollection(), "rescanFilesystem"
-    );
-
-    // view actions
-    KToggleAction* autoRefreshViewAction = new KToggleAction(
-        i18n("&Autorefresh view"), Constants::ICON_AUTOREFRESH_VIEW,
-        0,
-        this, SLOT(slotAutoRefreshView()),
-        actionCollection(), "autoRefreshView"
-    );
-    autoRefreshViewAction->setChecked(Configuration::getInstance()->autoRefresh());
-
-    new KAction(
-        i18n("&Refresh view"), Constants::ICON_REFRESH_VIEW,
+        i18n("Expand tag"), Constants::ICON_EXPAND_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotRefreshView()),
-        actionCollection(), "refreshView"
-    );
-
-    // directory actions
-    new KAction(
-        i18n("&Include whole folder"), Constants::ICON_INCLUDE_WHOLE_FOLDER,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotIncludeWholeFolder()),
-        actionCollection(), "includeWholeFolder"
+        this, SLOT(slotExpandTag()),
+        actionCollection(), "expandTag"
     );
 
     new KAction(
-        i18n("&Exclude whole folder"), Constants::ICON_EXCLUDE_WHOLE_FOLDER,
+        i18n("Collapse tag"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotExcludeWholeFolder()),
-        actionCollection(), "excludeWholeFolder"
+        this, SLOT(slotCollapseTag()),
+        actionCollection(), "collapseTag"
     );
 
     new KAction(
-        i18n("In&vert folder selection"), Constants::ICON_INVERT_FOLDER_SELECTION,
+        i18n("Expand all tags"), Constants::ICON_EXPAND_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotInvertFolderSelection()),
-        actionCollection(), "invertFolderSelection"
+        this, SLOT(slotExpandAllTags()),
+        actionCollection(), "expandAllTags"
     );
 
     new KAction(
-        i18n("&Include all"), Constants::ICON_INCLUDE_WHOLE_FOLDER,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotIncludeAllSourceDirs()),
-        actionCollection(), "includeAllSourceDirs"
-    );
-
-    new KAction(
-        i18n("&Exclude all"), Constants::ICON_EXCLUDE_WHOLE_FOLDER,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotExcludeAllSourceDirs()),
-        actionCollection(), "excludeAllSourceDirs"
-    );
-
-    new KAction(
-        i18n("In&vert all"), Constants::ICON_INVERT_FOLDER_SELECTION,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotInvertAllSourceDirs()),
-        actionCollection(), "invertAllSourceDirs"
-    );
-
-    new KAction(
-        i18n("Expand"), Constants::ICON_EXPAND_FOLDER,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotExpandFolder()),
-        actionCollection(), "expandFolder"
-    );
-
-    new KAction(
-        i18n("Collapse"), Constants::ICON_COLLAPSE_FOLDER,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotCollapseFolder()),
-        actionCollection(), "collapseFolder"
-    );
-
-    new KAction(
-        i18n("Expand all"), Constants::ICON_EXPAND_FOLDER,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotExpandAllFolder()),
-        actionCollection(), "expandAllFolder"
-    );
-
-    new KAction(
-        i18n("Collapse all"), Constants::ICON_COLLAPSE_FOLDER,
-        0, //KStdAccel::shortcut(KStdAccel::Reload),
-        this, SLOT(slotCollapseAllFolder()),
-        actionCollection(), "collapseAllFolder"
+        i18n("Collapse all tags"), Constants::ICON_COLLAPSE_FOLDER,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),m_view->sourceDirTree()
+        this, SLOT(slotCollapseAllTags()),
+        actionCollection(), "collapseAllTags"
     );
 }
 
@@ -847,141 +882,72 @@ void KPhotoBook::slotRescanFilesystem() {
 
 
 void KPhotoBook::slotAutoRefreshView() {
-
     Configuration::getInstance()->setAutoRefresh(!Configuration::getInstance()->autoRefresh());
 }
 
 
 void KPhotoBook::slotRefreshView() {
-
     m_view->updateFiles();
 }
 
 
-void KPhotoBook::slotIncludeWholeFolder() {
-
-    // get the sourcedir to include
-    TagTreeNodeSourceDir* currentNode = m_view->selectedSourceDir();
-
-    currentNode->setIncludedRecursive(true);
+void KPhotoBook::slotIncludeWholeSourceDir() {
+    m_view->sourceDirTree()->includeWholeSourceDir();
 
     autoRefreshView();
 }
-
-
-void KPhotoBook::slotExcludeWholeFolder() {
-
-    // get the sourcedir to exclude
-    TagTreeNodeSourceDir* currentNode = m_view->selectedSourceDir();
-
-    currentNode->setIncludedRecursive(false);
+void KPhotoBook::slotExcludeWholeSourceDir() {
+    m_view->sourceDirTree()->excludeWholeSourceDir();
 
     autoRefreshView();
 }
-
-
-void KPhotoBook::slotInvertFolderSelection() {
-
-    // get the sourcedir to invert
-    TagTreeNodeSourceDir* currentNode = m_view->selectedSourceDir();
-
-    currentNode->invertInclusionRecursive();
+void KPhotoBook::slotInvertSourceDir() {
+    m_view->sourceDirTree()->invertSourceDir();
 
     autoRefreshView();
 }
-
-
 void KPhotoBook::slotIncludeAllSourceDirs() {
-
-    // iterate over every child in all sourcedirs
-    QListViewItemIterator it(m_view->sourceDirTree());
-    while (it.current()) {
-        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
-
-        item->setIncluded(true);
-
-        ++it;
-    }
+    m_view->sourceDirTree()->includeAllSourceDirs();
 
     autoRefreshView();
 }
-
-
 void KPhotoBook::slotExcludeAllSourceDirs() {
-
-    // iterate over every child in all sourcedirs
-    QListViewItemIterator it(m_view->sourceDirTree());
-    while (it.current()) {
-        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
-
-        item->setIncluded(false);
-
-        ++it;
-    }
+    m_view->sourceDirTree()->excludeAllSourceDirs();
 
     autoRefreshView();
 }
-
-
 void KPhotoBook::slotInvertAllSourceDirs() {
-
-    // iterate over every child in all sourcedirs
-    QListViewItemIterator it(m_view->sourceDirTree());
-    while (it.current()) {
-        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
-
-        item->invertInclusion();
-
-        ++it;
-    }
+    m_view->sourceDirTree()->invertAllSourceDirs();
 
     autoRefreshView();
 }
 
 
-void KPhotoBook::slotExpandFolder() {
-
-    // get the sourcedir to exclude
-    TagTreeNodeSourceDir* currentNode = m_view->selectedSourceDir();
-
-    currentNode->setOpenRecursive(true);
+void KPhotoBook::slotExpandSourceDir() {
+    m_view->sourceDirTree()->expandCurrent();
+}
+void KPhotoBook::slotCollapseSourceDir() {
+    m_view->sourceDirTree()->collapseCurrent();
+}
+void KPhotoBook::slotExpandAllSourceDirs() {
+    m_view->sourceDirTree()->expandAll();
+}
+void KPhotoBook::slotCollapseAllSourceDirs() {
+    m_view->sourceDirTree()->collapseAll();
 }
 
 
-void KPhotoBook::slotCollapseFolder() {
-
-    // get the sourcedir to exclude
-    TagTreeNodeSourceDir* currentNode = m_view->selectedSourceDir();
-
-    currentNode->setOpenRecursive(false);
+void KPhotoBook::slotExpandTag() {
+    m_view->tagTree()->expandCurrent();
 }
-
-
-void KPhotoBook::slotExpandAllFolder() {
-
-    // iterate over every child in all sourcedirs
-    QListViewItemIterator it(m_view->sourceDirTree());
-    while (it.current()) {
-        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
-
-        item->setOpenRecursive(true);
-
-        ++it;
-    }
+void KPhotoBook::slotCollapseTag() {
+    m_view->tagTree()->collapseCurrent();
 }
-
-
-void KPhotoBook::slotCollapseAllFolder() {
-
-    // iterate over every child in all sourcedirs
-    QListViewItemIterator it(m_view->sourceDirTree());
-    while (it.current()) {
-        TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
-
-        item->setOpenRecursive(false);
-
-        ++it;
-    }
+void KPhotoBook::slotExpandAllTags() {
+    m_view->tagTree()->expandAll();
+}
+void KPhotoBook::slotCollapseAllTags() {
+    m_view->tagTree()->collapseAll();
 }
 
 

@@ -57,15 +57,13 @@ public:
     void setIncludedRecursive(bool included);
     void invertInclusionRecursive();
 
-    void setOpenRecursive(bool open);
-
     virtual void columnClicked(TagTree* tagTree, int column);
     virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
 
 private:
     SourceDir* m_sourceDir;
 
-    int m_selectedFilesCount;
+    unsigned int m_selectedFilesCount;
 
     void init(bool showRelativePath);
 };

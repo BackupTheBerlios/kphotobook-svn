@@ -72,6 +72,46 @@ TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
 }
 
 
+void TagTree::expandCurrent(bool recursive) {
+
+    if (recursive) {
+        dynamic_cast<TagTreeNode*>(currentItem())->setOpenRecursive(true);
+    } else {
+        currentItem()->setOpen(true);
+    }
+}
+void TagTree::collapseCurrent(bool recursive) {
+
+    if (recursive) {
+        dynamic_cast<TagTreeNode*>(currentItem())->setOpenRecursive(false);
+    } else {
+        currentItem()->setOpen(false);
+    }
+}
+void TagTree::expandAll() {
+
+    QListViewItemIterator it(this);
+    while (it.current()) {
+        TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
+
+        item->setOpenRecursive(true);
+
+        ++it;
+    }
+}
+void TagTree::collapseAll() {
+
+    QListViewItemIterator it(this);
+    while (it.current()) {
+        TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
+
+        item->setOpenRecursive(false);
+
+        ++it;
+    }
+}
+
+
 void TagTree::addTagNodes(QPtrList<TagNode>* rootNodeList) {
 
     TagNode* rootNode;
@@ -119,6 +159,17 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
 
     // build the whole tree
     buildTagNodeTree(tagTreeNode, child->children());
+}
+
+
+void TagTree::doRepaintAll() {
+    QListViewItemIterator it(this);
+    while (it.current()) {
+
+        this->repaintItem(it.current());
+
+        ++it;
+    }
 }
 
 
