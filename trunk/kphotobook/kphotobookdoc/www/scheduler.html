@@ -68,17 +68,21 @@
 <tr class="scheduler">
 <td class="scheduler_title">Config Dialog</td>
 <td class="scheduler_desc">
-        <ul>
+    <ul style="list-style-image:url(pics/yes.png)">
         <li>Iconsize in Tag tree</li>
-        <li>Selection mode for image preview (multi or extended)</li>
-        <li>Preview size</li>
-        <li>Show/hide filename in image preview</li>
-        <li>Font size for trees</li>
+        <li>Font size for TagTree</li>
         <li>Show/Hide icons in the Tag tree</li>
+        <li>Font size for SourceDirTree</li>
+        <li>Selection mode for image preview (multi or extended)</li>
+        <li>Preview size, selecting with a slider</li>
+    </ul>
+
+    <ul>
         <li>List of regular expressions of directory names to ignore (e.g. [Tt]humbs, [Tt]humbnails)</li>
         <li>List of regular expressions of file names to handle (e.g. *.jpg, *.jpeg)</li>
         <li>List of viewer programs and editing programs to open a photo with</li>
-        </ul>
+        <li>Show/hide filename in image preview</li>
+    </ul>
 </td>
 <td class="scheduler_date">April 2003</td>
 <td class="scheduler_version">0.0.5</td>
@@ -87,28 +91,27 @@
 <tr class="scheduler">
 <td class="scheduler_title">Tidying up GUI</td>
 <td class="scheduler_desc">
-
-        <ul style="list-style-image:url(pics/yes.png)">
+    <ul style="list-style-image:url(pics/yes.png)">
         <li>Remember the selected files whenever possible (changing filter, changing preview size, ...)</li>
         <li>When switching on "autorefresh", refresh the view immediately</li>
         <li>To change the preview size, there will be magnyfiers in the toolbar</li>
         <li>Set F5 as shortcut for "refresh view" not for "rescan filesystem".</li>
         <li>Ctrl+R as alternate shortcut for "refresh view"</li>
         <li>Use right mouse button on tag filters to cycle backwards through the options</li>
-        </ul>
+        <li>Slider for icon preview size will be removed from the current position. The slider is located in the settings dialog now.</li>
+    </ul>
 
-
-        <ul>
+    <ul>
+        <li>I must not add KFiles to the KFileIconView but use a custom KFileIconViewItem!</li>
         <li>Source directory tree and Tag tree will be moved to separate tabs</li>
         <li>There will be a toolbar above every tree with the most important features</li>
         <li>Some icons will be added and improved</li>
         <li>There will be new filter operation for the Tag tree like reset filter and such...</li>
-        <li>Ruler for icon preview size will be removed from the current position. There will be another solution</li>
         <li>Status bar displays information about the currently selected photo</li>
         <li>Make a toolbar for chosing the preview-size of the images</li>
         <li>Remember the filter and the layout (open, closed tags) of the tag tree from the last session when starting <em>KPhotoBook</em></li>
         <li>Remember the filter and the layout (open, closed directories) of the sourcedirectory tree from the last session when starting <em>KPhotoBook</em></li>
-        </ul>
+    </ul>
 </td>
 <td class="scheduler_date">April 2003</td>
 <td class="scheduler_version">0.0.5</td>
@@ -117,6 +120,13 @@
 <tr class="scheduler">
 <td class="scheduler_title">Write doxygen</td>
 <td class="scheduler_desc">Write doxygen comments for all methods and members. This is a big effort, but it should be done as soon as possible.</td>
+<td class="scheduler_date">April 2003</td>
+<td class="scheduler_version">0.0.5</td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Cleaning Code</td>
+<td class="scheduler_desc">Check the code for mistakes described in <a target="_top" href="http://developer.kde.org/documentation/other/mistakes.html">Common Programming Mistakes</a>.</td>
 <td class="scheduler_date">April 2003</td>
 <td class="scheduler_version">0.0.5</td>
 </tr>
