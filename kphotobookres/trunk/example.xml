@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kphotobook name="testfile">
+
+   <!--
+    Die id könnte auch hierarchisch aufgebaut werden:
+
+      3 -> 2.1
+      4 -> 2.1.1
+      5 -> 2.1.2
+
+    Pros and Cons diskutieren.
+
+    Die Directories unterhalb eines rekursiven Directories
+    könnten auch vone einem anderen Typ als 'sourcedir' sein
+    z.B. dir. Dies weil, sie kein recursive-Attribut haben
+    und weil das gesetzte dir relativ zum dir des parent ist.
+  -->
+
+  <!-- sourcedirectories -->
+   <sourcedirs>
+        <sourcedir id="1" dir="/test" recursive="false"/>
+        <sourcedir id="2" dir="/test/photos" recursive="false"/>
+        <sourcedir id="3" dir="/test/photos/tannenhof" recursive="true">
+            <sourcedir id="4" dir="/test/photos/tannenhof/tag1"/>
+            <sourcedir id="5" dir="/test/photos/tannenhof/tag2"/>
+            <sourcedir id="6" dir="/test/photos/tannenhof/tag3"/>
+            <sourcedir id="7" dir="/test/photos/tannenhof/tag4"/>
+            <sourcedir id="8" dir="/test/photos/tannenhof/tag5"/>
+        </sourcedir>
+    </sourcedirs>
+
+  <!-- tagtree -->
+  <tags>
+    <tag id="1" name="Event" type="title" icon="/opt/kde3/share/icons/crystalsvg/16x16/actions/launch.png">
+      <tag id="2" name="Ferien" type="boolean" icon="/opt/kde3/share/icons/crystalsvg/16x16/actions/launch.png">
+        <tag id="3" name="Deutschland" type="boolean" icon="/opt/foobar.png">
+          <tag id="4" name="Tannenhof" type="boolean" icon="" />
+        </tag>
+      </tag>
+      <tag id="5" name="Ausflug" type="boolean">
+        <tag id="6" name="Schweiz" type="boolean">
+          <tag id="7" name="???" type="boolean"/>
+        </tag>
+      </tag>
+    </tag>
+
+    <tag id="8" name="Motiv" type="title" icon="/opt/kde3/share/icons/crystalsvg/16x16/apps/xeyes.png">
+      <tag id="9" name="Person" type="boolean" icon="/opt/kde3/share/icons/crystalsvg/16x16/apps/gv.png">
+        <tag id="10" name="Tom" type="boolean"/>
+      </tag>
+      <tag id="11" name="Tier" type="boolean" icon="/opt/kde3/share/icons/crystalsvg/16x16/apps/penguin.png">
+        <tag id="12" name="Pferd" type="boolean" icon="/opt/kde3/share/icons/crystalsvg/16x16/apps/phppg.png">
+          <tag id="13" name="Misty" type="boolean"/>
+          <tag id="14" name="Lady" type="boolean"/>
+          <tag id="15" name="China" type="boolean"/>
+          <tag id="16" name="Niels" type="boolean"/>
+          <tag id="17" name="Nelly" type="boolean"/>
+          <tag id="18" name="Sonja" type="boolean"/>
+        </tag>
+      </tag>
+    </tag>
+
+    <tag id="20" name="Quality" type="title" icon="/opt/kde3/share/icons/crystalsvg/16x16/apps/ksysv.png">
+      <tag id="21" name="High" type="boolean"/>
+      <tag id="22" name="Medium" type="boolean"/>
+      <tag id="23" name="Low" type="boolean"/>
+    </tag>
+  </tags>
+
+  <!--
+    Machen wir pro sourcedir einen files-Abschnitt?
+    Oder hat jeder File-Eintrag eine Referenz auf das entsprechende
+    Sourcedir?
+  -->
+
+  <!-- all known files -->
+  <files sourcedirId="4">
+    <file name="2003-06-04-10:01:45.jpg" rotate="0">
+      <tagassoc tagId="4" value="true"/>
+      <tagassoc tagId="13" value="true"/>
+    </file>
+  </files>
+
+</kphotobook>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kcfg SYSTEM "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
+<kcfg>
+  <kcfgfile name="kphotobookrc"/>
+  <!--<include>kwin.h</include>-->
+
+  <group name="General">
+    <entry name="GeneralViewMode" type="Enum" key="ViewMode">
+      <label>Defines the mdi view mode.</label>
+      <default>TabPageMode</default>
+      <choices>
+        <choice name="IDEAlMode" />
+        <choice name="TabPageMode" />
+      </choices>
+    </entry>
+
+    <entry name="GeneralRescanWhileStartup" type="Bool" key="RescanWhileStartup">
+      <label>Defines if the filesystem is rescanned while starting up KPhotoBook.</label>
+      <default>true</default>
+    </entry>
+  </group>
+
+  <group name="TagTree">
+    <entry name="TagTreeToolBarIconSize" type="Int" key="ToolBarIconSize">
+      <label>The size of the icons in the ToolBar of the TagTree.</label>
+      <default>16</default>
+      <min>16</min>
+      <max>32</max>
+    </entry>
+    <entry name="TagTreeIconSize" type="Int" key="IconSize">
+      <label>The size of the icons in the TagTree.</label>
+      <default>22</default>
+      <min>16</min>
+      <max>48</max>
+    </entry>
+    <entry name="TagTreeFont" type="Font" key="Font">
+      <label>The font used in the TagTree.</label>
+      <default code="true">KGlobalSettings::generalFont()</default>
+    </entry>
+    <entry name="TagTreeShowIcons" type="Bool" key="ShowIcons">
+      <label>Defines if the icons in the TagTree are shown.</label>
+      <default>true</default>
+    </entry>
+
+    <entry name="TagTreeFilterOperator" type="Enum" key="FilterOperator">
+      <label>Defines the operator when filtering images by the TagTree.</label>
+      <default>And</default>
+      <choices>
+        <choice name="And" />
+        <choice name="Or" />
+      </choices>
+    </entry>
+    
+    <entry name="TagTreeRememberTree" type="Bool" key="RememberTree">
+      <label>Defines if the state of the TagTree (opened/closed nodes) is remebered (stored/restored).</label>
+      <default>true</default>
+    </entry>
+    <entry name="TagTreeRememberFilter" type="Bool" key="RememberFilter">
+      <label>Defines if the filter of the TagTree is remembered (stored/restored).</label>
+      <default>true</default>
+    </entry>    
+    
+    <entry name="TagTreeLocked" type="Bool" key="Locked">
+      <label>Defines if the tagtree is locked or not.</label>
+      <default>false</default>
+    </entry>
+  </group>
+
+  <group name="SourceDirTree">
+    <entry name="SourceDirTreeToolBarIconSize" type="Int" key="ToolBarIconSize">
+      <label>The size of the icons in the ToolBar of the SourceDir.</label>
+      <default>16</default>
+      <min>16</min>
+      <max>32</max>
+    </entry>
+    <entry name="SourceDirTreeIconSize" type="Enum" key="IconSize">
+      <label>The size of the icons in the SourceDirTree.</label>
+      <default>22</default>
+      <min>16</min>
+      <max>48</max>
+    </entry>
+    <entry name="SourceDirTreeFont" type="Font" key="Font">
+      <label>The font used in the SourceDirTree.</label>
+      <default code="true">KGlobalSettings::generalFont()</default>
+    </entry>
+    <entry name="SourceDirTreeShowIcons" type="Bool" key="ShowIcons">
+      <label>Defines if the icons in the SourceDirTree are shown.</label>
+      <default>true</default>
+    </entry>
+    
+    <entry name="SourceDirTreeRememberTree" type="Bool" key="RememberTree">
+      <label>Defines if the state of the SourceDirTree (opened/closed nodes) is remebered (stored/restored).</label>
+      <default>true</default>
+    </entry>
+    <entry name="SourceDirTreeRememberFilter" type="Bool" key="RememberFilter">
+      <label>Defines if the filter of the SourceDirTree is remembered (stored/restored).</label>
+      <default>true</default>
+    </entry>    
+  </group>
+
+  <group name="ImagePreview">
+    <entry name="ImagePreviewSize" type="Int" key="Size">
+      <label>The size of the image previews.</label>
+      <default>48</default>
+      <min>32</min>
+      <max>160</max>
+    </entry>
+    <entry name="ImagePreviewFont" type="Font" key="Font">
+      <label>The font used in the ImagePreview.</label>
+      <default code="true">KGlobalSettings::generalFont()</default>
+    </entry>
+    <entry name="ImagePreviewShowName" type="Bool" key="ShowName">
+      <label>Defines if the name of the file is shown.</label>
+      <default>true</default>
+    </entry>
+
+    <entry name="ImagePreviewAutoRefresh" type="Bool" key="AutoRefresh">
+      <label>Defines if the preview is refreshed autiomatically if the user changes something.</label>
+      <default>true</default>
+    </entry>
+    <entry name="ImagePreviewSelectionMode" type="Enum" key="SelectionMode">
+      <label>Defines the selectionmode for the image previews.</label>
+      <default>Extended</default>
+      <choices>
+        <choice name="Extended" />
+        <choice name="Multi" />
+      </choices>
+    </entry>
+  </group>
+
+  <group name="FileFilter">
+    <entry name="FileFilterFileToHandle" type="StringList" key="FileToHandle">
+      <label>Contains the regularexpressions for files to handle.</label>
+      <default>.*\\.jpg,.*\\.jpeg</default>
+    </entry>
+    <entry name="FileFilterSubdirsToIgnore" type="StringList" key="SubdirsToIgnore">
+      <label>Contains the regularexpressions for subdirectories to ignore.</label>
+      <default>\\..*,[Tt]humbs,[Tt]humbnails,[Tt]humbNails</default>
+    </entry>
+  </group>
+
+  <group name="Tools">
+    <entry name="ToolsDefaultExternalTool" type="String" key="DefaultExternalTool">
+      <label>Contains the external to open an image with when doubleclicked.</label>
+      <default>kuickshow</default>
+    </entry>
+    <entry name="ToolsExternalTools" type="StringList" key="ExternalTools">
+      <label>Contains the list of tools an image can be opened with.</label>
+      <default>kuickshow</default>
+    </entry>
+  </group>
+
+  <group name="FileSystem">
+    <entry name="FileSystemLastOpenedFile" type="String" key="LastOpenedFile">
+      <label>Contains the last opened kphotobook file.</label>
+    </entry>
+    <entry name="FileSystemLastAddedSourcedir" type="String" key="LastAddedSourcedir">
+      <label>Contains the last added source directory.</label>
+    </entry>
+    <entry name="FileSystemLastExportedToDirectory" type="String" key="LastExportedToDirectory">
+      <label>Contains the last directory images were exported to.</label>
+    </entry>
+  </group>
+
+</kcfg>
