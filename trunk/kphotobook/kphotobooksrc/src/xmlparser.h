@@ -37,7 +37,7 @@ class TagNode;
 /**
  * The handler for parsing the KphotoBook xml file.
  *
- * CVS-ID $Id: xmlparser.h,v 1.1 2004/03/07 18:52:23 starcube Exp $
+ * CVS-ID $Id: xmlparser.h,v 1.2 2004/03/21 11:44:50 starcube Exp $
  */
 class XmlParser : public QXmlDefaultHandler, public XmlConstants {
 
@@ -62,10 +62,12 @@ public:
         , m_section(SECTION_UNDEFINED_START)
         , m_currentSourceDir(0)
         , m_currentFile(0)
+        , m_tagNodesOfCurrentFile(0)
         , m_exception(0) {
     }
 
     ~XmlParser() {
+        delete m_tagNodesOfCurrentFile;
         // we do not delete the exception 'm_exception'
         // this exception will be thrown later and must be deleted be the catcher of the exception!
     }
