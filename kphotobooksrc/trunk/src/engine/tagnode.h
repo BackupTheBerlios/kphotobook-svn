@@ -45,6 +45,7 @@ public:
     static const int TYPE_INVALID = -1;
     static const int TYPE_TITLE = 1;
     static const int TYPE_BOOLEAN = 2;
+    static const int TYPE_STRING = 3;
 
 public:
     /**
@@ -62,6 +63,8 @@ public:
             return "title";
         case TYPE_BOOLEAN:
             return "boolean";
+        case TYPE_STRING:
+            return "string";
         default:
             return QString::null;
         }
@@ -77,6 +80,8 @@ public:
             return i18n("tagNodeTypeName", "title");
         case TYPE_BOOLEAN:
             return i18n("tagNodeTypeName", "boolean");
+        case TYPE_STRING:
+            return i18n("tagNodeTypeName", "string");
         default:
             return QString::null;
         }
@@ -97,6 +102,8 @@ public:
             return TYPE_TITLE;
         } else if (type == "boolean") {
             return TYPE_BOOLEAN;
+        } else if (type == "string") {
+            return TYPE_STRING;
         }
 
         return TYPE_INVALID;

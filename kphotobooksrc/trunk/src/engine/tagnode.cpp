@@ -22,6 +22,7 @@
 
 #include "tagnodetitle.h"
 #include "tagnodeboolean.h"
+#include "tagnodestring.h"
 
 #include "file.h"
 #include "filetagnodeassoc.h"
@@ -46,6 +47,9 @@ TagNode* TagNode::createInstance(int typeId, unsigned int id, const QString& tex
         break;
     case TYPE_BOOLEAN:
         newTagNode = new TagNodeBoolean(id, text, comment, iconName, parent);
+        break;
+    case TYPE_STRING:
+        newTagNode = new TagNodeString(id, text, comment, iconName, parent);
         break;
     default:
         return 0;
@@ -73,7 +77,7 @@ TagNode::TagNode(unsigned int id, const QString& text, const QString& comment, c
     , m_children(0)
     , m_assocs(new QPtrList<FileTagNodeAssoc>()) {
 
-    kdDebug() << "[TagNode::TagNode] invoked with id: " << id << ", text: " << text << ", icon: " << iconName << endl;
+    kdDebug() << "[TagNode::TagNode] invoked with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
 
     setIconName(iconName);
     if (parent) {

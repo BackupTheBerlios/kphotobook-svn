@@ -44,6 +44,11 @@ public:
 
     virtual ~TagTreeNodeBoolean();
 
+    /**
+     * Returns an expression used to describe this filter.
+     * This expression is used to create the filter used by the engine to determine which images to display.
+     * Normally this expression contains a tagnode and a value.
+     */
     QString filter();
 
     /**
@@ -68,6 +73,7 @@ public:
 
     /**
      * Returns the currently set filter as string representation.
+     * This value is used to store in the database.
      */
     virtual QString getFilterString();
     

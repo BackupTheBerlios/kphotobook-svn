@@ -187,6 +187,10 @@ public:
         return m_contextMenuTagTreeItem;
     }
     
+    KPopupMenu* contextMenuTagTreeItemLeaf() {
+        return m_contextMenuTagTreeItemLeaf;
+    }
+    
     /**
      * Enables or disables locking of tagging.
      */
@@ -419,6 +423,7 @@ private:
     KPopupMenu* m_contextMenuSubDir;
     KPopupMenu* m_contextMenuTagTree;
     KPopupMenu* m_contextMenuTagTreeItem;
+    KPopupMenu* m_contextMenuTagTreeItemLeaf;
 
     // settings pages
     SettingsGeneral* m_settingsGeneral;

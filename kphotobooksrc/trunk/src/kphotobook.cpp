@@ -35,14 +35,14 @@
 #include "engine/file.h"
 #include "exception.h"
 #include "dialogs/dialogaddsourcedir.h"
-#include "dialogs/dialogcreatetag.h"
-#include "dialogs/dialogedittag.h"
+#include "dialogs/dialogmanagetag.h"
 
 #include "engine/tagnode.h"
 #include "uitrees/tagtree.h"
 #include "uitrees/tagtreenode.h"
 #include "uitrees/tagtreenodetitle.h"
 #include "uitrees/tagtreenodeboolean.h"
+#include "uitrees/tagtreenodestring.h"
 #include "uitrees/tagtreenode.h"
 
 #include "engine/sourcedir.h"
@@ -682,6 +682,7 @@ void KPhotoBook::setupContextMenus() {
 
     m_contextMenuTagTree = static_cast<KPopupMenu*>(guiFactory()->container("contextMenu_tagTree", this));
     m_contextMenuTagTreeItem = static_cast<KPopupMenu*>(guiFactory()->container("contextMenu_tagTreeItem", this));
+    m_contextMenuTagTreeItemLeaf = static_cast<KPopupMenu*>(guiFactory()->container("contextMenu_tagTreeItemLeaf", this));
 }
 
 
@@ -1176,7 +1177,7 @@ void KPhotoBook::slotAddMaintag() {
 
     kdDebug() << "[KPhotoBook::slotRemoveSourceDir] called... " << endl;
 
-    DialogCreateTag* dialog = new DialogCreateTag(m_view, 0, this, "DialogCreateTag");
+    DialogManageTag* dialog = new DialogManageTag(m_view, DialogManageTag::MODE_CREATE_TAG, 0, 0, this, "DialogManageTag");
     if (dialog->exec()) {
 
         kdDebug() << "[KPhotoBook::slotRemoveSourceDir] dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
@@ -1204,7 +1205,7 @@ void KPhotoBook::slotCreateSubtag() {
     }
     TagTreeNode* parent = dynamic_cast<TagTreeNode*>(currentItem);
 
-    DialogCreateTag* dialog = new DialogCreateTag(m_view, parent, this, "DialogCreateTag");
+    DialogManageTag* dialog = new DialogManageTag(m_view, DialogManageTag::MODE_CREATE_TAG, parent, 0, this, "DialogManageTag");
     if (dialog->exec()) {
 
         kdDebug() << "[KPhotoBook::slotCreateSubtag] dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
@@ -1227,13 +1228,14 @@ void KPhotoBook::slotEditTag() {
     // get the tag to add a child to
     QListViewItem* currentItem = m_tagTree->currentItem();
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
-        && typeid(*currentItem) != typeid(TagTreeNodeBoolean)) {
+        && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
+        && typeid(*currentItem) != typeid(TagTreeNodeString)) {
         kdDebug() << "[KPhotoBook::slotCreateSubtag] called on a tree item other than TagTreeNode!" << endl;
         return;
     }
     TagTreeNode* tagTreeNode = dynamic_cast<TagTreeNode*>(currentItem);
 
-    DialogEditTag* dialog = new DialogEditTag(m_view, tagTreeNode, this, "DialogEditTag");
+    DialogManageTag* dialog = new DialogManageTag(m_view, DialogManageTag::MODE_EDIT_TAG, 0, tagTreeNode, this, "DialogManageTag");
     if (dialog->exec()) {
 
         kdDebug() << "[KPhotoBook::slotEditTag] dialog exited with OK, newname: " << dialog->tagName() << ", newicon: " << dialog->tagIcon() << endl;
@@ -1256,7 +1258,8 @@ void KPhotoBook::slotDeleteTag() {
     // get the tag to add a child to
     QListViewItem* currentItem = m_tagTree->currentItem();
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
-        && typeid(*currentItem) != typeid(TagTreeNodeBoolean)) {
+        && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
+        && typeid(*currentItem) != typeid(TagTreeNodeString)) {
         kdDebug() << "[KPhotoBook::slotDeleteTag] called on a tree item other than TagTreeNode!" << endl;
         return;
     }

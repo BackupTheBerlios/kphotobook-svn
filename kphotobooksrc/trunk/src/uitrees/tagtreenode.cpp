@@ -37,7 +37,7 @@
 
 
 TagTreeNode::TagTreeNode(TagTree* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu)
-    : KListViewItem(parent)//, text.prepend(" "))
+    : KListViewItem(parent)
     , m_photobook(photobook)
     , m_tagNode(tagNode)
     , m_contextMenu(contextMenu) {
@@ -50,7 +50,7 @@ TagTreeNode::TagTreeNode(TagTree* parent, KPhotoBook* photobook, TagNode* tagNod
 
 
 TagTreeNode::TagTreeNode(TagTreeNode* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu)
-    : KListViewItem(parent)//, text.prepend(" "))
+    : KListViewItem(parent)
     , m_photobook(photobook)
     , m_tagNode(tagNode)
     , m_contextMenu(contextMenu) {

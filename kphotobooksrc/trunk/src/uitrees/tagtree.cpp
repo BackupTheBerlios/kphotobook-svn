@@ -28,8 +28,10 @@
 #include "../engine/tagnode.h"
 #include "../engine/tagnodetitle.h"
 #include "../engine/tagnodeboolean.h"
+#include "../engine/tagnodestring.h"
 #include "tagtreenodetitle.h"
 #include "tagtreenodeboolean.h"
+#include "tagtreenodestring.h"
 
 #include <klocale.h>
 #include <kstdaccel.h>
@@ -68,7 +70,7 @@ TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     // the root node must be closeable
     setRootIsDecorated(true);
 
-    // append a listener for mouseclicks... ;-)
+    // append a listener for mouseclicks...
     QObject::connect(this, SIGNAL(mouseButtonClicked(int, QListViewItem*, const QPoint&, int)),
                      this, SLOT(slotListViewClicked(int, QListViewItem*, const QPoint&, int)));
     QObject::connect(this, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)),
@@ -127,7 +129,7 @@ void TagTree::addTagNodes(QPtrList<TagNode>* rootNodeList) {
 
 void TagTree::addTagNode(TagNode* rootNode) {
 
-    kdDebug() << "Converting subtree with root node: " << *rootNode->text() << "..." << endl;
+    kdDebug() << "[TagTree::addTagNode] Converting subtree with root node: " << *rootNode->text() << "..." << endl;
 
     TagTreeNode* tagTreeNode = 0;
 
@@ -138,8 +140,12 @@ void TagTree::addTagNode(TagNode* rootNode) {
     } else if (typeid(*rootNode) == typeid(TagNodeBoolean)) {
         TagNodeBoolean* node = dynamic_cast<TagNodeBoolean*>(rootNode);
         tagTreeNode = new TagTreeNodeBoolean(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
-    } // else if....
-
+    } else if (typeid(*rootNode) == typeid(TagNodeString)) {
+        TagNodeString* node = dynamic_cast<TagNodeString*>(rootNode);
+        tagTreeNode = new TagTreeNodeString(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+    } else {
+        kdWarning() << "[TagTree::addTagNode] unknown root tagtype received: " << rootNode->type() << "!"<< endl;
+    }
 
     // build the whole tree
     buildTagNodeTree(tagTreeNode, rootNode->children());
@@ -148,7 +154,7 @@ void TagTree::addTagNode(TagNode* rootNode) {
 
 void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
 
-    kdDebug() << "Converting node: " << *child->text() << "..." << endl;
+    kdDebug() << "[TagTree::addTagNode] Converting node: " << *child->text() << "..." << endl;
 
     TagTreeNode* tagTreeNode = 0;
 
@@ -159,7 +165,12 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
     } else if (typeid(*child) == typeid(TagNodeBoolean)) {
         TagNodeBoolean* node = dynamic_cast<TagNodeBoolean*>(child);
         tagTreeNode = new TagTreeNodeBoolean(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
-    } // else if....
+    } else if (typeid(*child) == typeid(TagNodeString)) {
+        TagNodeString* node = dynamic_cast<TagNodeString*>(child);
+        tagTreeNode = new TagTreeNodeString(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+    } else {
+        kdWarning() << "[TagTree::addTagNode] unknown sub tagtype received: " << child->type() << "!"<< endl;
+    }
 
     // build the whole tree
     buildTagNodeTree(tagTreeNode, child->children());
