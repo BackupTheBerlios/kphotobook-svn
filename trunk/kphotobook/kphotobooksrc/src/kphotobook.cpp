@@ -74,8 +74,9 @@
 #include <kconfigdialog.h>
 #include <kcombobox.h>
 #include <ktoolbar.h>
-//#include <ktoolbarbutton.h>
-//#include <kpushbutton.h>
+#include <klistview.h>
+#include <kfilemetainfo.h>
+#include <kedittoolbar.h>
 
 #include <kdebug.h>
 
@@ -87,13 +88,19 @@
 #include <qlistview.h>
 #include <qlayout.h>
 #include <qsizepolicy.h>
+#include <qheader.h>
+
 
 KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     : KMdiMainFrm(0, "kphotobookMainWindow", mdiMode)
     , m_view(0)
     , m_tagTree(0)
     , m_sourcedirTree(0)
+    , m_metaInfoTree(0)
     , m_engine(new Engine())
+
+    , m_tagTreeToolBar(0)
+    , m_sourceDirTreeToolBar(0)
 
     , m_autoRefreshViewAction(0)
     , m_zoomIn(0)
@@ -108,6 +115,7 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     , m_contextMenuTagTree(0)
     , m_contextMenuTagTreeItem(0)
 
+    , m_settingsGeneral(0)
     , m_settingsImagePreview(0)
     , m_settingsTagTree(0)
     , m_settingsSourceDirTree(0)
@@ -142,6 +150,7 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     // create toolwindows
     setupToolWindowTagTree();
     setupToolWindowSourceDirTree();
+    setupToolWindowMetaInfoTree();
 
     // init some other things: statusbar,..
     init();
@@ -349,6 +358,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotEditSourceDir()),
         actionCollection(), "editSourceDir"
     );
+    actionCollection()->action("editSourceDir")->setEnabled(false);
     new KAction(
         i18n("&Remove sourcedirectory"), Constants::ICON_REMOVE_SOURCEDIR,
         0, //KStdAccel::shortcut(KStdAccel::New),
@@ -520,23 +530,23 @@ void KPhotoBook::setupWhatsThis() {
     actionCollection()->action("decreasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window smaller."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
     actionCollection()->action("expandAllTags")->setWhatsThis(i18n("Expand the whole tag tree."));
     actionCollection()->action("collapseAllTags")->setWhatsThis(i18n("Collapse the whole tag tree."));
-    
+
     actionCollection()->action("removeSourceDir")->setWhatsThis(i18n("Remove the selected source directory with all its sub directories. The files which are in this sub directory will be removed from the database - losing the tag associatioins."));
     actionCollection()->action("includeWholeSourceDir")->setWhatsThis(i18n("Include the current directory and all sub directories to the thumbnail preview."));
     actionCollection()->action("excludeWholeSourceDir")->setWhatsThis(i18n("Exclude the current directory and all sub directories from the thumbnail preview."));
     actionCollection()->action("invertSourceDir")->setWhatsThis(i18n("Exclude the included directories and include the excluded directories of the current folder to the thumbnail view."));
-    actionCollection()->action("includeAllSourceDirs")->setWhatsThis(i18n("Include all source directories with all sub directories to the thumbnail view"));
+    actionCollection()->action("includeAllSourceDirs")->setWhatsThis(i18n("Include all source directories with all sub directories to the thumbnail view."));
     actionCollection()->action("excludeAllSourceDirs")->setWhatsThis(i18n("Exclued all source directories with all sub directories from the thumbnail view."));
     actionCollection()->action("invertAllSourceDirs")->setWhatsThis(i18n("Exclude the included directories and include the excluded directories to the thumbnail view."));
-    actionCollection()->action("expandSourceDir")->setWhatsThis(i18n("Expand the current source directory"));
-    actionCollection()->action("collapseSourceDir")->setWhatsThis(i18n("Collapse the current source directory"));
-    actionCollection()->action("expandAllSourceDirs")->setWhatsThis(i18n("Expand the the whole source directory tree"));
-    actionCollection()->action("collapseAllSourceDirs")->setWhatsThis(i18n("Collapse the whole source directory tree"));
+    actionCollection()->action("expandSourceDir")->setWhatsThis(i18n("Expand the current source directory."));
+    actionCollection()->action("collapseSourceDir")->setWhatsThis(i18n("Collapse the current source directory."));
+    actionCollection()->action("expandAllSourceDirs")->setWhatsThis(i18n("Expand the the whole source directory tree."));
+    actionCollection()->action("collapseAllSourceDirs")->setWhatsThis(i18n("Collapse the whole source directory tree."));
 /*
     actionCollection()->action("")->setWhatsThis(i18n(""));
 
     actionCollection(), "editSourceDir"
-    
+
     actionCollection(), "createSubtag"
     actionCollection(), "editTag"
     actionCollection(), "deleteTag"
@@ -855,7 +865,10 @@ void KPhotoBook::slotOptionsConfigureKeys() {
 void KPhotoBook::slotOptionsConfigureToolbars() {
 
     // use the standard toolbar editor
-    saveMainWindowSettings(KGlobal::config(), autoSaveGroup());
+    KEditToolbar dlg(factory());
+    if (dlg.exec()) {
+        applyMainWindowSettings( KGlobal::config(), "MainWindow" );
+    }
 }
 
 
@@ -902,17 +915,6 @@ void KPhotoBook::slotOptionsPreferences() {
 
     dialog->show();
 }
-
-
-void KPhotoBook::slotNewToolbarConfig() {
-
-    // this slot is called when user clicks "Ok" or "Apply" in the toolbar editor.
-    // recreate our GUI, and re-apply the settings (e.g. "text under icons", etc.)
-    createGUI(0);
-
-    applyMainWindowSettings(KGlobal::config(), autoSaveGroup());
-}
-
 
 void KPhotoBook::slotAddSourcedir() {
 
@@ -1257,13 +1259,45 @@ void KPhotoBook::slotCollapseAllTags() {
 
 void KPhotoBook::slotFileSelectionChanged() {
 
+    unsigned int selectedImagesCount = m_view->fileView()->selectedItems()->count();
+
     // update the statusbar to reflect the number of selected files
-    QString selectedMsg = QString(i18n("Selected: %1")).arg(m_view->fileView()->selectedItems()->count());
+    QString selectedMsg = QString(i18n("Selected: %1")).arg(selectedImagesCount);
     statusBar()->changeItem(selectedMsg, 4);
 
     m_sourcedirTree->reflectSelectedFiles(m_view->fileView()->selectedItems());
 
     m_tagTree->doRepaintAll();
+
+    // remove everything from the metainfo tree
+    m_metaInfoTree->clear();
+
+    // show EXIF info if only one image is seleced
+    if (m_view->fileView()->selectedItems()->count() == 1) {
+        QPtrListIterator<KFileItem> tempIt(*m_view->fileView()->selectedItems());
+        KFileItem* selectedFile = tempIt.current() ;
+
+        KFileMetaInfo metaInfo = selectedFile->metaInfo();
+
+        // iterate over groups
+        QStringList groups = metaInfo.groups();
+        KListViewItem* currentGroup = 0;
+        for ( QStringList::Iterator groupIt = groups.begin(); groupIt != groups.end(); ++groupIt ) {
+            currentGroup = new KListViewItem(m_metaInfoTree, *groupIt);
+            currentGroup->setOpen(true);
+            KFileMetaInfoGroup group = metaInfo.group(*groupIt);
+
+            QStringList keys = group.keys();
+
+            // iterate over keys
+            for ( QStringList::Iterator keysIt = keys.begin(); keysIt != keys.end(); ++keysIt ) {
+                KFileMetaInfoItem item = group.item(*keysIt);
+                QString value = item.string();
+
+                new KListViewItem(currentGroup, *keysIt, value);
+            }
+        }
+    }
 }
 
 
@@ -1361,12 +1395,16 @@ void KPhotoBook::setupToolWindowTagTree() {
     actionCollection()->action("resetFilter")->plug(m_tagTreeToolBar);
 
     m_tagTree = new TagTree(tagTreePanel, this, "tagtree");
-    QIconSet tagTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
-    if (tagTreeIconSet.isNull()) {
-        kdDebug() << "[KPhotoBook::KPhotoBook] Could not load iconset with iconname: '" << Constants::ICON_TAG << "'" << endl;
+
+    // set the icon
+    QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, 16, true);
+    if (iconSet.isNull()) {
+        kdDebug() << "[KPhotoBook::setupToolWindowTagTree] Could not load iconset with iconname: '" << Constants::ICON_TAG << "'" << endl;
     } else {
-        tagTreePanel->setIcon(tagTreeIconSet.pixmap());
+        tagTreePanel->setIcon(iconSet.pixmap());
     }
+
+    // eventually do add the tool window
     addToolWindow(tagTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Tags"), i18n("Tags"));
 }
 
@@ -1399,13 +1437,47 @@ void KPhotoBook::setupToolWindowSourceDirTree() {
     actionCollection()->action("invertAllSourceDirs")->plug(m_sourceDirTreeToolBar);
 
     m_sourcedirTree = new SourceDirTree(sourceDirTreePanel, this, "sourcedirTree");
-    QIconSet sourcedirTreeIconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
-    if (sourcedirTreeIconSet.isNull()) {
-        kdDebug() << "[KPhotoBook::KPhotoBook] Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
+
+    // set the icon
+    QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, 16, true);
+    if (iconSet.isNull()) {
+        kdDebug() << "[KPhotoBook::setupToolWindowSourceDirTree] Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
     } else {
-        sourceDirTreePanel->setIcon(sourcedirTreeIconSet.pixmap());
+        sourceDirTreePanel->setIcon(iconSet.pixmap());
     }
-    addToolWindow(sourceDirTreePanel, KDockWidget::DockLeft, getMainDockWidget(), 20, i18n("Source"), i18n("Source"));
+
+    // eventually do add the tool window
+    addToolWindow(sourceDirTreePanel, KDockWidget::DockCenter, m_tagTree, 20, i18n("Source directories"), i18n("Source"));
+}
+
+
+void KPhotoBook::setupToolWindowMetaInfoTree() {
+
+    m_metaInfoTree = new KListView(this, "metaInfoTree");
+
+    // create columns
+    m_metaInfoTree->addColumn(i18n("Key"));
+    m_metaInfoTree->addColumn(i18n("Value"));
+
+    m_metaInfoTree->setSelectionMode(QListView::NoSelection);
+
+    // we want that the value column gets as big as possible
+    m_metaInfoTree->header()->setStretchEnabled(true, 1);
+
+    // the root node must be closeable
+    m_metaInfoTree->setRootIsDecorated(true);
+
+    // set the icon
+    QString iconName = "favorites";
+    QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(iconName, KIcon::Small, 16, true);
+    if (iconSet.isNull()) {
+        kdDebug() << "[KPhotoBook::setupToolWindowMetaInfoTree] Could not load iconset with iconname: '" << iconName << "'" << endl;
+    } else {
+        m_metaInfoTree->setIcon(iconSet.pixmap());
+    }
+
+    // eventually do add the tool window
+    addToolWindow(m_metaInfoTree, KDockWidget::DockCenter, m_tagTree, 20, i18n("EXIF Information"), i18n("EXIF"));
 }
 
 

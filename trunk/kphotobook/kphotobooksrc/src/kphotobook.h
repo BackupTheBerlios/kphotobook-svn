@@ -29,6 +29,7 @@
 
 #include <kmdimainfrm.h>
 class KToolBar;
+class KListView;
 
 #include <qdir.h>
 
@@ -172,8 +173,6 @@ private slots:
     void slotOptionsConfigureToolbars();
     void slotOptionsPreferences();
 
-    void slotNewToolbarConfig();
-
     void slotAddSourcedir();
     void slotEditSourceDir();
     void slotRemoveSourceDir();
@@ -230,6 +229,7 @@ private:
 
     void setupToolWindowTagTree();
     void setupToolWindowSourceDirTree();
+    void setupToolWindowMetaInfoTree();
 
     void updateState();
     void updateStatusBar();
@@ -274,6 +274,7 @@ private:
 
     TagTree* m_tagTree;
     SourceDirTree* m_sourcedirTree;
+    KListView* m_metaInfoTree;
 
     Engine* m_engine;
 
