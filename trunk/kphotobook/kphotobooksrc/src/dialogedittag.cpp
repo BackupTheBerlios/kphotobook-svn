@@ -153,8 +153,14 @@ void DialogEditTag::validate() {
         m_iconButton->setText(i18n("Icon"));
     }
 
-    QString name(m_nameLineEdit->text());
-    bool nameIsValid = !name.isEmpty() && m_photobook->isTagTextValid(dynamic_cast<TagTreeNode*>(m_tagTreeNode->parent()), name);
+    QString currentName(*m_tagTreeNode->tagNode()->text());
+    QString newName(m_nameLineEdit->text());
+    // the name is valid if it was not changed
+    bool nameIsValid = (newName == currentName);
+    if (!nameIsValid) {
+        // the name is valid only, if there is no sibling with the same name
+        nameIsValid = !newName.isEmpty() && m_photobook->isTagTextValid(dynamic_cast<TagTreeNode*>(m_tagTreeNode->parent()), newName);
+    }
 
     this->enableButtonOK(nameIsValid && (m_iconLineEdit->text().isEmpty() || !folderIconSet.isNull()));
 }
