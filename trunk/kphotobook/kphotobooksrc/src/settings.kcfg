@@ -86,6 +86,15 @@
     </entry>
   </group>
 
+  <group name="Tools">
+    <entry name="ToolsDefaultExternalTool" type="String" key="DefaultExternalTool">
+      <label>Contains the external to open an image with when doubleclicked.</label>
+    </entry>
+    <entry name="ToolsExternalTools" type="StringList" key="ExternalTools">
+      <label>Contains the list of tools an image can be opened with.</label>
+    </entry>
+  </group>
+
 
 <!--
     <entry name="Font" type="Font" key="font">
