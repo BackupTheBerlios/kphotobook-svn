@@ -31,10 +31,31 @@
 #include <qnamespace.h>
 #include <qstringlist.h>
 #include <qintdict.h>
+#include <qtooltip.h>
 
 class TagNode;
 class TagTreeNode;
 class KPhotoBook;
+
+
+
+/**
+ * Helper class to manage the treeToolTip
+ */
+class TreeToolTip : public QToolTip
+{
+    public:
+        TreeToolTip( QListView *view ) : QToolTip( view->viewport() ), m_view( view ) {}
+
+    protected:
+        virtual void maybeTip( const QPoint & );
+
+    private:
+        QListView *m_view;
+};
+
+
+
 
 /**
  * The tagtree (can display checkboxes in the columns).
@@ -111,6 +132,8 @@ private:
     void buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children);
 
     KPhotoBook* m_photobook;
+
+    TreeToolTip m_toolTip;
 };
 
 #endif

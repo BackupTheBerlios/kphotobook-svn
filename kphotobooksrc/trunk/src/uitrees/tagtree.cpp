@@ -49,7 +49,8 @@
 
 TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     : KListView( parent, name )
-    , m_photobook(photobook) {
+    , m_photobook(photobook)
+    , m_toolTip(this) {
 
     setFont(Settings::tagTreeFont());
 
@@ -384,3 +385,16 @@ void TagTree::buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children)
 
 
 
+//
+// responsible for showing the tooltip in the tree
+//
+void TreeToolTip::maybeTip( const QPoint &point )
+{
+    QListViewItem *item = m_view->itemAt( point );
+    if ( item ) {
+        QString text = static_cast<TagTreeNode*>( item )->toolTip();
+        if ( !text.isEmpty() ) {
+            tip ( m_view->itemRect( item ), text );
+        }
+    }
+}

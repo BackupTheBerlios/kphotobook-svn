@@ -21,6 +21,8 @@
 #ifndef _TAGTREENODE_H_
 #define _TAGTREENODE_H_
 
+#include "../engine/tagnode.h"
+
 #include <klistview.h>
 #include <kpopupmenu.h>
 #include <kdebug.h>
@@ -32,7 +34,6 @@
 #include <qrect.h>
 
 class KPhotoBook;
-class TagNode;
 class TagTree;
 class TagTreeNode;
 
@@ -124,6 +125,14 @@ public:
      */
     virtual void rightClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column);
 
+    /**
+     * returns the tooltip to be shown in the tree of this node
+     */
+    virtual QString toolTip()
+    {
+        return *(m_tagNode->comment());
+    }
+    
 protected:
     KPhotoBook* m_photobook;
     TagNode* m_tagNode;
