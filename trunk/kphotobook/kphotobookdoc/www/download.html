@@ -48,7 +48,7 @@ Follow these instructions to build the application from the repository:
 <pre>make install</pre></li>
 </ul>
 
-<h1>Building the tarball</h1>
+<h1>Building from the tarball</h1>
 <p>
 Follow these instructions to build the application from the tarball:
 </p>
@@ -65,6 +65,30 @@ Follow these instructions to build the application from the tarball:
 <li>Install the application:
 <pre>make install</pre></li>
 </ul>
+
+<h1>Gentoo installation</h1>
+<p>
+An ebuild request was submitted to gentoo bugzilla: <a href="http://bugs.gentoo.org/show_bug.cgi?id=47560">#47560</a>.
+Hopefully, it will soon be in the official portage tree.
+</p>
+<p>
+For now, you can <a href="http://bugs.gentoo.org/attachment.cgi?id=29234&action=view">download the ebuild</a>.<br/>
+There are two ways to get it going:
+<ol>
+<li>
+copy the ebuild into your portage tree (you will loose the ebuild after an rsync)
+</li>
+<li>
+use the portage overlay mechanism (preferred method, that way you won't loose the ebuild when updating the portage tree):<br/>
+Define 'PORTDIR_OVERLAY="/some/dir' in your make.conf file and save the ebuild as "/some/dir/media-gfx/kphotobook/kphotobook-VERSION.ebuild".
+The default location of the portage overlay dir is '/usr/local/portage'.
+</li>
+</ol>
+Either way, you need to generate a package manifest and digest file by
+changing to the kphotobook-ebuild-directory and running <code>ebuild
+kphotobook-VERSION.ebuild digest</code>.<br/>
+Then the usual <code>emerge kphotobook</code> will do the job.
+</p>
 
 </td>
 </tr>
