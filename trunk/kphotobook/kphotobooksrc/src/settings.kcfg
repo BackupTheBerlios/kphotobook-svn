@@ -51,6 +51,15 @@
       </choices>
     </entry>
     
+    <entry name="TagTreeRememberTree" type="Bool" key="RememberTree">
+      <label>Defines if the state of the TagTree (opened/closed nodes) is remebered (stored/restored).</label>
+      <default>true</default>
+    </entry>
+    <entry name="TagTreeRememberFilter" type="Bool" key="RememberFilter">
+      <label>Defines if the filter of the TagTree is remembered (stored/restored).</label>
+      <default>true</default>
+    </entry>    
+    
     <entry name="TagTreeLocked" type="Bool" key="Locked">
       <label>Defines if the tagtree is locked or not.</label>
       <default>false</default>
@@ -78,6 +87,15 @@
       <label>Defines if the icons in the SourceDirTree are shown.</label>
       <default>true</default>
     </entry>
+    
+    <entry name="SourceDirTreeRememberTree" type="Bool" key="RememberTree">
+      <label>Defines if the state of the SourceDirTree (opened/closed nodes) is remebered (stored/restored).</label>
+      <default>true</default>
+    </entry>
+    <entry name="SourceDirTreeRememberFilter" type="Bool" key="RememberFilter">
+      <label>Defines if the filter of the SourceDirTree is remembered (stored/restored).</label>
+      <default>true</default>
+    </entry>    
   </group>
 
   <group name="ImagePreview">

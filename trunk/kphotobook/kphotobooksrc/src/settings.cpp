@@ -74,6 +74,12 @@ Settings::Settings(  )
   KConfigSkeleton::ItemEnum  *itemTagTreeFilterOperator;
   itemTagTreeFilterOperator = new KConfigSkeleton::ItemEnum( currentGroup(), "FilterOperator", mTagTreeFilterOperator, valuesTagTreeFilterOperator, EnumTagTreeFilterOperator::And );
   addItem( itemTagTreeFilterOperator, "TagTreeFilterOperator" );
+  KConfigSkeleton::ItemBool  *itemTagTreeRememberTree;
+  itemTagTreeRememberTree = new KConfigSkeleton::ItemBool( currentGroup(), "RememberTree", mTagTreeRememberTree, true );
+  addItem( itemTagTreeRememberTree, "TagTreeRememberTree" );
+  KConfigSkeleton::ItemBool  *itemTagTreeRememberFilter;
+  itemTagTreeRememberFilter = new KConfigSkeleton::ItemBool( currentGroup(), "RememberFilter", mTagTreeRememberFilter, true );
+  addItem( itemTagTreeRememberFilter, "TagTreeRememberFilter" );
   KConfigSkeleton::ItemBool  *itemTagTreeLocked;
   itemTagTreeLocked = new KConfigSkeleton::ItemBool( currentGroup(), "Locked", mTagTreeLocked, false );
   addItem( itemTagTreeLocked, "TagTreeLocked" );
@@ -97,6 +103,12 @@ Settings::Settings(  )
   KConfigSkeleton::ItemBool  *itemSourceDirTreeShowIcons;
   itemSourceDirTreeShowIcons = new KConfigSkeleton::ItemBool( currentGroup(), "ShowIcons", mSourceDirTreeShowIcons, true );
   addItem( itemSourceDirTreeShowIcons, "SourceDirTreeShowIcons" );
+  KConfigSkeleton::ItemBool  *itemSourceDirTreeRememberTree;
+  itemSourceDirTreeRememberTree = new KConfigSkeleton::ItemBool( currentGroup(), "RememberTree", mSourceDirTreeRememberTree, true );
+  addItem( itemSourceDirTreeRememberTree, "SourceDirTreeRememberTree" );
+  KConfigSkeleton::ItemBool  *itemSourceDirTreeRememberFilter;
+  itemSourceDirTreeRememberFilter = new KConfigSkeleton::ItemBool( currentGroup(), "RememberFilter", mSourceDirTreeRememberFilter, true );
+  addItem( itemSourceDirTreeRememberFilter, "SourceDirTreeRememberFilter" );
 
   setCurrentGroup( "ImagePreview" );
 

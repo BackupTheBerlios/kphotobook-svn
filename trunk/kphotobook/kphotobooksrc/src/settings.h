@@ -161,6 +161,44 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+      Set Defines if the state of the TagTree (opened/closed nodes) is remebered (stored/restored).
+    */
+    static
+    void setTagTreeRememberTree( bool v )
+    {
+      if (!self()->isImmutable( "TagTreeRememberTree" ))
+        self()->mTagTreeRememberTree = v;
+    }
+
+    /**
+      Get Defines if the state of the TagTree (opened/closed nodes) is remebered (stored/restored).
+    */
+    static
+    bool tagTreeRememberTree()
+    {
+      return self()->mTagTreeRememberTree;
+    }
+
+    /**
+      Set Defines if the filter of the TagTree is remembered (stored/restored).
+    */
+    static
+    void setTagTreeRememberFilter( bool v )
+    {
+      if (!self()->isImmutable( "TagTreeRememberFilter" ))
+        self()->mTagTreeRememberFilter = v;
+    }
+
+    /**
+      Get Defines if the filter of the TagTree is remembered (stored/restored).
+    */
+    static
+    bool tagTreeRememberFilter()
+    {
+      return self()->mTagTreeRememberFilter;
+    }
+
+    /**
       Set Defines if the tagtree is locked or not.
     */
     static
@@ -253,6 +291,44 @@ class Settings : public KConfigSkeleton
     bool sourceDirTreeShowIcons()
     {
       return self()->mSourceDirTreeShowIcons;
+    }
+
+    /**
+      Set Defines if the state of the SourceDirTree (opened/closed nodes) is remebered (stored/restored).
+    */
+    static
+    void setSourceDirTreeRememberTree( bool v )
+    {
+      if (!self()->isImmutable( "SourceDirTreeRememberTree" ))
+        self()->mSourceDirTreeRememberTree = v;
+    }
+
+    /**
+      Get Defines if the state of the SourceDirTree (opened/closed nodes) is remebered (stored/restored).
+    */
+    static
+    bool sourceDirTreeRememberTree()
+    {
+      return self()->mSourceDirTreeRememberTree;
+    }
+
+    /**
+      Set Defines if the filter of the SourceDirTree is remembered (stored/restored).
+    */
+    static
+    void setSourceDirTreeRememberFilter( bool v )
+    {
+      if (!self()->isImmutable( "SourceDirTreeRememberFilter" ))
+        self()->mSourceDirTreeRememberFilter = v;
+    }
+
+    /**
+      Get Defines if the filter of the SourceDirTree is remembered (stored/restored).
+    */
+    static
+    bool sourceDirTreeRememberFilter()
+    {
+      return self()->mSourceDirTreeRememberFilter;
     }
 
     /**
@@ -484,6 +560,8 @@ class Settings : public KConfigSkeleton
     QFont mTagTreeFont;
     bool mTagTreeShowIcons;
     int mTagTreeFilterOperator;
+    bool mTagTreeRememberTree;
+    bool mTagTreeRememberFilter;
     bool mTagTreeLocked;
 
     // SourceDirTree
@@ -491,6 +569,8 @@ class Settings : public KConfigSkeleton
     int mSourceDirTreeIconSize;
     QFont mSourceDirTreeFont;
     bool mSourceDirTreeShowIcons;
+    bool mSourceDirTreeRememberTree;
+    bool mSourceDirTreeRememberFilter;
 
     // ImagePreview
     int mImagePreviewSize;

@@ -205,6 +205,35 @@
                 </spacer>
             </hbox>
         </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox4</cstring>
+            </property>
+            <property name="title">
+                <string>Remember tree state</string>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeRememberTree</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Remember open/closed nodes</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeRememberFilter</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Remember filter state</string>
+                    </property>
+                </widget>
+            </vbox>
+        </widget>
         <spacer>
             <property name="name">
                 <cstring>spacer1</cstring>
@@ -218,11 +247,17 @@
             <property name="sizeHint">
                 <size>
                     <width>20</width>
-                    <height>170</height>
+                    <height>50</height>
                 </size>
             </property>
         </spacer>
     </vbox>
 </widget>
 <layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>knuminput.h</includehint>
+    <includehint>kfontrequester.h</includehint>
+    <includehint>knuminput.h</includehint>
+    <includehint>kcombobox.h</includehint>
+</includehints>
 </UI>

@@ -1702,14 +1702,18 @@ void KPhotoBook::storeTreeState() {
     QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
     
-    QStringList* openNodes = m_tagTree->getOpenNodes();
-    config->writeEntry("OpenNodes:TagTree", *openNodes);
-    delete openNodes;
+    if (Settings::tagTreeRememberTree()) {
+        QStringList* openNodes = m_tagTree->getOpenNodes();
+        config->writeEntry("OpenNodes:TagTree", *openNodes);
+        delete openNodes;
+    }
     
-    openNodes = m_sourcedirTree->getOpenNodes();
-    config->writeEntry("OpenNodes:SourceDirTree", *openNodes);
-    delete openNodes;
-        
+    if (Settings::sourceDirTreeRememberTree()) {
+        QStringList* openNodes = m_sourcedirTree->getOpenNodes();
+        config->writeEntry("OpenNodes:SourceDirTree", *openNodes);
+        delete openNodes;
+    }
+            
     // force writing
     config->sync();
 }
@@ -1723,11 +1727,15 @@ void KPhotoBook::loadTreeState() {
     QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
     
-    QStringList openNodes = config->readListEntry("OpenNodes:TagTree");
-    m_tagTree->openNodes(&openNodes);
+    if (Settings::tagTreeRememberTree()) {
+        QStringList openNodes = config->readListEntry("OpenNodes:TagTree");
+        m_tagTree->openNodes(&openNodes);
+    }
     
-    openNodes = config->readListEntry("OpenNodes:SourceDirTree");
-    m_sourcedirTree->openNodes(&openNodes);
+    if (Settings::sourceDirTreeRememberTree()) {
+        QStringList openNodes = config->readListEntry("OpenNodes:SourceDirTree");
+        m_sourcedirTree->openNodes(&openNodes);
+    }
 }
 
 
