@@ -30,6 +30,7 @@
 #include <qpoint.h>
 #include <qnamespace.h>
 #include <qstringlist.h>
+#include <qintdict.h>
 
 class TagNode;
 class TagTreeNode;
@@ -38,7 +39,7 @@ class KPhotoBook;
 /**
  * The tagtree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: tagtree.h,v 1.7 2004/06/01 21:47:48 starcube Exp $
+ * CVS-ID $Id: tagtree.h,v 1.8 2004/06/04 20:59:02 starcube Exp $
  */
 class TagTree : public KListView {
 
@@ -80,6 +81,19 @@ public:
      * Opens the nodes with the specified ids.
      */
     void openNodes(QStringList* nodes);
+    
+    /**
+     * Returns a dictionary containing the string representation of the filter
+     * of every node.
+     * The dictionary contains the node-id as key and the filter as value.
+     */
+    QIntDict<QString>* getFilter();
+    
+    /**
+     * Applies the specified filters to the nodes in the tagtree.
+     * The dictionary must contain the node-id as key and the filter as value.
+     */
+    void applyFilter(QIntDict<QString>* filterList);
 
 public slots:
     void slotLoadSettings();

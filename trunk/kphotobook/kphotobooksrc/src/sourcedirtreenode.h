@@ -36,7 +36,7 @@ class SourceDir;
 /**
  * Specialized KListViewItem representing a SourceDir to be used in the SourceDirTree.
  *
- * CVS-ID $Id: sourcedirtreenode.h,v 1.2 2004/03/23 22:19:39 starcube Exp $
+ * CVS-ID $Id: sourcedirtreenode.h,v 1.3 2004/06/04 20:59:02 starcube Exp $
  */
 class SourceDirTreeNode : public KListViewItem {
 
@@ -87,6 +87,16 @@ public:
 
     void setIncludedRecursive(bool included);
     void invertInclusionRecursive();
+
+    /**
+     * Returns the currently set filter as string representation.
+     */
+    virtual QString getFilterString();
+    
+    /**
+     * Applies the filter returned by getFilter().
+     */
+    virtual void applyFilterString(QString filter);
 
     /**
      * This method is called by the SourceDirTree when this SourceDirTreeNode is clicked with the

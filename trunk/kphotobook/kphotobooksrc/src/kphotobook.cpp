@@ -282,6 +282,7 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
 
         // restore the tree states
         loadTreeState();
+        loadFilter();
 
         // add the files to the view
         m_view->updateFiles();
@@ -695,6 +696,7 @@ bool KPhotoBook::queryClose() {
 
     // store the tree states
     storeTreeState();
+    storeFilter();
 
     // store dock configuration
     writeDockConfig(KGlobal::config(), "DockConfig");
@@ -1510,6 +1512,8 @@ void KPhotoBook::setupToolWindowTagTree() {
     m_tagTreeToolBar->insertSeparator();
     actionCollection()->action("deselectFilter")->plug(m_tagTreeToolBar);
     actionCollection()->action("resetFilter")->plug(m_tagTreeToolBar);
+    m_tagTreeToolBar->insertSeparator();
+    actionCollection()->action("toggleLockUnlockTagging")->plug(m_tagTreeToolBar);
 
     m_tagTree = new TagTree(tagTreePanel, this, "tagtree");
 
@@ -1704,13 +1708,13 @@ void KPhotoBook::storeTreeState() {
     
     if (Settings::tagTreeRememberTree()) {
         QStringList* openNodes = m_tagTree->getOpenNodes();
-        config->writeEntry("OpenNodes:TagTree", *openNodes);
+        config->writeEntry("TagTree:OpenNodes", *openNodes);
         delete openNodes;
     }
     
     if (Settings::sourceDirTreeRememberTree()) {
         QStringList* openNodes = m_sourcedirTree->getOpenNodes();
-        config->writeEntry("OpenNodes:SourceDirTree", *openNodes);
+        config->writeEntry("SourceDirTree:OpenNodes", *openNodes);
         delete openNodes;
     }
             
@@ -1721,22 +1725,140 @@ void KPhotoBook::storeTreeState() {
    
 void KPhotoBook::loadTreeState() {
 
-    kdDebug() << "[KPhotoBook::loadTreeState] invoked..." << endl;
-
     KConfig* config = KGlobal::config();
     QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
     
     if (Settings::tagTreeRememberTree()) {
-        QStringList openNodes = config->readListEntry("OpenNodes:TagTree");
+        QStringList openNodes = config->readListEntry("TagTree:OpenNodes");
         m_tagTree->openNodes(&openNodes);
     }
     
     if (Settings::sourceDirTreeRememberTree()) {
-        QStringList openNodes = config->readListEntry("OpenNodes:SourceDirTree");
+        QStringList openNodes = config->readListEntry("SourceDirTree:OpenNodes");
         m_sourcedirTree->openNodes(&openNodes);
     }
 }
 
+/**
+ * Stores the filters set on the trees.
+ */
+void KPhotoBook::storeFilter() {
 
+    KConfig* config = KGlobal::config();
+    QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
+    config->setGroup(group);
+    
+    if (Settings::tagTreeRememberFilter()) {
+        QIntDict<QString>* filterDict = m_tagTree->getFilter();
+        
+        QStringList* filterList = intDict2stringList(filterDict);
+        
+        config->writeEntry("TagTree:Filter", *filterList);
+        
+        filterDict->setAutoDelete(true);
+        delete filterDict;
+        delete filterList;
+    }
+    
+    if (Settings::sourceDirTreeRememberFilter()) {
+        QIntDict<QString>* filterDict = m_sourcedirTree->getFilter();
+        
+        QStringList* filterList = intDict2stringList(filterDict);
+        
+        config->writeEntry("SourceDirTree:Filter", *filterList);
+        
+        filterDict->setAutoDelete(true);
+        delete filterDict;
+        delete filterList;
+    }
+            
+    // force writing
+    config->sync();
+}
+
+
+/**
+ * Loads the filters and sets them on the trees.
+ */
+void KPhotoBook::loadFilter() {
+
+    KConfig* config = KGlobal::config();
+    QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
+    config->setGroup(group);
+    
+    if (Settings::tagTreeRememberFilter()) {
+        QStringList filterList = config->readListEntry("TagTree:Filter");
+        
+        QIntDict<QString>* filterDict = stringList2intDict(filterList);
+        
+        m_tagTree->applyFilter(filterDict);
+        
+        filterDict->setAutoDelete(true);
+        delete filterDict;
+    }
+    
+    if (Settings::sourceDirTreeRememberFilter()) {
+        QStringList filterList = config->readListEntry("SourceDirTree:Filter");
+        
+        QIntDict<QString>* filterDict = stringList2intDict(filterList);
+        
+        m_sourcedirTree->applyFilter(filterDict);
+        
+        filterDict->setAutoDelete(true);
+        delete filterDict;
+    }
+}
+
+
+QStringList* KPhotoBook::intDict2stringList(QIntDict<QString>* intDict) {
+
+    QStringList* stringList = new QStringList();
+
+    QIntDictIterator<QString> it(*intDict);
+    for (; it.current(); ++it) {
+        QString entry = QString("%1:%2").arg(it.currentKey()).arg(*it.current());
+        stringList->append(entry);
+    }
+    
+    return stringList;
+}
+    
+    
+QIntDict<QString>* KPhotoBook::stringList2intDict(QStringList stringList) {
+
+    QIntDict<QString>* filterDict = new QIntDict<QString>;
+    
+    // loop over all entries in the stringlist
+    for (QStringList::Iterator it = stringList.begin(); it != stringList.end(); ++it) {
+    
+        kdDebug() << "[KPhotoBook::stringList2intDict] handling entry: '" << *it << "'" << endl;
+        
+        // split the current entry into key and value and put them into the intdict
+        int delimitorPos = (*it).find(':');
+        if (delimitorPos > 0) {
+            QString keyStr = (*it).mid(0, delimitorPos);
+            QString value = (*it).mid(delimitorPos + 1);
+            
+            kdDebug() << "[KPhotoBook::stringList2intDict] key-->value: '" << keyStr << "-->" << value << "'" << endl;
+            
+            bool ok;
+            int key = keyStr.toInt(&ok);
+            
+            if (ok) {
+                filterDict->insert(key, new QString(value));
+            } else {
+                kdWarning() << "Filter " << *it << " is invalid! Id is not a number. (Valid format: 'key:value')" << endl;            
+            }
+            
+        } else {
+            kdWarning() << "Filter " << *it << " is invalid! (Valid format: 'key:value')" << endl;
+        }
+    }
+    
+    return filterDict;
+}
+
+
+    
 #include "kphotobook.moc"

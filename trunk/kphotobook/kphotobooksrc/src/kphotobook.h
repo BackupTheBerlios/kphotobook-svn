@@ -33,6 +33,8 @@ class KToolBar;
 class KListView;
 
 #include <qdir.h>
+#include <qstringlist.h>
+#include <qintdict.h>
 
 class Engine;
 
@@ -314,6 +316,34 @@ private:
      * Loads the state (open/closed nodes) of the trees.
      */
     void loadTreeState();
+
+    /**
+     * Stores the filters set on the trees.
+     */
+    void storeFilter();
+    
+    /**
+     * Loads the filters and sets them on the trees.
+     */
+    void loadFilter();
+    
+    /**
+     * Builds a list of strings containing as many entries as the specified 
+     * int dictionary. Each entry of the dictionary is joined into one string.
+     * The string is built by the int key followed by a colon and the value.
+     * This helper method is used because the class KConfig or KConfigBase resp.
+     * do not support writing/reading int dictionaries.
+     */
+    QStringList* intDict2stringList(QIntDict<QString>* intDict);
+    
+    /**
+     * Builds a int dictionary with the entries found in the specified stringlist.
+     * The entries in the stringlist must begin with an int followed by a colon and
+     * an alphanumeric string: <int>:<alphanumeric>.
+     * This helper method is used because the class KConfig or KConfigBase resp.
+     * do not support writing/reading int dictionaries.
+     */        
+    QIntDict<QString>* stringList2intDict(QStringList stringList); 
 
 private:
     KPhotoBookView* m_view;

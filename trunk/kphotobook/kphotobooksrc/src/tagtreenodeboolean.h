@@ -28,7 +28,7 @@ class TagNodeBoolean;
 /**
  * Concrete tagtreenode for displaying a boolean tagnode.
  *
- * CVS-ID $Id: tagtreenodeboolean.h,v 1.7 2004/04/05 16:23:46 starcube Exp $
+ * CVS-ID $Id: tagtreenodeboolean.h,v 1.8 2004/06/04 20:59:02 starcube Exp $
  */
 class TagTreeNodeBoolean : public TagTreeNode {
 
@@ -65,6 +65,16 @@ public:
         // force redrawing of this listviewitem
         this->repaint();
     }
+
+    /**
+     * Returns the currently set filter as string representation.
+     */
+    virtual QString getFilterString();
+    
+    /**
+     * Applies the filter returned by getFilter().
+     */
+    virtual void applyFilterString(QString filter);
 
     virtual void leftClicked(TagTree* tagTree, int column);
     virtual void rightClicked(TagTree* tagTree, int column);

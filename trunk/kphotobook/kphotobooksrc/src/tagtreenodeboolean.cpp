@@ -65,6 +65,35 @@ QString TagTreeNodeBoolean::filter() {
     return filter;
 }
 
+    
+QString TagTreeNodeBoolean::getFilterString() {
+
+    QString filter;
+
+    switch (m_filterState) {
+    case FILTERSTATE_EXCLUDE:
+        filter = "exclude";
+        break;
+    case FILTERSTATE_INCLUDE:
+        filter = "include";
+        break;
+    }
+
+    return filter;
+}
+    
+    
+void TagTreeNodeBoolean::applyFilterString(QString filter) {
+
+    m_filterState = FILTERSTATE_IGNORE;
+
+    if (filter == "exclude") {
+        m_filterState = FILTERSTATE_EXCLUDE;
+    } else if (filter == "include") {
+        m_filterState = FILTERSTATE_INCLUDE;
+    }    
+}
+
 
 void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, int column) {
 

@@ -30,7 +30,7 @@ class File;
 /**
  * Represents a sourcedirectory.
  *
- * CVS-ID $Id: sourcedir.h,v 1.1 2004/03/07 18:52:36 starcube Exp $
+ * CVS-ID $Id: sourcedir.h,v 1.2 2004/06/04 20:59:02 starcube Exp $
  */
 class SourceDir : public QObject {
 
@@ -145,7 +145,7 @@ private:
     QPtrList<File>* m_files;
 
     /**
-     * Determines if the files in this directory are diplayed...
+     * Determines if the files in this directory are displayed...
      */
     bool m_include;
 };

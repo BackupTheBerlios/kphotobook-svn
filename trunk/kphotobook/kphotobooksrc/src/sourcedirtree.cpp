@@ -278,6 +278,46 @@ void SourceDirTree::openNodes(QStringList* openNodes) {
 }
 
 
+QIntDict<QString>* SourceDirTree::getFilter() {
+
+    QIntDict<QString>* filterList = new QIntDict<QString>();
+    
+    // loop over *all* nodes in the tree
+    QListViewItemIterator it(this);
+    while (it.current()) {
+
+        SourceDirTreeNode* node = dynamic_cast<SourceDirTreeNode*>(it.current());
+        // add the filterstring to the filter list
+        QString filter = node->getFilterString();
+        if (filter != QString::null) {
+            filterList->insert(node->sourceDir()->id(), new QString(filter));
+        }
+
+        ++it;
+    }
+    
+    return filterList;
+}
+
+
+void SourceDirTree::applyFilter(QIntDict<QString>* filterList) {
+
+    // loop over *all* nodes in the tree
+    QListViewItemIterator it(this);
+    while (it.current()) {
+
+        SourceDirTreeNode* node = dynamic_cast<SourceDirTreeNode*>(it.current());
+        // find the filter and apply it to the node
+        QString* filter = filterList->find(node->sourceDir()->id());
+        if (filter != 0) {
+            node->applyFilterString(*filter);
+        }
+
+        ++it;
+    }
+}
+
+
 //
 // public slots
 //

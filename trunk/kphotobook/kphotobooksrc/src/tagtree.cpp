@@ -243,6 +243,46 @@ void TagTree::openNodes(QStringList* openNodes) {
 }
 
 
+QIntDict<QString>* TagTree::getFilter() {
+
+    QIntDict<QString>* filterList = new QIntDict<QString>();
+    
+    // loop over *all* nodes in the tree
+    QListViewItemIterator it(this);
+    while (it.current()) {
+
+        TagTreeNode* node = dynamic_cast<TagTreeNode*>(it.current());
+        // add the filterstring to the filter list
+        QString filter = node->getFilterString();
+        if (filter != QString::null) {
+            filterList->insert(node->tagNode()->id(), new QString(filter));
+        }
+
+        ++it;
+    }
+    
+    return filterList;
+}
+
+
+void TagTree::applyFilter(QIntDict<QString>* filterList) {
+
+    // loop over *all* nodes in the tree
+    QListViewItemIterator it(this);
+    while (it.current()) {
+
+        TagTreeNode* node = dynamic_cast<TagTreeNode*>(it.current());
+        // find the filter and apply it to the node
+        QString* filter = filterList->find(node->tagNode()->id());
+        if (filter != 0) {
+            node->applyFilterString(*filter);
+        }
+
+        ++it;
+    }
+}
+
+
 //
 // public slots
 //
