@@ -198,5 +198,5 @@ void XmlWriter::dumpFile(QTextStream& stream, File* file, QString indent) {
 
 void XmlWriter::dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent) {
 
-    stream << indent << "<" << ELEMENT_TAGASSOC << " " << ATTRIBUTE_TAGASSOC_TAGID << "=\"" << assoc->tagNode()->id() << "\" " << ATTRIBUTE_TAGASSOC_VALUE << "=\"" << assoc->valueAsString() << "\">\n";
+    stream << indent << "<" << ELEMENT_TAGASSOC << " " << ATTRIBUTE_TAGASSOC_TAGID << "=\"" << assoc->tagNode()->id() << "\" " << ATTRIBUTE_TAGASSOC_VALUE << "=\"" << assoc->valueAsString() << "\"/>\n";
 }
