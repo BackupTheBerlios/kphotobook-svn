@@ -122,21 +122,6 @@ void SourceDirTree::reflectSelectedFiles(const KFileItemList* selectedFiles) {
 
         item->increaseSelectedFilesCount(1);
         item->repaint();
-
-        /*
-        QListViewItemIterator it(this);
-        while (it.current()) {
-            TagTreeNodeSourceDir* item = dynamic_cast<TagTreeNodeSourceDir*>(it.current());
-
-            if (selectedFile->sourceDir()->id() == item->sourceDir()->id()) {
-                item->increaseSelectedFilesCount(1);
-                item->repaint();
-                break;
-            }
-
-            ++it;
-        }
-        */
     }
 }
 
