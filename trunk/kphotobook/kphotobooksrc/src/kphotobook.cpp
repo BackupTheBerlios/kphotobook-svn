@@ -1106,11 +1106,11 @@ void KPhotoBook::slotDeleteTag() {
         // remove the tag from the engine
         m_engine->removeTag(tagTreeNode->tagNode());
 
-        // update the shown files
-        m_view->updateFiles();
-
         // remove the tag from the view
         m_view->removeTagNode(tagTreeNode);
+
+        // update the shown files
+        m_view->updateFiles();
     }
 
     updateState();
