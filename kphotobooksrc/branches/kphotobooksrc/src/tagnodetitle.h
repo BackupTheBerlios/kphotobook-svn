@@ -18,54 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DIALOGEDITTAG_H
-#define DIALOGEDITTAG_H
+#ifndef TAGNODETITLE_H
+#define TAGNODETITLE_H
 
-#include <kdialogbase.h>
-#include <klineedit.h>
-#include <kcombobox.h>
+#include "tagnode.h"
 
 #include <qstring.h>
-#include <qpushbutton.h>
-
-class TagTreeNode;
 
 /**
- * The dialog to create a now tag.
+ * Concrete tagnode implementation representing a text only.
  *
- * CVS-ID $Id: dialogedittag.h,v 1.1 2004/03/07 18:52:06 starcube Exp $
+ * CVS-ID $Id$
  */
-class DialogEditTag : public KDialogBase {
-
-Q_OBJECT
+class TagNodeTitle : public TagNode {
 
 public:
-    DialogEditTag(QWidget *parent, TagTreeNode* parentNode, const char *name);
+    TagNodeTitle(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
 
-    ~DialogEditTag();
-
-    QString tagName() {
-        return m_nameLineEdit->text();
+    ~TagNodeTitle() {
     }
-
-    QString tagIcon() {
-        return m_iconLineEdit->text();
-    }
-
-private slots:
-    void slotNameChanged(const QString& text);
-    void slotIconTextChanged(const QString& text);
-    void slotIconButtonClicked();
-
-private:
-    TagTreeNode* m_tagTreeNode;
-
-    KComboBox* m_typeComboBox;
-    KLineEdit* m_nameLineEdit;
-    KLineEdit* m_iconLineEdit;
-    QPushButton* m_iconButton;
-
-    void validate();
 };
 
 #endif

@@ -30,7 +30,7 @@ class File;
 /**
  * Represents a sourcedirectory.
  *
- * CVS-ID $Id: sourcedir.h,v 1.1 2004/03/07 18:52:36 starcube Exp $
+ * CVS-ID $Id$
  */
 class SourceDir : public QObject {
 

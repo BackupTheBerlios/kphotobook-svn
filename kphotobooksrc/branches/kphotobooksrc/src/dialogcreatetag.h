@@ -18,35 +18,59 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TAGTREENODETITLE_H
-#define TAGTREENODETITLE_H
+#ifndef DIALOGCREATETAG_H
+#define DIALOGCREATETAG_H
 
-#include "tagtreenode.h"
+#include <kdialogbase.h>
+#include <klineedit.h>
+#include <kcombobox.h>
 
-class TagNodeTitle;
+#include <qstring.h>
+#include <qpushbutton.h>
+#include <qvaluelist.h>
+
+class TagTreeNode;
 
 /**
- * Concrete tagtreenode for displaying a title.
+ * The dialog to create a now tag.
  *
- * CVS-ID $Id: tagtreenodetitle.h,v 1.1 2004/03/07 18:52:19 starcube Exp $
+ * CVS-ID $Id$
  */
-class TagTreeNodeTitle : public TagTreeNode {
+class DialogCreateTag : public KDialogBase {
+
+Q_OBJECT
 
 public:
-    TagTreeNodeTitle(KListView* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+    DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, const char *name);
 
-    TagTreeNodeTitle(KListViewItem* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+    ~DialogCreateTag();
 
-    virtual ~TagTreeNodeTitle();
+    int tagType();
 
-    TagNode* tagNode();
-
-    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment) {
-        KListViewItem::paintCell(p, cg, column, width, alignment);
+    QString tagName() {
+        return m_nameLineEdit->text();
     }
 
+    QString tagIcon() {
+        return m_iconLineEdit->text();
+    }
+
+private slots:
+    void slotNameChanged(const QString& text);
+    void slotIconTextChanged(const QString& text);
+    void slotIconButtonClicked();
+
 private:
-    TagNodeTitle* m_tagNode;
+    TagTreeNode* m_parentNode;
+
+    KComboBox* m_typeComboBox;
+    QValueList<int>* m_typeComboBoxEntries;
+
+    KLineEdit* m_nameLineEdit;
+    KLineEdit* m_iconLineEdit;
+    QPushButton* m_iconButton;
+
+    void validate();
 };
 
 #endif

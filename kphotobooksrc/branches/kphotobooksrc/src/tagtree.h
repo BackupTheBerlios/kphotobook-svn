@@ -18,56 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _TAGTREENODE_H_
-#define _TAGTREENODE_H_
+#ifndef _TAGTREE_H_
+#define _TAGTREE_H_
 
 #include <klistview.h>
 #include <kpopupmenu.h>
-#include <kdebug.h>
 
+#include <qptrlist.h>
 #include <qstring.h>
-#include <qpixmap.h>
-#include <qpainter.h>
-#include <qpalette.h>
-#include <qrect.h>
+#include <qlistview.h>
+#include <qpoint.h>
 
-class KPhotoBook;
 class TagNode;
-class TagTree;
+class TagTreeNode;
+class KPhotoBook;
 
 /**
- * Superclass of all nodes to display in a tagtree.
+ * The tagtree (can display checkboxes in the columns).
  *
- * CVS-ID $Id: tagtreenode.h,v 1.1 2004/03/07 18:52:06 starcube Exp $
+ * CVS-ID $Id$
  */
-class TagTreeNode : public KListViewItem {
+class TagTree : public KListView {
+
+    Q_OBJECT
 
 public:
-    TagTreeNode(KListView* parent, QString text, KPhotoBook* photobook, QPixmap* icon = 0, KPopupMenu* contextMenu = 0);
-    TagTreeNode(KListViewItem* parent, QString text, KPhotoBook* photobook, QPixmap* icon = 0, KPopupMenu* contextMenu = 0);
+    static const int COLUMN_TEXT = 0;
+    static const int COLUMN_VALUE = 1;
+    static const int COLUMN_FILTER = 2;
 
-    virtual ~TagTreeNode() {
+    TagTree(QWidget* parent, KPhotoBook* photobook, const char* name);
+    ~TagTree() {
     }
 
-    void refresh();
+    void addTagNodes(QPtrList<TagNode>* rootNodeList);
+    void addTagNode(TagNode* rootNode);
+    void addTagNode(TagTreeNode* parent, TagNode* child);
 
-    KPopupMenu* contextMenu() {
-        return m_contextMenu;
+    KPhotoBook* photobook() {
+        return m_photobook;
     }
 
-    virtual TagNode* tagNode() = 0;
+private slots:
+    void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
+    void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
 
-    virtual void showContextMenu();
-
-    virtual void columnClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column) {
-    }
-
-protected:
-    void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked);
+private:
+    void buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children);
 
     KPhotoBook* m_photobook;
-
-    KPopupMenu* m_contextMenu;
 };
 
 #endif

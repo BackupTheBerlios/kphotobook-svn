@@ -18,50 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TAGNODEBOOLEAN_H
-#define TAGNODEBOOLEAN_H
+#ifndef TAGTREENODEBOOLEAN_H
+#define TAGTREENODEBOOLEAN_H
 
-#include "tagnode.h"
+#include "tagtreenode.h"
 
-#include <qstring.h>
-#include <qfile.h>
+class TagNodeBoolean;
 
 /**
- * Concrete tagnode implementation representing a boolean tag.
+ * Concrete tagtreenode for displaying a boolean tagnode.
  *
- * CVS-ID $Id: tagnodeboolean.h,v 1.1 2004/03/07 18:52:42 starcube Exp $
+ * CVS-ID $Id$
  */
-class TagNodeBoolean : public TagNode {
+class TagTreeNodeBoolean : public TagTreeNode {
 
 public:
-    TagNodeBoolean(unsigned int id, const QString& text, const QString& iconName, TagNode* parent = 0);
+    TagTreeNodeBoolean(KListView* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
-    ~TagNodeBoolean() {
-    }
+    TagTreeNodeBoolean(KListViewItem* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
-    void setTagged(File* file, bool tagged) {
-        m_tagged = tagged;
-    }
-    bool tagged(File* file) {
-        return m_tagged;
-    }
+    virtual ~TagTreeNodeBoolean();
 
-    void setFiltered(bool filtered) {
-        m_filtered = filtered;
-    }
-    bool filtered() {
-        return m_filtered;
-    }
+    TagNode* tagNode();
 
-    /**
-     * If this node is tagged (m_tagged = true) then 100 is returned.
-     * Else the percentage of the tagged children is returned.
-     */
-    int tagLevel();
+    virtual void columnClicked(TagTree* tagTree, int column);
+    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
 
 private:
-    bool m_tagged;
-    bool m_filtered;
+    TagNodeBoolean* m_tagNode;
 };
 
 #endif

@@ -18,63 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SOURCEDIRTREE_H
-#define SOURCEDIRTREE_H
+#ifndef TAGTREENODETITLE_H
+#define TAGTREENODETITLE_H
 
-#include <klistview.h>
-#include <kpopupmenu.h>
-#include <kfileitem.h>
+#include "tagtreenode.h"
 
-#include <qptrlist.h>
-#include <qstring.h>
-#include <qlistview.h>
-#include <qpoint.h>
-#include <qintdict.h>
-
-class SourceDir;
-class File;
-class KPhotoBook;
-class TagTreeNodeSourceDir;
+class TagNodeTitle;
 
 /**
- * The SourceDirTree (can display checkboxes in the columns).
+ * Concrete tagtreenode for displaying a title.
  *
- * CVS-ID $Id: sourcedirtree.h,v 1.1 2004/03/07 18:52:04 starcube Exp $
+ * CVS-ID $Id$
  */
-class SourceDirTree : public KListView {
-
-    Q_OBJECT
+class TagTreeNodeTitle : public TagTreeNode {
 
 public:
-    static const int COLUMN_TEXT = 0;
-    static const int COLUMN_SELECTED = 1;
-    static const int COLUMN_INCLUDED = 2;
+    TagTreeNodeTitle(KListView* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
-    SourceDirTree(QWidget* parent, KPhotoBook* photobook, const char* name);
-    ~SourceDirTree() {
-        delete m_sourceDirNodeDict;
+    TagTreeNodeTitle(KListViewItem* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+
+    virtual ~TagTreeNodeTitle();
+
+    TagNode* tagNode();
+
+    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment) {
+        KListViewItem::paintCell(p, cg, column, width, alignment);
     }
-
-    void addSourceDirs(QPtrList<SourceDir>* rootNodeList);
-    void addSourceDir(SourceDir* rootNode);
-    void removeSourceDir(TagTreeNodeSourceDir* node);
-
-    void reflectSelectedFiles(const KFileItemList* selectedFiles);
-
-    KPhotoBook* photobook() {
-        return m_photobook;
-    }
-
-private slots:
-    void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
-    void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
 
 private:
-    void buildSourceDirTree(TagTreeNodeSourceDir* parent, QPtrList<SourceDir>* children);
-
-    KPhotoBook* m_photobook;
-
-    QIntDict<TagTreeNodeSourceDir>* m_sourceDirNodeDict;
+    TagNodeTitle* m_tagNode;
 };
 
 #endif

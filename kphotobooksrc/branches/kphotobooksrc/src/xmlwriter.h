@@ -18,59 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DIALOGCREATETAG_H
-#define DIALOGCREATETAG_H
+#ifndef XMLWRITER_H
+#define XMLWRITER_H
 
-#include <kdialogbase.h>
-#include <klineedit.h>
-#include <kcombobox.h>
+#include "exception.h"
+#include "xmlconstants.h"
 
+#include <qfile.h>
 #include <qstring.h>
-#include <qpushbutton.h>
-#include <qvaluelist.h>
 
-class TagTreeNode;
+class Engine;
+class File;
+class SourceDir;
+class TagNode;
+class FileTagNodeAssoc;
 
 /**
- * The dialog to create a now tag.
+ * This class is writing the xml-file containing all needed data of the engine.
  *
- * CVS-ID $Id: dialogcreatetag.h,v 1.1 2004/03/07 18:52:25 starcube Exp $
+ * CVS-ID $Id$
  */
-class DialogCreateTag : public KDialogBase {
-
-Q_OBJECT
+class XmlWriter : public XmlConstants {
 
 public:
-    DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, const char *name);
-
-    ~DialogCreateTag();
-
-    int tagType();
-
-    QString tagName() {
-        return m_nameLineEdit->text();
+    XmlWriter(Engine* engine)
+        : XmlConstants()
+        , m_engine(engine) {
     }
 
-    QString tagIcon() {
-        return m_iconLineEdit->text();
+    ~XmlWriter() {
     }
 
-private slots:
-    void slotNameChanged(const QString& text);
-    void slotIconTextChanged(const QString& text);
-    void slotIconButtonClicked();
+    void store(QFile* file) throw(PersistingException*);
 
 private:
-    TagTreeNode* m_parentNode;
+    Engine* m_engine;
 
-    KComboBox* m_typeComboBox;
-    QValueList<int>* m_typeComboBoxEntries;
-
-    KLineEdit* m_nameLineEdit;
-    KLineEdit* m_iconLineEdit;
-    QPushButton* m_iconButton;
-
-    void validate();
+    void dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent);
+    void dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent);
+    void dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent);
+    void dumpFile(QTextStream& stream, File* file, QString indent);
+    void dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent);
 };
 
 #endif

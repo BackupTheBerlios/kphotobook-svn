@@ -28,7 +28,7 @@
 /**
  * This class stores the configuration of the application.
  *
- * CVS-ID $Id: configuration.h,v 1.1 2004/03/07 18:52:45 starcube Exp $
+ * CVS-ID $Id$
  */
 class Configuration {
 
