@@ -32,9 +32,11 @@
 #include "sourcedirtree.h"
 #include "file.h"
 #include "sourcedir.h"
+#include "tagtreenode.h"
 #include "tagtreenodesourcedir.h"
 #include "tagtreenodetitle.h"
 #include "tagtreenodeboolean.h"
+#include "tagtreenode.h"
 #include "tagnode.h"
 
 #include <kapplication.h>
@@ -184,6 +186,17 @@ void KPhotoBook::dirtyfy() {
 
     m_engine->dirtyfy();
     updateState();
+}
+
+
+bool KPhotoBook::isTagTextValid(TagTreeNode* parent, QString& text) {
+
+    TagNode* tagNode = 0;
+    if (parent) {
+        tagNode = parent->tagNode();
+    }
+
+    return m_engine->isTagTextValid(tagNode, text);
 }
 
 
@@ -814,7 +827,7 @@ void KPhotoBook::slotAddMaintag() {
 
     kdDebug() << "[KPhotoBook::slotRemoveSourceDir] called... " << endl;
 
-    DialogCreateTag* dialog = new DialogCreateTag(m_view, 0, "DialogCreateTag");
+    DialogCreateTag* dialog = new DialogCreateTag(m_view, 0, this, "DialogCreateTag");
     if (dialog->exec()) {
 
         kdDebug() << "[KPhotoBook::slotRemoveSourceDir] dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
@@ -842,7 +855,7 @@ void KPhotoBook::slotCreateSubtag() {
     }
     TagTreeNode* parent = dynamic_cast<TagTreeNode*>(currentItem);
 
-    DialogCreateTag* dialog = new DialogCreateTag(m_view, parent, "DialogCreateTag");
+    DialogCreateTag* dialog = new DialogCreateTag(m_view, parent, this, "DialogCreateTag");
     if (dialog->exec()) {
 
         kdDebug() << "[KPhotoBook::slotCreateSubtag] dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
@@ -871,7 +884,7 @@ void KPhotoBook::slotEditTag() {
     }
     TagTreeNode* tagTreeNode = dynamic_cast<TagTreeNode*>(currentItem);
 
-    DialogEditTag* dialog = new DialogEditTag(m_view, tagTreeNode, "DialogEditTag");
+    DialogEditTag* dialog = new DialogEditTag(m_view, tagTreeNode, this, "DialogEditTag");
     if (dialog->exec()) {
 
         kdDebug() << "[KPhotoBook::slotEditTag] dialog exited with OK, newname: " << dialog->tagName() << ", newicon: " << dialog->tagIcon() << endl;

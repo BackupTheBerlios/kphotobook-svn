@@ -38,7 +38,7 @@ class TagNode;
 /**
  * The engine managing all sourcedirs, tags and files/images.
  *
- * CVS-ID $Id: engine.h,v 1.3 2004/03/11 22:45:47 starcube Exp $
+ * CVS-ID $Id: engine.h,v 1.4 2004/03/18 22:04:14 starcube Exp $
  */
 class Engine {
 
@@ -129,6 +129,13 @@ public:
      * Remove the specified tag and all associations linked to it.
      */
     void removeTag(TagNode* tag);
+
+    /**
+     * Tests if the specified tagtext is valid. There must not exist a sibling
+     * with the same name.
+     * If the parent is null, it is considered to be a maintag.
+     */
+    bool isTagTextValid(TagNode* parent, QString& text);
 
     /**
     * Returns all files matching the specified filter.

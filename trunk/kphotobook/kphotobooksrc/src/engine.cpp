@@ -307,6 +307,29 @@ void Engine::removeTag(TagNode* tag) {
 }
 
 
+bool Engine::isTagTextValid(TagNode* parent, QString& text) {
+
+    QPtrList<TagNode>* siblings = m_tagForest;
+
+    if (parent) {
+        siblings = parent->children();
+    }
+
+    if (siblings) {
+        TagNode* sibling;
+        for ( sibling = siblings->first(); sibling; sibling = siblings->next() ) {
+            if (*sibling->text() == text) {
+                // sibling with the same name already exists!
+                return false;
+            }
+        }
+    }
+
+    // no sibling with the same name found
+    return true;
+}
+
+
 QPtrList<File>* Engine::files(QString filter) {
 
     kdDebug() << "[Engine::files] invoked with filter '" << filter << "'"<< endl;
@@ -363,11 +386,7 @@ QPtrList<File>* Engine::files(QString filter) {
                     }
 
                     // test if the file is tagged with the current tag or a subtag
-                    bool isTagged = false;
-                    if (typeid(*tagNode) == typeid(TagNodeBoolean)) {
-                        TagNodeBoolean* tagNodeBoolean = dynamic_cast<TagNodeBoolean*>(tagNode);
-                        isTagged = tagNodeBoolean->taggedRecursive(file);
-                    }
+                    bool isTagged = tagNode->isLinkedToFile(file);
 
                     if (andOperator) {
                         if (negate == isTagged) {

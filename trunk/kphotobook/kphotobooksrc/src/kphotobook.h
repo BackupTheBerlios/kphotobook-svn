@@ -25,7 +25,6 @@
 
 #include <kaction.h>
 #include <kapplication.h>
-//#include <kmainwindow.h>
 #include <kpopupmenu.h>
 #include <kdockwidget.h>
 
@@ -37,6 +36,7 @@ class KPhotoBookView;
 class SourceDir;
 class File;
 class TagNode;
+class TagTreeNode;
 class EngineException;
 
 /**
@@ -74,6 +74,13 @@ public:
     }
 
     void dirtyfy();
+
+    /**
+     * Tests if the specified tagtext is valid. There must not exist a sibling
+     * with the same name.
+     * If the parent is null, it is considered to be a maintag.
+     */
+    bool isTagTextValid(TagTreeNode* parent, QString& text);
 
     /**
      * Use this method to load whatever file/URL you have

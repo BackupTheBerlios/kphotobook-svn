@@ -21,6 +21,8 @@
 #ifndef DIALOGEDITTAG_H
 #define DIALOGEDITTAG_H
 
+#include "kphotobook.h"
+
 #include <kdialogbase.h>
 #include <klineedit.h>
 #include <kcombobox.h>
@@ -33,14 +35,14 @@ class TagTreeNode;
 /**
  * The dialog to create a now tag.
  *
- * CVS-ID $Id: dialogedittag.h,v 1.1 2004/03/07 18:52:06 starcube Exp $
+ * CVS-ID $Id: dialogedittag.h,v 1.2 2004/03/18 22:04:14 starcube Exp $
  */
 class DialogEditTag : public KDialogBase {
 
 Q_OBJECT
 
 public:
-    DialogEditTag(QWidget *parent, TagTreeNode* parentNode, const char *name);
+    DialogEditTag(QWidget *parent, TagTreeNode* parentNode, KPhotoBook* photobook, const char *name);
 
     ~DialogEditTag();
 
@@ -59,6 +61,7 @@ private slots:
 
 private:
     TagTreeNode* m_tagTreeNode;
+    KPhotoBook* m_photobook;
 
     KComboBox* m_typeComboBox;
     KLineEdit* m_nameLineEdit;

@@ -26,6 +26,7 @@
 #include "configuration.h"
 #include "file.h"
 #include "filetagnodeassoc.h"
+#include "filetagnodeassocboolean.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
@@ -205,3 +206,33 @@ FileTagNodeAssoc* TagNode::getAssoc(File* file) {
 
     return 0;
 }
+
+
+bool TagNode::isLinkedToFile(File* file) {
+
+    bool isLinked = false;
+
+    FileTagNodeAssoc* fileTagNodeAssoc = getAssoc(file);
+    if (fileTagNodeAssoc != 0) {
+        // a file is considered to be linked with this tag if there is an association between
+        // but if the tag is of type boolean, the assoc must have the value 'true'
+        if (typeid(*fileTagNodeAssoc) == typeid(FileTagNodeAssocBoolean)) {
+            FileTagNodeAssocBoolean* fileTagNodeAssocBoolean = dynamic_cast<FileTagNodeAssocBoolean*>(fileTagNodeAssoc);
+            isLinked = fileTagNodeAssocBoolean->value();
+        } else {
+            isLinked = true;
+        }
+    }
+
+    if (!isLinked && m_children) {
+        // loop over all children
+        TagNode* child;
+        for (child = m_children->first(); child && !isLinked; child = m_children->next()) {
+            isLinked = child->isLinkedToFile(file);
+        }
+    }
+
+    return isLinked;
+}
+
+

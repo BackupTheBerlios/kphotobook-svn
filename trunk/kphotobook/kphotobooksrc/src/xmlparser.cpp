@@ -693,6 +693,14 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
     // get the enclosing tagnode from the stack
     TagNode* parentTagNode = m_tagNodeStack.current();
 
+    if (!m_engine->isTagTextValid(parentTagNode, name)) {
+        QString msg = QString("The name (%1) of the tagnode with id '%2' conflicts with the tagnode '%3'.").arg(name).arg(id).arg(conflictingTagNode->id());
+        m_exception = new EngineException(
+            msg,
+            "");
+        return false;
+    }
+
     // everything is ok --> create the concrete tagnode
     TagNode* tagNode = TagNode::createInstance(tagNodeTypeId, id, name, icon, parentTagNode);
 

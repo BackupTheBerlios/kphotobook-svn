@@ -38,9 +38,10 @@
 #include <qfile.h>
 
 
-DialogCreateTag::DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, const char *name)
+DialogCreateTag::DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, KPhotoBook* photobook, const char *name)
     : KDialogBase(parent, name, true, "", KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, false )
-    , m_parentNode(parentNode) {
+    , m_parentNode(parentNode)
+    , m_photobook(photobook) {
 
     if (parentNode) {
         this->setCaption(i18n("Create tag"));
@@ -200,7 +201,6 @@ void DialogCreateTag::slotIconButtonClicked() {
 
 void DialogCreateTag::validate() {
 
-    QString name(m_nameLineEdit->text());
     QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet(m_iconLineEdit->text(), KIcon::Small, Configuration::getInstance()->tagtreeIconSize(), true);
 
     if (!folderIconSet.isNull()) {
@@ -212,7 +212,10 @@ void DialogCreateTag::validate() {
         m_iconButton->setText(i18n("Icon"));
     }
 
-    this->enableButtonOK(!name.isEmpty() && (m_iconLineEdit->text().isEmpty() || !folderIconSet.isNull()));
+    QString name(m_nameLineEdit->text());
+    bool nameIsValid = !name.isEmpty() && m_photobook->isTagTextValid(m_parentNode, name);
+
+    this->enableButtonOK(nameIsValid && (m_iconLineEdit->text().isEmpty() || !folderIconSet.isNull()));
 }
 
 #include "dialogcreatetag.moc"

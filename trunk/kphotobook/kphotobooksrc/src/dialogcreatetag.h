@@ -21,6 +21,8 @@
 #ifndef DIALOGCREATETAG_H
 #define DIALOGCREATETAG_H
 
+#include "kphotobook.h"
+
 #include <kdialogbase.h>
 #include <klineedit.h>
 #include <kcombobox.h>
@@ -34,14 +36,14 @@ class TagTreeNode;
 /**
  * The dialog to create a now tag.
  *
- * CVS-ID $Id: dialogcreatetag.h,v 1.1 2004/03/07 18:52:25 starcube Exp $
+ * CVS-ID $Id: dialogcreatetag.h,v 1.2 2004/03/18 22:04:14 starcube Exp $
  */
 class DialogCreateTag : public KDialogBase {
 
 Q_OBJECT
 
 public:
-    DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, const char *name);
+    DialogCreateTag(QWidget *parent, TagTreeNode* parentNode, KPhotoBook* photobook, const char *name);
 
     ~DialogCreateTag();
 
@@ -62,6 +64,7 @@ private slots:
 
 private:
     TagTreeNode* m_parentNode;
+    KPhotoBook* m_photobook;
 
     KComboBox* m_typeComboBox;
     QValueList<int>* m_typeComboBoxEntries;
