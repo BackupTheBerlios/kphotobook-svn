@@ -35,8 +35,6 @@
 #include <qlistview.h>
 #include <qcursor.h>
 
-#include <typeinfo>
-
 
 TagTreeNode::TagTreeNode(TagTree* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu)
     : KListViewItem(parent)//, text.prepend(" "))
