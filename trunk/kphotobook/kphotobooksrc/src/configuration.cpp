@@ -60,6 +60,7 @@ const QString Configuration::CONFIG_ENTRY_AUTOREFRESH = QString("AutoRefresh");
 const QString Configuration::GROUP_FILTERS = QString("Filters");
 const QString Configuration::CONFIG_ENTRY_SUBDIRSTOIGNORE = QString("SubdirsToIgnore");
 const QString Configuration::CONFIG_ENTRY_FILETYPESTOHANDLE = QString("FiletypesToHandle");
+const QString Configuration::CONFIG_ENTRY_TAGFILTEROPERATOR = QString("TagfilterOperator");
 
 
 //
@@ -93,6 +94,7 @@ void Configuration::load() {
     conf->setGroup(GROUP_FILTERS);
     m_subdirsToIgnore = conf->readListEntry(CONFIG_ENTRY_SUBDIRSTOIGNORE);
     m_filetypesToHandle = conf->readListEntry(CONFIG_ENTRY_FILETYPESTOHANDLE);
+    m_tagfilterOperator = conf->readEntry(CONFIG_ENTRY_TAGFILTEROPERATOR);
 
     conf->setGroup(QString::null);
 
@@ -133,6 +135,11 @@ void Configuration::validate() {
         m_filetypesToHandle.append(".jpg");
         m_filetypesToHandle.append(".jpeg");
     }
+
+    // set the default operator if it is invalid
+    if (m_tagfilterOperator != "&" && m_tagfilterOperator != "|") {
+        m_tagfilterOperator = "&";
+    }
 }
 
 
@@ -164,6 +171,7 @@ void Configuration::store() {
     conf->setGroup(GROUP_FILTERS);
     conf->writeEntry(CONFIG_ENTRY_SUBDIRSTOIGNORE, m_subdirsToIgnore);
     conf->writeEntry(CONFIG_ENTRY_FILETYPESTOHANDLE, m_filetypesToHandle);
+    conf->writeEntry(CONFIG_ENTRY_TAGFILTEROPERATOR, m_tagfilterOperator);
 
     conf->setGroup(QString::null);
     conf->sync();
@@ -194,6 +202,7 @@ void Configuration::trace() {
     kdDebug() << "[" << GROUP_FILTERS << "]" << endl;
     kdDebug() << CONFIG_ENTRY_SUBDIRSTOIGNORE << " = " << m_subdirsToIgnore.join(",") << endl;
     kdDebug() << CONFIG_ENTRY_FILETYPESTOHANDLE << " = " << m_filetypesToHandle.join(",") << endl;
+    kdDebug() << CONFIG_ENTRY_TAGFILTEROPERATOR << " = " << m_tagfilterOperator << endl;
 }
 
 

@@ -28,7 +28,7 @@
 /**
  * This class stores the configuration of the application.
  *
- * CVS-ID $Id: configuration.h,v 1.1 2004/03/07 18:52:45 starcube Exp $
+ * CVS-ID $Id: configuration.h,v 1.2 2004/03/11 22:44:50 starcube Exp $
  */
 class Configuration {
 
@@ -70,6 +70,7 @@ public:
     static const QString GROUP_FILTERS;
     static const QString CONFIG_ENTRY_SUBDIRSTOIGNORE;
     static const QString CONFIG_ENTRY_FILETYPESTOHANDLE;
+    static const QString CONFIG_ENTRY_TAGFILTEROPERATOR;
 
 public:
     /**
@@ -159,6 +160,20 @@ public:
         return m_filetypesToHandle;
     }
 
+    void setTagfilterOperator(QString op) {
+        m_tagfilterOperator = op;
+    }
+    QString tagfilterOperator() {
+        return m_tagfilterOperator;
+    }
+    void invertTagfilterOperation() {
+        if (m_tagfilterOperator == "&") {
+            m_tagfilterOperator = "|";
+        } else {
+            m_tagfilterOperator = "&";
+        }
+    }
+
 protected:
     Configuration() {
         load();
@@ -182,6 +197,7 @@ private:
 
     QStringList m_subdirsToIgnore;
     QStringList m_filetypesToHandle;
+    QString m_tagfilterOperator;
 
     // whatever
     void trace();
