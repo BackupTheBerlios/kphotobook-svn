@@ -26,7 +26,7 @@
 /**
  * Constants.
  *
- * CVS-ID $Id: constants.h,v 1.1 2004/03/07 18:52:06 starcube Exp $
+ * CVS-ID $Id: constants.h,v 1.2 2004/03/17 19:40:37 starcube Exp $
  */
 class Constants {
 
@@ -47,6 +47,8 @@ public:
 
     static const QString ICON_AUTOREFRESH_VIEW;
     static const QString ICON_REFRESH_VIEW;
+    static const QString ICON_INCREASE_PREVIEWSIZE;
+    static const QString ICON_DECREASE_PREVIEWSIZE;
 
     static const QString ICON_INCLUDE_WHOLE_FOLDER;
     static const QString ICON_EXCLUDE_WHOLE_FOLDER;

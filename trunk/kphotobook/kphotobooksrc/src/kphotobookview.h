@@ -74,6 +74,9 @@ public:
     void storeConfiguration();
 
     void removeAllFiles();
+
+    void increasePreviewSize();
+    void decreasePreviewSize();
 signals:
     /**
      * Use this signal to change the content of the statusbar

@@ -37,6 +37,8 @@ const QString Constants::ICON_RESCAN_FILESYSTEM = QString("filesystem_reload");
 
 const QString Constants::ICON_AUTOREFRESH_VIEW = QString("view_autorefresh");
 const QString Constants::ICON_REFRESH_VIEW = QString("view_refresh");
+const QString Constants::ICON_INCREASE_PREVIEWSIZE = QString("viewmag+");
+const QString Constants::ICON_DECREASE_PREVIEWSIZE = QString("viewmag-");
 
 const QString Constants::ICON_INCLUDE_WHOLE_FOLDER = QString("folder_green");
 const QString Constants::ICON_EXCLUDE_WHOLE_FOLDER = QString("folder_red");

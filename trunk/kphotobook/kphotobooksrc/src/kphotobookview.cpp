@@ -167,6 +167,25 @@ void KPhotoBookView::storeConfiguration() {
 }
 
 
+void KPhotoBookView::increasePreviewSize() {
+
+    int position = m_imageSizeSlider->value();
+    if (position < m_imageSizeSlider->maxValue()) {
+
+        m_imageSizeSlider->setValue(position + 1);
+    }
+}
+
+
+void KPhotoBookView::decreasePreviewSize() {
+
+    int position = m_imageSizeSlider->value();
+    if (position > m_imageSizeSlider->minValue()) {
+        m_imageSizeSlider->setValue(position - 1);
+    }
+}
+
+
 //
 // private slots
 //
@@ -187,8 +206,7 @@ void KPhotoBookView::slotImageSizeSliderReleased() {
 }
 
 
-void KPhotoBookView::slotImageSizeSliderChanged(int size) {
-    size = size;
+void KPhotoBookView::slotImageSizeSliderChanged(__attribute__((unused)) int size) {
 
     updateCurrentImageSizeLabel();
 

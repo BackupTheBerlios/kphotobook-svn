@@ -17,6 +17,9 @@
         <text>&amp;View</text>
         <Action name="refreshView" />
         <Separator/>
+        <Action name="increasePreviewSize" />
+        <Action name="decreasePreviewSize" />
+        <Separator/>
         <Action name="expandAllTags" />
         <Action name="collapseAllTags" />
         <Separator/>
@@ -38,10 +41,16 @@
   <Action name="addSourceDir" />
   <Action name="addMaintag" />
   <Separator/>
+  <Action name="andifyTags" />
+</ToolBar>
+
+<ToolBar name="previewToolBar" fullWidth="true" newline="true" >
+  <text>Preview</text>
   <Action name="autoRefreshView" />
   <Action name="refreshView" />
   <Separator/>
-  <Action name="andifyTags" />
+  <Action name="increasePreviewSize" />
+  <Action name="decreasePreviewSize" />
 </ToolBar>
 
 <Menu name="contextMenu_tagTree">

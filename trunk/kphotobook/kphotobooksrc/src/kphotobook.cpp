@@ -251,6 +251,19 @@ void KPhotoBook::setupActions() {
         actionCollection(), "refreshView"
     );
 
+    new KAction(
+        i18n("&Increase Previewsize"), Constants::ICON_INCREASE_PREVIEWSIZE,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotIncreasePreviewSize()),
+        actionCollection(), "increasePreviewSize"
+    );
+        new KAction(
+        i18n("&Decrease Previewsize"), Constants::ICON_DECREASE_PREVIEWSIZE,
+        0, //KStdAccel::shortcut(KStdAccel::Reload),
+        this, SLOT(slotDecreasePreviewSize()),
+        actionCollection(), "decreasePreviewSize"
+    );
+
     //
     // sourcedir actions
     //
@@ -901,11 +914,18 @@ void KPhotoBook::slotRescanFilesystem() {
 
 void KPhotoBook::slotAutoRefreshView() {
     Configuration::getInstance()->setAutoRefresh(!Configuration::getInstance()->autoRefresh());
+
+    autoRefreshView();
 }
-
-
 void KPhotoBook::slotRefreshView() {
     m_view->updateFiles();
+}
+
+void KPhotoBook::slotIncreasePreviewSize() {
+    m_view->increasePreviewSize();
+}
+void KPhotoBook::slotDecreasePreviewSize() {
+    m_view->decreasePreviewSize();
 }
 
 

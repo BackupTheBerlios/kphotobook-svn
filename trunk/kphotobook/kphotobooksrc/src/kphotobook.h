@@ -183,6 +183,9 @@ private slots:
     void slotExpandAllTags();
     void slotCollapseAllTags();
 
+    void slotIncreasePreviewSize();
+    void slotDecreasePreviewSize();
+
     void slotFileSelectionChanged();
 
     void changeStatusbar(const QString& text);
