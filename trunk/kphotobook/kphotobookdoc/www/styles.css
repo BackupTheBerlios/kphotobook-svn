@@ -144,7 +144,7 @@ padding-bottom: 2px;
 
 /*Scheduler#####################################################*/
 
-table.scheduler {
+table.roadmap {
 border-spacing:1px;
 background-color:#7381D5;
 }
@@ -178,7 +178,7 @@ font-weight: bold;
 color: #ffffff;
 }
 
-tr.scheduler {
+tr.roadmap {
 color:#000000;
 background-color:#bdceff;
 font-size: 10pt;
@@ -187,24 +187,24 @@ vertical-align: top;
 text-align: left;
 }
 
-td.scheduler_date {
+td.roadmap_date {
 vertical-align: top;
 text-align: center;
 }
 
-td.scheduler_version {
+td.roadmap_version {
 vertical-align: top;
 text-align: center;
 }
 
-td.scheduler_title {
+td.roadmap_title {
 vertical-align: top;
 text-align: left;
 white-space: nowrap;
 font-weight: bold;
 }
 
-td.scheduler_desc {
+td.roadmap_desc {
 vertical-align: top;
 text-align: left;
 }
