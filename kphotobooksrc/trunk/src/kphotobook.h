@@ -256,6 +256,9 @@ private slots:
     void slotIncreasePreviewSize();
     void slotDecreasePreviewSize();
 
+    void slotIncPreviewSizePopupAboutToShow();
+    void slotDecPreviewSizePopupAboutToShow();
+
     void slotChangePreviewSizeActivated(int percent);
 
     void slotFileSelectionChanged();

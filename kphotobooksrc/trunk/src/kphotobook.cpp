@@ -396,15 +396,10 @@ void KPhotoBook::setupActions() {
 
     connect(((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu(), SIGNAL(activated(int)),
               this, SLOT(slotChangePreviewSizeActivated(int)));
-
-    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertTitle(i18n("Size:"));
-    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertItem("100 %", 100);
-    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertItem("75 %", 75);
-    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertItem("50 %", 50);
-    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertItem("25 %", 25);
-    ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu()->insertItem("10 %", 10);
-
     
+    connect(((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu(), SIGNAL(aboutToShow()),
+              this, SLOT(slotIncPreviewSizePopupAboutToShow()));
+
     m_zoomOut = new KToolBarPopupAction(
         i18n("&Decrease Previewsize"), Constants::ICON_DECREASE_PREVIEWSIZE,
         KStdAccel::shortcut(KStdAccel::ZoomOut),
@@ -417,13 +412,9 @@ void KPhotoBook::setupActions() {
     connect(((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu(), SIGNAL(activated(int)),
               this, SLOT(slotChangePreviewSizeActivated(int)));
 
-    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertTitle(i18n("Size:"));
-    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertItem("100 %", 100);
-    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertItem("75 %", 75);
-    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertItem("50 %", 50);
-    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertItem("25 %", 25);
-    ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu()->insertItem("10 %", 10);
-    
+    connect(((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu(), SIGNAL(aboutToShow()),
+              this, SLOT(slotDecPreviewSizePopupAboutToShow()));
+
     //
     // sourcedir actions
     //
@@ -602,6 +593,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotDeselectFilter()),
         actionCollection(), "deselectFilter"
     );
+
     actionCollection()->action("deselectFilter")->setWhatsThis(i18n("Deselects all filters. In the filters 'AND' mode, all images without a associated tag are shown only. This is useful for finding new added images without having a tag yet."));
 
     new KAction(
@@ -1343,6 +1335,52 @@ void KPhotoBook::slotDecreasePreviewSize() {
     applyZoomSetting();
 
     m_view->updateCurrentImageSize();
+}
+
+
+void KPhotoBook::slotIncPreviewSizePopupAboutToShow()
+{
+    KPopupMenu* popup = ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu();
+    popup->clear();
+    
+    int curPercent = Settings::imagePreviewSize() * 100 / Constants::SETTINGS_MAX_PREVIEW_SIZE;
+
+    popup->insertItem("100 %", 100);
+    
+    if (curPercent < 75) {
+        popup->insertItem("75 %", 75);
+    }
+    if (curPercent < 50) {
+        popup->insertItem("50 %", 50);
+    }
+    if (curPercent < 25) {
+        popup->insertItem("25 %", 25);
+    }
+    if (curPercent < 10) {
+        popup->insertItem("10 %", 10);
+    }
+}
+
+
+void KPhotoBook::slotDecPreviewSizePopupAboutToShow()
+{
+    KPopupMenu* popup = ((KToolBarPopupAction*)actionCollection()->action("decreasePreviewSize"))->popupMenu();
+    popup->clear();
+
+    int curPercent = Settings::imagePreviewSize() * 100 / Constants::SETTINGS_MAX_PREVIEW_SIZE;
+
+    if (curPercent > 75) {
+        popup->insertItem("75 %", 75);
+    }
+    if (curPercent > 50) {
+        popup->insertItem("50 %", 50);
+    }
+    if (curPercent > 25) {
+        popup->insertItem("25 %", 25);
+    }
+    if (curPercent > 10) {
+        popup->insertItem("10 %", 10);
+    }
 }
 
 
