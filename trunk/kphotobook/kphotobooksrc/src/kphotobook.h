@@ -102,6 +102,8 @@ public:
      */
     void startTemporaryUnlockTagging() {
     
+        m_inTagtreeTemporaryUnlocking = true;
+        
         m_tagtreeWasLocked = Settings::tagTreeLocked();
         Settings::setTagTreeLocked(false);
         applyLockUnlockTaggingSettings();        
@@ -111,11 +113,19 @@ public:
      * This method must be invoked as soon, as the temporary unlocking must end.
      * When this method has finished, tagging is no longer possible, if tagging
      * was locked before the method 'startTemporaryUnlockTagging' was called.
+     *
+     * Sometimes this method is called even we are not in temporaryr unlocking
+     * mode. Thus the field 'm_inTagtreeTemporaryUnlocking' was introduced
+     * to get things working correct.
      */
     void stopTemporaryUnlockTagging() {
     
-        Settings::setTagTreeLocked(m_tagtreeWasLocked);
-        applyLockUnlockTaggingSettings();        
+        if (m_inTagtreeTemporaryUnlocking) {
+          m_inTagtreeTemporaryUnlocking = false;
+        
+          Settings::setTagTreeLocked(m_tagtreeWasLocked);
+          applyLockUnlockTaggingSettings();        
+        }
     }
 
     /**
@@ -258,11 +268,13 @@ private slots:
     void slotShowToolViewSourceDirTree();
     void slotShowToolViewMetaInfoTree();
 
+    void slotExportMatchingFiles();
+    void slotExportSelectedFiles();
+
 private:
     void init();
     void setupAccel();
     void setupActions();
-    void setupWhatsThis();
     void setupContextMenus();
 
     void setupToolWindowTagTree();
@@ -359,6 +371,11 @@ private:
     Engine* m_engine;
 
     /**
+     * Truze whiel temporary unlocking is enabled.
+     */
+    bool m_inTagtreeTemporaryUnlocking;
+    
+    /**
      * Is true if tagging was locked before the method
      * startTemporaryUnlockTagging was invoked.
      */
@@ -373,6 +390,8 @@ private:
     KAction* m_zoomIn;
     KAction* m_zoomOut;
     KAction* m_save;
+    KAction* m_exportMatchingFiles;
+    KAction* m_exportSelectedFiles;
     KToggleAction* m_andifyTagsAction;
     KToggleAction* m_orifyTagsAction;
     KToggleAction* m_lockUnlockTaggingAction;

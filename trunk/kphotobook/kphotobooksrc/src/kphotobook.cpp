@@ -50,6 +50,8 @@
 #include "sourcedirtree.h"
 #include "sourcedirtreenode.h"
 
+#include "exportsymlinks.h"
+
 
 #include <kapplication.h>
 #include <kglobal.h>
@@ -101,6 +103,7 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     , m_metaInfoTree(0)
     , m_engine(new Engine())
     
+    , m_inTagtreeTemporaryUnlocking(false)
     , m_tagtreeWasLocked(false)
 
     , m_tagTreeToolBar(0)
@@ -134,7 +137,6 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
 
     // then, setup our actions
     setupActions();
-    setupWhatsThis();
 
     // show toggle menu entry for statusbar
     createStandardStatusBarAction();
@@ -271,7 +273,9 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
 
         updateState();
 
+        //
         // update the view
+        //
 
         // add the tagNodes to the tagtree
         m_tagTree->addTagNodes(tagForest());
@@ -294,19 +298,54 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
 
 void KPhotoBook::setupActions() {
 
+    //
     // file menu
-    KStdAction::openNew(this, SLOT(slotFileNew()), actionCollection());
-    KStdAction::open(this, SLOT(slotFileOpen()), actionCollection());
+    //
+    KStdAction::openNew(this, SLOT(slotFileNew()), actionCollection())->setWhatsThis(i18n("Create a new KPhotoBook database."));
+    
+    KStdAction::open(this, SLOT(slotFileOpen()), actionCollection())->setWhatsThis(i18n("Open an existing KPhotoBook database for editing."));
+    
     m_save = KStdAction::save(this, SLOT(slotFileSave()), actionCollection());
+    m_save->setWhatsThis(i18n("Save the current KPhotoBook database."));
+    m_save->setEnabled(false);
+    
     KStdAction::saveAs(this, SLOT(slotFileSaveAs()), actionCollection());
+    
     KStdAction::close(this, SLOT(close()), actionCollection());
 
-    m_save->setEnabled(false);
 
+    //
+    // settings menu
+    //
     KStdAction::keyBindings(this, SLOT(slotOptionsConfigureKeys()), actionCollection());
+    
     KStdAction::configureToolbars(this, SLOT(slotOptionsConfigureToolbars()), actionCollection());
+    
     KStdAction::preferences(this, SLOT(slotOptionsPreferences()), actionCollection());
 
+    
+    //
+    // export actions
+    //
+    m_exportMatchingFiles = new KAction(
+        i18n("&Matching Files"), 0,
+        0,
+        this, SLOT(slotExportMatchingFiles()),
+        actionCollection(), "exportMatchingFiles"
+    );
+    m_exportMatchingFiles->setWhatsThis(i18n("Exports all files matching the current filter as symbolic links."));
+    m_exportMatchingFiles->setEnabled(false);
+
+    m_exportSelectedFiles = new KAction(
+        i18n("&Selected Files"), 0,
+        0,
+        this, SLOT(slotExportSelectedFiles()),
+        actionCollection(), "exportSelectedFiles"
+    );
+    m_exportSelectedFiles->setWhatsThis(i18n("Exports all selected files as symbolic links."));
+    m_exportSelectedFiles->setEnabled(false);
+
+    
     //
     // engine actions
     //
@@ -316,26 +355,32 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotRescanFilesystem()),
         actionCollection(), "rescanFilesystem"
     );
+    actionCollection()->action("rescanFilesystem")->setWhatsThis(i18n("This may, for example, be needed after having added a new directory to a directory which is already part of the current database. New directories and files will be added to the database, removed items will be prompted for user input."));
 
+    
     //
     // view actions
     //
+    KShortcut autoRefreshViewShortCut(KKey("CTRL+SHIFT+F5"));
+    autoRefreshViewShortCut.append(KKey("CTRL+R"));
     m_autoRefreshViewAction = new KToggleAction(
         i18n("&Autorefresh view"), Constants::ICON_AUTOREFRESH_VIEW,
-        0,
+        autoRefreshViewShortCut,
         this, SLOT(slotAutoRefreshView()),
         actionCollection(), "autoRefreshView"
     );
+    actionCollection()->action("autoRefreshView")->setWhatsThis(i18n("This will reload the thumbnail window automatically after, for example, changing the tag filter or the source directory to be shown."));
     applyAutorefreshSetting();
 
     KShortcut refreshViewShortCut(KStdAccel::shortcut(KStdAccel::Reload));
     refreshViewShortCut.append(KKey("CTRL+r"));
     new KAction(
         i18n("&Refresh view"), Constants::ICON_REFRESH_VIEW,
-        refreshViewShortCut, //KStdAccel::shortcut(KStdAccel::Reload),
+        refreshViewShortCut,
         this, SLOT(slotRefreshView()),
         actionCollection(), "refreshView"
     );
+    actionCollection()->action("refreshView")->setWhatsThis(i18n("This may, for example, be needed after having changed the tag filter or the source directory to be shown."));
 
     m_zoomIn = new KAction(
         i18n("&Increase Previewsize"), Constants::ICON_INCREASE_PREVIEWSIZE,
@@ -343,36 +388,46 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotIncreasePreviewSize()),
         actionCollection(), "increasePreviewSize"
     );
+    actionCollection()->action("increasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window bigger."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
+    
     m_zoomOut = new KAction(
         i18n("&Decrease Previewsize"), Constants::ICON_DECREASE_PREVIEWSIZE,
         KStdAccel::shortcut(KStdAccel::ZoomOut),
         this, SLOT(slotDecreasePreviewSize()),
         actionCollection(), "decreasePreviewSize"
     );
+    actionCollection()->action("decreasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window smaller."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
     applyZoomSetting();
 
+    
     //
     // sourcedir actions
     //
     new KAction(
         i18n("Add &sourcedirectory"), Constants::ICON_ADD_SOURCEDIR,
-        0, //KStdAccel::shortcut(KStdAccel::New),
+        0,
         this, SLOT(slotAddSourcedir()),
         actionCollection(), "addSourceDir"
     );
+    actionCollection()->action("addSourceDir")->setWhatsThis(i18n("Add a source directory to the database. This can happen to a single directory or recursively. "));
+    
+    KShortcut editSourceDirShortCut(KKey("F3"));
     new KAction(
         i18n("&Edit sourcedirectory"), Constants::ICON_EDIT_SOURCEDIR,
-        0, //KStdAccel::shortcut(KStdAccel::New),
+        editSourceDirShortCut,
         this, SLOT(slotEditSourceDir()),
         actionCollection(), "editSourceDir"
     );
     actionCollection()->action("editSourceDir")->setEnabled(false);
+    actionCollection()->action("editSourceDir")->setWhatsThis(i18n("Edit the properties of the sourcedirectory. I.e. change the location of the directory."));    
+    
     new KAction(
         i18n("&Remove sourcedirectory"), Constants::ICON_REMOVE_SOURCEDIR,
-        0, //KStdAccel::shortcut(KStdAccel::New),
+        0,
         this, SLOT(slotRemoveSourceDir()),
         actionCollection(), "removeSourceDir"
     );
+    actionCollection()->action("removeSourceDir")->setWhatsThis(i18n("Remove the selected source directory with all its sub directories. The files which are in this sub directory will be removed from the database - losing the tag associatioins."));
 
     new KAction(
         i18n("&Include whole folder"), Constants::ICON_INCLUDE_WHOLE_FOLDER,
@@ -380,18 +435,23 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotIncludeWholeSourceDir()),
         actionCollection(), "includeWholeSourceDir"
     );
+    actionCollection()->action("includeWholeSourceDir")->setWhatsThis(i18n("Include the current directory and all sub directories to the thumbnail preview."));
+    
     new KAction(
         i18n("&Exclude whole folder"), Constants::ICON_EXCLUDE_WHOLE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotExcludeWholeSourceDir()),
         actionCollection(), "excludeWholeSourceDir"
     );
+    actionCollection()->action("excludeWholeSourceDir")->setWhatsThis(i18n("Exclude the current directory and all sub directories from the thumbnail preview."));
+    
     new KAction(
         i18n("In&vert folder selection"), Constants::ICON_INVERT_FOLDER_SELECTION,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotInvertSourceDir()),
         actionCollection(), "invertSourceDir"
     );
+    actionCollection()->action("invertSourceDir")->setWhatsThis(i18n("Exclude the included directories and include the excluded directories of the current folder to the thumbnail view."));
 
     new KAction(
         i18n("&Include all"), Constants::ICON_INCLUDE_WHOLE_FOLDER,
@@ -399,18 +459,23 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotIncludeAllSourceDirs()),
         actionCollection(), "includeAllSourceDirs"
     );
+    actionCollection()->action("includeAllSourceDirs")->setWhatsThis(i18n("Include all source directories with all sub directories to the thumbnail view."));
+    
     new KAction(
         i18n("&Exclude all"), Constants::ICON_EXCLUDE_WHOLE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotExcludeAllSourceDirs()),
         actionCollection(), "excludeAllSourceDirs"
     );
+    actionCollection()->action("excludeAllSourceDirs")->setWhatsThis(i18n("Exclued all source directories with all sub directories from the thumbnail view."));
+    
     new KAction(
         i18n("In&vert all"), Constants::ICON_INVERT_FOLDER_SELECTION,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotInvertAllSourceDirs()),
         actionCollection(), "invertAllSourceDirs"
     );
+    actionCollection()->action("invertAllSourceDirs")->setWhatsThis(i18n("Exclude the included directories and include the excluded directories to the thumbnail view."));
 
     new KAction(
         i18n("Expand sourcedir"), Constants::ICON_EXPAND_FOLDER,
@@ -418,49 +483,62 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotExpandSourceDir()),
         actionCollection(), "expandSourceDir"
     );
+    actionCollection()->action("expandSourceDir")->setWhatsThis(i18n("Expand the current source directory."));
+    
     new KAction(
         i18n("Collapse sourcedir"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotCollapseSourceDir()),
         actionCollection(), "collapseSourceDir"
     );
+    actionCollection()->action("collapseSourceDir")->setWhatsThis(i18n("Collapse the current source directory."));
+    
     new KAction(
         i18n("Expand all sourcedirs"), Constants::ICON_EXPAND_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotExpandAllSourceDirs()),
         actionCollection(), "expandAllSourceDirs"
     );
+    actionCollection()->action("expandAllSourceDirs")->setWhatsThis(i18n("Expand the the whole source directory tree."));
+    
     new KAction(
         i18n("Collapse all sourcedirs"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotCollapseAllSourceDirs()),
         actionCollection(), "collapseAllSourceDirs"
     );
+    actionCollection()->action("collapseAllSourceDirs")->setWhatsThis(i18n("Collapse the whole source directory tree."));
 
+    
     //
     // tag actions
     //
     new KAction(
         i18n("Add &maintag"), Constants::ICON_CREATE_MAINTAG,
-        0, //KStdAccel::shortcut(KStdAccel::New),
+        0,
         this, SLOT(slotAddMaintag()),
         actionCollection(), "addMaintag"
     );
+    actionCollection()->action("addMaintag")->setWhatsThis(i18n("Add a new main tag to the database. This is a top level tag which can contain sub-tags."));
+    
     new KAction(
         i18n("&Create subtag"), Constants::ICON_CREATE_SUBTAG,
-        0, //KStdAccel::shortcut(KStdAccel::New),
+        0,
         this, SLOT(slotCreateSubtag()),
         actionCollection(), "createSubtag"
     );
+    
+    KShortcut editTagShortCut(KKey("F2"));
     new KAction(
         i18n("&Edit tag"), Constants::ICON_EDIT_TAG,
-        0, //KStdAccel::shortcut(KStdAccel::New),
+        editTagShortCut,
         this, SLOT(slotEditTag()),
         actionCollection(), "editTag"
     );
+
     new KAction(
         i18n("&Delete tag"), Constants::ICON_DELETE_TAG,
-        0, //KStdAccel::shortcut(KStdAccel::New),
+        0,
         this, SLOT(slotDeleteTag()),
         actionCollection(), "deleteTag"
     );
@@ -471,6 +549,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotToggleLockUnlockTagging()),
         actionCollection(), "toggleLockUnlockTagging"
     );
+    actionCollection()->action("toggleLockUnlockTagging")->setWhatsThis(i18n("If locking is enabled it is not possible to change the tags of an image. The lock is also disabled while the CTRL-key is pressed."));
     applyLockUnlockTaggingSettings();
 
     m_andifyTagsAction = new KToggleAction(
@@ -479,12 +558,15 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotAndifyTags()),
         actionCollection(), "andifyTags"
     );
+    actionCollection()->action("andifyTags")->setWhatsThis(i18n("This sets the filter operator to 'AND', which means that only images which contain all in the filter marked tags will be shown."));
+    
     m_orifyTagsAction = new KToggleAction(
         i18n("Tag filter operator = OR"), Constants::ICON_OPERATOR_OR,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotOrifyTags()),
         actionCollection(), "orifyTags"
     );
+    actionCollection()->action("orifyTags")->setWhatsThis(i18n("This sets the filter operator to 'OR', which means that pictures with any in the filter marked tags will be shown."));
     applyOperatorSetting();
 
     new KAction(
@@ -493,6 +575,7 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotDeselectFilter()),
         actionCollection(), "deselectFilter"
     );
+    
     new KAction(
         i18n("Reset Filter"), Constants::ICON_TAG_FILTER_RESET,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -506,26 +589,34 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotExpandTag()),
         actionCollection(), "expandTag"
     );
+    
     new KAction(
         i18n("Collapse tag"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotCollapseTag()),
         actionCollection(), "collapseTag"
     );
+    
     new KAction(
         i18n("Expand all tags"), Constants::ICON_EXPAND_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
         this, SLOT(slotExpandAllTags()),
         actionCollection(), "expandAllTags"
     );
+    actionCollection()->action("expandAllTags")->setWhatsThis(i18n("Expand the whole tag tree."));
+    
     new KAction(
         i18n("Collapse all tags"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),m_sourcedirTree
         this, SLOT(slotCollapseAllTags()),
         actionCollection(), "collapseAllTags"
     );
+    actionCollection()->action("collapseAllTags")->setWhatsThis(i18n("Collapse the whole tag tree."));
     
-    // Tool view actions
+    
+    //
+    // tool view actions
+    //
     new KAction(
         i18n("Restore toolviews"), Constants::ICON_RESTORE_TOOL_VIEWS,
         0, //KStdAccel::shortcut(KStdAccel::Reload),m_sourcedirTree
@@ -553,54 +644,6 @@ void KPhotoBook::setupActions() {
         this, SLOT(slotShowToolViewMetaInfoTree()),
         actionCollection(), "showToolViewMetaInfoTree"
     );    
-}
-
-
-void KPhotoBook::setupWhatsThis() {
-
-
-//    actionCollection()->action("openNew")->setWhatsThis(i18n("Create a new KPhotoBook database."));
-//    actionCollection()->action("open")->setWhatsThis(i18n("Open an existing KPhotoBook database for editing."));
-//    actionCollection()->action("save")->setWhatsThis(i18n("Save the current KPhotoBook database."));
-
-    actionCollection()->action("rescanFilesystem")->setWhatsThis(i18n("This may, for example, be needed after having added a new directory to a directory which is already part of the current database. New directories and files will be added to the database, removed items will be prompted for user input."));
-    actionCollection()->action("autoRefreshView")->setWhatsThis(i18n("This will reload the thumbnail window automatically after, for example, changing the tag filter or the source directory to be shown."));
-    actionCollection()->action("refreshView")->setWhatsThis(i18n("This may, for example, be needed after having changed the tag filter or the source directory to be shown."));
-
-    actionCollection()->action("addSourceDir")->setWhatsThis(i18n("Add a source directory to the database. This can happen to a single directory or recursively. "));
-    actionCollection()->action("addMaintag")->setWhatsThis(i18n("Add a new main tag to the database. This is a top level tag which can contain sub-tags."));
-    actionCollection()->action("toggleLockUnlockTagging")->setWhatsThis(i18n("If locking is enabled it is not possible to change the tags of an image. The lock is also disabled while the CTRL-key is pressed."));
-    actionCollection()->action("andifyTags")->setWhatsThis(i18n("This sets the filter operator to 'AND', which means that only images which contain all in the filter marked tags will be shown."));
-    actionCollection()->action("orifyTags")->setWhatsThis(i18n("This sets the filter operator to 'OR', which means that pictures with any in the filter marked tags will be shown."));
-    actionCollection()->action("increasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window bigger."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
-    actionCollection()->action("decreasePreviewSize")->setWhatsThis(i18n("Make the preview size in the thumbnail window smaller."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
-    actionCollection()->action("expandAllTags")->setWhatsThis(i18n("Expand the whole tag tree."));
-    actionCollection()->action("collapseAllTags")->setWhatsThis(i18n("Collapse the whole tag tree."));
-
-    actionCollection()->action("removeSourceDir")->setWhatsThis(i18n("Remove the selected source directory with all its sub directories. The files which are in this sub directory will be removed from the database - losing the tag associatioins."));
-    actionCollection()->action("includeWholeSourceDir")->setWhatsThis(i18n("Include the current directory and all sub directories to the thumbnail preview."));
-    actionCollection()->action("excludeWholeSourceDir")->setWhatsThis(i18n("Exclude the current directory and all sub directories from the thumbnail preview."));
-    actionCollection()->action("invertSourceDir")->setWhatsThis(i18n("Exclude the included directories and include the excluded directories of the current folder to the thumbnail view."));
-    actionCollection()->action("includeAllSourceDirs")->setWhatsThis(i18n("Include all source directories with all sub directories to the thumbnail view."));
-    actionCollection()->action("excludeAllSourceDirs")->setWhatsThis(i18n("Exclued all source directories with all sub directories from the thumbnail view."));
-    actionCollection()->action("invertAllSourceDirs")->setWhatsThis(i18n("Exclude the included directories and include the excluded directories to the thumbnail view."));
-    actionCollection()->action("expandSourceDir")->setWhatsThis(i18n("Expand the current source directory."));
-    actionCollection()->action("collapseSourceDir")->setWhatsThis(i18n("Collapse the current source directory."));
-    actionCollection()->action("expandAllSourceDirs")->setWhatsThis(i18n("Expand the the whole source directory tree."));
-    actionCollection()->action("collapseAllSourceDirs")->setWhatsThis(i18n("Collapse the whole source directory tree."));
-/*
-    actionCollection()->action("")->setWhatsThis(i18n(""));
-
-    actionCollection(), "editSourceDir"
-
-    actionCollection(), "createSubtag"
-    actionCollection(), "editTag"
-    actionCollection(), "deleteTag"
-    actionCollection(), "deselectFilter"
-    actionCollection(), "resetFilter"
-    actionCollection(), "expandTag"
-    actionCollection(), "collapseTag"
-*/
 }
 
 
@@ -1319,16 +1362,19 @@ void KPhotoBook::slotCollapseAllTags() {
 
 void KPhotoBook::slotFileSelectionChanged() {
 
-    kdDebug() << "[KPhotoBook::slotFileSelectionChanged] invoked..." << endl;
-
     unsigned int selectedImagesCount = m_view->fileView()->selectedItems()->count();
 
     // update the statusbar to reflect the number of selected files
     QString selectedMsg = QString(i18n("Selected: %1")).arg(selectedImagesCount);
     statusBar()->changeItem(selectedMsg, 4);
+    
+    // enable 'exportSelectedFiles' only if at least one file is selected
+    m_exportSelectedFiles->setEnabled(selectedImagesCount > 0);
 
+    // update the sourcedirtree
     m_sourcedirTree->reflectSelectedFiles(m_view->fileView()->selectedItems());
 
+    // update the tagtree
     m_tagTree->doRepaintAll();
 
     // remove everything from the metainfo tree
@@ -1464,6 +1510,46 @@ void KPhotoBook::slotShowToolViewMetaInfoTree() {
     }
 
     m_metaInfoTreeToolView->show();
+}
+
+
+void KPhotoBook::slotExportMatchingFiles() {
+
+    QDir dir(Settings::fileSystemLastExportedToDirectory());
+  
+    QString choosedDir = KFileDialog::getExistingDirectory(dir.absPath(), this, "Select the directory to export to");
+    if (!choosedDir.isEmpty()) {
+        Settings::setFileSystemLastExportedToDirectory(choosedDir);
+
+        kdDebug() << "[KPhotoBook::slotExportSelectedFiles] exporting to '" << choosedDir << "'..." << endl;
+        changeStatusbar(i18n("Exporting symbolic links..."));
+        
+        ExportSymlinks exporter(m_view, choosedDir);
+        exporter.setSourceFiles(m_view->fileView()->items());
+        exporter.execute();
+        
+        changeStatusbar(i18n("Exporting symbolic links finished"));
+    }
+}
+
+
+void KPhotoBook::slotExportSelectedFiles() {
+
+    QDir dir(Settings::fileSystemLastExportedToDirectory());
+  
+    QString choosedDir = KFileDialog::getExistingDirectory(dir.absPath(), this, "Select the directory to export to");
+    if (!choosedDir.isEmpty()) {
+        Settings::setFileSystemLastExportedToDirectory(choosedDir);
+
+        kdDebug() << "[KPhotoBook::slotExportSelectedFiles] exporting to '" << choosedDir << "'..." << endl;
+        changeStatusbar(i18n("Exporting symbolic links..."));
+        
+        ExportSymlinks exporter(m_view, choosedDir);
+        exporter.setSourceFiles(m_view->fileView()->selectedItems());
+        exporter.execute();
+        
+        changeStatusbar(i18n("Exporting symbolic links finished"));
+    }
 }
 
 
@@ -1622,6 +1708,11 @@ void KPhotoBook::updateStatusBar() {
     statusBar()->changeItem(filesMsg, 2);
     QString filterMsg = QString(i18n("Matched: %1")).arg(m_engine->filteredNumberOfFiles());
     statusBar()->changeItem(filterMsg, 3);
+
+    // I know, this is really not the right place to do this...
+    // but it is the simples way
+    // enable the 'export matching files' only if at least 1 file is displayed
+    m_exportMatchingFiles->setEnabled(m_engine->filteredNumberOfFiles() > 0);
 }
 
 
