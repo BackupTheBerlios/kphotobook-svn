@@ -22,9 +22,6 @@
 <td>
 
 <p>
-Sorry, there is no tarball yet.
-</p>
-<p>
 Downloads and cvs access are available on the projectsite at sourceforce.net: <a href="http://sourceforge.net/projects/kphotobook/" target="_top">KPhotoBook at sourceforge.net</a>
 </p>
 
@@ -51,7 +48,23 @@ Follow these instructions to build the application from the repository:
 <pre>make install</pre></li>
 </ul>
 
-
+<h1>Building the tarball</h1>
+<p>
+Follow these instructions to build the application from the tarball:
+</p>
+<ul>
+<li>Downloaded the tarball from <a href="http://sourceforge.net/projects/kphotobook/" target="_top">KPhotoBook at sourceforge.net</a>.</li>
+<li>Extract the downloaded tarball: <pre>tar -xzf kphotobook-x.x.x.tar.gz</pre></li>
+<li>Go into the extracted directory: <pre>cd kphotobook-x.x.x</pre></li>
+<li>Start configure (where KDE-installation-path is '/opt/kde3' for example):
+<pre>./configure --prefix='KDE-installation-path'</pre></li>
+<li>Build the application:
+<pre>make</pre></li>
+<li>Change to root:
+<pre>su</pre></li>
+<li>Install the application:
+<pre>make install</pre></li>
+</ul>
 
 </td>
 </tr>

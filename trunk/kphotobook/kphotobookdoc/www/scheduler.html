@@ -35,6 +35,33 @@
 <tr class="done"><td>Feature</td><td>Description</td><td>Done on</td><td>Version</td></tr>
 
 <tr class="scheduler">
+<td class="scheduler_title">Show EXIF info</td>
+<td class="scheduler_desc">There will probably be another tab (beside the Tag tree and source directory tree tab) which contains the EXIF information for the active photo.</td>
+<td class="scheduler_date">April 2004</td>
+<td class="scheduler_version">0.0.5</td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Config Dialog</td>
+<td class="scheduler_desc">
+    <ul style="list-style-image:url(pics/yes.png)">
+        <li>Iconsize in tag tree</li>
+        <li>Font size for tag tree</li>
+        <li>Show/Hide icons in the tag tree</li>
+        <li>Font size for SourceDirTree</li>
+        <li>Selection mode for image preview (multi or extended)</li>
+        <li>Preview size, selecting with a slider</li>
+        <li>GUI mode is changeable between IDEAl and TabPage mode</li>
+        <li>Size of the icons in the toolbars above the trees</li>
+        <li>List of regular expressions of directory names to ignore (e.g. [Tt]humbs, [Tt]humbnails)</li>
+        <li>List of regular expressions of file names to handle (e.g. *.jpg, *.jpeg)</li>
+    </ul>
+</td>
+<td class="scheduler_date">April 2004</td>
+<td class="scheduler_version">0.0.5</td>
+</tr>
+
+<tr class="scheduler">
 <td class="scheduler_title">Tidying up GUI</td>
 <td class="scheduler_desc">
     <ul style="list-style-image:url(pics/yes.png)">
@@ -90,34 +117,6 @@
 <tr class="progress"><td colspan="4">Work in Progress</td></tr>
 <tr class="progress"><td>Features</td><td>Description</td><td>Planned</td><td>Version</td></tr>
 
-<tr class="scheduler">
-<td class="scheduler_title">Config Dialog</td>
-<td class="scheduler_desc">
-    <ul style="list-style-image:url(pics/yes.png)">
-        <li>Iconsize in tag tree</li>
-        <li>Font size for tag tree</li>
-        <li>Show/Hide icons in the tag tree</li>
-        <li>Font size for SourceDirTree</li>
-        <li>Selection mode for image preview (multi or extended)</li>
-        <li>Preview size, selecting with a slider</li>
-        <li>GUI mode is changeable between IDEAl and TabPage mode</li>
-        <li>Size of the icons in the toolbars above the trees</li>
-        <li>List of regular expressions of directory names to ignore (e.g. [Tt]humbs, [Tt]humbnails)</li>
-        <li>List of regular expressions of file names to handle (e.g. *.jpg, *.jpeg)</li>
-    </ul>
-
-    <ul>
-        <li>List of viewer programs and editing programs to open a photo with</li>
-        <li>File patterns and directory patterns are not considered when rescanning filesystem: existing files/directories are not removed.</li>
-        <li>When cancelling the config dialog, the changes on the patterns (file and directory) are not undone.</li>
-        <li>A default button on every config page. This button only defaults the settings on the current page.</li>
-    </ul>
-</td>
-<td class="scheduler_date">April 2004</td>
-<td class="scheduler_version">0.0.5</td>
-</tr>
-
-
 
 <!-- ====================================================================================================================================== -->
 <tr class="todo"><td colspan="4">To Do</td></tr>
@@ -133,10 +132,31 @@
 -->
 
 <tr class="scheduler">
-<td class="scheduler_title">Show EXIF info</td>
-<td class="scheduler_desc">There will probably be another tab (beside the Tag tree and source directory tree tab) which contains the EXIF information for the active photo.</td>
-<td class="scheduler_date">April 2004</td>
-<td class="scheduler_version">0.0.5</td>
+<td class="scheduler_title">Viewer programs</td>
+<td class="scheduler_desc">List of viewer programs and editing programs to open a photo with.</td>
+<td class="scheduler_date">Mai 2004</td>
+<td class="scheduler_version">0.0.6</td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Apply File & Directory Patterns</td>
+<td class="scheduler_desc">File patterns and directory patterns are not considered when rescanning filesystem: existing files/directories are not removed.</td>
+<td class="scheduler_date">Mai 2004</td>
+<td class="scheduler_version">0.0.6</td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Cancel in Config Dialog</td>
+<td class="scheduler_desc">When cancelling the config dialog, the changes on the patterns (file and directory) are not undone.</td>
+<td class="scheduler_date">Mai 2004</td>
+<td class="scheduler_version">0.0.6</td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">Default button in Config Dialog</td>
+<td class="scheduler_desc">A default button on every config page. This button only defaults the settings on the current page.</td>
+<td class="scheduler_date">Mai 2004</td>
+<td class="scheduler_version">0.0.6</td>
 </tr>
 
 <tr class="scheduler">
@@ -187,6 +207,13 @@
 <tr class="scheduler">
 <td class="scheduler_title">Tag Types</td>
 <td class="scheduler_desc">There are several types of tags which allows you to type in different types of data (title, string, dates, numberic, enumeration, boolean).</td>
+<td class="scheduler_date"></td>
+<td class="scheduler_version">0.2.0</td>
+</tr>
+
+<tr class="scheduler">
+<td class="scheduler_title">EXIF info --&gt; TagTree</td>
+<td class="scheduler_desc">Integrate the EXIF information into the tagtree. As soon as this is done, it is possible to search by all information in the EXIF data.</td>
 <td class="scheduler_date"></td>
 <td class="scheduler_version">0.2.0</td>
 </tr>
