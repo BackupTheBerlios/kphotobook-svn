@@ -156,25 +156,21 @@ void KPhotoBookView::storeConfiguration() {
 }
 
 
-void KPhotoBookView::increasePreviewSize() {
+void KPhotoBookView::updateCurrentImageSize() {
 
-    Settings::setImagePreviewSize(Settings::imagePreviewSize() + 8);
+    // remember all selected files
+    QPtrList<KFileItem> selectedFiles(*m_fileView->selectedItems());
 
-    m_photobook->enableZoomIn(Settings::imagePreviewSize() < Constants::SETTINGS_MAX_PREVIEW_SIZE);
-    m_photobook->enableZoomOut(Settings::imagePreviewSize() > Constants::SETTINGS_MIN_PREVIEW_SIZE);
+    // remove all displayed images
+    removeAllFiles();
 
-    updateCurrentImageSize();
-}
+    m_fileView->setPreviewSize(Settings::imagePreviewSize());
+    m_fileView->showPreviews();
+    m_fileView->setGridX(Settings::imagePreviewSize()+10);
+    m_fileView->setGridY(Settings::imagePreviewSize()+10);
 
-
-void KPhotoBookView::decreasePreviewSize() {
-
-    Settings::setImagePreviewSize(Settings::imagePreviewSize() - 8);
-
-    m_photobook->enableZoomIn(Settings::imagePreviewSize() < Constants::SETTINGS_MAX_PREVIEW_SIZE);
-    m_photobook->enableZoomOut(Settings::imagePreviewSize() > Constants::SETTINGS_MIN_PREVIEW_SIZE);
-
-    updateCurrentImageSize();
+    // force redrawing all files by removing them and adding them again
+    updateFiles(&selectedFiles);
 }
 
 
@@ -216,24 +212,6 @@ void KPhotoBookView::slotShowCurrentImage() {
 //
 // private methods
 //
-void KPhotoBookView::updateCurrentImageSize() {
-
-    // remember all selected files
-    QPtrList<KFileItem> selectedFiles(*m_fileView->selectedItems());
-
-    // remove all displayed images
-    removeAllFiles();
-
-    m_fileView->setPreviewSize(Settings::imagePreviewSize());
-    m_fileView->showPreviews();
-    m_fileView->setGridX(Settings::imagePreviewSize()+10);
-    m_fileView->setGridY(Settings::imagePreviewSize()+10);
-
-    // force redrawing all files by removing them and adding them again
-    updateFiles(&selectedFiles);
-}
-
-
 void KPhotoBookView::removeAllFiles() {
 
     // we must deselct all files before removing it to inprove the speed

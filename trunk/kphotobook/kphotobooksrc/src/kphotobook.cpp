@@ -161,6 +161,9 @@ void KPhotoBook::init() {
 
     // allow the view to change the statusbar
     connect(m_view, SIGNAL(signalChangeStatusbar(const QString&)), this, SLOT(changeStatusbar(const QString&)));
+
+    // reflect the current settings
+    slotLoadSettings();
 }
 
 
@@ -993,10 +996,18 @@ void KPhotoBook::slotRefreshView() {
 }
 
 void KPhotoBook::slotIncreasePreviewSize() {
-    m_view->increasePreviewSize();
+    Settings::setImagePreviewSize(Settings::imagePreviewSize() + 8);
+
+    enableDisableZoom();
+
+    m_view->updateCurrentImageSize();
 }
 void KPhotoBook::slotDecreasePreviewSize() {
-    m_view->decreasePreviewSize();
+    Settings::setImagePreviewSize(Settings::imagePreviewSize() - 8);
+
+    enableDisableZoom();
+
+    m_view->updateCurrentImageSize();
 }
 
 
@@ -1087,8 +1098,7 @@ void KPhotoBook::slotLoadSettings() {
 
     m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::And);
 
-    m_zoomIn->setEnabled(Settings::imagePreviewSize() < Constants::SETTINGS_MAX_PREVIEW_SIZE);
-    m_zoomOut->setEnabled(Settings::imagePreviewSize() > Constants::SETTINGS_MIN_PREVIEW_SIZE);
+    enableDisableZoom();
 }
 
 
@@ -1158,6 +1168,13 @@ TagNode* KPhotoBook::createTag(int type, const QString& name, const QString& ico
 
     updateState();
     return tagNode;
+}
+
+
+void KPhotoBook::enableDisableZoom() {
+
+    m_zoomIn->setEnabled(Settings::imagePreviewSize() < Constants::SETTINGS_MAX_PREVIEW_SIZE);
+    m_zoomOut->setEnabled(Settings::imagePreviewSize() > Constants::SETTINGS_MIN_PREVIEW_SIZE);
 }
 
 

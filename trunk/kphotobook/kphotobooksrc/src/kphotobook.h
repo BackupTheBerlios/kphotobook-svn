@@ -133,14 +133,14 @@ public:
     KPopupMenu* contextMenuTagTreeItem() {
         return m_contextMenuTagTreeItem;
     }
-
+/*
     void enableZoomIn(bool enable) {
         m_zoomIn->setEnabled(enable);
     }
     void enableZoomOut(bool enable) {
         m_zoomOut->setEnabled(enable);
     }
-
+*/
 protected:
     /**
      * This method is called after close is called on the instance.
@@ -234,6 +234,12 @@ private:
      * If parent is not null, the new tag is a child of the specified parent.
      */
     TagNode* createTag(int type, const QString& name, const QString& iconName, TagNode* parent = 0);
+
+    /**
+     * Enables or dsiables the zoomin and zoomout function depending on the
+     * current preview size of the images.
+     */
+    void enableDisableZoom();
 
 private:
     KPhotoBookView* m_view;

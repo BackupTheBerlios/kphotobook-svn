@@ -76,8 +76,8 @@ public:
 
     void removeAllFiles();
 
-    void increasePreviewSize();
-    void decreasePreviewSize();
+    void updateCurrentImageSize();
+
 signals:
     /**
      * Use this signal to change the content of the statusbar
@@ -99,8 +99,6 @@ private:
     TagTree* m_tagtree;
     SourceDirTree* m_sourcedirTree;
     KFileIconView* m_fileView;
-
-    void updateCurrentImageSize();
 };
 
 #endif
