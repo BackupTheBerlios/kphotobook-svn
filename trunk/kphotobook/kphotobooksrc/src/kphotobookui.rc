@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="kphotobook" version="1">
+<gui name="kphotobook" version="4">
 
 <MenuBar>
     <Menu name="file">
@@ -103,4 +103,4 @@
     <Action name="collapseSourceDir" />
 </Menu>
 
-</kpartgui>
+</gui>
