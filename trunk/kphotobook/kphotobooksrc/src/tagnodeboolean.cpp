@@ -20,15 +20,42 @@
 
 #include "tagnodeboolean.h"
 
+#include "filetagnodeassoc.h"
+#include "filetagnodeassocboolean.h"
+
 #include <kdebug.h>
 
 
 TagNodeBoolean::TagNodeBoolean(unsigned int id, const QString& text, const QString& iconName, TagNode* parent)
     : TagNode(id, text, iconName, parent)
-    , m_tagged(false)
     , m_filtered(true) {
 
     kdDebug() << "[TagNodeBoolean::TagNodeBoolean] invoked with id: " << id << "text: " << text << ", icon: " << iconName << endl;
+}
+
+
+void TagNodeBoolean::setTagged(File* file, bool tagged) {
+
+    FileTagNodeAssoc* fileTagNodeAssoc = getAssoc(file);
+    if (fileTagNodeAssoc) {
+        FileTagNodeAssocBoolean* fileTagNodeAssocBoolean = dynamic_cast<FileTagNodeAssocBoolean*>(fileTagNodeAssoc);
+        fileTagNodeAssocBoolean->setValue(tagged);
+    } else {
+        new FileTagNodeAssocBoolean(file, this, tagged);
+    }
+}
+
+
+bool TagNodeBoolean::tagged(File* file) {
+
+    FileTagNodeAssoc* fileTagNodeAssoc = getAssoc(file);
+    if (fileTagNodeAssoc == 0) {
+        return false;
+    }
+
+    FileTagNodeAssocBoolean* fileTagNodeAssocBoolean = dynamic_cast<FileTagNodeAssocBoolean*>(fileTagNodeAssoc);
+
+    return fileTagNodeAssocBoolean->value();
 }
 
 

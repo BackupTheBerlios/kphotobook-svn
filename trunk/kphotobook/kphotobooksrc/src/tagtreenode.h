@@ -38,7 +38,7 @@ class TagTree;
 /**
  * Superclass of all nodes to display in a tagtree.
  *
- * CVS-ID $Id: tagtreenode.h,v 1.1 2004/03/07 18:52:06 starcube Exp $
+ * CVS-ID $Id: tagtreenode.h,v 1.2 2004/03/09 23:01:07 starcube Exp $
  */
 class TagTreeNode : public KListViewItem {
 
@@ -63,7 +63,9 @@ public:
     }
 
 protected:
+    void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect);
     void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked);
+    void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate);
 
     KPhotoBook* m_photobook;
 

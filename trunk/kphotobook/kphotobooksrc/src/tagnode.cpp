@@ -166,7 +166,7 @@ void TagNode::appendAssoc(FileTagNodeAssoc* assoc) {
 
         // test if the file of the specified association is already referenced from this tagNode
         if (currentAssoc->file() == assoc->file()) {
-            kdDebug() << "Association between file '" << assoc->file()->fileInfo()->absFilePath() << "' and tagnode '" << assoc->tagNode()->text() << "' already exists." << endl;
+            kdDebug() << "Association between file '" << assoc->file()->fileInfo()->absFilePath() << "' and tagnode '" << *assoc->tagNode()->text() << "' already exists." << endl;
 
             // update the existing association to reflect value of the specified one
             currentAssoc->update(assoc);

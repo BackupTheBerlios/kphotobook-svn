@@ -29,7 +29,7 @@
 /**
  * Concrete tagnode implementation representing a boolean tag.
  *
- * CVS-ID $Id: tagnodeboolean.h,v 1.1 2004/03/07 18:52:42 starcube Exp $
+ * CVS-ID $Id: tagnodeboolean.h,v 1.2 2004/03/09 23:01:07 starcube Exp $
  */
 class TagNodeBoolean : public TagNode {
 
@@ -39,12 +39,8 @@ public:
     ~TagNodeBoolean() {
     }
 
-    void setTagged(File* file, bool tagged) {
-        m_tagged = tagged;
-    }
-    bool tagged(File* file) {
-        return m_tagged;
-    }
+    void setTagged(File* file, bool tagged);
+    bool tagged(File* file);
 
     void setFiltered(bool filtered) {
         m_filtered = filtered;
@@ -60,7 +56,6 @@ public:
     int tagLevel();
 
 private:
-    bool m_tagged;
     bool m_filtered;
 };
 

@@ -78,6 +78,36 @@ void TagTreeNode::showContextMenu() {
 }
 
 
+void TagTreeNode::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect) {
+
+    rect.setHeight(16);
+    rect.setWidth(16);
+
+    static QCheckBox checkBox(0);
+    checkBox.setChecked(false);
+
+    QStyle& style = KApplication::kApplication()->style();
+
+    // copied from qcheckbox.cpp
+    QStyle::SFlags flags = QStyle::Style_Default;
+    if ( checkBox.hasFocus() )
+        flags |= QStyle::Style_HasFocus;
+    if ( checkBox.isDown() )
+        flags |= QStyle::Style_Down;
+    if ( checkBox.hasMouse() )
+        flags |= QStyle::Style_MouseOver;
+    if ( checkBox.state() == QButton::On )
+        flags |= QStyle::Style_On;
+    else if ( checkBox.state() == QButton::Off )
+        flags |= QStyle::Style_Off;
+    else if ( checkBox.state() == QButton::NoChange )
+        flags |= QStyle::Style_NoChange;
+
+    // draw the checkbox
+    style.drawControl(QStyle::CE_CheckBox, p, &checkBox, rect, cg, flags);
+}
+
+
 void TagTreeNode::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked) {
 
     rect.setHeight(16);
@@ -85,6 +115,43 @@ void TagTreeNode::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, b
 
     static QCheckBox checkBox(0);
     checkBox.setChecked(checked);
+
+    QStyle& style = KApplication::kApplication()->style();
+
+    // copied from qcheckbox.cpp
+    QStyle::SFlags flags = QStyle::Style_Default;
+    if ( checkBox.isEnabled() )
+        flags |= QStyle::Style_Enabled;
+    if ( checkBox.hasFocus() )
+        flags |= QStyle::Style_HasFocus;
+    if ( checkBox.isDown() )
+        flags |= QStyle::Style_Down;
+    if ( checkBox.hasMouse() )
+        flags |= QStyle::Style_MouseOver;
+    if ( checkBox.state() == QButton::On )
+        flags |= QStyle::Style_On;
+    else if ( checkBox.state() == QButton::Off )
+        flags |= QStyle::Style_Off;
+    else if ( checkBox.state() == QButton::NoChange )
+        flags |= QStyle::Style_NoChange;
+
+    // draw the checkbox
+    style.drawControl(QStyle::CE_CheckBox, p, &checkBox, rect, cg, flags);
+}
+
+
+void TagTreeNode::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate) {
+
+    rect.setHeight(16);
+    rect.setWidth(16);
+
+    static QCheckBox checkBox(0);
+    if (tristate == 0) {
+        checkBox.setTristate(true);
+        checkBox.setNoChange();
+    } else {
+        checkBox.setChecked(tristate > 0);
+    }
 
     QStyle& style = KApplication::kApplication()->style();
 
