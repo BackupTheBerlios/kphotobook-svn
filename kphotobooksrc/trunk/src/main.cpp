@@ -28,14 +28,15 @@ static KCmdLineOptions options[] = {
 int main(int argc, char** argv) {
 
   KAboutData about("kphotobook", I18N_NOOP("KPhotoBook"), version, description,
-                    KAboutData::License_GPL, "(C) 2003 Michael Christen",
+                    KAboutData::License_GPL, "(C) 2003, 2004, 2005 Michael Christen",
                     0, // free text, can contain new lines
-                    "http://kphotobook.sourceforge.net",
-                    "starcube@users.sourceforge.net");
-  about.addAuthor("Michael Christen", I18N_NOOP("The master chief developer."), "starcube@users.sourceforge.net" );
-  about.addAuthor("Thomas Christen", I18N_NOOP("One of Santa's greater helpers.\nHelps me creating icons and writing the website and the documentation."), "chtom@users.sourceforge.net");
+                    "http://kphotobook.berlios.det",
+                    "starcube@users.berlios.de");
+  about.addAuthor("Michael Christen", I18N_NOOP("The master chief developer."), "starcube@users.berlios.de" );
+  about.addAuthor("Thomas Christen", I18N_NOOP("One of Santa's greater helpers.\nHelps me creating icons and writing the website and the documentation."), "chtom@users.berlios.de");
   about.addAuthor("Stefan Fink", I18N_NOOP("One of Santa's little helpers.\nAdvises in design and usability questions.\n(He is also responsible for the KPhotoBook icon...)"));
   about.addAuthor("Daniel Gerber", I18N_NOOP("One of Santa's little helpers.\nAdvises in design and usability questions."));
+  about.addAuthor("Christian Hoenig", I18N_NOOP("The loyal coder of kphotobook :-)."), "choenig@users.berlios.de" );
 
   about.addCredit("George W. Bush, President of the USA", I18N_NOOP("For being a stupid little git."), "idiot@whitehouse.org" );
 
