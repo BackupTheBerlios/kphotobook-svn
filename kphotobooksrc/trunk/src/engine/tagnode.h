@@ -43,8 +43,7 @@ Q_OBJECT
 
 public:
 
-    enum Type_ {TYPE_INVALID = -1, TYPE_TITLE, TYPE_BOOLEAN, TYPE_STRING, TYPE_ENUM };
-    typedef enum Type_ Type;
+    enum Type {TYPE_INVALID = -1, TYPE_TITLE, TYPE_BOOLEAN, TYPE_STRING, TYPE_ENUM };
 
 public:
     /**

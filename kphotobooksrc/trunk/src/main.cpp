@@ -33,10 +33,10 @@ int main(int argc, char** argv) {
                     "http://kphotobook.berlios.det",
                     "starcube@users.berlios.de");
   about.addAuthor("Michael Christen", I18N_NOOP("The master chief developer."), "starcube@users.berlios.de" );
+  about.addAuthor("Christian Hoenig", I18N_NOOP("The loyal coder of kphotobook :-)."), "choenig@users.berlios.de" );
   about.addAuthor("Thomas Christen", I18N_NOOP("One of Santa's greater helpers.\nHelps me creating icons and writing the website and the documentation."), "chtom@users.berlios.de");
   about.addAuthor("Stefan Fink", I18N_NOOP("One of Santa's little helpers.\nAdvises in design and usability questions.\n(He is also responsible for the KPhotoBook icon...)"));
   about.addAuthor("Daniel Gerber", I18N_NOOP("One of Santa's little helpers.\nAdvises in design and usability questions."));
-  about.addAuthor("Christian Hoenig", I18N_NOOP("The loyal coder of kphotobook :-)."), "choenig@users.berlios.de" );
 
   about.addCredit("George W. Bush, President of the USA", I18N_NOOP("For being a stupid little git."), "idiot@whitehouse.org" );
 
