@@ -22,6 +22,7 @@
 #define _ENGINE_H_
 
 #include "../exception.h"
+#include "tagnode.h"
 
 #include <qfileinfo.h>
 #include <qdir.h>
@@ -118,7 +119,7 @@ public:
      * Creates a new tag with the specified parameters.
      * If parent is not null, the new tag is a child of the specified parent.
      */
-    TagNode* createTag(TagNode* parent, int type, const QString& text, const QString& comment, const QString& iconName);
+    TagNode* createTag(TagNode* parent, TagNode::Type type, const QString& text, const QString& comment, const QString& iconName);
 
     /**
      * Updates the specified tag with the spacified name and icon.

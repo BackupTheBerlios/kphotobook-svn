@@ -36,19 +36,19 @@
 #include <typeinfo>
 
 
-TagNode* TagNode::createInstance(int typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent) {
+TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent) {
 
     TagNode* newTagNode = 0;
 
     // create the new tagnode
     switch(typeId) {
-    case TYPE_TITLE:
+    case TagNode::TYPE_TITLE:
         newTagNode = new TagNodeTitle(id, text, comment, iconName, parent);
         break;
-    case TYPE_BOOLEAN:
+    case TagNode::TYPE_BOOLEAN:
         newTagNode = new TagNodeBoolean(id, text, comment, iconName, parent);
         break;
-    case TYPE_STRING:
+    case TagNode::TYPE_STRING:
         newTagNode = new TagNodeString(id, text, comment, iconName, parent);
         break;
     default:
@@ -57,8 +57,6 @@ TagNode* TagNode::createInstance(int typeId, unsigned int id, const QString& tex
 
     // do some more initialization on the just created concrete tagnode
     newTagNode->m_typeId = typeId;
-    newTagNode->m_type = new QString(TagNode::tagNodeType(typeId));
-    newTagNode->m_typeName = new QString(TagNode::tagNodeTypeName(typeId));
 
     return newTagNode;
 }
@@ -66,9 +64,7 @@ TagNode* TagNode::createInstance(int typeId, unsigned int id, const QString& tex
 
 TagNode::TagNode(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
     : QObject(0, text.ascii())
-    , m_typeId(0)
-    , m_type(0)
-    , m_typeName(0)
+    , m_typeId(TagNode::TYPE_INVALID)
     , m_id(id)
     , m_text(new QString(text))
     , m_comment(new QString(comment))
@@ -112,8 +108,6 @@ TagNode::~TagNode() {
     delete m_assocs;
 
     // delete all members
-    delete m_type;
-    delete m_typeName;
     delete m_text;
     delete m_iconName;
     delete m_children;

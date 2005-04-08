@@ -598,7 +598,7 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
     int id = -1;
     QString name    = QString::null;
     QString comment = "";
-    int tagNodeTypeId = TagNode::TYPE_INVALID;
+    TagNode::Type tagNodeTypeId = TagNode::TYPE_INVALID;
     QString icon;
 
     QString curKey, curVal;

@@ -53,7 +53,7 @@ public:
 
     ~DialogManageTag();
 
-    int tagType();
+    TagNode::Type tagType();
 
     QString tagName() {
         return m_nameLineEdit->text();
@@ -81,7 +81,7 @@ private:
     KPhotoBook* m_photobook;
 
     KComboBox* m_typeComboBox;
-    QValueList<int>* m_typeComboBoxEntries;
+    QValueList<TagNode::Type>* m_typeComboBoxEntries;
 
     KLineEdit* m_nameLineEdit;
     KLineEdit* m_commentLineEdit;

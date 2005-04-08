@@ -42,29 +42,30 @@ class TagNode : public QObject {
 Q_OBJECT
 
 public:
-    static const int TYPE_INVALID = -1;
-    static const int TYPE_TITLE = 1;
-    static const int TYPE_BOOLEAN = 2;
-    static const int TYPE_STRING = 3;
+
+    enum Type_ {TYPE_INVALID = -1, TYPE_TITLE, TYPE_BOOLEAN, TYPE_STRING, TYPE_ENUM };
+    typedef enum Type_ Type;
 
 public:
     /**
      * Instantiates a concrete subclass of this class TagNode.
      */
-    static TagNode* createInstance(int typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
+    static TagNode* createInstance(TagNode::Type typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
 
     /**
      * Returns the unequivocal string describing the type of the specified tagnode.
      */
-    static QString tagNodeType(int typeId) {
+    static QString tagNodeType(TagNode::Type typeId) {
 
         switch(typeId) {
-        case TYPE_TITLE:
+        case TagNode::TYPE_TITLE:
             return "title";
-        case TYPE_BOOLEAN:
+        case TagNode::TYPE_BOOLEAN:
             return "boolean";
-        case TYPE_STRING:
+        case TagNode::TYPE_STRING:
             return "string";
+        case TagNode::TYPE_ENUM:
+            return "enum";
         default:
             return QString::null;
         }
@@ -73,40 +74,44 @@ public:
     /**
      * Returns the translated text describing the type of the specified tagnode.
      */
-    static QString tagNodeTypeName(int typeId){
+    static QString tagNodeTypeName(TagNode::Type typeId){
 
         switch(typeId) {
-        case TYPE_TITLE:
+        case TagNode::TYPE_TITLE:
             return i18n("tagNodeTypeName", "title");
-        case TYPE_BOOLEAN:
+        case TagNode::TYPE_BOOLEAN:
             return i18n("tagNodeTypeName", "boolean");
-        case TYPE_STRING:
+        case TagNode::TYPE_STRING:
             return i18n("tagNodeTypeName", "string");
+        case TagNode::TYPE_ENUM:
+            return i18n("tagNodeTypeName", "enum");
         default:
             return QString::null;
         }
     }
 
-    static int tagNodeTypeId(int typeId) {
-
-        return typeId;
-    }
+//     static int tagNodeTypeId(TagNode::Type typeId) {
+// 
+//         return (int)typeId;
+//     }
 
     /**
      * Returns the type-id of the tagnode type with the specified type.
      * If the specified type is invalid, TYPE_INVALID is returned.
      */
-    static int tagNodeTypeId(const QString& type) {
+    static TagNode::Type tagNodeTypeId(const QString& type) {
 
         if (type == "title") {
-            return TYPE_TITLE;
+            return TagNode::TYPE_TITLE;
         } else if (type == "boolean") {
-            return TYPE_BOOLEAN;
+            return TagNode::TYPE_BOOLEAN;
         } else if (type == "string") {
-            return TYPE_STRING;
+            return TagNode::TYPE_STRING;
+        } else if (type == "enum") {
+            return TagNode::TYPE_ENUM;
         }
-
-        return TYPE_INVALID;
+    
+        return TagNode::TYPE_INVALID;
     }
 
 protected:
@@ -127,22 +132,22 @@ public:
     /**
      * Returns the unequivocal typeid representing the concrete type of this tagnode.
      */
-    int typeId() {
+    TagNode::Type typeId() {
         return m_typeId;
     }
 
     /**
      * Returns the unequivocal string describing the concrete type of this tagnode.
      */
-    QString* type() {
-        return m_type;
+    QString type() {
+        return tagNodeType(m_typeId);
     }
 
     /**
      * Returns the translated text describing the concrete type of this tagnode.
      */
     QString typeName() {
-        return *m_typeName;
+        return tagNodeTypeName(m_typeId);
     }
 
     unsigned int id() {
@@ -210,17 +215,7 @@ protected:
     /**
      * The id of the type.
      */
-    int m_typeId;
-
-    /**
-     * The type of this tagnode.
-     */
-    QString* m_type;
-
-    /**
-     * The translated typename.
-     */
-    QString* m_typeName;
+    TagNode::Type m_typeId;
 
     /**
      * The unique id of this tagnode.

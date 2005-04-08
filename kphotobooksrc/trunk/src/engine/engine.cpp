@@ -259,7 +259,7 @@ void Engine::removeSourceDir(SourceDir* sourceDir) {
 }
 
 
-TagNode* Engine::createTag(TagNode* parent, int type, const QString& text, const QString& comment, const QString& iconName) {
+TagNode* Engine::createTag(TagNode* parent, TagNode::Type type, const QString& text, const QString& comment, const QString& iconName) {
 
     kdDebug() << "[Engine::createTag] creating tag with type: " << type
             << ", text: " << text

@@ -23,6 +23,7 @@
 
 #include "settings/settings.h"
 #include "exception.h"
+#include "engine/tagnode.h"
 
 #include <kaction.h>
 #include <kapplication.h>
@@ -312,7 +313,7 @@ private:
      * Creates a new tag with the specified parameters.
      * If parent is not null, the new tag is a child of the specified parent.
      */
-    TagNode* createTag(int type, const QString& name, const QString& comment, const QString& iconName, TagNode* parent = 0);
+    TagNode* createTag(TagNode::Type type, const QString& name, const QString& comment, const QString& iconName, TagNode* parent = 0);
 
     /**
      * Enables or disables the zoomin and zoomout function depending on the

@@ -1881,7 +1881,7 @@ void KPhotoBook::removeSourceDir(SourceDir* sourceDir) {
 }
 
 
-TagNode* KPhotoBook::createTag(int type, const QString& name, const QString& comment, const QString& iconName, TagNode* parent) {
+TagNode* KPhotoBook::createTag(TagNode::Type type, const QString& name, const QString& comment, const QString& iconName, TagNode* parent) {
 
     kdDebug() << "[KPhotoBook::createTag] invoked with type: " << type << ", name: " << name << ", icon: " << iconName << endl;
 
