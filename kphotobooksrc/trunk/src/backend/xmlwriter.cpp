@@ -135,7 +135,7 @@ void XmlWriter::dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString inde
             << ELEMENT_TAG << " "
             << ATTRIBUTE_TAG_ID << "=\"" << tagnode->id() << "\" "
             << ATTRIBUTE_TAG_NAME << "=\"" << entitize(*(tagnode->text())) << "\" "
-            << ATTRIBUTE_TAG_TYPE << "=\"" << *(tagnode->type()) << "\"";
+            << ATTRIBUTE_TAG_TYPE << "=\"" << tagnode->type() << "\"";
 
     if (tagnode->comment()) {
         stream << " " << ATTRIBUTE_TAG_COMMENT << "=\"" << entitize(*(tagnode->comment())) << "\"";
