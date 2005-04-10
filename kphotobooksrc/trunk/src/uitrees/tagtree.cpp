@@ -29,9 +29,13 @@
 #include "../engine/tagnodetitle.h"
 #include "../engine/tagnodeboolean.h"
 #include "../engine/tagnodestring.h"
+#include "../engine/tagnoderadiogroup.h"
+#include "../engine/tagnoderadio.h"
 #include "tagtreenodetitle.h"
 #include "tagtreenodeboolean.h"
 #include "tagtreenodestring.h"
+#include "tagtreenoderadiogroup.h"
+#include "tagtreenoderadio.h"
 
 #include <klocale.h>
 #include <kstdaccel.h>
@@ -80,6 +84,12 @@ TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     // append the listener for renaming items
     QObject::connect(this, SIGNAL(itemRenamed(QListViewItem*, int, const QString&)),
                      this, SLOT(slotItemRenamed(QListViewItem*, int, const QString&)));
+
+    //TODO choenig: I'd like to implement such thing so the data is accepted on loosing focus in the input
+    // fields. But simply adding the DefaultAction is not enough, since there comes is a problem
+    // when clicking on another image: the new image is selected, and afterwards, the data is saved
+    // (accepted) which leads to the point, that the newly selected Item is maked with the setting.
+    //setDefaultRenameAction(QListView::Accept);
 }
 
 
@@ -147,7 +157,13 @@ void TagTree::addTagNode(TagNode* rootNode) {
         tagTreeNode = new TagTreeNodeBoolean(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
     } else if (typeid(*rootNode) == typeid(TagNodeString)) {
         TagNodeString* node = dynamic_cast<TagNodeString*>(rootNode);
-        tagTreeNode = new TagTreeNodeString(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+        tagTreeNode = new TagTreeNodeString(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+    } else if (typeid(*rootNode) == typeid(TagNodeRadioGroup)) {
+        TagNodeRadioGroup* node = dynamic_cast<TagNodeRadioGroup*>(rootNode);
+        tagTreeNode = new TagTreeNodeRadioGroup(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+    } else if (typeid(*rootNode) == typeid(TagNodeRadio)) {
+        TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(rootNode);
+        tagTreeNode = new TagTreeNodeRadio(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
     } else {
         kdWarning() << "[TagTree::addTagNode] unknown root tagtype received: " << rootNode->type() << "!"<< endl;
     }
@@ -172,7 +188,13 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
         tagTreeNode = new TagTreeNodeBoolean(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
     } else if (typeid(*child) == typeid(TagNodeString)) {
         TagNodeString* node = dynamic_cast<TagNodeString*>(child);
-        tagTreeNode = new TagTreeNodeString(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+        tagTreeNode = new TagTreeNodeString(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+    } else if (typeid(*child) == typeid(TagNodeRadioGroup)) {
+        TagNodeRadioGroup* node = dynamic_cast<TagNodeRadioGroup*>(child);
+        tagTreeNode = new TagTreeNodeRadioGroup(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+    } else if (typeid(*child) == typeid(TagNodeRadio)) {
+        TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(child);
+        tagTreeNode = new TagTreeNodeRadio(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
     } else {
         kdWarning() << "[TagTree::addTagNode] unknown sub tagtype received: " << child->type() << "!"<< endl;
     }

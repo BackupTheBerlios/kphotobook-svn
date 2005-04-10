@@ -43,13 +43,13 @@ class DialogManageTag : public KDialogBase {
 Q_OBJECT
 
 public:
-    enum MODE {
+    enum Mode {
         MODE_CREATE_TAG,
         MODE_EDIT_TAG
     };
 
 public:
-    DialogManageTag(QWidget *parent, MODE mode, TagTreeNode* parentNode, TagTreeNode* tagTreeNode, KPhotoBook* photobook, const char *name);
+    DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parentNode, TagTreeNode* tagTreeNode, KPhotoBook* photobook, const char *name);
 
     ~DialogManageTag();
 
@@ -73,7 +73,10 @@ private slots:
     void slotIconButtonClicked();
 
 private:
-    MODE m_mode;
+
+    void fillTypeCombo(TagTreeNode* parentNode);
+    
+    Mode m_mode;
 
     TagTreeNode* m_parentNode;
     TagTreeNode* m_tagTreeNode;

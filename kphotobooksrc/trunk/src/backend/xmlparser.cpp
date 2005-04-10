@@ -27,8 +27,10 @@
 #include "../engine/tagnodetitle.h"
 #include "../engine/tagnodeboolean.h"
 #include "../engine/tagnodestring.h"
+#include "../engine/tagnoderadio.h"
 #include "../engine/filetagnodeassocboolean.h"
 #include "../engine/filetagnodeassocstring.h"
+#include "../engine/filetagnodeassocradio.h"
 
 #include <kdebug.h>
 
@@ -872,6 +874,9 @@ bool XmlParser::handleTagAssoc(const QXmlAttributes& atts) {
     }
     if (typeid(*tagNode) == typeid(TagNodeString)) {
         new FileTagNodeAssocString(m_currentFile, dynamic_cast<TagNodeString*>(tagNode), value);
+    }
+    if (typeid(*tagNode) == typeid(TagNodeRadio)) {
+        new FileTagNodeAssocRadio(m_currentFile, dynamic_cast<TagNodeRadio*>(tagNode), value);
     }
 
     return true;

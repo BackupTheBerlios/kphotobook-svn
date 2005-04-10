@@ -38,7 +38,7 @@
 #include <qfile.h>
 
 
-DialogManageTag::DialogManageTag(QWidget *parent, MODE mode, TagTreeNode* parentNode, TagTreeNode* tagTreeNode, KPhotoBook* photobook, const char *name)
+DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parentNode, TagTreeNode* tagTreeNode, KPhotoBook* photobook, const char *name)
     : KDialogBase(parent, name, true, "", KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, false )
     , m_mode(mode)
     , m_parentNode(parentNode)
@@ -133,31 +133,14 @@ DialogManageTag::DialogManageTag(QWidget *parent, MODE mode, TagTreeNode* parent
     newTagGroupLayout->addWidget(typeLabel, 0, 0);
 
     m_typeComboBox = new KComboBox(false, newTagGroup, "typeComboBox");
-    if (mode == MODE_CREATE_TAG) {
-        m_typeComboBoxEntries = new QValueList<TagNode::Type>;
-
-        // title tag is allowed only as top-level tag
-        if (!parentNode) {
-            m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_TITLE));
-            m_typeComboBoxEntries->append(TagNode::TYPE_TITLE);
+    // now fill the available items;
+        if (mode == MODE_CREATE_TAG) {
+            fillTypeCombo(parentNode);
+        } else {
+            m_typeComboBox->insertItem(tagTreeNode->tagNode()->typeName());
+            m_typeComboBox->setEnabled(false);
         }
-
-        // each tag (but the title tag) can be top-level, below title and below other booleantag
-        if (!parentNode
-            || parentNode->tagNode()->typeId() == TagNode::TYPE_TITLE
-            || parentNode->tagNode()->typeId() == TagNode::TYPE_BOOLEAN) {
-
-            m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_BOOLEAN));
-            m_typeComboBoxEntries->append(TagNode::TYPE_BOOLEAN);
-
-            m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_STRING));
-            m_typeComboBoxEntries->append(TagNode::TYPE_STRING);
-        }
-    } else {
-        m_typeComboBox->insertItem(tagTreeNode->tagNode()->typeName());
-        m_typeComboBox->setEnabled(false);
-    }
-
+        
     newTagGroupLayout->addMultiCellWidget(m_typeComboBox, 0, 0, 1, 2);
 
     // name
@@ -220,6 +203,40 @@ DialogManageTag::~DialogManageTag() {
 TagNode::Type DialogManageTag::tagType() {
 
     return (*m_typeComboBoxEntries)[m_typeComboBox->currentItem()];
+}
+
+
+void DialogManageTag::fillTypeCombo(TagTreeNode* parentNode)
+{
+    m_typeComboBoxEntries = new QValueList<TagNode::Type>;
+    
+        // title tag is allowed only as top-level tag
+    if (!parentNode) {
+        m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_TITLE));
+        m_typeComboBoxEntries->append(TagNode::TYPE_TITLE);
+    }
+    
+        // each tag (but the title tag) can be top-level, below title and below other booleantag
+    if (!parentNode
+        || parentNode->tagNode()->typeId() == TagNode::TYPE_TITLE
+        || parentNode->tagNode()->typeId() == TagNode::TYPE_BOOLEAN) {
+            
+            m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_BOOLEAN));
+            m_typeComboBoxEntries->append(TagNode::TYPE_BOOLEAN);
+            
+            m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_STRING));
+            m_typeComboBoxEntries->append(TagNode::TYPE_STRING);
+            
+            m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_RADIOGROUP));
+            m_typeComboBoxEntries->append(TagNode::TYPE_RADIOGROUP);
+        }
+
+    // RADIO is only allowed below RADIOGROUP
+    if (parentNode->tagNode()->typeId() == TagNode::TYPE_RADIOGROUP) {
+        m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_RADIO));
+        m_typeComboBoxEntries->append(TagNode::TYPE_RADIO);
+    }
+        
 }
 
 

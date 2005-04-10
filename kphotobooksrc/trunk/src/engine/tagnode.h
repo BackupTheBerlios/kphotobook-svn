@@ -43,7 +43,7 @@ Q_OBJECT
 
 public:
 
-    enum Type {TYPE_INVALID = -1, TYPE_TITLE, TYPE_BOOLEAN, TYPE_STRING, TYPE_ENUM };
+    enum Type {TYPE_INVALID = -1, TYPE_TITLE, TYPE_BOOLEAN, TYPE_STRING, TYPE_RADIOGROUP, TYPE_RADIO };
 
 public:
     /**
@@ -63,8 +63,10 @@ public:
             return "boolean";
         case TagNode::TYPE_STRING:
             return "string";
-        case TagNode::TYPE_ENUM:
-            return "enum";
+        case TagNode::TYPE_RADIOGROUP:
+            return "radiogroup";
+        case TagNode::TYPE_RADIO:
+            return "radio";
         default:
             return QString::null;
         }
@@ -82,8 +84,10 @@ public:
             return i18n("tagNodeTypeName", "boolean");
         case TagNode::TYPE_STRING:
             return i18n("tagNodeTypeName", "string");
-        case TagNode::TYPE_ENUM:
-            return i18n("tagNodeTypeName", "enum");
+        case TagNode::TYPE_RADIOGROUP:
+            return i18n("tagNodeTypeName", "radiogroup");
+        case TagNode::TYPE_RADIO:
+            return i18n("tagNodeTypeName", "radio");
         default:
             return QString::null;
         }
@@ -106,8 +110,10 @@ public:
             return TagNode::TYPE_BOOLEAN;
         } else if (type == "string") {
             return TagNode::TYPE_STRING;
-        } else if (type == "enum") {
-            return TagNode::TYPE_ENUM;
+        } else if (type == "radiogroup") {
+            return TagNode::TYPE_RADIOGROUP;
+        } else if (type == "radio") {
+            return TagNode::TYPE_RADIO;
         }
     
         return TagNode::TYPE_INVALID;

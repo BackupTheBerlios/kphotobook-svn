@@ -18,40 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "filetagnodeassocboolean.h"
+#include "filetagnodeassocradio.h"
 
 #include "file.h"
-#include "tagnodeboolean.h"
+#include "tagnoderadio.h"
 
 #include <kdebug.h>
 
 #include <typeinfo>
 
 
-FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value)
-    : FileTagNodeAssoc(file, tagNodeBoolean)
+FileTagNodeAssocRadio::FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, bool value)
+    : FileTagNodeAssoc(file, tagNode)
     , m_value(value) {
 }
 
 
-FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value)
-    : FileTagNodeAssoc(file, tagNodeBoolean)
+FileTagNodeAssocRadio::FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, QString value)
+    : FileTagNodeAssoc(file, tagNode)
     , m_value(value == Constants::STRING_VALUE_TRUE) {
 }
 
 
-TagNodeBoolean* FileTagNodeAssocBoolean::tagNodeBoolean() {
-    return dynamic_cast<TagNodeBoolean*>(m_tagNode);
+TagNodeRadio* FileTagNodeAssocRadio::tagNode() {
+    return dynamic_cast<TagNodeRadio*>(m_tagNode);
 }
 
 
-void FileTagNodeAssocBoolean::update(FileTagNodeAssoc* assoc) {
+void FileTagNodeAssocRadio::update(FileTagNodeAssoc* assoc) {
 
-    if (typeid(*assoc) == typeid(FileTagNodeAssocBoolean)) {
-        FileTagNodeAssocBoolean* concreteAssoc = dynamic_cast<FileTagNodeAssocBoolean*>(assoc);
+    if (typeid(*assoc) == typeid(FileTagNodeAssocRadio)) {
+        FileTagNodeAssocRadio* concreteAssoc = dynamic_cast<FileTagNodeAssocRadio*>(assoc);
         m_value = concreteAssoc->value();
     } else {
-        kdDebug() << "[FileTagNodeAssocBoolean::update] the specified association is not of the type 'FileTagNodeAssocBoolean'." << endl;
+        kdDebug() << "[FileTagNodeAssocRadio::update] the specified association is not of the type 'FileTagNodeAssocRadio'." << endl;
     }
 }
 

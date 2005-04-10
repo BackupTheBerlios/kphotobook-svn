@@ -20,6 +20,10 @@
 
  #include "constants.h"
 
+
+const QString Constants::STRING_VALUE_TRUE = QString("true");
+const QString Constants::STRING_VALUE_FALSE = QString("false");
+
 //
 // icons
 //

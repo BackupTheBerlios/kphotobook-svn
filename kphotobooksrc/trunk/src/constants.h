@@ -31,6 +31,8 @@
 class Constants {
 
 public:
+    static const QString STRING_VALUE_TRUE;
+    static const QString STRING_VALUE_FALSE;
     // icons
     static const QString ICON_TAG;
     static const QString ICON_CREATE_MAINTAG;

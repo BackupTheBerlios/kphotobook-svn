@@ -43,6 +43,8 @@
 #include "uitrees/tagtreenodetitle.h"
 #include "uitrees/tagtreenodeboolean.h"
 #include "uitrees/tagtreenodestring.h"
+#include "uitrees/tagtreenoderadiogroup.h"
+#include "uitrees/tagtreenoderadio.h"
 #include "uitrees/tagtreenode.h"
 
 #include "engine/sourcedir.h"
@@ -1175,12 +1177,12 @@ void KPhotoBook::slotRemoveSourceDir() {
 
 void KPhotoBook::slotAddMaintag() {
 
-    kdDebug() << "[KPhotoBook::slotRemoveSourceDir] called... " << endl;
+    kdDebug() << "[KPhotoBook::slotAddMaintag] called... " << endl;
 
     DialogManageTag* dialog = new DialogManageTag(m_view, DialogManageTag::MODE_CREATE_TAG, 0, 0, this, "DialogManageTag");
     if (dialog->exec()) {
 
-        kdDebug() << "[KPhotoBook::slotRemoveSourceDir] dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
+        kdDebug() << "[KPhotoBook::slotAddMaintag] dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
 
         // let the engine create the new tagnode
         TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon());
@@ -1199,7 +1201,9 @@ void KPhotoBook::slotCreateSubtag() {
     // get the tag to add a child to
     QListViewItem* currentItem = m_tagTree->currentItem();
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
-        && typeid(*currentItem) != typeid(TagTreeNodeBoolean)) {
+        && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
+        && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)
+        && typeid(*currentItem) != typeid(TagTreeNodeRadio)) {
         kdDebug() << "[KPhotoBook::slotCreateSubtag] called on a tree item other than TagTreeNode!" << endl;
         return;
     }
@@ -1229,7 +1233,9 @@ void KPhotoBook::slotEditTag() {
     QListViewItem* currentItem = m_tagTree->currentItem();
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
-        && typeid(*currentItem) != typeid(TagTreeNodeString)) {
+        && typeid(*currentItem) != typeid(TagTreeNodeString)
+        && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)
+        && typeid(*currentItem) != typeid(TagTreeNodeRadio)) {
         kdDebug() << "[KPhotoBook::slotCreateSubtag] called on a tree item other than TagTreeNode!" << endl;
         return;
     }

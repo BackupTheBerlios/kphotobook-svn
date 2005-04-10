@@ -18,37 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FILETAGNODEASSOCBOOLEAN_H
-#define FILETAGNODEASSOCBOOLEAN_H
+#ifndef FILETAGNODEASSOCRADIO_H
+#define FILETAGNODEASSOCRADIO_H
 
 #include "filetagnodeassoc.h"
 #include "../constants.h"
+
 #include <qstring.h>
 
 class File;
-class TagNodeBoolean;
+class TagNodeRadio;
 
 /**
- * Concrete class representing the association between a file and a TagNodeBoolean.
+ * Concrete class representing the association between a file and a TagNodeRadio.
  * This associations contains a reference to the tagnode and the state of the association.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: FileTagNodeAssocRadio.h 274 2005-03-25 08:52:15Z choenig $
  */
-class FileTagNodeAssocBoolean : public FileTagNodeAssoc {
+class FileTagNodeAssocRadio : public FileTagNodeAssoc {
 
 public:
-    FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value = false);
+    FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, bool value = false);
 
-    FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value);
+    FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, QString value);
 
-    ~FileTagNodeAssocBoolean() {
+    ~FileTagNodeAssocRadio() {
         // we don't delete anything!
     }
 
     /**
      * Returns the tagNode associated with this association.
      */
-    TagNodeBoolean* tagNodeBoolean();
+    TagNodeRadio* tagNode();
 
     void setValue(bool value) {
         m_value = value;
@@ -66,7 +67,7 @@ public:
     }
 
     virtual QString valueAsString() {
-        return (m_value ? Constants::STRING_VALUE_TRUE : Constants::STRING_VALUE_FALSE);
+    return (m_value ? Constants::STRING_VALUE_TRUE : Constants::STRING_VALUE_FALSE);
     }
 
     /**

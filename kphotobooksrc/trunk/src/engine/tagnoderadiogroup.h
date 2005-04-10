@@ -18,40 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "filetagnodeassocboolean.h"
+#ifndef TAGNODERADIOGROUP_H
+#define TAGNODERADIOGROUP_H
 
-#include "file.h"
-#include "tagnodeboolean.h"
+#include "tagnode.h"
 
-#include <kdebug.h>
+#include <qstring.h>
+#include <qfile.h>
 
-#include <typeinfo>
+/**
+ * Concrete tagnode implementation representing a radio tag.
+ *
+ * CVS-ID $Id: tagnodeboolean.h 284 2005-03-31 20:03:08Z choenig $
+ */
+class TagNodeRadioGroup : public TagNode {
 
+public:
+    TagNodeRadioGroup(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
 
-FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value)
-    : FileTagNodeAssoc(file, tagNodeBoolean)
-    , m_value(value) {
-}
-
-
-FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value)
-    : FileTagNodeAssoc(file, tagNodeBoolean)
-    , m_value(value == Constants::STRING_VALUE_TRUE) {
-}
-
-
-TagNodeBoolean* FileTagNodeAssocBoolean::tagNodeBoolean() {
-    return dynamic_cast<TagNodeBoolean*>(m_tagNode);
-}
-
-
-void FileTagNodeAssocBoolean::update(FileTagNodeAssoc* assoc) {
-
-    if (typeid(*assoc) == typeid(FileTagNodeAssocBoolean)) {
-        FileTagNodeAssocBoolean* concreteAssoc = dynamic_cast<FileTagNodeAssocBoolean*>(assoc);
-        m_value = concreteAssoc->value();
-    } else {
-        kdDebug() << "[FileTagNodeAssocBoolean::update] the specified association is not of the type 'FileTagNodeAssocBoolean'." << endl;
+    ~TagNodeRadioGroup() {
     }
-}
+};
 
+#endif

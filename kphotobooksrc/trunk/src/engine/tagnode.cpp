@@ -23,6 +23,8 @@
 #include "tagnodetitle.h"
 #include "tagnodeboolean.h"
 #include "tagnodestring.h"
+#include "tagnoderadiogroup.h"
+#include "tagnoderadio.h"
 
 #include "file.h"
 #include "filetagnodeassoc.h"
@@ -51,7 +53,14 @@ TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QS
     case TagNode::TYPE_STRING:
         newTagNode = new TagNodeString(id, text, comment, iconName, parent);
         break;
+    case TagNode::TYPE_RADIOGROUP:
+        newTagNode = new TagNodeRadioGroup(id, text, comment, iconName, parent);
+        break;
+    case TagNode::TYPE_RADIO:
+        newTagNode = new TagNodeRadio(id, text, comment, iconName, parent);
+        break;
     default:
+        kdDebug() << "[TagNode::createInstance()] Called with unknown TypeID!" << endl;
         return 0;
     }
 

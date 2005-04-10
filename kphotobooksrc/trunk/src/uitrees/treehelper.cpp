@@ -27,6 +27,7 @@
 
 #include <qstyle.h>
 #include <qcheckbox.h>
+#include <qradiobutton.h>
 
 
 void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked, bool enabled) {
@@ -107,5 +108,79 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, in
 
     // draw the checkbox
     style.drawControl(QStyle::CE_CheckBox, p, &checkBox, rect, cg, flags);
+}
+
+
+void TreeHelper::drawRadioButton(QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled)
+{
+kdDebug() << "tristate: " << tristate << endl;   
+
+    
+    static QRadioButton radioBtn(0);
+
+    radioBtn.setEnabled(enabled);
+
+    //TODO how to emulate tristate here?
+    if (tristate == 0) {
+        radioBtn.setChecked(true);
+        radioBtn.setEnabled(false);
+    } else {
+        radioBtn.setChecked(tristate > 0);
+    }
+    
+    
+
+    QStyle& style = KApplication::kApplication()->style();
+
+    QStyle::SFlags flags = QStyle::Style_Default;
+    if ( radioBtn.isEnabled() )
+        flags |= QStyle::Style_Enabled;
+    if ( radioBtn.hasFocus() )
+        flags |= QStyle::Style_HasFocus;
+    if ( radioBtn.isDown() )
+        flags |= QStyle::Style_Down;
+    if ( radioBtn.hasMouse() )
+        flags |= QStyle::Style_MouseOver;
+    if ( radioBtn.state() == QButton::On )
+        flags |= QStyle::Style_On;
+    else if ( radioBtn.state() == QButton::Off )
+        flags |= QStyle::Style_Off;
+    else if ( radioBtn.state() == QButton::NoChange )
+        flags |= QStyle::Style_NoChange;
+    
+    
+    style.drawControl(QStyle::CE_RadioButton, p, &radioBtn, rect, cg, flags);
+}
+
+
+void TreeHelper::drawRadioButton(QPainter* p, const QColorGroup& cg, QRect rect, bool checked, bool enabled) 
+{
+    static QRadioButton radioBtn(0);
+    
+    radioBtn.setChecked(checked);
+    radioBtn.setEnabled(enabled);
+    
+    QStyle& style = KApplication::kApplication()->style();
+    
+    // copied from qcheckbox.cpp
+    QStyle::SFlags flags = QStyle::Style_Default;
+    if ( radioBtn.isEnabled() )
+        flags |= QStyle::Style_Enabled;
+    if ( radioBtn.hasFocus() )
+        flags |= QStyle::Style_HasFocus;
+    if ( radioBtn.isDown() )
+        flags |= QStyle::Style_Down;
+    if ( radioBtn.hasMouse() )
+        flags |= QStyle::Style_MouseOver;
+    if ( radioBtn.state() == QButton::On )
+        flags |= QStyle::Style_On;
+    else if ( radioBtn.state() == QButton::Off )
+        flags |= QStyle::Style_Off;
+    else if ( radioBtn.state() == QButton::NoChange )
+        flags |= QStyle::Style_NoChange;
+    
+    // draw the checkbox
+    style.drawControl(QStyle::CE_RadioButton, p, &radioBtn, rect, cg, flags);
+    
 }
 
