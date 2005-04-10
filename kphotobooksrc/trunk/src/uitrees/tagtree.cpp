@@ -157,13 +157,13 @@ void TagTree::addTagNode(TagNode* rootNode) {
         tagTreeNode = new TagTreeNodeBoolean(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
     } else if (typeid(*rootNode) == typeid(TagNodeString)) {
         TagNodeString* node = dynamic_cast<TagNodeString*>(rootNode);
-        tagTreeNode = new TagTreeNodeString(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+        tagTreeNode = new TagTreeNodeString(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
     } else if (typeid(*rootNode) == typeid(TagNodeRadioGroup)) {
         TagNodeRadioGroup* node = dynamic_cast<TagNodeRadioGroup*>(rootNode);
         tagTreeNode = new TagTreeNodeRadioGroup(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
     } else if (typeid(*rootNode) == typeid(TagNodeRadio)) {
         TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(rootNode);
-        tagTreeNode = new TagTreeNodeRadio(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+        tagTreeNode = new TagTreeNodeRadio(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
     } else {
         kdWarning() << "[TagTree::addTagNode] unknown root tagtype received: " << rootNode->type() << "!"<< endl;
     }
@@ -188,13 +188,13 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
         tagTreeNode = new TagTreeNodeBoolean(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
     } else if (typeid(*child) == typeid(TagNodeString)) {
         TagNodeString* node = dynamic_cast<TagNodeString*>(child);
-        tagTreeNode = new TagTreeNodeString(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+        tagTreeNode = new TagTreeNodeString(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
     } else if (typeid(*child) == typeid(TagNodeRadioGroup)) {
         TagNodeRadioGroup* node = dynamic_cast<TagNodeRadioGroup*>(child);
         tagTreeNode = new TagTreeNodeRadioGroup(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
     } else if (typeid(*child) == typeid(TagNodeRadio)) {
         TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(child);
-        tagTreeNode = new TagTreeNodeRadio(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+        tagTreeNode = new TagTreeNodeRadio(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
     } else {
         kdWarning() << "[TagTree::addTagNode] unknown sub tagtype received: " << child->type() << "!"<< endl;
     }

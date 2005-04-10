@@ -21,7 +21,7 @@
 #include <kmessagebox.h>
 #include <krun.h>
 #include <klocale.h>
-#include <kdebug.h>
+//#include <kdebug.h>
 #include <kprocess.h>
 #include <kfileiconview.h>
 
@@ -32,9 +32,14 @@
 #include <qpopupmenu.h>
 
 
+Tracer* KPhotoBookView::tracer = Tracer::getInstance("kde.kphotobook", "KphotoBookView");
+
+
 KPhotoBookView::KPhotoBookView(QWidget *parent)
     : KMdiChildView(parent)
     , m_currentImagePreviewSize(-1) {
+
+    tracer->setTraceLevel(Tracer::LEVEL_DEBUG);
 
     // store casted pointer to the photobook
     m_photobook = dynamic_cast<KPhotoBook*>(parent);
@@ -63,7 +68,8 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
 
 KPhotoBookView::~KPhotoBookView() {
 
-    kdDebug() << "KPhotoBookView::~KPhotoBookView() invoked..." << endl;
+    tracer->invoked("~KPhotoBookView");
+//    kdDebug() << "KPhotoBookView::~KPhotoBookView() invoked..." << endl;
 
     // remove the current previewed files
     //m_fileView->clearView();
@@ -81,7 +87,8 @@ void KPhotoBookView::removeTagNode(TagTreeNode* node) {
 
 void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
 
-    kdDebug() << "[KPhotoBookView::updateFiles] updating the displayed images." << endl;
+    tracer->invoked("updateFiles", "updating the displayed images...");
+//    kdDebug() << "[KPhotoBookView::updateFiles] updating the displayed images." << endl;
 
     // remember all selected files if no selected files are specified
     QPtrList<KFileItem> temp;
@@ -195,7 +202,9 @@ void KPhotoBookView::slotShowCurrentImage() {
 
     QString tool = Settings::toolsDefaultExternalTool();
 
-    kdDebug() << "Showing file in " << tool << ". url=<" << file.url() << ">, path=<" << file.path() << ">" << endl;
+//    tracer->debug("slotShowCurrentImage", "Showing file in %s. url=<%s>, path=<%s>", tool.ascii(), file.url().ascii(), file.path().ascii());
+    tracer->sdebug("slotShowCurrentImage") << "Showing file in " << tool << ". url=<" << file.url() << ">, path=<" << file.path() << ">" << endl;
+//    kdDebug() << "Showing file in " << tool << ". url=<" << file.url() << ">, path=<" << file.path() << ">" << endl;
 
     KProcess *proc = new KProcess();
 

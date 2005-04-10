@@ -14,6 +14,8 @@
 
 #include <kmdichildview.h>
 
+#include "tracer/tracer.h"
+
 class KPhotoBook;
 class SourceDir;
 class SourceDirTree;
@@ -34,9 +36,12 @@ class TagTreeNodeTitle;
  * @author Michael Christen <starcube@my-mail.ch>
  * @version 0.1
  */
-class KPhotoBookView : public KMdiChildView {// QWidget {
+class KPhotoBookView : public KMdiChildView {
 
     Q_OBJECT
+    
+private:
+    static Tracer* tracer;
 
 public:
     /**
@@ -95,3 +100,4 @@ private:
 };
 
 #endif
+
