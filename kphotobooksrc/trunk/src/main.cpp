@@ -25,35 +25,14 @@ static const char description[] = I18N_NOOP(
 static const char version[] = "0.0.7";
 
 static KCmdLineOptions options[] = {
-  { "+[URL]", I18N_NOOP( "Document to open." ), 0 },
-  KCmdLineLastOption
+    { "tracelevel <level>", I18N_NOOP("The tracelevel to use.\nPossible values: DEBUG, INVOKED, INFO, WARNING, ERROR, FATAL"), "INFO" },
+    { "+[URL]", I18N_NOOP("Document to open."), 0 },
+    KCmdLineLastOption
 };
 
 
 int main(int argc, char** argv) {
 
-    Tracer::getRootTracer()->setTraceLevel(Tracer::LEVEL_DEBUG, true);
-
-    /*
-    tracer->invoked("main");
-    tracer->invoked("main", "invoked... %d", argc);
-    tracer->invoked("main", "invoked... %d", argc);
-    
-    tracer->sdebug("main") << "debug number " << "fuck" << endl;
-
-    tracer->invoked("main", "invoked number %s", "fuck");
-    tracer->info("main", "info number %s", "fuck");
-    tracer->warning("main", "warning number %s", "fuck");
-    tracer->error("main", "error number %s", "fuck1");
-    tracer->error("main", "error number %s", "fuck2");
-    tracer->error("main", "error number %s", "fuck3");
-    tracer->error("main", "error number %s", "fuck4");
-    
-    //tracer->fatal("main", "fatal number %s", "fuck");
-    
-    //tracer->trace(Tracer::LEVEL_FATAL, "main", "foobar %s", "fuck");
-    */
-    
     KAboutData about("kphotobook", I18N_NOOP("KPhotoBook"), version, description,
                     KAboutData::License_GPL, "(C) 2003, 2004, 2005 Michael Christen",
                     0, // free text, can contain new lines
@@ -66,18 +45,28 @@ int main(int argc, char** argv) {
     about.addAuthor("Daniel Gerber", I18N_NOOP("One of Santa's little helpers.\nAdvises in design and usability questions."));
     
     about.addCredit("George W. Bush, President of the USA", I18N_NOOP("For being a stupid little git."), "idiot@whitehouse.org" );
-    
+
+    // initialize command line options
     KCmdLineArgs::init(argc, argv, &about);
     KCmdLineArgs::addCmdLineOptions(options);
-    
+
+    // parse command line options
+    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+
+    // apply the tracelevel set by the user or the default tracelevel
+    QCString tracelevel = args->getOption("tracelevel");
+    if (!Tracer::getRootTracer()->setTraceLevel(tracelevel, true)) {
+        tracer->sfatal("main") << "Invalid tracelevel specified: '" << tracelevel << "'." << endl;
+    }
+
     KApplication app;
-    
+
+    // determine the MDI Model to use (default is IDEAl)
     KMdi::MdiMode mdiMode = KMdi::IDEAlMode;
     if (Settings::generalViewMode() == Settings::EnumGeneralViewMode::TabPageMode) {
         mdiMode = KMdi::TabPageMode;
     }
     
-    KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
     if (args->count() == 0) {
 
         KPhotoBook* widget = new KPhotoBook(mdiMode);
@@ -90,8 +79,7 @@ int main(int argc, char** argv) {
             widget->load(lastFile);
         }
     } else {
-        int i = 0;
-        for (; i < args->count(); i++) {
+        for (int i = 0; i < args->count(); i++) {
             QFileInfo file(args->url(i).path());
             KPhotoBook* widget = new KPhotoBook(mdiMode);
             widget->show();
@@ -99,6 +87,10 @@ int main(int argc, char** argv) {
         }
     }
     args->clear();
+
+    int returncode = app.exec();
+
+    Tracer::getRootTracer()->dump();
     
-    return app.exec();
+    return returncode;
 }

@@ -39,8 +39,6 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
     : KMdiChildView(parent)
     , m_currentImagePreviewSize(-1) {
 
-    tracer->setTraceLevel(Tracer::LEVEL_DEBUG);
-
     // store casted pointer to the photobook
     m_photobook = dynamic_cast<KPhotoBook*>(parent);
 

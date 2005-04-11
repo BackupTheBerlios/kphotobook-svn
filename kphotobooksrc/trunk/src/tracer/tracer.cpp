@@ -26,7 +26,7 @@
 #include <printf.h>
 
 
-// stolen from kdebug.cpp!
+// stolen from kdebug.cpp...
 enum KDEDebugLevels {
      KDEBUG_INFO=0,
      KDEBUG_WARN=1,
@@ -35,10 +35,20 @@ enum KDEDebugLevels {
 };
 
 
+//
+// initialize static members
+//
+int Tracer::KDEBUG_TRACE_LEVEL_LOOKUP_TABLE[6] = {KDEBUG_INFO, KDEBUG_INFO, KDEBUG_INFO, KDEBUG_WARN, KDEBUG_ERROR, KDEBUG_FATAL};
+QString Tracer::TRACE_LEVEL_NAME[6] = {"DEBUG", "INVOKED", "INFO", "WARNING", "ERROR", "FATAL"};
+QString Tracer::TRACE_LEVEL_NAME_FIXED_LENGTH[6] = {"DEBUG  ", "INVOKED", "INFO   ", "WARNING", "ERROR  ", "FATAL  "};
 QChar Tracer::TRACER_NAME_SEPARATOR('.');
+
 Tracer* Tracer::s_rootTracer = new Tracer("", "", "");
 
-        
+
+//
+// public static methods
+//
 Tracer* Tracer::getInstance(const char* tracername, const char* classname) {
 
     QString strTracername(tracername);
@@ -90,8 +100,13 @@ Tracer* Tracer::getInstance(const char* tracername, const char* classname) {
                 child = new Tracer(currentTracerName, part, "");
             }
 
+            // link the new tracer into the tracer tree
             currentTracer->m_children->append(child);
             child->m_parent = currentTracer;
+
+            // tracers inherit the tracelevel of the parent
+            child->m_tracelevel = currentTracer->m_tracelevel;
+            
             currentTracer = child;
         }
     }
@@ -100,42 +115,9 @@ Tracer* Tracer::getInstance(const char* tracername, const char* classname) {
 }
 
 
-QString Tracer::level2string(TraceLevel level,  int minlength) {
-
-    kdDebug() << "[Tracer::level2string] invoked with level " << level << endl;
-    
-    QString str;
-    
-    switch(level) {
-        case LEVEL_DEBUG:
-            str = "DEBUG";
-            break;
-        case LEVEL_INVOKED:
-            str = "INVOKED";
-            break;
-        case LEVEL_INFO:
-            str = "INFO";
-            break;
-        case LEVEL_WARNING:
-            str = "WARNING";
-            break;
-        case LEVEL_ERROR:
-            str = "ERROR";
-            break;
-        case LEVEL_FATAL:
-            str = "FATAL";
-            break;
-    }
-
-    // append spaces to the get the desired length
-    for (int i = str.length(); i < minlength; i++) {
-        str.append(" ");
-    }
-    
-    return str;
-}
-
-
+//
+// private constructor
+//
 Tracer::Tracer(QString tracername, QString tracerpartname, QString classname)
     : m_tracername(new QString(tracername))
     , m_tracerpartname(new QString(tracerpartname))
@@ -146,8 +128,12 @@ Tracer::Tracer(QString tracername, QString tracerpartname, QString classname)
 }
 
 
+//
+// public methods
+//
 Tracer::~Tracer() {
     delete m_tracername;
+    delete m_tracerpartname;
     delete m_classname;
     delete m_children;
 }
@@ -167,6 +153,23 @@ void Tracer::setTraceLevel(TraceLevel tracelevel, bool recursive) {
 }
 
 
+bool Tracer::setTraceLevel(QString tracelevel, bool recursive) {
+
+    // uppercase the tracelevel to set
+    tracelevel = tracelevel.upper().stripWhiteSpace();
+
+    // determine the id of the tracelevel to set
+    for (int level = 0; level <= 6; level++) {
+        if (tracelevel == TRACE_LEVEL_NAME[level]) {
+            setTraceLevel((TraceLevel)level, recursive);
+            return true;
+        }        
+    }
+
+    return false;
+}
+
+
 void Tracer::debug(const char* method, const char* message, ...) {
 
     // immediately return if the current set tracelevel is higher
@@ -174,7 +177,7 @@ void Tracer::debug(const char* method, const char* message, ...) {
         return;
     }
     
-    // with qt4 the follwing code can be used:
+    // TODO: with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -182,7 +185,7 @@ void Tracer::debug(const char* method, const char* message, ...) {
     str.vsprintf(message, ap);
     va_end(ap);
 
-    doTrace(LEVEL_DEBUG, method, str);
+    sdebug(method) << str << endl;
     */
 
     va_list ap;
@@ -203,7 +206,7 @@ void Tracer::debug(const char* method, const char* message, ...) {
         }
     }
 
-    doTrace(LEVEL_DEBUG, method, str);
+    sdebug(method) << str << endl;
     delete str;
 }
 
@@ -215,7 +218,7 @@ void Tracer::invoked(const char* method) {
         return;
     }
 
-    trace(LEVEL_INVOKED, method, "invoked...");
+    sinvoked(method) << "invoked..." << endl;
 }
 
 
@@ -226,7 +229,7 @@ void Tracer::invoked(const char* method, const char* message, ...) {
         return;
     }
 
-    // with qt4 the follwing code can be used:
+    // TODO: with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -234,7 +237,7 @@ void Tracer::invoked(const char* method, const char* message, ...) {
     str.vsprintf(message, ap);
     va_end(ap);
 
-    doTrace(LEVEL_INVOKED, method, str);
+    sinvoked(method) << str << endl;
     */
 
     va_list ap;
@@ -254,7 +257,8 @@ void Tracer::invoked(const char* method, const char* message, ...) {
             result = maxLength;
         }
     }
-    doTrace(LEVEL_INVOKED, method, str);
+
+    sinvoked(method) << str << endl;
     delete str;
 }
 
@@ -266,7 +270,7 @@ void Tracer::info(const char* method, const char* message, ...) {
         return;
     }
 
-    // with qt4 the follwing code can be used:
+    // TODO: with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -274,7 +278,7 @@ void Tracer::info(const char* method, const char* message, ...) {
     str.vsprintf(message, ap);
     va_end(ap);
 
-    doTrace(LEVEL_INFO, method, str);
+    sinfo(method) << str << endl;
     */
 
     va_list ap;
@@ -295,7 +299,7 @@ void Tracer::info(const char* method, const char* message, ...) {
         }
     }
 
-    doTrace(LEVEL_INFO, method, str);
+    sinfo(method) << str << endl;
     delete str;
 }
 
@@ -307,7 +311,7 @@ void Tracer::warning(const char* method, const char* message, ...) {
         return;
     }
 
-    // with qt4 the follwing code can be used:
+    // TODO: with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -315,7 +319,7 @@ void Tracer::warning(const char* method, const char* message, ...) {
     str.vsprintf(message, ap);
     va_end(ap);
 
-    doTrace(LEVEL_WARNING, method, str);
+    swarning(method) << str << endl;
     */
 
     va_list ap;
@@ -336,7 +340,7 @@ void Tracer::warning(const char* method, const char* message, ...) {
         }
     }
 
-    doTrace(LEVEL_WARNING, method, str);
+    swarning(method) << str << endl;
     delete str;
 }
 
@@ -348,7 +352,7 @@ void Tracer::error(const char* method, const char* message, ...) {
         return;
     }
 
-    // with qt4 the follwing code can be used:
+    // TODO: with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -356,7 +360,7 @@ void Tracer::error(const char* method, const char* message, ...) {
     str.vsprintf(message, ap);
     va_end(ap);
 
-    doTrace(LEVEL_ERROR, method, str);
+    serror(method) << str << endl;
     */
 
     va_list ap;
@@ -377,7 +381,7 @@ void Tracer::error(const char* method, const char* message, ...) {
         }
     }
 
-    doTrace(LEVEL_ERROR, method, str);
+    serror(method) << str << endl;
     delete str;
 }
 
@@ -386,7 +390,7 @@ void Tracer::fatal(const char* method, const char* message, ...) {
 
     // fatal traces cannot be suppressed!
 
-    // with qt4 the follwing code can be used:
+    // TODO: with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -394,7 +398,7 @@ void Tracer::fatal(const char* method, const char* message, ...) {
     str.vsprintf(message, ap);
     va_end(ap);
 
-    doTrace(LEVEL_FATAL, method, str);
+    sfatal(method) << str << endl;
     */
 
     va_list ap;
@@ -415,21 +419,19 @@ void Tracer::fatal(const char* method, const char* message, ...) {
         }
     }
 
-    doTrace(LEVEL_FATAL, method, str);
+    sfatal(method) << str << endl;
     delete str;
 }
 
 
 void Tracer::trace(TraceLevel level, const char* method, const char* message, ...) {
 
-    kdDebug() << "[Tracer::trace] invoked..." << endl;
-    
     // immediately return if the current set tracelevel is higher
     if (m_tracelevel > level) {
         return;
     }
 
-    // with qt4 the follwing code can be used:
+    // TODO: with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -437,7 +439,7 @@ void Tracer::trace(TraceLevel level, const char* method, const char* message, ..
     str.vsprintf(message, ap);
     va_end(ap);
 
-    doTrace(level, method, str);
+    strace(level, method) << str << endl;
     */
 
     va_list ap;
@@ -458,7 +460,7 @@ void Tracer::trace(TraceLevel level, const char* method, const char* message, ..
         }
     }
 
-    doTrace(level, method, str);
+    strace(level, method) << str << endl;
     delete str;
 }
 
@@ -528,28 +530,66 @@ kdbgstream Tracer::sfatal(const char* method) {
 
 kdbgstream Tracer::strace(TraceLevel level, const char* method) {
 
-    kdDebug() << "[Tracer::strace] invoked..." << endl;
-    
-    int kDebugLevel = KDEBUG_INFO;
-    switch (level) {
-        case LEVEL_WARNING:
-            kDebugLevel = KDEBUG_WARN;
-            break;
-        case LEVEL_ERROR:
-            kDebugLevel = KDEBUG_ERROR;
-            break;
-        case LEVEL_FATAL:
-            kDebugLevel = KDEBUG_FATAL;
-            break;
-        default:
-            break;
-    }
-    
     // return a NULL stream if the current set tracelevel is higher
     if (m_tracelevel > level) {
-        return kdbgstream("", 0, kDebugLevel, false);
+        return kdbgstream("", 0, KDEBUG_TRACE_LEVEL_LOOKUP_TABLE[level], false);
     }
 
-    return kdbgstream(prepareMessageHeader(level, method), 0, kDebugLevel, true);
+    return kdbgstream(prepareMessageHeader(level, method), 0, KDEBUG_TRACE_LEVEL_LOOKUP_TABLE[level], true);
 }
 
+
+void Tracer::dump(QString indention) {
+
+    // print some useful infos about this tracer
+    kdbgstream(indention, 0, 999, true)
+            << "- "
+            << *m_tracerpartname
+            << " [" << TRACE_LEVEL_NAME[m_tracelevel] << "] "
+            << "(classname: " << *m_classname << "), "
+            << "fulltracername: " << *m_tracername
+            << endl;
+
+    // call dump on each child
+    Tracer* child;
+    for (child = m_children->first(); child; child = m_children->next()) {
+        child->dump(indention.append("  "));
+    }
+}
+
+
+//
+// private methods
+//
+QString Tracer::prepareMessageHeader(TraceLevel level, const char* method) {
+
+    QString msg;
+
+    msg.append(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    msg.append(" ");
+    msg.append(TRACE_LEVEL_NAME_FIXED_LENGTH[level]);
+    msg.append(" [");
+    msg.append(*m_classname);
+    msg.append("::");
+    msg.append(method);
+    msg.append("] ");
+
+    return msg;
+}
+
+
+Tracer* Tracer::getChild(QString tracerpartname) {
+
+    if (tracerpartname.isEmpty()) {
+        return 0;
+    }
+
+    Tracer* child;
+    for (child = m_children->first(); child; child = m_children->next()) {
+        if (*(child->m_tracerpartname) == tracerpartname) {
+            return child;
+        }
+    }
+
+    return 0;
+}
