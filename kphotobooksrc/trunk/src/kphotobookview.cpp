@@ -21,7 +21,6 @@
 #include <kmessagebox.h>
 #include <krun.h>
 #include <klocale.h>
-//#include <kdebug.h>
 #include <kprocess.h>
 #include <kfileiconview.h>
 
@@ -32,7 +31,7 @@
 #include <qpopupmenu.h>
 
 
-Tracer* KPhotoBookView::tracer = Tracer::getInstance("kde.kphotobook", "KphotoBookView");
+Tracer* KPhotoBookView::tracer = Tracer::getInstance("kde.kphotobook", "KPhotoBookView");
 
 
 KPhotoBookView::KPhotoBookView(QWidget *parent)
@@ -67,8 +66,8 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
 KPhotoBookView::~KPhotoBookView() {
 
     tracer->invoked("~KPhotoBookView");
-//    kdDebug() << "KPhotoBookView::~KPhotoBookView() invoked..." << endl;
 
+    // TODO
     // remove the current previewed files
     //m_fileView->clearView();
 
@@ -86,7 +85,6 @@ void KPhotoBookView::removeTagNode(TagTreeNode* node) {
 void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
 
     tracer->invoked("updateFiles", "updating the displayed images...");
-//    kdDebug() << "[KPhotoBookView::updateFiles] updating the displayed images." << endl;
 
     // remember all selected files if no selected files are specified
     QPtrList<KFileItem> temp;
@@ -200,9 +198,7 @@ void KPhotoBookView::slotShowCurrentImage() {
 
     QString tool = Settings::toolsDefaultExternalTool();
 
-//    tracer->debug("slotShowCurrentImage", "Showing file in %s. url=<%s>, path=<%s>", tool.ascii(), file.url().ascii(), file.path().ascii());
-    tracer->sdebug("slotShowCurrentImage") << "Showing file in " << tool << ". url=<" << file.url() << ">, path=<" << file.path() << ">" << endl;
-//    kdDebug() << "Showing file in " << tool << ". url=<" << file.url() << ">, path=<" << file.path() << ">" << endl;
+    tracer->debug("slotShowCurrentImage", "Showing file in %s. url=<%s>, path=<%s>", tool.ascii(), file.url().ascii(), file.path().ascii());
 
     KProcess *proc = new KProcess();
 

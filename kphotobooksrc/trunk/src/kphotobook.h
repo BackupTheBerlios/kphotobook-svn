@@ -24,6 +24,7 @@
 #include "settings/settings.h"
 #include "exception.h"
 #include "engine/tagnode.h"
+#include "tracer/tracer.h"
 
 #include <kaction.h>
 #include <kapplication.h>
@@ -67,6 +68,9 @@ class SourceDirTree;
 class KPhotoBook : public KMdiMainFrm {
 
     Q_OBJECT
+
+private:
+    static Tracer* tracer;
 
 public:
     /**

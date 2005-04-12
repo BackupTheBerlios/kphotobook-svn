@@ -5,6 +5,8 @@
 #ifndef _KPHOTOBOOKVIEW_H_
 #define _KPHOTOBOOKVIEW_H_
 
+#include "tracer/tracer.h"
+
 #include <kfileiconview.h>
 
 #include <qwidget.h>
@@ -13,8 +15,6 @@
 #include <qptrlist.h>
 
 #include <kmdichildview.h>
-
-#include "tracer/tracer.h"
 
 class KPhotoBook;
 class SourceDir;

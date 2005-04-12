@@ -34,8 +34,75 @@
  * we forgot a lot of useful methods...
  *
  * ATTENTION: a trace with tracelevel 'FATAL' will abort the application!
- *
  * 
+ * A message is traced only if its trace level is greater or equal to the tracelevel
+ * of the used tracer instance.
+ *
+ * In order to use a Tracer in a class you have to get an instance of it first.
+ * You get this instance by calling the static method getInstance(...).
+ * We recommend to use tracernames reflecting the directory or namespace the tracer
+ * is used in. The parts of the tracername must be separated with a dot (.).
+ * 
+ * <pre>
+ *   static Tracer* tracer = Tracer::getInstance( "kde.kphotobook", "main" );
+ * </pre>
+ * If you use the same name twice or more you always get the same instance of the tracer.
+ *
+ * If you instantiate Tracers with the following parameters
+ * <ul>
+ *   <li>"kde.kphotobook.engine", "Engine"</li>
+ *   <li>"kde.kphotobook.uitrees", "TagTree"</li>
+ *   <li>"kde.kphotobook.uitrees", "TreeHelper"</li>
+ * </ul>
+ * a tree of Tracers will be created as shown below.
+ * </p>
+ * <pre>
+ *                                  [root-Tracer]
+ *                                       |
+ *                                       |
+ *                                     [kde]
+ *                                       |
+ *                                       |
+ *                                   [kphotobook]
+ *                                       /\
+ *                                      /  \
+ *                                     /    \
+ *                                    /      \
+ *                                   /        \
+ *                               [engine]   [uitrees]
+ *                                  |           /\
+ *                                  |          /  \
+ *                             [Engine]       /    \
+ *                                           /      \
+ *                                          /        \
+ *                                      [TagTree] [TreeHelper]
+ * </pre>
+ * The big advantage of this tracer framework is that you can specify
+ * very detailled which trace messages you want to see...
+ * 
+ * Initially all new Tracers in the tree inherit the configuration of their
+ * parent. If you change the configuration of a Tracer, you can specify
+ * that only this Tracer should be adjusted or the whole subtree below this
+ * Tracer as well (recursive).
+ *
+ * There are two different ways to trace messages:
+ * - via the vararg methods:
+ *     tracer->debug("mymethod", "The value %d is invalid!", myvalue)
+ * - using streams
+ *     tracer->sdebug("mymethod") << "The value " << myvalue << " is invalid!" << endl;
+ * We don't prefere one of these ways to trace. Both methods have advantages and
+ * disadvantages. E.g. with the vararg method you cannot trace QStrings directly,
+ * you must use the method ascii() method on the string first:
+ *     tracer->debug("mymethod", "The string %s is invalid!", mystring.ascii())
+ *
+ * There also exists an isXxxEnabled() method for each tracelevel. These methods can
+ * be useful for improving performance! If you are tracing a debug message in a
+ * method which is executed very often, this can be very time consuming even
+ * the message is not traced at all. To avoid the execution of the code totally
+ * you should execute the trace statement only if it would be traced:
+ * if (tracer->isDebugEnabled()) {
+ *     tracer->debug("mymethod", "mymessage", myparameter)
+ * }
  *
  * CVS-ID $Id: tagnode.h 299 2005-04-08 22:16:51Z starcube $
  */
@@ -92,7 +159,6 @@ public:
      * Returns the root tracer. This is the toplevel tracer instance.
      */
     static Tracer* getRootTracer() {
-
         return s_rootTracer;
     }
 
@@ -136,8 +202,29 @@ public:
      * @return the currently set tracelevel.
      */
     TraceLevel getTraceLevel() {
-        
         return m_tracelevel;
+    }
+
+    bool isDebugEnabled() {
+        return LEVEL_DEBUG >= m_tracelevel;
+    }
+    bool isInvokedEnabled() {
+        return LEVEL_INVOKED >= m_tracelevel;
+    }
+    bool isInfoEnabled() {
+        return LEVEL_INFO >= m_tracelevel;
+    }
+    bool isWarningEnabled() {
+        return LEVEL_WARNING >= m_tracelevel;
+    }
+    bool isErrorEnabled() {
+        return LEVEL_ERROR >= m_tracelevel;
+    }
+    bool isFatalEnabled() {
+        return true;
+    }
+    bool isTraceEnabled(TraceLevel level) {
+        return level >= m_tracelevel;
     }
     
     void debug(const char* method, const char* message, ...);    
@@ -148,7 +235,7 @@ public:
     void error(const char* method, const char* message, ...);    
     void fatal(const char* method, const char* message, ...);    
     void trace(TraceLevel level, const char* method, const char* message, ...);
-    
+
     kdbgstream sdebug(const char* method);
     kdbgstream sinvoked(const char* method);
     kdbgstream sinfo(const char* method);
@@ -185,7 +272,7 @@ private:
 
 private:
     /**
-     * The root tracer.
+     * The root tracer is the topmost tracer in the hierarchy of tracer instances.
      */
     static Tracer* s_rootTracer;
 

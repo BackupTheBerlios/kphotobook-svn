@@ -111,6 +111,15 @@ Tracer* Tracer::getInstance(const char* tracername, const char* classname) {
         }
     }
 
+    // if a classname is specified but the resulting tracer has no one set
+    // the tracer was already instantiated without a classname set
+    // this most likely occurs when the tracer was configured by a traceconfigfile
+    // --> force the classname
+    if (!strClassname.isEmpty() && currentTracer->m_classname->isEmpty()) {
+        currentTracer->m_classname = new QString(strClassname);
+    }
+    
+
     return currentTracer;
 }
 
@@ -122,7 +131,7 @@ Tracer::Tracer(QString tracername, QString tracerpartname, QString classname)
     : m_tracername(new QString(tracername))
     , m_tracerpartname(new QString(tracerpartname))
     , m_classname(new QString(classname))
-    , m_tracelevel(LEVEL_INFO)
+    , m_tracelevel(LEVEL_DEBUG)
     , m_parent(0)
     , m_children(new QPtrList<Tracer>()) {
 }
@@ -189,7 +198,7 @@ void Tracer::debug(const char* method, const char* message, ...) {
     */
 
     va_list ap;
-
+    
     int maxLength = 1024;
     int result = maxLength;
     char* str;
@@ -551,9 +560,10 @@ void Tracer::dump(QString indention) {
             << endl;
 
     // call dump on each child
+    indention.append("  ");
     Tracer* child;
     for (child = m_children->first(); child; child = m_children->next()) {
-        child->dump(indention.append("  "));
+        child->dump(indention);
     }
 }
 

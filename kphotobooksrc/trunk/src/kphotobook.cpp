@@ -83,8 +83,6 @@
 #include <kmditoolviewaccessor.h>
 #include <kurlrequesterdlg.h>
 
-#include <kdebug.h>
-
 #include <qdragobject.h>
 #include <qpainter.h>
 #include <qpaintdevicemetrics.h>
@@ -97,6 +95,9 @@
 #include <qstringlist.h>
 
 #include <typeinfo>
+
+
+Tracer* KPhotoBook::tracer = Tracer::getInstance("kde.kphotobook", "KPhotoBook");
 
 
 KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
@@ -246,13 +247,13 @@ bool KPhotoBook::isTagTextValid(TagTreeNode* parent, QString& text) {
 
 void KPhotoBook::load(QFileInfo& fileinfo) {
 
-    kdDebug() << "[KPhotoBook::load] invoked with file: " << fileinfo.absFilePath() << endl;
+    tracer->sinvoked("load") << "invoked with file: " << fileinfo.absFilePath() << endl;
 
     Engine* newEngine = 0;
     try {
         newEngine = new Engine(fileinfo);
     } catch(EngineException* ex) {
-        kdError() << "[KPhotoBook::load] Caught an exception during loading the file '" << fileinfo.absFilePath() << "'. Aborting loading. Exception: " << ex->toString() << endl;
+        tracer->serror("load") << "Caught an exception during loading the file '" << fileinfo.absFilePath() << "'. Aborting loading. Exception: " << ex->toString() << endl;
         QString msg = QString(i18n("Could not open file: '%1'")).arg(fileinfo.absFilePath());
         KMessageBox::detailedSorry(m_view, msg, ex->toString(), i18n("Opening file failed"));
 
@@ -261,12 +262,12 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
 //        delete ex;
     }
 
-    kdDebug() << "[KPhotoBook::load] newEngine instantiated: " << newEngine << endl;
+    tracer->sdebug("load") << "New engine instantiated: " << newEngine << endl;
 
     // load the new engine if there is any
     if (newEngine) {
 
-        kdDebug() << "[KPhotoBook::load] deleting engine: " << m_engine << endl;
+        tracer->sdebug("load") << "Deleting current engine: " << m_engine << endl;
 
         // delete current engine
         delete m_engine;
@@ -295,7 +296,7 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
         // add the files to the view
         m_view->updateFiles();
     } else {
-        kdDebug() << "[KPhotoBook::load] nothing done, m_engine: " << m_engine << endl;
+        tracer->sdebug("load") << "Nothing done, still using old m_engine: " << m_engine << endl;
     }
 }
 
@@ -727,7 +728,7 @@ QPtrList<File>* KPhotoBook::files(QString filter) {
 //
 bool KPhotoBook::queryClose() {
 
-    kdDebug() << "[KPhotoBook::queryClose] invoked" << endl;
+    tracer->invoked("queryClose");
 
     //store returnvalue temporary...
     bool retval = true;
@@ -832,7 +833,7 @@ bool KPhotoBook::queryClose() {
 // the images.
 bool KPhotoBook::checkForUntagged()
 {
-    kdDebug() << "[KPhotoBook::checkForUntagged] invoked" << endl;
+    tracer->invoked("checkForUntagged");
 
     // only perform the check if the user likes to have that feature
     if (! Settings::generalCheckUntaggedOnExit() ) {
@@ -857,7 +858,7 @@ bool KPhotoBook::checkForUntagged()
             return false;
         }
     } else {
-         kdDebug() << "[KPhotoBook::checkForUntagged] No untagged files found." << endl;
+        tracer->info("checkForUntagged", "No untagged files found.");
     }
 
     return true;
@@ -867,8 +868,9 @@ bool KPhotoBook::checkForUntagged()
 
 bool KPhotoBook::queryExit() {
 
-    kdDebug() << "[KPhotoBook::queryExit] invoked..." << endl;
+    tracer->invoked("queryExit");
 
+    // TODO
 //    saveMainWindowSettings(kapp->config());
 
     return true;
@@ -1090,30 +1092,30 @@ void KPhotoBook::slotOptionsPreferences() {
 
 void KPhotoBook::slotAddSourcedir() {
 
-    kdDebug() << "[KPhotoBook::slotAddSourcedir] called... " << endl;
+    tracer->invoked("slotAddSourcedir");
 
     DialogAddSourceDir* dialog = new DialogAddSourceDir(m_view, "DialogAddSourceDir");
 
     bool newDirIsOk = false;
     while (!newDirIsOk && dialog->exec()) {
 
-        kdDebug() << "[KPhotoBook::slotAddSourcedir] dialog exited with OK, dir: " << dialog->directory()->absPath() << ", recursive: " << dialog->recursive() << endl;
+        tracer->sdebug("slotAddSourcedir") << "Dialog exited with OK, dir: " << dialog->directory()->absPath() << ", recursive: " << dialog->recursive() << endl;
 
         try {
             // add the sourcedir to the engine
             SourceDir* sourceDir = addSourceDir(dialog->directory(), dialog->recursive());
 
-            kdDebug() << "[KPhotoBook::slotAddSourcedir] new sourcedirectory is ok. adding it to the view..." << endl;
+            tracer->debug("slotAddSourcedir", "New sourcedirectory is ok. adding it to the view...");
             m_sourcedirTree->addSourceDir(sourceDir);
 
             // update the view to display the new found files
-            kdDebug() << "[KPhotoBook::slotAddSourcedir] updating fileview" << endl;
+            tracer->debug("slotAddSourcedir", "updating fileview");
             m_view->updateFiles();
 
             // sourcedir added successfully
             newDirIsOk = true;
         } catch(EngineException* ex) {
-            kdDebug() << "[KPhotoBook::slotAddSourcedir] adding choosen sourcedir failed, dir: " << dialog->directory()->absPath() << ", recursive: " << dialog->recursive() << endl;
+            tracer->serror("slotAddSourcedir") << "adding choosen sourcedir failed, dir: " << dialog->directory()->absPath() << ", recursive: " << dialog->recursive() << endl;
 
             KMessageBox::detailedError(dialog, ex->message(), ex->detailMessage(), i18n("Adding sourcedir failed"));
 
@@ -1128,8 +1130,9 @@ void KPhotoBook::slotAddSourcedir() {
 
 void KPhotoBook::slotEditSourceDir() {
 
-    kdDebug() << "[KPhotoBook::slotEditSourceDir] called... " << endl;
-    kdDebug() << "NOT IMPLEMENTED YET" << endl;
+    tracer->invoked("slotEditSourceDir");
+    
+    tracer->error("slotEditSourceDir", "NOT IMPLEMENTED YET");
 
     // TODO: implement SourceDirPopupMenu::editSourceDir()
 }
@@ -1137,7 +1140,7 @@ void KPhotoBook::slotEditSourceDir() {
 
 void KPhotoBook::slotRemoveSourceDir() {
 
-    kdDebug() << "[KPhotoBook::slotRemoveSourceDir] called... " << endl;
+    tracer->invoked("slotRemoveSourceDir");
 
     // get the sourcedir to remove from the tagtree
     SourceDirTreeNode* currentNode = m_sourcedirTree->selectedSourceDir();
@@ -1151,6 +1154,8 @@ void KPhotoBook::slotRemoveSourceDir() {
     );
 
     if (button == KMessageBox::Yes) {
+        tracer->sinfo("slotRemoveSourceDir") << "Removing source directory: " << currentNode->sourceDir()->dir()->absPath() << endl;
+        
         // remove all items from the view without deleting them
         m_view->removeAllFiles();
 
@@ -1160,29 +1165,23 @@ void KPhotoBook::slotRemoveSourceDir() {
         // remove the sourcedir from the engine
         removeSourceDir(currentNode->sourceDir());
 
-        kdDebug() << "[KPhotoBook::slotRemoveSourceDir] sourcedirs removed from engine... " << endl;
-
         // remove the sourcedir from the view
         m_sourcedirTree->removeSourceDir(currentNode);
-
-        kdDebug() << "[KPhotoBook::slotRemoveSourceDir] sourcedirnode from sourcedirtree removed... " << endl;
 
         // update the shown files
         m_view->updateFiles();
     }
-
-    kdDebug() << "[KPhotoBook::slotRemoveSourceDir] ended... " << endl;
 }
 
 
 void KPhotoBook::slotAddMaintag() {
 
-    kdDebug() << "[KPhotoBook::slotAddMaintag] called... " << endl;
+    tracer->invoked("slotAddMaintag");
 
     DialogManageTag* dialog = new DialogManageTag(m_view, DialogManageTag::MODE_CREATE_TAG, 0, 0, this, "DialogManageTag");
     if (dialog->exec()) {
 
-        kdDebug() << "[KPhotoBook::slotAddMaintag] dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
+        tracer->sinfo("slotAddMaintag") << "Dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
 
         // let the engine create the new tagnode
         TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon());
@@ -1196,7 +1195,7 @@ void KPhotoBook::slotAddMaintag() {
 
 void KPhotoBook::slotCreateSubtag() {
 
-    kdDebug() << "[KPhotoBook::slotCreateSubtag] called... " << endl;
+    tracer->invoked("slotCreateSubtag");
 
     // get the tag to add a child to
     QListViewItem* currentItem = m_tagTree->currentItem();
@@ -1204,7 +1203,8 @@ void KPhotoBook::slotCreateSubtag() {
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
         && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)
         && typeid(*currentItem) != typeid(TagTreeNodeRadio)) {
-        kdDebug() << "[KPhotoBook::slotCreateSubtag] called on a tree item other than TagTreeNode!" << endl;
+        
+        tracer->error("slotCreateSubtag", "Called on a tree item other than TagTreeNode!");
         return;
     }
     TagTreeNode* parent = dynamic_cast<TagTreeNode*>(currentItem);
@@ -1212,7 +1212,7 @@ void KPhotoBook::slotCreateSubtag() {
     DialogManageTag* dialog = new DialogManageTag(m_view, DialogManageTag::MODE_CREATE_TAG, parent, 0, this, "DialogManageTag");
     if (dialog->exec()) {
 
-        kdDebug() << "[KPhotoBook::slotCreateSubtag] dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
+        tracer->sdebug("slotCreateSubtag") << "Dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
 
         // let the engine create the new tagnode
         TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon(), parent->tagNode());
@@ -1227,7 +1227,7 @@ void KPhotoBook::slotCreateSubtag() {
 
 void KPhotoBook::slotEditTag() {
 
-    kdDebug() << "[KPhotoBook::slotEditTag] called... " << endl;
+    tracer->invoked("slotEditTag");
 
     // get the tag to add a child to
     QListViewItem* currentItem = m_tagTree->currentItem();
@@ -1236,7 +1236,8 @@ void KPhotoBook::slotEditTag() {
         && typeid(*currentItem) != typeid(TagTreeNodeString)
         && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)
         && typeid(*currentItem) != typeid(TagTreeNodeRadio)) {
-        kdDebug() << "[KPhotoBook::slotCreateSubtag] called on a tree item other than TagTreeNode!" << endl;
+        
+        tracer->error("slotEditTag", "Called on a tree item other than TagTreeNode!");
         return;
     }
     TagTreeNode* tagTreeNode = dynamic_cast<TagTreeNode*>(currentItem);
@@ -1244,7 +1245,7 @@ void KPhotoBook::slotEditTag() {
     DialogManageTag* dialog = new DialogManageTag(m_view, DialogManageTag::MODE_EDIT_TAG, 0, tagTreeNode, this, "DialogManageTag");
     if (dialog->exec()) {
 
-        kdDebug() << "[KPhotoBook::slotEditTag] dialog exited with OK, newname: " << dialog->tagName() << ", newicon: " << dialog->tagIcon() << endl;
+        tracer->sdebug("slotEditTag") << "Dialog exited with OK, newname: " << dialog->tagName() << ", newicon: " << dialog->tagIcon() << endl;
 
         // update the tagnode and the tagtreenode
         m_engine->editTag(tagTreeNode->tagNode(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon());
@@ -1259,14 +1260,16 @@ void KPhotoBook::slotEditTag() {
 
 void KPhotoBook::slotDeleteTag() {
 
-    kdDebug() << "[KPhotoBook::slotDeleteTag] called... " << endl;
+    tracer->invoked("slotDeleteTag");
 
     // get the tag to add a child to
     QListViewItem* currentItem = m_tagTree->currentItem();
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
         && typeid(*currentItem) != typeid(TagTreeNodeString)) {
-        kdDebug() << "[KPhotoBook::slotDeleteTag] called on a tree item other than TagTreeNode!" << endl;
+        // TODO: can't we delete RadioGroup and Radio
+        
+        tracer->error("slotDeleteTag", "Called on a tree item other than TagTreeNode!");
         return;
     }
     TagTreeNode* tagTreeNode = dynamic_cast<TagTreeNode*>(currentItem);
@@ -1281,6 +1284,9 @@ void KPhotoBook::slotDeleteTag() {
     );
 
     if (button == KMessageBox::Yes) {
+        
+        tracer->sdebug("slotDeleteTag") << "Dialog exited with OK, deleteing tag: " << *(tagTreeNode->tagNode()->text()) << endl;
+
         // remove the tag from the engine
         m_engine->removeTag(tagTreeNode->tagNode());
 
@@ -1297,7 +1303,7 @@ void KPhotoBook::slotDeleteTag() {
 
 void KPhotoBook::slotToggleLockUnlockTagging() {
 
-    kdDebug() << "[KPhotoBook::slotToggleLockUnlockTagging] called... " << endl;
+    tracer->invoked("slotToggleLockUnlockTagging");
     
     Settings::setTagTreeLocked(!Settings::tagTreeLocked());
     
@@ -1307,7 +1313,7 @@ void KPhotoBook::slotToggleLockUnlockTagging() {
 
 void KPhotoBook::slotRescanFilesystem() {
 
-    kdDebug() << "[KPhotoBook::slotRescanFilesystem] called... " << endl;
+    tracer->invoked("slotRescanFilesystem");
 
     m_engine->rescanSourceDirs();
 
@@ -1403,7 +1409,7 @@ void KPhotoBook::slotChangePreviewSizeActivated(int percent)
         newSize = Constants::SETTINGS_MIN_PREVIEW_SIZE;
     }
 
-    kdDebug() << "[KPhotoBook::slotChangePreviewSizeActivated()] New preview size is " << newSize << " pixels." << endl;
+    tracer->debug("slotChangePreviewSizeActivated", "New preview size is %i pixels.", newSize);
 
     Settings::setImagePreviewSize(newSize);
 
@@ -1533,7 +1539,7 @@ void KPhotoBook::slotFileSelectionChanged() {
 
     // show EXIF info if only one image is seleced
     if (m_view->fileView()->selectedItems()->count() == 1) {
-        kdDebug() << "one file is selected --> getting meta infos" << endl;
+        tracer->debug("slotFileSelectionChanged", "One file is selected --> getting meta infos");
         
         QPtrListIterator<KFileItem> tempIt(*m_view->fileView()->selectedItems());
         KFileItem* selectedFile = tempIt.current();
@@ -1544,7 +1550,7 @@ void KPhotoBook::slotFileSelectionChanged() {
         QStringList groups = metaInfo.groups();
         KListViewItem* currentGroup = 0;
         for ( QStringList::Iterator groupIt = groups.begin(); groupIt != groups.end(); ++groupIt ) {
-            kdDebug() << "Handling metainfo group: " << *groupIt << endl;
+            tracer->sdebug("slotFileSelectionChanged") << "Handling metainfo group: " << *groupIt << endl;
             currentGroup = new KListViewItem(m_metaInfoTree, *groupIt);
             currentGroup->setOpen(true);
             KFileMetaInfoGroup group = metaInfo.group(*groupIt);
@@ -1553,7 +1559,7 @@ void KPhotoBook::slotFileSelectionChanged() {
 
             // iterate over keys
             for ( QStringList::Iterator keysIt = keys.begin(); keysIt != keys.end(); ++keysIt ) {
-                kdDebug() << "Handling metainfo key: " << *keysIt << endl;
+                tracer->sdebug("slotFileSelectionChanged") << "Handling metainfo key: " << *keysIt;
                 KFileMetaInfoItem item = group.item(*keysIt);
                 QString value = item.string();
 
@@ -1673,7 +1679,7 @@ void KPhotoBook::slotExportMatchingFiles() {
     if (!choosedDir.isEmpty()) {
         Settings::setFileSystemLastExportedToDirectory(choosedDir);
 
-        kdDebug() << "[KPhotoBook::slotExportSelectedFiles] exporting to '" << choosedDir << "'..." << endl;
+        tracer->debug("slotExportMatchingFiles", "Exporting to '%s'...", choosedDir.ascii());
         changeStatusbar(i18n("Exporting symbolic links..."));
         
         ExportSymlinks exporter(m_view, choosedDir);
@@ -1695,7 +1701,7 @@ void KPhotoBook::slotExportSelectedFiles() {
     
         Settings::setFileSystemLastExportedToDirectory(choosedDir);
 
-        kdDebug() << "[KPhotoBook::slotExportSelectedFiles] exporting to '" << choosedDir << "'..." << endl;
+        tracer->debug("slotExportSelectedFiles", "Exporting to '%s'...", choosedDir.ascii());
         changeStatusbar(i18n("Exporting symbolic links..."));
         
         ExportSymlinks exporter(m_view, choosedDir);
@@ -1760,7 +1766,7 @@ void KPhotoBook::setupToolWindowTagTree() {
     // set the icon
     QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, 16, true);
     if (iconSet.isNull()) {
-        kdDebug() << "[KPhotoBook::setupToolWindowTagTree] Could not load iconset with iconname: '" << Constants::ICON_TAG << "'" << endl;
+        tracer->swarning("setupToolWindowTagTree") << "Could not load iconset with iconname: '" << Constants::ICON_TAG << "'" << endl;
     } else {
         tagTreePanel->setIcon(iconSet.pixmap());
     }
@@ -1802,7 +1808,7 @@ void KPhotoBook::setupToolWindowSourceDirTree() {
     // set the icon
     QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, 16, true);
     if (iconSet.isNull()) {
-        kdDebug() << "[KPhotoBook::setupToolWindowSourceDirTree] Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
+        tracer->swarning("setupToolWindowSourceDirTree") << "Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
     } else {
         sourceDirTreePanel->setIcon(iconSet.pixmap());
     }
@@ -1832,7 +1838,7 @@ void KPhotoBook::setupToolWindowMetaInfoTree() {
     QString iconName = "favorites";
     QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(iconName, KIcon::Small, 16, true);
     if (iconSet.isNull()) {
-        kdDebug() << "[KPhotoBook::setupToolWindowMetaInfoTree] Could not load iconset with iconname: '" << iconName << "'" << endl;
+        tracer->swarning("setupToolWindowMetaInfoTree") << "Could not load iconset with iconname: '" << iconName<< "'" << endl;
     } else {
         m_metaInfoTree->setIcon(iconSet.pixmap());
     }
@@ -1889,7 +1895,7 @@ void KPhotoBook::removeSourceDir(SourceDir* sourceDir) {
 
 TagNode* KPhotoBook::createTag(TagNode::Type type, const QString& name, const QString& comment, const QString& iconName, TagNode* parent) {
 
-    kdDebug() << "[KPhotoBook::createTag] invoked with type: " << type << ", name: " << name << ", icon: " << iconName << endl;
+    tracer->sinvoked("createTag") << "Invoked with type: " << type << ", name: " << name << ", icon: " << iconName << endl;
 
     TagNode* tagNode = m_engine->createTag(parent, type, name, comment, iconName);
 
@@ -2077,7 +2083,7 @@ QIntDict<QString>* KPhotoBook::stringList2intDict(QStringList stringList) {
     // loop over all entries in the stringlist
     for (QStringList::Iterator it = stringList.begin(); it != stringList.end(); ++it) {
     
-        kdDebug() << "[KPhotoBook::stringList2intDict] handling entry: '" << *it << "'" << endl;
+        tracer->sdebug("stringList2intDict") << "Handling entry: '" << *it << "'" << endl;
         
         // split the current entry into key and value and put them into the intdict
         int delimitorPos = (*it).find(':');
@@ -2085,7 +2091,7 @@ QIntDict<QString>* KPhotoBook::stringList2intDict(QStringList stringList) {
             QString keyStr = (*it).mid(0, delimitorPos);
             QString value = (*it).mid(delimitorPos + 1);
             
-            kdDebug() << "[KPhotoBook::stringList2intDict] key-->value: '" << keyStr << "-->" << value << "'" << endl;
+            tracer->sdebug("stringList2intDict") << "key-->value: '" << keyStr << "-->" << value << "'" << endl;
             
             bool ok;
             int key = keyStr.toInt(&ok);
@@ -2093,11 +2099,11 @@ QIntDict<QString>* KPhotoBook::stringList2intDict(QStringList stringList) {
             if (ok) {
                 filterDict->insert(key, new QString(value));
             } else {
-                kdWarning() << "Filter " << *it << " is invalid! Id is not a number. (Valid format: 'key:value')" << endl;            
+                tracer->swarning("stringList2intDict") << "Key '" << *it << "' is invalid! It is not a number. (Valid format: 'key:value')" << endl;
             }
             
         } else {
-            kdWarning() << "Filter " << *it << " is invalid! (Valid format: 'key:value')" << endl;
+            tracer->swarning("stringList2intDict") << "KeyValue pair '" << *it << "' is invalid! (Valid format: 'key:value')" << endl;
         }
     }
     
