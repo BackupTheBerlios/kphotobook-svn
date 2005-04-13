@@ -21,6 +21,8 @@
 #ifndef TAGNODE_H
 #define TAGNODE_H
 
+#include "../tracer/tracer.h"
+
 #include <kdebug.h>
 #include <klocale.h>
 
@@ -38,6 +40,9 @@ class File;
  * CVS-ID $Id$
  */
 class TagNode : public QObject {
+
+private:
+    static Tracer* tracer;
 
 Q_OBJECT
 
@@ -94,7 +99,7 @@ public:
     }
 
 //     static int tagNodeTypeId(TagNode::Type typeId) {
-// 
+//
 //         return (int)typeId;
 //     }
 
@@ -115,7 +120,7 @@ public:
         } else if (type == "radio") {
             return TagNode::TYPE_RADIO;
         }
-    
+
         return TagNode::TYPE_INVALID;
     }
 
@@ -166,7 +171,7 @@ public:
     QString* text() {
         return m_text;
     }
-    
+
     void setComment(const QString& comment) {
         delete m_comment;
         m_comment = new QString(comment);

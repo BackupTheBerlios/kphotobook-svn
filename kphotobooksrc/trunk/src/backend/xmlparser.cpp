@@ -39,6 +39,8 @@
 
 #include <typeinfo>
 
+Tracer* XmlParser::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlParser");
+
 //
 // methods of content handler
 //
@@ -65,15 +67,11 @@ bool XmlParser::startElement(
         if (atts.length() == 1) {
             if (atts.localName(0) != ATTRIBUTE_KPHOTOBOOK_NAME && atts.localName(0) != ATTRIBUTE_KPHOTOBOOK_UID) {
                 QString msg = QString("Tag 'kphotobook' must contain the attribute 'id' but attribute '%1' found.").arg(atts.localName(0));
-                m_exception = new EngineException(
-                    msg,
-                    "");
+                m_exception = new EngineException(msg,"");
                 return false;
             }
         } else {
-            m_exception = new EngineException(
-                "Tag 'kphotobook' must contain the attribute 'id' exactly once.",
-                "");
+            m_exception = new EngineException("Tag 'kphotobook' must contain the attribute 'id' exactly once.", "");
             return false;
         }
 
@@ -94,17 +92,13 @@ bool XmlParser::startElement(
     if (localName == ELEMENT_SOURCEDIRS) {
         // state must be KPHOTOBOOK
         if (m_section != SECTION_KPHOTOBOOK) {
-            m_exception = new EngineException(
-                "Starttag 'sourcedirs' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Starttag 'sourcedirs' found at an unexpected position.", "");
             return false;
         }
 
         // there must be no attribute
         if (atts.length() != 0) {
-            m_exception = new EngineException(
-                "Tag 'sourcedirs' must not contain any attribute.",
-                "");
+            m_exception = new EngineException("Tag 'sourcedirs' must not contain any attribute.", "");
             return false;
         }
 
@@ -118,9 +112,7 @@ bool XmlParser::startElement(
     if (localName == ELEMENT_SOURCEDIR) {
         // state must be SOURCEDIRS
         if (m_section != SECTION_SOURCEDIRS) {
-            m_exception = new EngineException(
-                "Starttag 'sourcedir' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Starttag 'sourcedir' found at an unexpected position.", "");
             return false;
         }
 
@@ -133,17 +125,13 @@ bool XmlParser::startElement(
     if (localName == ELEMENT_TAGS) {
         // state must be SOURCEDIRS_DONE
         if (m_section != SECTION_SOURCEDIRS_DONE) {
-            m_exception = new EngineException(
-                "Starttag 'tags' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Starttag 'tags' found at an unexpected position.", "");
             return false;
         }
 
         // there must be no attribute
         if (atts.length() != 0) {
-            m_exception = new EngineException(
-                "Tag 'tags' must not contain any attribute.",
-                "");
+            m_exception = new EngineException("Tag 'tags' must not contain any attribute.", "");
             return false;
         }
 
@@ -157,9 +145,7 @@ bool XmlParser::startElement(
     if (localName == ELEMENT_TAG) {
         // state must be TAGS
         if (m_section != SECTION_TAGS) {
-            m_exception = new EngineException(
-                "Starttag 'tag' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Starttag 'tag' found at an unexpected position.", "");
             return false;
         }
 
@@ -172,9 +158,7 @@ bool XmlParser::startElement(
     if (localName == ELEMENT_FILES) {
         // state must be SECTION_TAGS_DONE or SECTION_FILES_DONE
         if (m_section != SECTION_TAGS_DONE && m_section != SECTION_FILES_DONE) {
-            m_exception = new EngineException(
-                "Starttag 'files' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Starttag 'files' found at an unexpected position.", "");
             return false;
         }
 
@@ -183,9 +167,7 @@ bool XmlParser::startElement(
         if (atts.length() == 1) {
             if (atts.localName(0) != ATTRIBUTE_FILES_SOURCEDIRID) {
                 QString msg = QString("Tag 'files' must contain the attribute 'sourcedirId' but attribute '%1' found.").arg(atts.localName(0));
-                m_exception = new EngineException(
-                    msg,
-                    "");
+                m_exception = new EngineException(msg, "");
                 return false;
             }
 
@@ -194,15 +176,11 @@ bool XmlParser::startElement(
 
             if (!ok) {
                 QString msg = QString("Value of attribute 'sourcedirId' is not an integer: '%1'.").arg(atts.value(0));
-                m_exception = new EngineException(
-                    msg,
-                    "");
+                m_exception = new EngineException(msg, "");
                 return false;
             }
         } else {
-            m_exception = new EngineException(
-                "Tag 'files' must contain the attribute 'sourcedirId' exactly once.",
-                "");
+            m_exception = new EngineException("Tag 'files' must contain the attribute 'sourcedirId' exactly once.", "");
             return false;
         }
 
@@ -212,9 +190,7 @@ bool XmlParser::startElement(
         // throw an exception if the sourcedir does not exist
         if (!m_currentSourceDir) {
             QString msg = QString("No sourcedir found with id '%1'.").arg(sourcedirId);
-            m_exception = new EngineException(
-                msg,
-                "");
+            m_exception = new EngineException(msg, "");
             return false;
         }
 
@@ -230,9 +206,7 @@ bool XmlParser::startElement(
     if (localName == ELEMENT_FILE) {
         // state must be FILES
         if (m_section != SECTION_FILES) {
-            m_exception = new EngineException(
-                "Starttag 'file' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Starttag 'file' found at an unexpected position.", "");
             return false;
         }
 
@@ -245,9 +219,7 @@ bool XmlParser::startElement(
     if (localName == ELEMENT_TAGASSOC) {
         // state must be FILE
         if (m_section != SECTION_FILES || !m_currentFile) {
-            m_exception = new EngineException(
-                "Starttag 'tagassoc' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Starttag 'tagassoc' found at an unexpected position.", "");
             return false;
         }
 
@@ -268,9 +240,7 @@ bool XmlParser::endElement(
     if (localName == ELEMENT_KPHOTOBOOK) {
         // state must be FILES_DONE or TAGS (if file contains no sourcedirs)
         if (m_section != SECTION_FILES_DONE && m_section != SECTION_TAGS_DONE) {
-            m_exception = new EngineException(
-                "Endtag '/kphotobook' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Endtag '/kphotobook' found at an unexpected position.", "");
             return false;
         }
 
@@ -284,9 +254,7 @@ bool XmlParser::endElement(
     if (localName == ELEMENT_SOURCEDIRS) {
         // state must be SOURCEDIRS
         if (m_section != SECTION_SOURCEDIRS && m_sourceDirstack.isEmpty()) {
-            m_exception = new EngineException(
-                "Endtag '/sourcedirs' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Endtag '/sourcedirs' found at an unexpected position.","");
             return false;
         }
 
@@ -300,9 +268,7 @@ bool XmlParser::endElement(
     if (localName == ELEMENT_SOURCEDIR) {
         // state must be 'SOURCEDIR'
         if (m_section != SECTION_SOURCEDIRS || m_sourceDirstack.isEmpty()) {
-            m_exception = new EngineException(
-                "Endtag '/sourcedir' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Endtag '/sourcedir' found at an unexpected position.", "");
             return false;
         }
 
@@ -316,9 +282,7 @@ bool XmlParser::endElement(
     if (localName == ELEMENT_TAGS) {
         // state must be TAGS
         if (m_section != SECTION_TAGS && m_tagNodeStack.isEmpty()) {
-            m_exception = new EngineException(
-                "Endtag '/tags' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Endtag '/tags' found at an unexpected position.", "");
             return false;
         }
 
@@ -332,9 +296,7 @@ bool XmlParser::endElement(
     if (localName == ELEMENT_TAG) {
         // state must be 'TAG'
         if (m_section != SECTION_TAGS || m_tagNodeStack.isEmpty()) {
-            m_exception = new EngineException(
-                "Endtag '/tag' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Endtag '/tag' found at an unexpected position.", "");
             return false;
         }
 
@@ -348,9 +310,7 @@ bool XmlParser::endElement(
     if (localName == ELEMENT_FILES) {
         // state must be FILES
         if (m_section != SECTION_FILES || !m_currentSourceDir) {
-            m_exception = new EngineException(
-                "Endtag '/files' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Endtag '/files' found at an unexpected position.", "");
             return false;
         }
 
@@ -367,9 +327,7 @@ bool XmlParser::endElement(
     if (localName == ELEMENT_FILE) {
         // state must be 'FILE'
         if (m_section != SECTION_FILES || !m_currentFile) {
-            m_exception = new EngineException(
-                "Endtag '/file' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Endtag '/file' found at an unexpected position.", "");
             return false;
         }
 
@@ -385,9 +343,7 @@ bool XmlParser::endElement(
     if (localName == ELEMENT_TAGASSOC) {
         // state must be 'TAGASSOC'
         if (m_section != SECTION_FILES || !m_currentFile || !m_tagNodesOfCurrentFile ) {
-            m_exception = new EngineException(
-                "Endtag '/tagassoc' found at an unexpected position.",
-                "");
+            m_exception = new EngineException("Endtag '/tagassoc' found at an unexpected position.",  "");
             return false;
         }
 
@@ -428,10 +384,7 @@ bool XmlParser::fatalError(const QXmlParseException& exception) {
         m_exception->appendDetailMessage(message);
     } else {
         // create an exception if there does not exist one already
-        m_exception = new EngineException(
-            exception.message(),
-            message
-        );
+        m_exception = new EngineException(exception.message(), message );
     }
 
     return true;
@@ -461,16 +414,12 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts) {
 
             if (!ok) {
                 QString msg = QString("Value of attribute 'id' is not an integer: '%1'.").arg(atts.value(0));
-                m_exception = new EngineException(
-                    msg,
-                    "");
+                m_exception = new EngineException(msg, "");
                 return false;
             }
         } else {
             QString msg = QString("Mandatory first attribute of tag 'sourcedir' must be 'id', but attribute '%1' found.").arg(atts.localName(0));
-            m_exception = new EngineException(
-                msg,
-                "");
+            m_exception = new EngineException(msg, "");
             return false;
         }
 
@@ -482,24 +431,18 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts) {
             if (dirStr.length() > 0) {
                 dir = new QDir(dirStr);
             } else {
-                m_exception = new EngineException(
-                    "Value of attribute 'dir' is rather empty, but should contain an absolute directory.",
-                    "");
+                m_exception = new EngineException("Value of attribute 'dir' is rather empty, but should contain an absolute directory.", "");
                 return false;
             }
 
             if (dir->isRelative()) {
                 QString msg = QString("Directory of tag 'sourcedir' is not absolute: '%1'.").arg(atts.value(1));
-                m_exception = new EngineException(
-                    msg,
-                    "");
+                m_exception = new EngineException(msg, "");
                 return false;
             }
         } else {
             QString msg = QString("Mandatory second attribute of tag 'sourcedir' must be 'dir', but attribute '%1' found.").arg(atts.localName(1));
-            m_exception = new EngineException(
-                msg,
-                "");
+            m_exception = new EngineException(msg, "");
             return false;
         }
 
@@ -515,17 +458,12 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts) {
                     recursive = false;
                 } else {
                     QString msg = QString("Value of attribute 'recursive' must be 'true' or 'false', but is '%1'.").arg(atts.value(2));
-                    m_exception = new EngineException(
-                        msg,
-                        ""
-                    );
+                    m_exception = new EngineException(msg, "" );
                     return false;
                 }
             } else {
                 QString msg = QString("Optional third attribute of tag 'sourcedir' must be 'recursive', but attribute '%1' found.").arg(atts.localName(2));
-                m_exception = new EngineException(
-                    msg,
-                    "");
+                m_exception = new EngineException(msg, "");
                 return false;
             }
         }
@@ -548,8 +486,7 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts) {
         sourceDir = new SourceDir(id, dir, recursive);
     } else {
         m_exception = new EngineException(
-            "Tag 'sourcedir' must contain the attributes 'id', 'dir' and optionally 'recursive'.",
-            "");
+            "Tag 'sourcedir' must contain the attributes 'id', 'dir' and optionally 'recursive'.", "");
         return false;
     }
 
@@ -557,9 +494,7 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts) {
     SourceDir* conflictingSourceDir = m_engine->m_sourceDirDict->find(sourceDir->id());
     if (conflictingSourceDir) {
         QString msg = QString("The id (%1) of the sourcedir '%2' conflicts with the sourcedir '%3'.").arg(sourceDir->id()).arg(sourceDir->dir()->absPath()).arg(conflictingSourceDir->dir()->absPath());
-        m_exception = new EngineException(
-            msg,
-            "");
+        m_exception = new EngineException(msg, "");
         return false;
     }
 
@@ -643,7 +578,7 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
         }
     }
 
-    
+
     //and then do the consistency check:
     // mandatory id given?
     if (id < 0) {
@@ -658,33 +593,33 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
                 "Value of attribute 'name' is not set or empty, but should contain the name of the tagnode.", "");
         return false;
     }
-    
+
     //mandatory type given?
     if (tagNodeTypeId == TagNode::TYPE_INVALID) {
         m_exception = new EngineException(
                 "Value of attribute 'type' is not set, but should contain the type of the tagnode.", "");
         return false;
     }
-    
+
     // comment is optional`
     if (comment.length() <= 0) {
-        kdDebug() << "Optional attribute 'comment' of tagnode with the name '" << name << "' is empty." << endl;
-    }
-    
-    // icon is optional`
-    if (icon.length() <= 0) {
-        kdDebug() << "Optional attribute 'icon' of tagnode with the name '" << name << "' is empty." << endl;
+        tracer->sdebug("handleTag") << "Optional attribute 'comment' of tagnode with the name '" << name
+            << "' is empty." << endl;
     }
 
-    
-    
+    // icon is optional`
+    if (icon.length() <= 0) {
+        tracer->sdebug("handleTag") << "Optional attribute 'icon' of tagnode with the name '" << name
+            << "' is empty." << endl;
+    }
+
+
+
     // check that the id of the tagNode is not already used
     TagNode* conflictingTagNode = m_engine->m_tagNodeDict->find(id);
     if (conflictingTagNode) {
         QString msg = QString("The id (%1) of the tagnode '%2' conflicts with the tagnode '%3'.").arg(id).arg(name).arg(*conflictingTagNode->text());
-        m_exception = new EngineException(
-            msg,
-            "");
+        m_exception = new EngineException(msg, "");
         return false;
     }
 
@@ -693,9 +628,7 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
 
     if (!m_engine->isTagTextValid(parentTagNode, name)) {
         QString msg = QString("The name (%1) of the tagnode with id '%2' conflicts with the tagnode '%3'.").arg(name).arg(id).arg(conflictingTagNode->id());
-        m_exception = new EngineException(
-            msg,
-            "");
+        m_exception = new EngineException( msg,"");
         return false;
     }
 
@@ -737,15 +670,12 @@ bool XmlParser::handleFile(const QXmlAttributes& atts) {
 
             if (fileName.length() < 1) {
                 m_exception = new EngineException(
-                    "Value of attribute 'name' of tag 'file' is rather empty, but should contain a filename.",
-                    "");
+                    "Value of attribute 'name' of tag 'file' is rather empty, but should contain a filename.", "");
                 return false;
             }
         } else {
             QString msg = QString("Mandatory first attribute of tag 'file' must be 'name', but attribute '%1' found.").arg(atts.localName(1));
-            m_exception = new EngineException(
-                msg,
-                "");
+            m_exception = new EngineException(msg, "");
             return false;
         }
 
@@ -758,16 +688,12 @@ bool XmlParser::handleFile(const QXmlAttributes& atts) {
 
                 if (!ok) {
                     QString msg = QString("Value of attribute 'rotate' is not an integer: '%1'.").arg(atts.value(1));
-                    m_exception = new EngineException(
-                        msg,
-                        "");
+                    m_exception = new EngineException(msg, "");
                     return false;
                 }
             } else {
                 QString msg = QString("Optional second attribute of tag 'file' must be 'rotate', but attribute '%1' found.").arg(atts.localName(1));
-                m_exception = new EngineException(
-                    msg,
-                    "");
+                m_exception = new EngineException(msg, "");
                 return false;
             }
         }
@@ -777,9 +703,7 @@ bool XmlParser::handleFile(const QXmlAttributes& atts) {
 
         m_currentFile = new File(m_engine, m_currentSourceDir, fileInfo, degrees);
     } else {
-        m_exception = new EngineException(
-            "Tag 'file' must contain the attributes 'name' and optionally 'rotate'.",
-            "");
+        m_exception = new EngineException("Tag 'file' must contain the attributes 'name' and optionally 'rotate'.", "");
         return false;
     }
 
@@ -818,16 +742,12 @@ bool XmlParser::handleTagAssoc(const QXmlAttributes& atts) {
 
             if (!ok) {
                 QString msg = QString("Value of attribute 'tagId' is not an integer: '%1'.").arg(atts.value(0));
-                m_exception = new EngineException(
-                    msg,
-                    "");
+                m_exception = new EngineException( msg, "");
                 return false;
             }
         } else {
             QString msg = QString("Mandatory first attribute of tag 'tagassoc' must be 'tagId', but attribute '%1' found.").arg(atts.localName(0));
-            m_exception = new EngineException(
-                msg,
-                "");
+            m_exception = new EngineException( msg, "");
             return false;
         }
 
@@ -837,21 +757,16 @@ bool XmlParser::handleTagAssoc(const QXmlAttributes& atts) {
 
             if (value.length() < 1) {
                 m_exception = new EngineException(
-                    "Value of attribute 'value' of tag 'tagassoc' is rather empty, but should contain a value.",
-                    "");
+                    "Value of attribute 'value' of tag 'tagassoc' is rather empty, but should contain a value.", "");
                 return false;
             }
         } else {
             QString msg = QString("Mandatory second attribute of tag 'tagassoc' must be 'value', but attribute '%1' found.").arg(atts.localName(1));
-            m_exception = new EngineException(
-                msg,
-                "");
+            m_exception = new EngineException( msg, "");
             return false;
         }
     } else {
-        m_exception = new EngineException(
-            "Tag 'file' must contain the attributes 'name' and optionally 'rotate'.",
-            "");
+        m_exception = new EngineException( "Tag 'file' must contain the attributes 'name' and optionally 'rotate'.", "");
         return false;
     }
 
@@ -862,9 +777,7 @@ bool XmlParser::handleTagAssoc(const QXmlAttributes& atts) {
 
     if (!tagNode) {
         QString msg = QString("There exists no tagNode with id '%1'.").arg(tagId);
-        m_exception = new EngineException(
-            msg,
-            "");
+        m_exception = new EngineException( msg, "");
         return false;
     }
 

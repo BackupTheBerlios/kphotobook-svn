@@ -20,8 +20,10 @@
 
 #include "tagnodetitle.h"
 
+Tracer* TagNodeTitle::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeTitle");
+
 TagNodeTitle::TagNodeTitle(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
     : TagNode(id, text, comment, iconName, parent) {
 
-    kdDebug() << "[TagNodeTitle::TagNodeTitle] invoked with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
+        tracer->sinvoked("TagNodeTitle") << "with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
 }

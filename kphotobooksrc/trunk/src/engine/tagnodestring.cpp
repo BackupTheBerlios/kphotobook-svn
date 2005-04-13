@@ -27,11 +27,12 @@
 
 #include <qregexp.h>
 
+Tracer* TagNodeString::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeString");
 
 TagNodeString::TagNodeString(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
     : TagNode(id, text, comment, iconName, parent) {
 
-    kdDebug() << "[TagNodeString::TagNodeString] invoked with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
+        tracer->sinvoked("TagNodeString") << "with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
 }
 
 
@@ -57,14 +58,14 @@ bool TagNodeString::tagged(File* file, QString pattern) {
     FileTagNodeAssocString* fileTagNodeAssocString = dynamic_cast<FileTagNodeAssocString*>(fileTagNodeAssoc);
     QString value = fileTagNodeAssocString->value();
 
-    kdDebug() << "[TagNodeString::tagged] invoked with pattern: '" << pattern << "', value: " << value << endl;
+    tracer->sinvoked("tagged") << "with pattern: '" << pattern << "', value: " << value << endl;
 
     QRegExp regExp(pattern);
     if (regExp.exactMatch(value)) {
-        kdDebug() << "MATCHES!!!" << endl;
+        tracer->sdebug("tagged") <<  "MATCHES!!!" << endl;
         return true;
     }
 
-    kdDebug() << "NO match!!!" << endl;
+    tracer->sdebug("tagged") << "NO match!!!" << endl;
     return false;
 }

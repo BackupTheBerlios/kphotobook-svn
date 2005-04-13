@@ -113,9 +113,6 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, in
 
 void TreeHelper::drawRadioButton(QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled)
 {
-kdDebug() << "tristate: " << tristate << endl;   
-
-    
     static QRadioButton radioBtn(0);
 
     radioBtn.setEnabled(enabled);
@@ -127,7 +124,6 @@ kdDebug() << "tristate: " << tristate << endl;
     } else {
         radioBtn.setChecked(tristate > 0);
     }
-    
     
 
     QStyle& style = KApplication::kApplication()->style();

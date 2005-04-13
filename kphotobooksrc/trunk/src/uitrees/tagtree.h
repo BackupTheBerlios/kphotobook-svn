@@ -21,6 +21,8 @@
 #ifndef _TAGTREE_H_
 #define _TAGTREE_H_
 
+#include "../tracer/tracer.h"
+
 #include <klistview.h>
 #include <kpopupmenu.h>
 
@@ -66,6 +68,9 @@ class TagTree : public KListView {
 
     Q_OBJECT
 
+private:
+        static Tracer* tracer;
+
 public:
     static const int COLUMN_TEXT = 0;
     static const int COLUMN_VALUE = 1;
@@ -92,24 +97,24 @@ public:
     }
 
     void doRepaintAll();
-    
+
     /**
-     * Returns a list containing the ids of the opened nodes. 
+     * Returns a list containing the ids of the opened nodes.
      */
     QStringList* getOpenNodes();
-    
+
     /**
      * Opens the nodes with the specified ids.
      */
     void openNodes(QStringList* nodes);
-    
+
     /**
      * Returns a dictionary containing the string representation of the filter
      * of every node.
      * The dictionary contains the node-id as key and the filter as value.
      */
     QIntDict<QString>* getFilter();
-    
+
     /**
      * Applies the specified filters to the nodes in the tagtree.
      * The dictionary must contain the node-id as key and the filter as value.
@@ -123,7 +128,7 @@ protected:
     void keyPressEvent(QKeyEvent* e);
     void keyReleaseEvent(QKeyEvent *e);
     void focusOutEvent(QFocusEvent *e);
-    
+
 private slots:
     void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
     void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);

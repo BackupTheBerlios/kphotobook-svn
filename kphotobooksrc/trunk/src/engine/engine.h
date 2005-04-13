@@ -21,6 +21,7 @@
 #ifndef _ENGINE_H_
 #define _ENGINE_H_
 
+#include "../tracer/tracer.h"
 #include "../exception.h"
 #include "tagnode.h"
 
@@ -42,6 +43,9 @@ class TagNode;
  * CVS-ID $Id$
  */
 class Engine {
+
+private:
+    static Tracer* tracer;
 
 public:
     friend class XmlParser;  // class XmlParser cann access everything on this class
@@ -163,7 +167,7 @@ private:
      * and it should be saved.
      */
     bool m_dirty;
-    
+
     /**
      * The url of the opened xml-file.
      */
@@ -258,7 +262,7 @@ private:
      * Deletes all memory allocated by this object.
      */
     void cleanUp();
-    
+
     /**
      * Generates a unique identifier.
      * We simply return the seconds since 1970.

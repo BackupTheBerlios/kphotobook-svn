@@ -25,11 +25,12 @@
 
 #include <kdebug.h>
 
+Tracer* TagNodeRadio::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeRadio");
 
 TagNodeRadio::TagNodeRadio(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
     : TagNode(id, text, comment, iconName, parent) {
 
-    kdDebug() << "[TagNodeRadio::TagNodeRadio] invoked with id: " << id << "text: " << text << ", icon: " << iconName << endl;
+        tracer->sinvoked("TagNodeRadio") << "with id: " << id << ", text: " << text << ", icon: " << iconName << endl;
 }
 
 
@@ -51,8 +52,8 @@ bool TagNodeRadio::tagged(File* file) {
     if (fileTagNodeAssoc == 0) {
         return false;
     }
-    
+
     FileTagNodeAssocRadio* fileTagNodeAssocRadio = dynamic_cast<FileTagNodeAssocRadio*>(fileTagNodeAssoc);
- 
+
     return fileTagNodeAssocRadio->value();
 }

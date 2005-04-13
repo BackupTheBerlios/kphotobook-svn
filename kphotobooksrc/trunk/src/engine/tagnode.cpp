@@ -37,6 +37,7 @@
 
 #include <typeinfo>
 
+Tracer* TagNode::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNode");
 
 TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent) {
 
@@ -60,7 +61,7 @@ TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QS
         newTagNode = new TagNodeRadio(id, text, comment, iconName, parent);
         break;
     default:
-        kdDebug() << "[TagNode::createInstance()] Called with unknown TypeID!" << endl;
+        tracer->swarning("createInstance") << "Called with unknown TypeID!" << endl;
         return 0;
     }
 
@@ -82,7 +83,8 @@ TagNode::TagNode(unsigned int id, const QString& text, const QString& comment, c
     , m_children(0)
     , m_assocs(new QPtrList<FileTagNodeAssoc>()) {
 
-    kdDebug() << "[TagNode::TagNode] invoked with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
+        tracer->sinvoked("TagNode") << "with id: " << id << ", text: " << text
+            << ", comment: " << comment << "icon: " << iconName << endl;
 
     setIconName(iconName);
     if (parent) {
@@ -126,12 +128,12 @@ TagNode::~TagNode() {
 void TagNode::setParent(TagNode* parent) {
 
     if (!parent) {
-        kdDebug() << "[TagNode::setParent] no parent specified, doing noting" << endl;
+        tracer->sdebug("setParent") << "no parent specified, doing noting" << endl;
         return;
     }
 
     if (m_parent) {
-        kdDebug() << "[TagNode::setParent] TagNode '" << this->toString() << "' already has a parent tagnode: '" << parent->toString() << "'" << endl;
+        tracer->sdebug("setParent") << "TagNode '" << this->toString() << "' already has a parent tagnode: '" << parent->toString() << "'" << endl;
         return;
     }
 
@@ -164,7 +166,8 @@ void TagNode::appendAssoc(FileTagNodeAssoc* assoc) {
 
         // test if the file of the specified association is already referenced from this tagNode
         if (currentAssoc->file() == assoc->file()) {
-            kdDebug() << "Association between file '" << assoc->file()->fileInfo()->absFilePath() << "' and tagnode '" << *assoc->tagNode()->text() << "' already exists." << endl;
+            tracer->sdebug("appendAssoc") << "Association between file '" << assoc->file()->fileInfo()->absFilePath()
+                << "' and tagnode '" << *assoc->tagNode()->text() << "' already exists." << endl;
 
             // update the existing association to reflect value of the specified one
             currentAssoc->update(assoc);

@@ -21,6 +21,8 @@
 #ifndef TAGNODETITLE_H
 #define TAGNODETITLE_H
 
+#include "../tracer/tracer.h"
+
 #include "tagnode.h"
 
 #include <qstring.h>
@@ -31,6 +33,10 @@
  * CVS-ID $Id$
  */
 class TagNodeTitle : public TagNode {
+
+private:
+    static Tracer* tracer;
+
 
 public:
     TagNodeTitle(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);

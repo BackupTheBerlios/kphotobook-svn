@@ -50,6 +50,8 @@
 
 #include <typeinfo>
 
+Tracer* TagTree::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTree");
+
 
 TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     : KListView( parent, name )
@@ -144,7 +146,7 @@ void TagTree::addTagNodes(QPtrList<TagNode>* rootNodeList) {
 
 void TagTree::addTagNode(TagNode* rootNode) {
 
-    kdDebug() << "[TagTree::addTagNode] Converting subtree with root node: " << *rootNode->text() << "..." << endl;
+    tracer->sdebug("addTagNode") << "Converting subtree with root node: " << *rootNode->text() << "..." << endl;
 
     TagTreeNode* tagTreeNode = 0;
 
@@ -165,7 +167,7 @@ void TagTree::addTagNode(TagNode* rootNode) {
         TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(rootNode);
         tagTreeNode = new TagTreeNodeRadio(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
     } else {
-        kdWarning() << "[TagTree::addTagNode] unknown root tagtype received: " << rootNode->type() << "!"<< endl;
+        tracer->swarning("addTagNode") << "unknown root tagtype received: " << rootNode->type() << "!"<< endl;
     }
 
     // build the whole tree
@@ -175,7 +177,7 @@ void TagTree::addTagNode(TagNode* rootNode) {
 
 void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
 
-    kdDebug() << "[TagTree::addTagNode] Converting node: " << *child->text() << "..." << endl;
+    tracer->sdebug("addTagNode") << "Converting node: " << *child->text() << "..." << endl;
 
     TagTreeNode* tagTreeNode = 0;
 
@@ -196,7 +198,7 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
         TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(child);
         tagTreeNode = new TagTreeNodeRadio(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
     } else {
-        kdWarning() << "[TagTree::addTagNode] unknown sub tagtype received: " << child->type() << "!"<< endl;
+        tracer->swarning("addTagNode") << "unknown sub tagtype received: " << child->type() << "!"<< endl;
     }
 
     // build the whole tree
@@ -258,7 +260,7 @@ QStringList* TagTree::getOpenNodes() {
 
         ++it;
     }
-    
+
     return openNodes;
 }
 
@@ -270,7 +272,7 @@ void TagTree::openNodes(QStringList* openNodes) {
     while (it.current()) {
 
         TagTreeNode* node = dynamic_cast<TagTreeNode*>(it.current());
-        
+
         // open the current node if it is in the list
         QString nodeIdStr = QString::number(node->tagNode()->id());
         uint removedItems = openNodes->remove(nodeIdStr);
@@ -284,7 +286,7 @@ void TagTree::openNodes(QStringList* openNodes) {
 QIntDict<QString>* TagTree::getFilter() {
 
     QIntDict<QString>* filterList = new QIntDict<QString>();
-    
+
     // loop over *all* nodes in the tree
     QListViewItemIterator it(this);
     while (it.current()) {
@@ -298,7 +300,7 @@ QIntDict<QString>* TagTree::getFilter() {
 
         ++it;
     }
-    
+
     return filterList;
 }
 
@@ -339,7 +341,7 @@ void TagTree::keyPressEvent(QKeyEvent* e) {
     if (e->key() == Qt::Key_Control) {
         m_photobook->startTemporaryUnlockTagging();
     }
-    
+
     e->ignore();
 }
 
@@ -348,7 +350,7 @@ void TagTree::keyReleaseEvent(QKeyEvent *e) {
     if (e->key() == Qt::Key_Control) {
         m_photobook->stopTemporaryUnlockTagging();
     }
-    
+
     e->ignore();
 }
 
@@ -393,14 +395,14 @@ void TagTree::slotListViewClicked(int button, QListViewItem* item,__attribute__(
 
 void TagTree::slotItemRenamed(QListViewItem* item, int column, const QString& text) {
 
-    kdDebug() << "[TagTree::slotItemRenamed] invoked with text: >" << text << "<" << endl;
+    tracer->sinvoked("slotItemRenamed") << "with text: >" << text << "<" << endl;
 
     if (typeid(*item) == typeid(TagTreeNodeString)) {
 
         TagTreeNodeString* tagTreeNode = dynamic_cast<TagTreeNodeString*>(item);
         tagTreeNode->handleRenaming(column, text);
     } else {
-        kdWarning() << "[TagTree::slotItemRenamed] unknown item received: " << item->text(0) << endl;
+        tracer->swarning("slotItemRenamed") << "unknown item received: " << item->text(0) << endl;
     }
 }
 

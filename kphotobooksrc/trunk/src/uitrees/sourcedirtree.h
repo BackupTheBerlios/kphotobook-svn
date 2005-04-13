@@ -21,6 +21,8 @@
 #ifndef SOURCEDIRTREE_H
 #define SOURCEDIRTREE_H
 
+#include "../tracer/tracer.h"
+
 #include <klistview.h>
 #include <kpopupmenu.h>
 #include <kfileitem.h>
@@ -44,7 +46,10 @@ class SourceDirTreeNode;
  */
 class SourceDirTree : public KListView {
 
-    Q_OBJECT
+private:
+    static Tracer* tracer;
+
+Q_OBJECT
 
 public:
     static const int COLUMN_TEXT = 0;
@@ -84,10 +89,10 @@ public:
     void doRepaintAll();
 
     /**
-     * Returns a list containing the ids of the opened nodes. 
+     * Returns a list containing the ids of the opened nodes.
      */
     QStringList* getOpenNodes();
-    
+
     /**
      * Opens the nodes with the specified ids.
      */
@@ -99,7 +104,7 @@ public:
      * The dictionary contains the node-id as key and the filter as value.
      */
     QIntDict<QString>* getFilter();
-    
+
     /**
      * Applies the specified filters to the nodes in the sourcedirtree.
      * The dictionary must contain the node-id as key and the filter as value.

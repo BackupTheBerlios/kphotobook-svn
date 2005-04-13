@@ -21,6 +21,8 @@
 #ifndef TAGNODEBOOLEAN_H
 #define TAGNODEBOOLEAN_H
 
+#include "../tracer/tracer.h"
+
 #include "tagnode.h"
 
 #include <qstring.h>
@@ -32,6 +34,10 @@
  * CVS-ID $Id$
  */
 class TagNodeBoolean : public TagNode {
+
+private:
+    static Tracer* tracer;
+
 
 public:
     TagNodeBoolean(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);

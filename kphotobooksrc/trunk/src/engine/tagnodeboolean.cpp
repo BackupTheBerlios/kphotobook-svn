@@ -25,11 +25,12 @@
 
 #include <kdebug.h>
 
+Tracer* TagNodeBoolean::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeBoolean");
 
 TagNodeBoolean::TagNodeBoolean(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
     : TagNode(id, text, comment, iconName, parent) {
 
-    kdDebug() << "[TagNodeBoolean::TagNodeBoolean] invoked with id: " << id << "text: " << text << ", icon: " << iconName << endl;
+   tracer->sinvoked("TagNodeBoolean") << "with id: " << id << ", text: " << text << ", icon: " << iconName << endl;
 }
 
 

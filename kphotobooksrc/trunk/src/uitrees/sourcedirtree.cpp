@@ -41,6 +41,7 @@
 
 #include <typeinfo>
 
+Tracer* SourceDirTree::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "SourceDirTree");
 
 SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     : KListView( parent, name )
@@ -171,7 +172,7 @@ void SourceDirTree::addSourceDirs(QPtrList<SourceDir>* rootNodeList) {
 
 void SourceDirTree::addSourceDir(SourceDir* rootNode) {
 
-    kdDebug() << "[SourceDirTree::addSourceDir] handling sourcedir: '" << rootNode->dir()->absPath() << "'..." << endl;
+    tracer->sinvoked("addSourceDir") << " with sourcedir: '" << rootNode->dir()->absPath() << "'..." << endl;
 
     SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(this, m_photobook, rootNode, m_photobook->contextMenuSourceDir());
 
@@ -218,7 +219,7 @@ void SourceDirTree::reflectSelectedFiles(const KFileItemList* selectedFiles) {
 SourceDirTreeNode* SourceDirTree::selectedSourceDir() {
 
     if (typeid(*currentItem()) != typeid(SourceDirTreeNode)) {
-        kdDebug() << "[SourceDirTree::selectedSourceDir] sourcedirTree contains a node of other type than 'SourceDirTreeNode'" << endl;
+        tracer->swarning("selectedSourceDir") << "sourcedirTree contains a node of other type than 'SourceDirTreeNode'" << endl;
         return 0;
     }
 
@@ -254,7 +255,7 @@ QStringList* SourceDirTree::getOpenNodes() {
 
         ++it;
     }
-    
+
     return openNodes;
 }
 
@@ -266,7 +267,7 @@ void SourceDirTree::openNodes(QStringList* openNodes) {
     while (it.current()) {
 
         SourceDirTreeNode* node = dynamic_cast<SourceDirTreeNode*>(it.current());
-        
+
         // open the current node if it is in the list
         QString nodeIdStr = QString::number(node->sourceDir()->id());
         uint removedItems = openNodes->remove(nodeIdStr);
@@ -280,7 +281,7 @@ void SourceDirTree::openNodes(QStringList* openNodes) {
 QIntDict<QString>* SourceDirTree::getFilter() {
 
     QIntDict<QString>* filterList = new QIntDict<QString>();
-    
+
     // loop over *all* nodes in the tree
     QListViewItemIterator it(this);
     while (it.current()) {
@@ -294,7 +295,7 @@ QIntDict<QString>* SourceDirTree::getFilter() {
 
         ++it;
     }
-    
+
     return filterList;
 }
 

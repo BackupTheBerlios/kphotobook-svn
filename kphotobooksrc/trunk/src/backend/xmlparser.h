@@ -21,6 +21,8 @@
 #ifndef _XMLPARSER_H_
 #define _XMLPARSER_H_
 
+#include "../tracer/tracer.h"
+
 #include "../exception.h"
 #include "xmlconstants.h"
 
@@ -40,6 +42,9 @@ class TagNode;
  * CVS-ID $Id$
  */
 class XmlParser : public QXmlDefaultHandler, public XmlConstants {
+
+private:
+    static Tracer* tracer;
 
 public:
     enum SECTION {

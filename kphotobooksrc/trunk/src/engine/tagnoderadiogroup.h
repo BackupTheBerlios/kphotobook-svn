@@ -21,6 +21,8 @@
 #ifndef TAGNODERADIOGROUP_H
 #define TAGNODERADIOGROUP_H
 
+#include "../tracer/tracer.h"
+
 #include "tagnode.h"
 
 #include <qstring.h>
@@ -32,6 +34,9 @@
  * CVS-ID $Id: tagnodeboolean.h 284 2005-03-31 20:03:08Z choenig $
  */
 class TagNodeRadioGroup : public TagNode {
+
+private:
+    static Tracer* tracer;
 
 public:
     TagNodeRadioGroup(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
