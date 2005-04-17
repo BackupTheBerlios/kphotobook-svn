@@ -32,8 +32,6 @@
 #include "../engine/filetagnodeassocstring.h"
 #include "../engine/filetagnodeassocradio.h"
 
-#include <kdebug.h>
-
 #include <qpixmap.h>
 #include <qfileinfo.h>
 

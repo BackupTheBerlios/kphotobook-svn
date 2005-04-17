@@ -21,6 +21,8 @@
 #ifndef FILETAGNODEASSOCRADIO_H
 #define FILETAGNODEASSOCRADIO_H
 
+#include "../tracer/tracer.h"
+
 #include "filetagnodeassoc.h"
 #include "../constants.h"
 
@@ -36,6 +38,9 @@ class TagNodeRadio;
  * CVS-ID $Id: FileTagNodeAssocRadio.h 274 2005-03-25 08:52:15Z choenig $
  */
 class FileTagNodeAssocRadio : public FileTagNodeAssoc {
+
+private:
+    static Tracer* tracer;
 
 public:
     FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, bool value = false);

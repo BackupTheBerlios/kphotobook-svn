@@ -23,7 +23,6 @@
 #include "../constants.h"
 
 #include <kapp.h>
-#include <kdebug.h>
 
 #include <qstyle.h>
 #include <qcheckbox.h>

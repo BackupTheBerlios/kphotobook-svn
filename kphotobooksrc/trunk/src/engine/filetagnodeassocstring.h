@@ -21,6 +21,8 @@
 #ifndef FILETAGNODEASSOCSTRING_H
 #define FILETAGNODEASSOCSTRING_H
 
+#include "../tracer/tracer.h"
+
 #include "filetagnodeassoc.h"
 
 #include <qstring.h>
@@ -35,6 +37,9 @@ class TagNodeString;
  * CVS-ID $Id: filetagnodeassocboolean.h 274 2005-03-25 08:52:15Z choenig $
  */
 class FileTagNodeAssocString : public FileTagNodeAssoc {
+
+private:
+    static Tracer* tracer;
 
 public:
     FileTagNodeAssocString(File* file, TagNodeString* tagNodeString, QString value);

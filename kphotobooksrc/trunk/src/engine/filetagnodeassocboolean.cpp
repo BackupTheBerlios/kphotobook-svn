@@ -23,10 +23,9 @@
 #include "file.h"
 #include "tagnodeboolean.h"
 
-#include <kdebug.h>
-
 #include <typeinfo>
 
+Tracer* FileTagNodeAssocBoolean::tracer = Tracer::getInstance("kde.kphotobook.engine", "FileTagNodeAssocBoolean");
 
 FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value)
     : FileTagNodeAssoc(file, tagNodeBoolean)
@@ -51,7 +50,7 @@ void FileTagNodeAssocBoolean::update(FileTagNodeAssoc* assoc) {
         FileTagNodeAssocBoolean* concreteAssoc = dynamic_cast<FileTagNodeAssocBoolean*>(assoc);
         m_value = concreteAssoc->value();
     } else {
-        kdDebug() << "[FileTagNodeAssocBoolean::update] the specified association is not of the type 'FileTagNodeAssocBoolean'." << endl;
+        tracer->error("update", "The specified association is not of the type 'FileTagNodeAssocBoolean'.");
     }
 }
 

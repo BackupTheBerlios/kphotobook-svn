@@ -23,10 +23,9 @@
 #include "file.h"
 #include "tagnodestring.h"
 
-#include <kdebug.h>
-
 #include <typeinfo>
 
+Tracer* FileTagNodeAssocString::tracer = Tracer::getInstance("kde.kphotobook.engine", "FileTagNodeAssocString");
 
 FileTagNodeAssocString::FileTagNodeAssocString(File* file, TagNodeString* tagNodeString, QString value)
     : FileTagNodeAssoc(file, tagNodeString)
@@ -45,7 +44,7 @@ void FileTagNodeAssocString::update(FileTagNodeAssoc* assoc) {
         FileTagNodeAssocString* concreteAssoc = dynamic_cast<FileTagNodeAssocString*>(assoc);
         m_value = concreteAssoc->value();
     } else {
-        kdDebug() << "[FileTagNodeAssocString::update] the specified association is not of the type 'FileTagNodeAssocString'." << endl;
+        tracer->error("update", "The specified association is not of the type 'FileTagNodeAssocString'.");
     }
 }
 

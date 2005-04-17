@@ -38,6 +38,7 @@
 #include <qcursor.h>
 #include <qpainter.h>
 
+Tracer* SourceDirTreeNode::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "SourceDirTreeNode");
 
 SourceDirTreeNode::SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu)
     : KListViewItem(parent)
@@ -66,7 +67,7 @@ void SourceDirTreeNode::refreshIcon() {
     if (Settings::sourceDirTreeShowIcons()) {
         QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
         if (iconSet.isNull()) {
-            kdDebug() << "[SourceDirTreeNode::refresh] Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
+            tracer->swarning("refreshIcon") << "Could not load iconset with iconname: '" << Constants::ICON_SOURCEDIR << "'" << endl;
             this->setPixmap(SourceDirTree::COLUMN_TEXT, 0);
         } else {
             this->setPixmap(SourceDirTree::COLUMN_TEXT, iconSet.pixmap());

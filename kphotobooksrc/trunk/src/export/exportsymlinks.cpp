@@ -31,8 +31,8 @@
 #include <kmessagebox.h>
 #include <kio/renamedlg.h>
 #include <klocale.h>
-#include <kdebug.h>
 
+Tracer* ExportSymlinks::tracer = Tracer::getInstance("kde.kphotobook.exports", "ExportSymlinks");
 
 ExportSymlinks::ExportSymlinks(QWidget* parent, QString destinationDir)
   : QObject(static_cast<QObject*>(parent), "ExportSymlinks")
@@ -65,18 +65,18 @@ void ExportSymlinks::execute() {
 
   // test the destination directory
   if (m_destinationDir.isEmpty()) {
-    kdError() << "[ExportSymlinks::execute] the specified 'destinationDir' is null or empty!" << endl;
+      tracer->error("execute", "The specified 'destinationDir' is null or empty!");
     return;
   }
   QDir dir(m_destinationDir);
   if (!dir.exists()) {
-    kdError() << "[ExportSymlinks::execute] the specified 'destinationDir' does not exist or is not a directory!" << endl;
+      tracer->error("execute", "The specified 'destinationDir' does not exist or is not a directory!");
     return;
   }
 
   // test the files to export
   if (!m_sourceFiles || m_sourceFiles->isEmpty()) {
-    kdWarning() << "[ExportSymlinks::execute] no files to export!" << endl;
+      tracer->info("execute", "No files to export!");
     return;
   }
   
@@ -130,7 +130,7 @@ void ExportSymlinks::doExport() {
 
 void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
 
-  kdDebug() << "[ExportSymlinks::createSymlink] creating symlink: " << symlink << "-->" << sourceFile << endl;
+    tracer->sinvoked("createSymlink") << "Creating symlink: " << symlink << "-->" << sourceFile << endl;
   
   // create the symbolic link
   int result = ::symlink(sourceFile.ascii(), symlink.ascii());
@@ -139,12 +139,12 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
   if (result != 0) {
     int errorNo = errno;
   
-    kdWarning() << "[ExportSymlinks::createSymlink] could not create symlink: '" << strerror(errorNo) << "' (" << symlink << "-->" << sourceFile << ")" << endl;
+    tracer->serror("createSymlink") << "Could not create symlink: '" << strerror(errorNo) << "' (" << symlink << "-->" << sourceFile << ")" << endl;
     
     // an error occured
     switch ( errorNo ) {
       case EPERM: {
-        kdWarning() << "[ExportSymlinks::createSymlink] the filesystem containing newpath does not support the creation of symbolic links: " << m_destinationDir << endl;
+          tracer->serror("createSymlink") << "The filesystem containing newpath does not support the creation of symbolic links: " << m_destinationDir << endl;
         
         QString msg = QString(i18n("The filesystem containing the destination directory does not support symbolic links:\n%1")).arg(m_destinationDir);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -153,7 +153,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case EFAULT: {
-        kdWarning() << "[ExportSymlinks::createSymlink] oldpath or newpath points outside your accessible address space: " << symlink << "-->" << sourceFile << endl;
+          tracer->serror("createSymlink") << "Oldpath or newpath points outside your accessible address space: " << symlink << "-->" << sourceFile << endl;
         
         QString msg = QString(i18n("Sourcefile or destinationfile points outside your accessible address space:\nSource: %1\nDestination: %2")).arg(sourceFile).arg(symlink);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -162,7 +162,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case EACCES: {
-        kdWarning() << "[ExportSymlinks::createSymlink] write access to the directory containing newpath is not allowed for the process's effective uid, or one of the directories in newpath did not allow search (execute) permission: " << m_destinationDir << endl;
+          tracer->serror("createSymlink") << "Write access to the directory containing newpath is not allowed for the process's effective uid, or one of the directories in newpath did not allow search (execute) permission: " << m_destinationDir << endl;
         
         QString msg = QString(i18n("Can not write to the specified destination directory:\n%1\nPlease check that you have write permission.")).arg(m_destinationDir);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -171,7 +171,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case ENAMETOOLONG: {
-        kdWarning() << "[ExportSymlinks::createSymlink] oldpath or newpath was too long: " << symlink << "-->" << sourceFile << endl;
+          tracer->serror("createSymlink") << "Oldpath or newpath was too long: " << symlink << "-->" << sourceFile << endl;
         
         QString msg = QString(i18n("The Sourcefilename or destinationfilename is too long:\nSource: %1\nDestination: %2")).arg(sourceFile).arg(symlink);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -180,7 +180,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case ENOENT: {
-        kdWarning() << "[ExportSymlinks::createSymlink] a directory component in newpath does not exist or is a dangling symbolic link: " << m_destinationDir << endl;
+          tracer->serror("createSymlink") << "A directory component in newpath does not exist or is a dangling symbolic link: " << m_destinationDir << endl;
         
         QString msg = QString(i18n("The destination directory is invalid:\n%1")).arg(m_destinationDir);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -189,7 +189,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case ENOTDIR: {
-        kdWarning() << "[ExportSymlinks::createSymlink] a component used as a directory in newpath is not, in fact, a directory: " << m_destinationDir << endl;
+          tracer->serror("createSymlink") << "A component used as a directory in newpath is not, in fact, a directory: " << m_destinationDir << endl;
         
         QString msg = QString(i18n("The destination directory is invalid:\n%1")).arg(m_destinationDir);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -198,7 +198,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case ENOMEM: {
-        kdWarning() << "[ExportSymlinks::createSymlink] insufficient kernel memory was available." << endl;
+          tracer->serror("createSymlink") << "Insufficient kernel memory was available." << endl;
         
         QString msg = QString(i18n("Insufficient kernel memory was available."));
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -207,7 +207,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case EROFS: {
-        kdWarning() << "[ExportSymlinks::createSymlink] newpath is on a read-only filesystem: " << m_destinationDir << endl;
+          tracer->serror("createSymlink") << "Newpath is on a read-only filesystem: " << m_destinationDir << endl;
         
         QString msg = QString(i18n("The destination directory is on a read only filesystem:\n%1")).arg(m_destinationDir);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -216,19 +216,19 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case EEXIST: {
-        kdDebug() << "[ExportSymlinks::createSymlink] newpath already exists: " << symlink << endl;
+          tracer->sinfo("createSymlink") << "Newpath already exists: " << symlink << endl;
 
         if (m_autoSkip) {
-          kdDebug() << "[ExportSymlinks::createSymlink] autoskip is enabled. proceeding with next file." << endl;
+            tracer->sinfo("createSymlink") << "Autoskip is enabled. proceeding with next file." << endl;
         } else if (m_overwriteAll) {
-          kdDebug() << "[ExportSymlinks::createSymlink] overwrite all is enabled. deleting existing file." << endl;
+            tracer->sinfo("createSymlink") << "Overwrite all is enabled. deleting existing file." << endl;
           
           if(::remove(symlink.ascii()) == 0) {
             // already existing file successfully removed
             createSymlink(sourceFile, symlink);
           } else {
             // could not delete existing file
-            kdWarning() << "[ExportSymlinks::createSymlink] could not delete file: '" << strerror(errno) << "' (" << symlink << ")" << endl;
+              tracer->serror("createSymlink") << "Could not delete file: '" << strerror(errno) << "' (" << symlink << ")" << endl;
             
             QString msgOverwriteAllDisabled = QString(i18n("\nFunction 'Overwrite all' disabled automatically!"));
             QString msg = QString(i18n("Could not overwrite the destination file:\n%1%2")).arg(symlink).arg(msgOverwriteAllDisabled);
@@ -284,7 +284,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
                 createSymlink(sourceFile, symlink);
               } else {
                 // could not delete existing file
-                kdWarning() << "[ExportSymlinks::createSymlink] could not delete file: '" << strerror(errno) << "' (" << symlink << ")" << endl;
+                  tracer->serror("createSymlink") << "Could not delete file: '" << strerror(errno) << "' (" << symlink << ")" << endl;
                 
                 QString msgOverwriteAllDisabled = QString::null;
                 if (m_overwriteAll) {
@@ -309,7 +309,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case ELOOP: {
-        kdWarning() << "[ExportSymlinks::createSymlink] too many symbolic links were encountered in resolving newpath: " << m_destinationDir << endl;
+          tracer->serror("createSymlink") << "To many symbolic links were encountered in resolving newpath: " << m_destinationDir << endl;
         
         QString msg = QString(i18n("The destination path contains too many symbolic links:\n%1")).arg(m_destinationDir);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -318,7 +318,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case ENOSPC: {
-        kdWarning() << "[ExportSymlinks::createSymlink] the device containing the file has no room for the new directory entry: " << m_destinationDir << endl;
+          tracer->serror("createSymlink") << "The device containing the file has no room for the new directory entry: " << m_destinationDir << endl;
         
         QString msg = QString(i18n("The device for the destination directory is full:\n%1")).arg(m_destinationDir);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -327,7 +327,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       case EIO: {
-        kdWarning() << "[ExportSymlinks::createSymlink] an I/O error occurred: " << symlink << "-->" << sourceFile << endl;
+          tracer->serror("createSymlink") << "An I/O error occurred: " << symlink << "-->" << sourceFile << endl;
         
         QString msg = QString(i18n("An I/O error occured:\nSource: %1\nDestination: %2")).arg(sourceFile).arg(symlink);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
@@ -336,7 +336,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
       }
       
       default: {
-        kdWarning() << "[ExportSymlinks::createSymlink] an unexpected error number catched (" << errorNo << "): " << symlink << "-->" << sourceFile << endl;
+          tracer->serror("createSymlink") << "An unexpected error number catched (" << errorNo << "): " << symlink << "-->" << sourceFile << endl;
         
         QString msg = QString(i18n("An unexpected error occured while creating symbolic link:\nSource: %1\nDestination: %2")).arg(sourceFile).arg(symlink);
         KMessageBox::sorry(m_parent, msg, i18n("Could not export"));

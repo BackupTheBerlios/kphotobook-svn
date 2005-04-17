@@ -21,9 +21,10 @@
 #ifndef SOURCEDIRTREENODE_H
 #define SOURCEDIRTREENODE_H
 
+#include "../tracer/tracer.h"
+
 #include <klistview.h>
 #include <kpopupmenu.h>
-#include <kdebug.h>
 
 #include <qstring.h>
 #include <qpixmap.h>
@@ -39,6 +40,9 @@ class SourceDir;
  * CVS-ID $Id$
  */
 class SourceDirTreeNode : public KListViewItem {
+
+private:
+    static Tracer* tracer;
 
 public:
     /**

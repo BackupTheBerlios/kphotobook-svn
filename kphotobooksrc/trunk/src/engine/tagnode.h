@@ -23,7 +23,6 @@
 
 #include "../tracer/tracer.h"
 
-#include <kdebug.h>
 #include <klocale.h>
 
 #include <qobject.h>

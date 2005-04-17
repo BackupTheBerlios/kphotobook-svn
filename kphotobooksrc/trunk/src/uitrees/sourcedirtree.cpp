@@ -28,11 +28,9 @@
 #include "../engine/sourcedir.h"
 #include "../uitrees/sourcedirtreenode.h"
 
-
 #include <klocale.h>
 #include <kstdaccel.h>
 #include <kiconloader.h>
-#include <kdebug.h>
 
 #include <qwidget.h>
 #include <qheader.h>

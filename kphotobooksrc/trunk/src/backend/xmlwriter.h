@@ -21,6 +21,8 @@
 #ifndef XMLWRITER_H
 #define XMLWRITER_H
 
+#include "../tracer/tracer.h"
+
 #include "../exception.h"
 #include "../backend/xmlconstants.h"
 
@@ -39,6 +41,9 @@ class FileTagNodeAssoc;
  * CVS-ID $Id$
  */
 class XmlWriter : public XmlConstants {
+
+private:
+    static Tracer* tracer;
 
 public:
     XmlWriter(Engine* engine)

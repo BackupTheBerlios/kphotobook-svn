@@ -21,11 +21,12 @@
 #ifndef _TAGTREENODE_H_
 #define _TAGTREENODE_H_
 
+#include "../tracer/tracer.h"
+
 #include "../engine/tagnode.h"
 
 #include <klistview.h>
 #include <kpopupmenu.h>
-#include <kdebug.h>
 
 #include <qstring.h>
 #include <qpixmap.h>
@@ -44,6 +45,9 @@ class TagTreeNode;
  * CVS-ID $Id$
  */
 class TagTreeNode : public KListViewItem {
+
+private:
+    static Tracer* tracer;
 
 public:
     /**

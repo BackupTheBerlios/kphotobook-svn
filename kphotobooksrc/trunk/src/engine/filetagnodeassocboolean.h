@@ -21,8 +21,11 @@
 #ifndef FILETAGNODEASSOCBOOLEAN_H
 #define FILETAGNODEASSOCBOOLEAN_H
 
+#include "../tracer/tracer.h"
+
 #include "filetagnodeassoc.h"
 #include "../constants.h"
+
 #include <qstring.h>
 
 class File;
@@ -35,6 +38,9 @@ class TagNodeBoolean;
  * CVS-ID $Id$
  */
 class FileTagNodeAssocBoolean : public FileTagNodeAssoc {
+
+private:
+    static Tracer* tracer;
 
 public:
     FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value = false);

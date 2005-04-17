@@ -21,6 +21,8 @@
 #ifndef SOURCEDIR_H
 #define SOURCEDIR_H
 
+#include "../tracer/tracer.h"
+
 #include <qobject.h>
 #include <qdir.h>
 #include <qptrlist.h>
@@ -35,6 +37,9 @@ class File;
 class SourceDir : public QObject {
 
     Q_OBJECT
+
+private:
+    static Tracer* tracer;
 
 public:
     SourceDir(unsigned int id, QDir* dir, bool recursive);

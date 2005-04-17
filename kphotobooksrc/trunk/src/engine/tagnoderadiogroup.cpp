@@ -22,8 +22,6 @@
 
 #include "filetagnodeassoc.h"
 
-#include <kdebug.h>
-
 Tracer* TagNodeRadioGroup::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeRadioGroup");
 
 TagNodeRadioGroup::TagNodeRadioGroup(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)

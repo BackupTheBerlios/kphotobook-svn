@@ -41,8 +41,6 @@
 #include <kstdaccel.h>
 #include <kiconloader.h>
 
-#include <kdebug.h>
-
 #include <qwidget.h>
 #include <qheader.h>
 #include <qcursor.h>

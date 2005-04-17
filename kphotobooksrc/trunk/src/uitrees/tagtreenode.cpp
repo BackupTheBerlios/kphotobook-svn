@@ -35,6 +35,7 @@
 #include <qlistview.h>
 #include <qcursor.h>
 
+Tracer* TagTreeNode::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNode");
 
 TagTreeNode::TagTreeNode(TagTree* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu)
     : KListViewItem(parent)
@@ -68,7 +69,7 @@ void TagTreeNode::refresh() {
         QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(*m_tagNode->iconName(), KIcon::Small, Settings::tagTreeIconSize(), true);
         if (iconSet.isNull()) {
             if (!(*m_tagNode->iconName()).isEmpty()) {
-                kdWarning() << "[TagTreeNode::refresh] Could not load iconset with iconname: '" << *m_tagNode->iconName() << "'" << endl;
+                tracer->swarning("refresh") << "Could not load iconset with iconname: '" << *m_tagNode->iconName() << "'" << endl;
             }
             this->setPixmap(TagTree::COLUMN_TEXT, 0);
         } else {

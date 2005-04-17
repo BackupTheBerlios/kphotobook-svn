@@ -30,6 +30,8 @@
 
 #include <kfileitem.h>
 
+Tracer* TagTreeNodeRadioGroup::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNodeRadioGroup");
+
 TagTreeNodeRadioGroup::TagTreeNodeRadioGroup(TagTree* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu) {
 }

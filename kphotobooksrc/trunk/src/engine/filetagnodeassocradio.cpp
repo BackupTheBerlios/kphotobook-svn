@@ -23,10 +23,9 @@
 #include "file.h"
 #include "tagnoderadio.h"
 
-#include <kdebug.h>
-
 #include <typeinfo>
 
+Tracer* FileTagNodeAssocRadio::tracer = Tracer::getInstance("kde.kphotobook.engine", "FileTagNodeAssocRadio");
 
 FileTagNodeAssocRadio::FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, bool value)
     : FileTagNodeAssoc(file, tagNode)
@@ -51,7 +50,7 @@ void FileTagNodeAssocRadio::update(FileTagNodeAssoc* assoc) {
         FileTagNodeAssocRadio* concreteAssoc = dynamic_cast<FileTagNodeAssocRadio*>(assoc);
         m_value = concreteAssoc->value();
     } else {
-        kdDebug() << "[FileTagNodeAssocRadio::update] the specified association is not of the type 'FileTagNodeAssocRadio'." << endl;
+        tracer->error("update", "The specified association is not of the type 'FileTagNodeAssocRadio'.");
     }
 }
 

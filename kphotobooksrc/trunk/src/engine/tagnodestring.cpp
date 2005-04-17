@@ -23,8 +23,6 @@
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocstring.h"
 
-#include <kdebug.h>
-
 #include <qregexp.h>
 
 Tracer* TagNodeString::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeString");

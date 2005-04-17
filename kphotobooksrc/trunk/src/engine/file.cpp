@@ -25,8 +25,7 @@
 #include "tagnode.h"
 #include "filetagnodeassoc.h"
 
-#include "kdebug.h"
-
+Tracer* File::tracer = Tracer::getInstance("kde.kphotobook.engine", "File");
 
 File::File(Engine* engine, SourceDir* sourceDir, QFileInfo* fileInfo, int rotate)
     : KFileItem(KFileItem::Unknown, KFileItem::Unknown, QString("file:%1").arg(fileInfo->absFilePath()))
@@ -69,7 +68,7 @@ void File::appendAssoc(FileTagNodeAssoc* assoc) {
 
         // test if the tagNode of the specified association is already referenced from this file
         if (currentAssoc->tagNode() == assoc->tagNode()) {
-            kdDebug() << "Association between file '" << assoc->file()->fileInfo()->absFilePath() << "' and tagnode '" << assoc->tagNode()->text() << "' already exists." << endl;
+            tracer->swarning("appendAssoc") << "Association between file '" << assoc->file()->fileInfo()->absFilePath() << "' and tagnode '" << assoc->tagNode()->text() << "' already exists." << endl;
 
             // update the existing association to reflect value of the specified one
             currentAssoc->update(assoc);

@@ -23,8 +23,6 @@
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocboolean.h"
 
-#include <kdebug.h>
-
 Tracer* TagNodeBoolean::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeBoolean");
 
 TagNodeBoolean::TagNodeBoolean(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)

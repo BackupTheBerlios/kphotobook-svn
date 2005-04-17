@@ -21,6 +21,8 @@
 #ifndef FILE_H
 #define FILE_H
 
+#include "../tracer/tracer.h"
+
 #include <kfileitem.h>
 
 #include <qfileinfo.h>
@@ -37,6 +39,9 @@ class FileTagNodeAssoc;
  * CVS-ID $Id$
  */
 class File : public KFileItem {
+
+private:
+    static Tracer* tracer;
 
 public:
     /**

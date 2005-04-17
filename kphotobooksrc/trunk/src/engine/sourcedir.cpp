@@ -22,8 +22,7 @@
 
 #include "file.h"
 
-#include "kdebug.h"
-
+Tracer* SourceDir::tracer = Tracer::getInstance("kde.kphotobook.engine", "SourceDir");
 
 SourceDir::SourceDir(unsigned int id, QDir* dir, bool recursive)
     : m_deleteInProgress(false)
@@ -40,7 +39,7 @@ SourceDir::SourceDir(unsigned int id, QDir* dir, bool recursive)
 
 SourceDir::~SourceDir() {
 
-    kdDebug() << "[SourceDir::~SourceDir] invoked on sourcedir '" << m_dir->absPath() << "'." << endl;
+    tracer->sinvoked("~SourceDir") << "For sourcedir '" << m_dir->absPath() << "'." << endl;
 
     m_deleteInProgress = true;
 
@@ -70,7 +69,7 @@ SourceDir::~SourceDir() {
 void SourceDir::setParent(SourceDir* parent) {
 
     if (m_parent) {
-        kdDebug() << "SourceDir '" << this->toString() << "' already has a parent directory: '" << parent->toString() << "'." << endl;
+        tracer->swarning("setParent") << "SourceDir '" << this->toString() << "' already has a parent directory: '" << parent->toString() << "'." << endl;
         return;
     }
 

@@ -21,6 +21,8 @@
 #ifndef TAGNODESTRING_H
 #define TAGNODESTRING_H
 
+#include "../tracer/tracer.h"
+
 #include "tagnode.h"
 
 #include <qstring.h>
@@ -35,7 +37,6 @@ class TagNodeString : public TagNode {
 
 private:
     static Tracer* tracer;
-
 
 public:
     TagNodeString(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);

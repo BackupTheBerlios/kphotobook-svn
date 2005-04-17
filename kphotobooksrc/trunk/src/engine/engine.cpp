@@ -35,7 +35,6 @@
 
 #include <kglobal.h>
 #include <kiconloader.h>
-#include <kdebug.h>
 #include <klocale.h>
 
 #include <qstring.h>

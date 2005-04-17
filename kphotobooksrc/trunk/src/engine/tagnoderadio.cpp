@@ -23,8 +23,6 @@
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocradio.h"
 
-#include <kdebug.h>
-
 Tracer* TagNodeRadio::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeRadio");
 
 TagNodeRadio::TagNodeRadio(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)

@@ -46,10 +46,10 @@ class SourceDirTreeNode;
  */
 class SourceDirTree : public KListView {
 
+Q_OBJECT
+
 private:
     static Tracer* tracer;
-
-Q_OBJECT
 
 public:
     static const int COLUMN_TEXT = 0;

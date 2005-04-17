@@ -21,6 +21,8 @@
 #ifndef EXPORTSYMLINKS_H
 #define EXPORTSYMLINKS_H
 
+#include "../tracer/tracer.h"
+
 #include <qobject.h>
 #include <qwidget.h>
 #include <qthread.h>
@@ -41,6 +43,9 @@
 class ExportSymlinks : public QObject { //, public QThread {
 
   Q_OBJECT
+
+private:
+    static Tracer* tracer;
 
 public:
   /**

@@ -21,6 +21,8 @@
 #ifndef TAGTREENODERADIOGROUP_H
 #define TAGTREENODERADIOGROUP_H
 
+#include "../tracer/tracer.h"
+
 #include "tagtreenode.h"
 #include "tagtreenoderadio.h"
 
@@ -33,6 +35,9 @@ class TagNodeRadioGroup;
  */
 class TagTreeNodeRadioGroup : public TagTreeNode {
 
+private:
+    static Tracer* tracer;
+
 public:
     TagTreeNodeRadioGroup(TagTree* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
@@ -44,14 +49,16 @@ public:
      * Sets the filter to find images without this tag set.
      */
     virtual void deselectFilter() {
-        kdDebug() << "[TagNodeRadioGroup::deselectFilter()] Not Yet Implemented!" << endl;      
+        // TODO: implement
+        tracer->warning("deselectFilter()", "Not Yet Implemented!");
     }
 
     /**
      * Resets the filter.
      */
     virtual void resetFilter() {
-        kdDebug() << "[TagNodeRadioGroup::resetFilter()] Not Yet Implemented!" << endl;
+        // TODO: implement
+        tracer->warning("resetFilter()", "Not Yet Implemented!");
     }
 
     virtual void rightClicked(TagTree* tagTree, int column);

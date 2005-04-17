@@ -26,17 +26,16 @@
 #include "../engine/file.h"
 #include "../engine/filetagnodeassoc.h"
 
-#include <kdebug.h>
-
 #include <qfileinfo.h>
 #include <qregexp.h>
 
 #include <typeinfo>
 
+Tracer* XmlWriter::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlWriter");
 
 void XmlWriter::store(QFile* file2write) throw(PersistingException*) {
 
-    kdDebug() << "[XmlWriter::store] invoked... file: '" << QFileInfo(*file2write).absFilePath() << "'." << endl;
+    tracer->sinvoked("store") << "With file: '" << QFileInfo(*file2write).absFilePath() << "'." << endl;
 
     if (!file2write->open(IO_WriteOnly)) {
         QString msg = QString("Could not open file for writing: '%1'").arg(QFileInfo(*file2write).absFilePath());
