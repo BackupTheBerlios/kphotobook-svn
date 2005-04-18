@@ -31,7 +31,7 @@
     
     <author>
     &author2.name;
-    <affiliation>yyy
+    <affiliation>
     <address>&author2.mail;</address>
     </affiliation>
     </author>
@@ -1111,7 +1111,7 @@ Documentation copyright 2004 &author2.name; &author2.mail;
 part of KDE CVS.  You should remove it if you are releasing your
 application --> 
 
-<!-- &install.intro.documentation; -->
+&install.intro.documentation;
 
 </sect1>
 
