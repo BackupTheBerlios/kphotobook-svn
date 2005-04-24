@@ -113,7 +113,7 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
         iconLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         iconLineEdit->setReadOnly(true);
         parentTagGroupLayout->addWidget(iconLineEdit, 3, 1);
-        
+
         QPushButton* iconButton = new QPushButton(i18n("Icon"), parentTagGroup, "iconButton");
         QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(iconLineEdit->text(), KIcon::Small, Settings::tagTreeIconSize(), true);
         iconButton->setIconSet(iconSet);
@@ -134,13 +134,13 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
 
     m_typeComboBox = new KComboBox(false, newTagGroup, "typeComboBox");
     // now fill the available items;
-        if (mode == MODE_CREATE_TAG) {
-            fillTypeCombo(parentNode);
-        } else {
-            m_typeComboBox->insertItem(tagTreeNode->tagNode()->typeName());
-            m_typeComboBox->setEnabled(false);
-        }
-        
+    if (mode == MODE_CREATE_TAG) {
+        fillTypeCombo(parentNode);
+    } else {
+        m_typeComboBox->insertItem(tagTreeNode->tagNode()->typeName());
+        m_typeComboBox->setEnabled(false);
+    }
+
     newTagGroupLayout->addMultiCellWidget(m_typeComboBox, 0, 0, 1, 2);
 
     // name
@@ -159,7 +159,7 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
     m_commentLineEdit = new KLineEdit(newTagGroup, "commentLineEdit");
     m_commentLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     newTagGroupLayout->addMultiCellWidget(m_commentLineEdit, 2, 2, 1, 2);
-    
+
     // icon
     QLabel* iconLabel = new QLabel(i18n("Icon"), newTagGroup, "iconLabel");
     newTagGroupLayout->addWidget(iconLabel, 3, 0);
@@ -181,7 +181,7 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
     spacer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
     if (mode == MODE_EDIT_TAG) {
-        // set the texts 
+        // set the texts
         m_nameLineEdit->setText(*tagTreeNode->tagNode()->text());
         m_commentLineEdit->setText(*tagTreeNode->tagNode()->comment());
         m_iconLineEdit->setText(*tagTreeNode->tagNode()->iconName());
@@ -209,34 +209,34 @@ TagNode::Type DialogManageTag::tagType() {
 void DialogManageTag::fillTypeCombo(TagTreeNode* parentNode)
 {
     m_typeComboBoxEntries = new QValueList<TagNode::Type>;
-    
-        // title tag is allowed only as top-level tag
+
+    // title tag is allowed only as top-level tag
     if (!parentNode) {
         m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_TITLE));
         m_typeComboBoxEntries->append(TagNode::TYPE_TITLE);
     }
-    
-        // each tag (but the title tag) can be top-level, below title and below other booleantag
+
+    // each tag (but the title tag) can be top-level, below title and below other booleantag
     if (!parentNode
         || parentNode->tagNode()->typeId() == TagNode::TYPE_TITLE
         || parentNode->tagNode()->typeId() == TagNode::TYPE_BOOLEAN) {
-            
-            m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_BOOLEAN));
-            m_typeComboBoxEntries->append(TagNode::TYPE_BOOLEAN);
-            
-            m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_STRING));
-            m_typeComboBoxEntries->append(TagNode::TYPE_STRING);
-            
-            m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_RADIOGROUP));
-            m_typeComboBoxEntries->append(TagNode::TYPE_RADIOGROUP);
-        }
+
+        m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_BOOLEAN));
+        m_typeComboBoxEntries->append(TagNode::TYPE_BOOLEAN);
+
+        m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_STRING));
+        m_typeComboBoxEntries->append(TagNode::TYPE_STRING);
+
+        m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_RADIOGROUP));
+        m_typeComboBoxEntries->append(TagNode::TYPE_RADIOGROUP);
+    }
 
     // RADIO is only allowed below RADIOGROUP
-    if (parentNode->tagNode()->typeId() == TagNode::TYPE_RADIOGROUP) {
+    if (parentNode && parentNode->tagNode()->typeId() == TagNode::TYPE_RADIOGROUP) {
         m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_RADIO));
         m_typeComboBoxEntries->append(TagNode::TYPE_RADIO);
     }
-        
+
 }
 
 
