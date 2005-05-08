@@ -110,7 +110,7 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     , m_sourcedirTree(0)
     , m_metaInfoTree(0)
     , m_engine(new Engine())
-    
+
     , m_inTagtreeTemporaryUnlocking(false)
     , m_tagtreeWasLocked(false)
 
@@ -165,7 +165,7 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     setupToolWindowTagTree();
     setupToolWindowSourceDirTree();
     setupToolWindowMetaInfoTree();
-    
+
     // init some other things: statusbar,..
     init();
 
@@ -285,6 +285,9 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
         // update the view
         //
 
+        //first clear the tagTree, otherwise we get doubles on loading a new .kpb
+        m_tagTree->clear();
+
         // add the tagNodes to the tagtree
         m_tagTree->addTagNodes(tagForest());
 
@@ -310,17 +313,17 @@ void KPhotoBook::setupActions() {
     // file menu
     //
     KStdAction::openNew(this, SLOT(slotFileNew()), actionCollection())->setWhatsThis(i18n("Create a new KPhotoBook database."));
-    
+
     KStdAction::open(this, SLOT(slotFileOpen()), actionCollection())->setWhatsThis(i18n("Open an existing KPhotoBook database."));
-    
+
     m_save = KStdAction::save(this, SLOT(slotFileSave()), actionCollection());
     m_save->setWhatsThis(i18n("Save the current KPhotoBook database."));
     m_save->setEnabled(false);
-    
+
     KStdAction::saveAs(this, SLOT(slotFileSaveAs()), actionCollection())->setWhatsThis(i18n("Save the current KPhotoBook database as a new file."));
-    
+
     KStdAction::close(this, SLOT(close()), actionCollection())->setWhatsThis(i18n("Close this window."));
-    
+
     KStdAction::quit(kapp, SLOT(closeAllWindows()), actionCollection())->setWhatsThis(i18n("Close all windows and quit."));
 
 
@@ -328,12 +331,12 @@ void KPhotoBook::setupActions() {
     // settings menu
     //
     KStdAction::keyBindings(this, SLOT(slotOptionsConfigureKeys()), actionCollection())->setWhatsThis(i18n("Configure the application's keyboard shortcut assignments."));
-    
+
     KStdAction::configureToolbars(this, SLOT(slotOptionsConfigureToolbars()), actionCollection())->setWhatsThis(i18n("Configure which items should appear in the toolbars."));
-    
+
     KStdAction::preferences(this, SLOT(slotOptionsPreferences()), actionCollection())->setWhatsThis(i18n("Configure KPhotoBook."));
 
-    
+
     //
     // export actions
     //
@@ -355,7 +358,7 @@ void KPhotoBook::setupActions() {
     m_exportSelectedFiles->setWhatsThis(i18n("Exports all selected files as symbolic links."));
     m_exportSelectedFiles->setEnabled(false);
 
-    
+
     //
     // engine actions
     //
@@ -367,7 +370,7 @@ void KPhotoBook::setupActions() {
     );
     actionCollection()->action("rescanFilesystem")->setWhatsThis(i18n("This may, for example, be needed after having added a new directory to a directory which is already part of the current database. New directories and files will be added to the database, removed items will be prompted for user input."));
 
-    
+
     //
     // view actions
     //
@@ -402,7 +405,7 @@ void KPhotoBook::setupActions() {
 
     connect(((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu(), SIGNAL(activated(int)),
               this, SLOT(slotChangePreviewSizeActivated(int)));
-    
+
     connect(((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu(), SIGNAL(aboutToShow()),
               this, SLOT(slotIncPreviewSizePopupAboutToShow()));
 
@@ -431,7 +434,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "addSourceDir"
     );
     actionCollection()->action("addSourceDir")->setWhatsThis(i18n("Add a source directory to the database. This can happen to a single directory or recursively. "));
-    
+
     KShortcut editSourceDirShortCut(KKey("F3"));
     new KAction(
         i18n("&Edit sourcedirectory"), Constants::ICON_EDIT_SOURCEDIR,
@@ -440,8 +443,8 @@ void KPhotoBook::setupActions() {
         actionCollection(), "editSourceDir"
     );
     actionCollection()->action("editSourceDir")->setEnabled(false);
-    actionCollection()->action("editSourceDir")->setWhatsThis(i18n("Edit the properties of the sourcedirectory. I.e. change the location of the directory."));    
-    
+    actionCollection()->action("editSourceDir")->setWhatsThis(i18n("Edit the properties of the sourcedirectory. I.e. change the location of the directory."));
+
     new KAction(
         i18n("&Remove sourcedirectory"), Constants::ICON_REMOVE_SOURCEDIR,
         0,
@@ -457,7 +460,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "includeWholeSourceDir"
     );
     actionCollection()->action("includeWholeSourceDir")->setWhatsThis(i18n("Include the current directory and all sub directories to the thumbnail preview."));
-    
+
     new KAction(
         i18n("&Exclude whole folder"), Constants::ICON_EXCLUDE_WHOLE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -465,7 +468,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "excludeWholeSourceDir"
     );
     actionCollection()->action("excludeWholeSourceDir")->setWhatsThis(i18n("Exclude the current directory and all sub directories from the thumbnail preview."));
-    
+
     new KAction(
         i18n("In&vert folder selection"), Constants::ICON_INVERT_FOLDER_SELECTION,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -481,7 +484,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "includeAllSourceDirs"
     );
     actionCollection()->action("includeAllSourceDirs")->setWhatsThis(i18n("Include all source directories with all sub directories to the thumbnail view."));
-    
+
     new KAction(
         i18n("&Exclude all"), Constants::ICON_EXCLUDE_WHOLE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -489,7 +492,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "excludeAllSourceDirs"
     );
     actionCollection()->action("excludeAllSourceDirs")->setWhatsThis(i18n("Exclued all source directories with all sub directories from the thumbnail view."));
-    
+
     new KAction(
         i18n("In&vert all"), Constants::ICON_INVERT_FOLDER_SELECTION,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -505,7 +508,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "expandSourceDir"
     );
     actionCollection()->action("expandSourceDir")->setWhatsThis(i18n("Expand all children of the source directory."));
-        
+
     new KAction(
         i18n("Collapse sourcedir"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -513,7 +516,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "collapseSourceDir"
     );
     actionCollection()->action("collapseSourceDir")->setWhatsThis(i18n("Hide the subtree of the source directory."));
-    
+
     new KAction(
         i18n("Expand all sourcedirs"), Constants::ICON_EXPAND_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -521,7 +524,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "expandAllSourceDirs"
     );
     actionCollection()->action("expandAllSourceDirs")->setWhatsThis(i18n("Expand the the whole source directory tree."));
-    
+
     new KAction(
         i18n("Collapse all sourcedirs"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -530,7 +533,7 @@ void KPhotoBook::setupActions() {
     );
     actionCollection()->action("collapseAllSourceDirs")->setWhatsThis(i18n("Collapse the whole source directory tree."));
 
-    
+
     //
     // tag actions
     //
@@ -541,7 +544,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "addMaintag"
     );
     actionCollection()->action("addMaintag")->setWhatsThis(i18n("Add a new main tag to the database. This is a top level tag which can contain sub-tags."));
-    
+
     new KAction(
         i18n("&Create subtag"), Constants::ICON_CREATE_SUBTAG,
         0,
@@ -549,7 +552,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "createSubtag"
     );
     actionCollection()->action("createSubtag")->setWhatsThis(i18n("Creates a tag as child of the selected tag."));
-    
+
     KShortcut editTagShortCut(KKey("F2"));
     new KAction(
         i18n("&Edit tag"), Constants::ICON_EDIT_TAG,
@@ -566,7 +569,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "deleteTag"
     );
     actionCollection()->action("deleteTag")->setWhatsThis(i18n("Deletes the tag after accepting a confirmation dialog."));
-    
+
     m_lockUnlockTaggingAction = new KToggleAction(
         i18n("Lock Tagging"), 0,
         0,
@@ -583,7 +586,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "andifyTags"
     );
     actionCollection()->action("andifyTags")->setWhatsThis(i18n("This sets the filter operator to 'AND', which means that only images which contain all in the filter marked tags will be shown."));
-    
+
     m_orifyTagsAction = new KToggleAction(
         i18n("Tag filter operator = OR"), Constants::ICON_OPERATOR_OR,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -617,7 +620,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "expandTag"
     );
     actionCollection()->action("expandTag")->setWhatsThis(i18n("Expand all children of the tag."));
-    
+
     new KAction(
         i18n("Collapse tag"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -625,7 +628,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "collapseTag"
     );
     actionCollection()->action("collapseTag")->setWhatsThis(i18n("Hide the subtree of the tag."));
-    
+
     new KAction(
         i18n("Expand all tags"), Constants::ICON_EXPAND_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),
@@ -633,7 +636,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "expandAllTags"
     );
     actionCollection()->action("expandAllTags")->setWhatsThis(i18n("Expand the whole tag tree."));
-    
+
     new KAction(
         i18n("Collapse all tags"), Constants::ICON_COLLAPSE_FOLDER,
         0, //KStdAccel::shortcut(KStdAccel::Reload),m_sourcedirTree
@@ -641,8 +644,8 @@ void KPhotoBook::setupActions() {
         actionCollection(), "collapseAllTags"
     );
     actionCollection()->action("collapseAllTags")->setWhatsThis(i18n("Collapse the whole tag tree."));
-    
-    
+
+
     //
     // tool view actions
     //
@@ -653,7 +656,7 @@ void KPhotoBook::setupActions() {
         actionCollection(), "restoreToolViews"
     );
     actionCollection()->action("restoreToolViews")->setWhatsThis(i18n("Rearrange the toolviews (Tagtree, ...) to their default position."));
-    
+
     new KAction(
         i18n("Show Tagtree"), 0,
         0,
@@ -675,7 +678,7 @@ void KPhotoBook::setupActions() {
         0,
         this, SLOT(slotShowToolViewMetaInfoTree()),
         actionCollection(), "showToolViewMetaInfoTree"
-    );    
+    );
     actionCollection()->action("showToolViewMetaInfoTree")->setWhatsThis(i18n("Display the EXIF toolview."));
 }
 
@@ -695,7 +698,7 @@ void KPhotoBook::setupContextMenus() {
 QPtrList<File>* KPhotoBook::files(FilterNode *filterRootNode) {
 
     tracer->invoked("files");
-    
+
     // build the filter from the tagtree if the specified filter is empty
     if (filterRootNode == 0 && m_view) {
         if (Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::Or) {
@@ -709,7 +712,7 @@ QPtrList<File>* KPhotoBook::files(FilterNode *filterRootNode) {
             TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
 
             FilterNode* filterNode = item->filter();
-            
+
             if (filterNode != 0) {
                 filterRootNode->addChild(filterNode);
             }
@@ -753,7 +756,7 @@ bool KPhotoBook::queryClose() {
         }
         Settings::setFileFilterSubdirsToIgnore(stringList);
     }
-    
+
     if (m_settingsTools) {
         stringList.clear();
         for (uint i = 0; i < m_settingsTools->kcfg_ToolsExternalTools->count(); i++) {
@@ -761,7 +764,7 @@ bool KPhotoBook::queryClose() {
         }
         Settings::setToolsExternalTools(stringList);
     }
-    
+
     switch (mdiMode()) {
         case KMdi::TabPageMode:
             Settings::setGeneralViewMode(Settings::EnumGeneralViewMode::TabPageMode);
@@ -770,10 +773,10 @@ bool KPhotoBook::queryClose() {
             Settings::setGeneralViewMode(Settings::EnumGeneralViewMode::IDEAlMode);
             break;
     }
-    
+
     // force writing the settings
     Settings::writeConfig();
-    
+
     // store dock configuration
     writeDockConfig(KGlobal::config(), "DockConfig");
 
@@ -819,10 +822,10 @@ bool KPhotoBook::queryClose() {
       storeTreeState();
       storeFilter();
     }
-    
+
     //at last check for untaged images
     return checkForUntagged();
-  
+
     // if we got here there was nothing to save --> simply close
     return retval;
 }
@@ -852,14 +855,52 @@ bool KPhotoBook::checkForUntagged()
 
     // and check, if there are untagged images
     if ( m_engine->filteredNumberOfFiles() ) {
-        int button = KMessageBox::warningYesNo(
-            this, // parent
-            i18n("There are untagged images...\nDo you want to exit anyway?" ), // text
-            i18n("Untagged Images") );
 
+        // ALTERNATIVE 1 BEGIN
+        /*     QMessageBox mb(i18n("Untagged Images"),
+                       i18n("There are untagged images...<br><br><b>Do you want to exit anyway?</b>"),
+                       QMessageBox::Warning,
+                       QMessageBox::No  | QMessageBox::Escape,
+                       QMessageBox::Yes | QMessageBox::Default,
+                       QMessageBox::Cancel);
+
+        mb.setButtonText(QMessageBox::Cancel, "Yes, &don't\nask again!");
+
+        switch( mb.exec() ) {
+        case QMessageBox::Yes:
+            // simply quit
+            break;
+        case QMessageBox::No:
+            // Don't exit now
+            return false;
+            break;
+        case QMessageBox::Cancel:
+            // exit and never ask again.
+            Settings::setGeneralCheckUntaggedOnExit(false);
+            Settings::writeConfig();
+            break;
+        }*/
+        // ALTERNATIVE 1 END
+
+        // ALTERNATIVE 2 START
+        //this misuses the nice kde "don't show again" function to disable our settings.
+        int button = KMessageBox::warningYesNo(this,
+                                               "<b></b>There are untagged images...<br><br><b>Do you want to exit anyway?</b>",
+                                               "Untagged Images",
+                                               KStdGuiItem::yes(),
+                                               KStdGuiItem::no(),
+                                               "checkForUntagged");
+
+        KMessageBox::ButtonCode unused;
+        if (!KMessageBox::shouldBeShownYesNo("checkForUntagged", unused)) {
+            KMessageBox::enableMessage("checkForUntagged");
+            Settings::setGeneralCheckUntaggedOnExit(false);
+            Settings::writeConfig();
+        }
         if ( button == KMessageBox::No ) {
             return false;
         }
+        // ALTERNATIVE 2 END
     } else {
         tracer->info("checkForUntagged", "No untagged files found.");
     }
@@ -1134,7 +1175,7 @@ void KPhotoBook::slotAddSourcedir() {
 void KPhotoBook::slotEditSourceDir() {
 
     tracer->invoked("slotEditSourceDir");
-    
+
     tracer->error("slotEditSourceDir", "NOT IMPLEMENTED YET");
 
     // TODO: implement SourceDirPopupMenu::editSourceDir()
@@ -1158,7 +1199,7 @@ void KPhotoBook::slotRemoveSourceDir() {
 
     if (button == KMessageBox::Yes) {
         tracer->sinfo("slotRemoveSourceDir") << "Removing source directory: " << currentNode->sourceDir()->dir()->absPath() << endl;
-        
+
         // remove all items from the view without deleting them
         m_view->removeAllFiles();
 
@@ -1207,7 +1248,7 @@ void KPhotoBook::slotCreateSubtag() {
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
         && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)
         && typeid(*currentItem) != typeid(TagTreeNodeRadio)) {
-        
+
         tracer->error("slotCreateSubtag", "Called on a tree item other than TagTreeNode!");
         return;
     }
@@ -1240,7 +1281,7 @@ void KPhotoBook::slotEditTag() {
         && typeid(*currentItem) != typeid(TagTreeNodeString)
         && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)
         && typeid(*currentItem) != typeid(TagTreeNodeRadio)) {
-        
+
         tracer->error("slotEditTag", "Called on a tree item other than TagTreeNode!");
         return;
     }
@@ -1270,9 +1311,11 @@ void KPhotoBook::slotDeleteTag() {
     QListViewItem* currentItem = m_tagTree->currentItem();
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
-        && typeid(*currentItem) != typeid(TagTreeNodeString)) {
+        && typeid(*currentItem) != typeid(TagTreeNodeString)
+        && typeid(*currentItem) != typeid(TagTreeNodeRadio)
+        && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)) {
         // TODO: can't we delete RadioGroup and Radio
-        
+
         tracer->error("slotDeleteTag", "Called on a tree item other than TagTreeNode!");
         return;
     }
@@ -1288,7 +1331,7 @@ void KPhotoBook::slotDeleteTag() {
     );
 
     if (button == KMessageBox::Yes) {
-        
+
         tracer->sdebug("slotDeleteTag") << "Dialog exited with OK, deleteing tag: " << *(tagTreeNode->tagNode()->text()) << endl;
 
         // remove the tag from the engine
@@ -1308,9 +1351,9 @@ void KPhotoBook::slotDeleteTag() {
 void KPhotoBook::slotToggleLockUnlockTagging() {
 
     tracer->invoked("slotToggleLockUnlockTagging");
-    
+
     Settings::setTagTreeLocked(!Settings::tagTreeLocked());
-    
+
     applyLockUnlockTaggingSettings();
 }
 
@@ -1361,11 +1404,11 @@ void KPhotoBook::slotIncPreviewSizePopupAboutToShow()
 {
     KPopupMenu* popup = ((KToolBarPopupAction*)actionCollection()->action("increasePreviewSize"))->popupMenu();
     popup->clear();
-    
+
     int curPercent = Settings::imagePreviewSize() * 100 / Constants::SETTINGS_MAX_PREVIEW_SIZE;
 
     popup->insertItem("100 %", 100);
-    
+
     if (curPercent < 75) {
         popup->insertItem("75 %", 75);
     }
@@ -1528,7 +1571,7 @@ void KPhotoBook::slotFileSelectionChanged() {
     // update the statusbar to reflect the number of selected files
     QString selectedMsg = QString(i18n("Selected: %1")).arg(selectedImagesCount);
     statusBar()->changeItem(selectedMsg, 4);
-    
+
     // enable 'exportSelectedFiles' only if at least one file is selected
     m_exportSelectedFiles->setEnabled(selectedImagesCount > 0);
 
@@ -1544,10 +1587,10 @@ void KPhotoBook::slotFileSelectionChanged() {
     // show EXIF info if only one image is seleced
     if (m_view->fileView()->selectedItems()->count() == 1) {
         tracer->debug("slotFileSelectionChanged", "One file is selected --> getting meta infos");
-        
+
         QPtrListIterator<KFileItem> tempIt(*m_view->fileView()->selectedItems());
         KFileItem* selectedFile = tempIt.current();
-        
+
         KFileMetaInfo metaInfo = selectedFile->metaInfo();
 
         // iterate over groups
@@ -1639,7 +1682,7 @@ void KPhotoBook::slotShowToolViewTagTree() {
     } else {
         m_tagTreeToolView->place(KDockWidget::DockLeft, getMainDockWidget(), 20);
     }
-    
+
     m_tagTreeToolView->show();
 }
 
@@ -1677,7 +1720,7 @@ void KPhotoBook::slotShowToolViewMetaInfoTree() {
 void KPhotoBook::slotExportMatchingFiles() {
 
     QDir dir(Settings::fileSystemLastExportedToDirectory());
-    
+
     QString choosedDir = selectExportingDirectory(dir.absPath());
 
     if (!choosedDir.isEmpty()) {
@@ -1685,11 +1728,11 @@ void KPhotoBook::slotExportMatchingFiles() {
 
         tracer->debug("slotExportMatchingFiles", "Exporting to '%s'...", choosedDir.ascii());
         changeStatusbar(i18n("Exporting symbolic links..."));
-        
+
         ExportSymlinks exporter(m_view, choosedDir);
         exporter.setSourceFiles(m_view->fileView()->items());
         exporter.execute();
-        
+
         changeStatusbar(i18n("Exporting symbolic links finished"));
     }
 }
@@ -1698,20 +1741,20 @@ void KPhotoBook::slotExportMatchingFiles() {
 void KPhotoBook::slotExportSelectedFiles() {
 
     QDir dir(Settings::fileSystemLastExportedToDirectory());
-  
+
     QString choosedDir = selectExportingDirectory(dir.absPath());
-    
+
     if (!choosedDir.isEmpty()) {
-    
+
         Settings::setFileSystemLastExportedToDirectory(choosedDir);
 
         tracer->debug("slotExportSelectedFiles", "Exporting to '%s'...", choosedDir.ascii());
         changeStatusbar(i18n("Exporting symbolic links..."));
-        
+
         ExportSymlinks exporter(m_view, choosedDir);
         exporter.setSourceFiles(m_view->fileView()->selectedItems());
         exporter.execute();
-        
+
         changeStatusbar(i18n("Exporting symbolic links finished"));
     }
 }
@@ -1948,7 +1991,7 @@ void KPhotoBook::applyLockUnlockTaggingSettings() {
         m_lockUnlockTaggingAction->setText("Lock tagging");
         m_lockUnlockTaggingAction->setIcon(Constants::ICON_TAG_UNLOCK);
     }
-    
+
     if (m_tagTree) {
         m_tagTree->doRepaintAll();
     }
@@ -1960,35 +2003,35 @@ void KPhotoBook::storeTreeState() {
     KConfig* config = KGlobal::config();
     QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
-    
+
     if (Settings::tagTreeRememberTree()) {
         QStringList* openNodes = m_tagTree->getOpenNodes();
         config->writeEntry("TagTree:OpenNodes", *openNodes);
         delete openNodes;
     }
-    
+
     if (Settings::sourceDirTreeRememberTree()) {
         QStringList* openNodes = m_sourcedirTree->getOpenNodes();
         config->writeEntry("SourceDirTree:OpenNodes", *openNodes);
         delete openNodes;
     }
-            
+
     // force writing
     config->sync();
 }
- 
-   
+
+
 void KPhotoBook::loadTreeState() {
 
     KConfig* config = KGlobal::config();
     QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
-    
+
     if (Settings::tagTreeRememberTree()) {
         QStringList openNodes = config->readListEntry("TagTree:OpenNodes");
         m_tagTree->openNodes(&openNodes);
     }
-    
+
     if (Settings::sourceDirTreeRememberTree()) {
         QStringList openNodes = config->readListEntry("SourceDirTree:OpenNodes");
         m_sourcedirTree->openNodes(&openNodes);
@@ -2003,31 +2046,31 @@ void KPhotoBook::storeFilter() {
     KConfig* config = KGlobal::config();
     QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
-    
+
     if (Settings::tagTreeRememberFilter()) {
         QIntDict<QString>* filterDict = m_tagTree->getFilter();
-        
+
         QStringList* filterList = intDict2stringList(filterDict);
-        
+
         config->writeEntry("TagTree:Filter", *filterList);
-        
+
         filterDict->setAutoDelete(true);
         delete filterDict;
         delete filterList;
     }
-    
+
     if (Settings::sourceDirTreeRememberFilter()) {
         QIntDict<QString>* filterDict = m_sourcedirTree->getFilter();
-        
+
         QStringList* filterList = intDict2stringList(filterDict);
-        
+
         config->writeEntry("SourceDirTree:Filter", *filterList);
-        
+
         filterDict->setAutoDelete(true);
         delete filterDict;
         delete filterList;
     }
-            
+
     // force writing
     config->sync();
 }
@@ -2041,25 +2084,25 @@ void KPhotoBook::loadFilter() {
     KConfig* config = KGlobal::config();
     QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
-    
+
     if (Settings::tagTreeRememberFilter()) {
         QStringList filterList = config->readListEntry("TagTree:Filter");
-        
+
         QIntDict<QString>* filterDict = stringList2intDict(filterList);
-        
+
         m_tagTree->applyFilter(filterDict);
-        
+
         filterDict->setAutoDelete(true);
         delete filterDict;
     }
-    
+
     if (Settings::sourceDirTreeRememberFilter()) {
         QStringList filterList = config->readListEntry("SourceDirTree:Filter");
-        
+
         QIntDict<QString>* filterDict = stringList2intDict(filterList);
-        
+
         m_sourcedirTree->applyFilter(filterDict);
-        
+
         filterDict->setAutoDelete(true);
         delete filterDict;
     }
@@ -2075,42 +2118,42 @@ QStringList* KPhotoBook::intDict2stringList(QIntDict<QString>* intDict) {
         QString entry = QString("%1:%2").arg(it.currentKey()).arg(*it.current());
         stringList->append(entry);
     }
-    
+
     return stringList;
 }
-    
-    
+
+
 QIntDict<QString>* KPhotoBook::stringList2intDict(QStringList stringList) {
 
     QIntDict<QString>* filterDict = new QIntDict<QString>;
-    
+
     // loop over all entries in the stringlist
     for (QStringList::Iterator it = stringList.begin(); it != stringList.end(); ++it) {
-    
+
         tracer->sdebug("stringList2intDict") << "Handling entry: '" << *it << "'" << endl;
-        
+
         // split the current entry into key and value and put them into the intdict
         int delimitorPos = (*it).find(':');
         if (delimitorPos > 0) {
             QString keyStr = (*it).mid(0, delimitorPos);
             QString value = (*it).mid(delimitorPos + 1);
-            
+
             tracer->sdebug("stringList2intDict") << "key-->value: '" << keyStr << "-->" << value << "'" << endl;
-            
+
             bool ok;
             int key = keyStr.toInt(&ok);
-            
+
             if (ok) {
                 filterDict->insert(key, new QString(value));
             } else {
                 tracer->swarning("stringList2intDict") << "Key '" << *it << "' is invalid! It is not a number. (Valid format: 'key:value')" << endl;
             }
-            
+
         } else {
             tracer->swarning("stringList2intDict") << "KeyValue pair '" << *it << "' is invalid! (Valid format: 'key:value')" << endl;
         }
     }
-    
+
     return filterDict;
 }
 
@@ -2120,7 +2163,7 @@ QString KPhotoBook::selectExportingDirectory(QString startDirectory) {
   // prepare the directory chooser dialog
   KURLRequesterDlg* dialog = new KURLRequesterDlg(startDirectory, i18n("Directory to export to:"), this, "exportingDirectoryDialog", true);
   dialog->setCaption(i18n("Select the directory to export to"));
-  
+
   // ok, this is not very beautiful code, but simple...
   while (true) {
     dialog->exec();
@@ -2131,19 +2174,19 @@ QString KPhotoBook::selectExportingDirectory(QString startDirectory) {
       delete dialog;
       return QString::null;
     }
-    
+
     // test if the choosen directory exists and is really a directory
     KFileItem fileItem(KFileItem::Unknown, KFileItem::Unknown, choosedDir);
     if (fileItem.isDir()) {
       delete dialog;
       return choosedDir;
     }
-    
+
     // if we got here the choosen directory is invalid
     KMessageBox::sorry(this, i18n("You must select an existing directory."), i18n("Export"));
   }
 }
 
 
-    
+
 #include "kphotobook.moc"
