@@ -22,6 +22,7 @@
 
 #include "../settings/settings.h"
 #include "../engine/tagnodeboolean.h"
+#include "../engine/filternodetagboolean.h"
 #include "tagtree.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
@@ -46,19 +47,21 @@ TagTreeNodeBoolean::~TagTreeNodeBoolean() {
 }
 
 
-QString TagTreeNodeBoolean::filter() {
+FilterNode* TagTreeNodeBoolean::filter() {
 
-    QString filter;
+    TagNodeBoolean* tagNode = dynamic_cast<TagNodeBoolean*>(m_tagNode);
+
+    FilterNode* filter;
 
     switch (m_filterState) {
     case FILTERSTATE_EXCLUDE:
-        filter = QString("!%1").arg(m_tagNode->id());
+        filter = new FilterNodeTagBoolean(tagNode, false);
         break;
     case FILTERSTATE_IGNORE:
-        filter = QString::null;
+        filter = 0;
         break;
     case FILTERSTATE_INCLUDE:
-        filter = QString::number(m_tagNode->id());
+        filter = new FilterNodeTagBoolean(tagNode, true);
         break;
     }
 

@@ -24,6 +24,7 @@
 #include "../tracer/tracer.h"
 
 #include "../engine/tagnode.h"
+#include "../engine/filternode.h"
 
 #include <klistview.h>
 #include <kpopupmenu.h>
@@ -79,12 +80,10 @@ public:
     }
 
     /**
-     * Returns an expression used to describe this filter.
-     * This expression is used to create the filter used by the engine to determine which images to display.
-     * Normally this expression contains a tagnode and a value.
+     * Returns an FilterNode used to describe this filter.
      */
-    virtual QString filter() {
-        return QString::null;
+    virtual FilterNode* filter() {
+        return 0;
     }
 
     /**

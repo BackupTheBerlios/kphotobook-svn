@@ -22,20 +22,23 @@
 
 
 #include "tagtreenoderadiogroup.h"
-#include "../settings/settings.h"
-#include "../engine/tagnoderadio.h"
 #include "tagtree.h"
+#include "treehelper.h"
+#include "../engine/file.h"
+#include "../engine/filternodetagradio.h"
+#include "../engine/tagnoderadio.h"
+#include "../engine/tagnoderadio.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
-#include "../engine/file.h"
-#include "treehelper.h"
+
+#include "../settings/settings.h"
 
 #include <kfileitem.h>
 
 TagTreeNodeRadio::TagTreeNodeRadio(TagTree* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , m_filterState(TagTreeNodeRadio::FILTERSTATE_IGNORE) {
-    }
+}
     
     
 TagTreeNodeRadio::TagTreeNodeRadio(TagTreeNode* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
@@ -48,20 +51,22 @@ TagTreeNodeRadio::~TagTreeNodeRadio() {
 }
 
 
-QString TagTreeNodeRadio::filter() {
+FilterNode* TagTreeNodeRadio::subfilter() {
 
-    QString filter;
+    TagNodeRadio* tagNode = dynamic_cast<TagNodeRadio*>(m_tagNode);
+
+    FilterNode* filter;
 
     switch (m_filterState) {
-    case FILTERSTATE_EXCLUDE:
-        filter = QString("!%1").arg(m_tagNode->id());
-        break;
-    case FILTERSTATE_IGNORE:
-        filter = QString::null;
-        break;
-    case FILTERSTATE_INCLUDE:
-        filter = QString::number(m_tagNode->id());
-        break;
+        case FILTERSTATE_EXCLUDE:
+            filter = new FilterNodeTagRadio(tagNode, false);
+            break;
+        case FILTERSTATE_IGNORE:
+            filter = 0;
+            break;
+        case FILTERSTATE_INCLUDE:
+            filter = new FilterNodeTagRadio(tagNode, true);
+            break;
     }
 
     return filter;

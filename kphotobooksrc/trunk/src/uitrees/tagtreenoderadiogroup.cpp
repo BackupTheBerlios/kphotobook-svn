@@ -20,13 +20,15 @@
 
 #include "tagtreenoderadiogroup.h"
 
-#include "../engine/tagnoderadiogroup.h"
+
 #include "tagtree.h"
+#include "../engine/file.h"
+#include "../engine/filternodeopor.h"
+#include "../engine/filternodetagradio.h"
+#include "../engine/tagnoderadio.h"
+#include "../engine/tagnoderadiogroup.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
-
-#include "../engine/tagnoderadio.h"
-#include "../engine/file.h"
 
 #include <kfileitem.h>
 
@@ -45,6 +47,28 @@ TagTreeNodeRadioGroup::TagTreeNodeRadioGroup(TagTreeNode* parent, TagNodeRadioGr
 TagTreeNodeRadioGroup::~TagTreeNodeRadioGroup() {
 }
 
+
+FilterNode* TagTreeNodeRadioGroup::filter() {
+
+    // the filter set on a radiogroup must always be 'or'-linked
+    FilterNode* filterRootNode = new FilterNodeOpOr(0);
+
+    // loop over all radio children and add them to the filterRootNode
+    TagTreeNodeRadio* child = dynamic_cast<TagTreeNodeRadio*>(this->firstChild());
+    while( child ) {
+
+        // get the filter of the current child
+        FilterNode* childFilter = child->subfilter();
+        if (childFilter) {
+            filterRootNode->addChild(childFilter);
+        }
+
+        // get next child
+        child = dynamic_cast<TagTreeNodeRadio*>(child->nextSibling());
+    }
+
+    return filterRootNode;
+}
 
 
 void TagTreeNodeRadioGroup::rightClicked(__attribute__((unused)) TagTree* tagTree, int column) {

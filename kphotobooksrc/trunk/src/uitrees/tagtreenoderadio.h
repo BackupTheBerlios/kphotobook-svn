@@ -43,11 +43,9 @@ public:
     virtual ~TagTreeNodeRadio();
 
     /**
-     * Returns an expression used to describe this filter.
-     * This expression is used to create the filter used by the engine to determine which images to display.
-     * Normally this expression contains a tagnode and a value.
+     * Returns an FilterNode used to describe this filter.
      */
-    QString filter();
+    FilterNode* subfilter();
 
     /**
      * Sets the filter to find images without this tag set.

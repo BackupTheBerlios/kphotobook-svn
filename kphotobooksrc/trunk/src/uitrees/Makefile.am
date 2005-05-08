@@ -7,3 +7,4 @@ libuitrees_la_SOURCES = sourcedirtree.cpp sourcedirtree.h \
 			tagtreenode.h	tagtreenodeboolean.cpp tagtreenodeboolean.h tagtreenodetitle.cpp	tagtreenodetitle.h \
 			treehelper.cpp treehelper.h tagtreenodestring.cpp tagtreenodestring.h \
 		tagtreenoderadiogroup.cpp tagtreenoderadiogroup.h tagtreenoderadio.cpp tagtreenoderadio.h
+libuitrees_la_LIBADD = $(top_builddir)/src/engine/libengine.la

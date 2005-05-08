@@ -51,6 +51,9 @@
 #include "uitrees/sourcedirtree.h"
 #include "uitrees/sourcedirtreenode.h"
 
+#include "engine/filternodeopor.h"
+#include "engine/filternodeopand.h"
+
 #include "export/exportsymlinks.h"
 
 
@@ -689,26 +692,26 @@ void KPhotoBook::setupContextMenus() {
 }
 
 
-QPtrList<File>* KPhotoBook::files(QString filter) {
+QPtrList<File>* KPhotoBook::files(FilterNode *filterRootNode) {
 
-    QString op = "&";
-    if (Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::Or) {
-        op = "|";
-    }
-
+    tracer->invoked("files");
+    
     // build the filter from the tagtree if the specified filter is empty
-    if (filter.isNull() && m_view) {
-        TagTreeNode* lastItem = 0;
+    if (filterRootNode == 0 && m_view) {
+        if (Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::Or) {
+            filterRootNode = new FilterNodeOpOr(0);
+        } else {
+            filterRootNode = new FilterNodeOpAnd(0);
+        }
+
         QListViewItemIterator it(m_tagTree);
         while (it.current()) {
             TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
 
-            if (!item->filter().isNull()) {
-                if (lastItem) {
-                    filter.append(op);
-                }
-                filter.append(item->filter());
-                lastItem = item;
+            FilterNode* filterNode = item->filter();
+            
+            if (filterNode != 0) {
+                filterRootNode->addChild(filterNode);
             }
 
             ++it;
@@ -716,7 +719,7 @@ QPtrList<File>* KPhotoBook::files(QString filter) {
     }
 
     // get the files matching the filter
-    QPtrList<File>* files = m_engine->files(filter);
+    QPtrList<File>* files = m_engine->files(filterRootNode);
 
     updateState();
     return files;
@@ -1179,6 +1182,7 @@ void KPhotoBook::slotAddMaintag() {
     tracer->invoked("slotAddMaintag");
 
     DialogManageTag* dialog = new DialogManageTag(m_view, DialogManageTag::MODE_CREATE_TAG, 0, 0, this, "DialogManageTag");
+    tracer->debug("slotaddMaintag", "dialog created... executing now...");
     if (dialog->exec()) {
 
         tracer->sinfo("slotAddMaintag") << "Dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;

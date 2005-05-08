@@ -24,6 +24,7 @@
 #include "../tracer/tracer.h"
 #include "../exception.h"
 #include "tagnode.h"
+#include "filternode.h"
 
 #include <qfileinfo.h>
 #include <qdir.h>
@@ -144,19 +145,8 @@ public:
 
     /**
      * Returns all files matching the specified filter.
-     * A filter is just a string with the following syntax:
-     *
-     * filter = expression (operator expression)*
-     *
-     * expression = boolexpression | stringexpression
-     *
-     * boolexpression = ['!']<booltagid>
-     *
-     * stringexpression = <stringtagid>=='regular expression'
-     *
-     * operator = '&' | '|'
      */
-    QPtrList<File>* files(QString filter);
+    QPtrList<File>* files(FilterNode* filterRootNode);
 
     void save() throw(PersistingException*);
     void saveAs(QFileInfo& newFile) throw(PersistingException*);
@@ -241,6 +231,7 @@ private:
      */
     QPtrList<File>* m_fileList2display;
 
+private:
     void rescanSourceDirs(QPtrList<SourceDir>* sourceDirs);
     void rescanSourceDir(SourceDir* sourceDir);
     void addSourceDirs(SourceDir* parent);

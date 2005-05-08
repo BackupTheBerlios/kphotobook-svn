@@ -22,6 +22,7 @@
 
 #include "../settings/settings.h"
 #include "../engine/tagnodestring.h"
+#include "../engine/filternodetagstring.h"
 #include "../engine/filetagnodeassocstring.h"
 #include "tagtree.h"
 #include "../kphotobook.h"
@@ -55,13 +56,15 @@ TagTreeNodeString::~TagTreeNodeString() {
 }
 
 
-QString TagTreeNodeString::filter() {
+FilterNode* TagTreeNodeString::filter() {
 
-    if (m_filterValue.isEmpty()) {
-        return QString::null;
+    if (!m_filterValue.isEmpty()) {
+        TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
+
+        return new FilterNodeTagString(tagNode, m_filterValue);
     }
-
-    return QString("%1==%2").arg(m_tagNode->id()).arg(m_filterValue);
+    
+    return 0;
 }
 
     

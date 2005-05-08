@@ -97,7 +97,7 @@ void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
     removeAllFiles();
 
     // add the images
-    QPtrList<File>* fileList = m_photobook->files(QString::null);
+    QPtrList<File>* fileList = m_photobook->files(0);
 
     File* file;
     for ( file = fileList->first(); file; file = fileList->next() ) {

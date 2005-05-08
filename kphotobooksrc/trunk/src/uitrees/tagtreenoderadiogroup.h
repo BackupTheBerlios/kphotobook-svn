@@ -46,6 +46,11 @@ public:
     virtual ~TagTreeNodeRadioGroup();
 
     /**
+     * Returns an FilterNode used to describe this filter.
+     */
+    virtual FilterNode* filter();
+
+    /**
      * Sets the filter to find images without this tag set.
      */
     virtual void deselectFilter() {

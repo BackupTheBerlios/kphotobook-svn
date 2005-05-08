@@ -69,7 +69,7 @@ class TagTree : public KListView {
     Q_OBJECT
 
 private:
-        static Tracer* tracer;
+    static Tracer* tracer;
 
 public:
     static const int COLUMN_TEXT = 0;

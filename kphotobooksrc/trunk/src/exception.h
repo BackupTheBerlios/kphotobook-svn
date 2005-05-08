@@ -88,19 +88,41 @@ private:
  */
 class PersistingException : public EngineException {
 
-public:
+    public:
     PersistingException(QString message)
-        : EngineException(message) {
+    : EngineException(message) {
     }
 
     PersistingException(QString message, QString detailMessage)
-        : EngineException(message, detailMessage) {
+    : EngineException(message, detailMessage) {
     }
 
     ~PersistingException() {
     }
 
-private:
+    private:
+};
+
+/**
+ * The FilterException is thrown when a problemwith the filter is detected.
+ *
+ * CVS-ID $Id$
+ */
+class FilterException : public EngineException {
+
+    public:
+        FilterException(QString message)
+    : EngineException(message) {
+    }
+
+    FilterException(QString message, QString detailMessage)
+    : EngineException(message, detailMessage) {
+    }
+
+    ~FilterException() {
+    }
+
+    private:
 };
 
 #endif

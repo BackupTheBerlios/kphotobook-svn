@@ -342,17 +342,11 @@ bool Engine::isTagTextValid(TagNode* parent, QString& text) {
 }
 
 
-QPtrList<File>* Engine::files(QString filter) {
+QPtrList<File>* Engine::files(FilterNode* filterRootNode) {
 
-    tracer->sinvoked("files") << "with filter '" << filter << "'"<< endl;
-
-    // split the filter at the & and | operators
-    QStringList filterItems = QStringList::split(QRegExp("\\&|\\|"), filter, false);
-
-    // determine operator
-    bool andOperator = false;
-    if (filter.find("&") >= 0) {
-        andOperator = true;
+    tracer->sinvoked("files") << "with filter:" << endl;
+    if (filterRootNode) {
+        filterRootNode->dump("");
     }
 
     // remove all files currently shown
@@ -370,52 +364,8 @@ QPtrList<File>* Engine::files(QString filter) {
             QPtrList<File>* fileList = sourceDir->files();
             for (File* file = fileList->first(); file; file = fileList->next()) {
 
-                bool match = andOperator;
-
-                // iterate over filterItems and validate
-                for (QStringList::Iterator it = filterItems.begin(); it != filterItems.end(); ++it) {
-                    QString filterItem(*it);
-
-                    // test for ! and remove it
-                    bool negate = false;
-                    if (filterItem.startsWith("!")) {
-                        negate = true;
-                        filterItem = filterItem.mid(1);
-                    }
-
-                    // convert string to int
-                    bool ok;
-                    int tagId = filterItem.toInt(&ok);
-                    if (!ok) {
-                        tracer->swarning("files") << "FilterItem is not an integer: " << filterItem << endl;
-                        continue;
-                    }
-
-                    // get the tagnode with the found tagId
-                    TagNode* tagNode = m_tagNodeDict->find(tagId);
-                    if (!tagNode) {
-                        tracer->swarning("files") << "TagNode with id " << tagId << " does not exist!" << endl;
-                        continue;
-                    }
-
-                    // test if the file is tagged with the current tag or a subtag
-                    bool isTagged = tagNode->isLinkedToFile(file);
-
-                    if (andOperator) {
-                        if (negate == isTagged) {
-                            match = false;
-                            break;
-                        }
-                    } else {
-                        if (negate != isTagged) {
-                            match = true;
-                            break;
-                        }
-                    }
-                }
-
                 // append the file if it matches the filter
-                if (filter.isNull() || match) {
+                if (filterRootNode->evaluate(file)) {
                     m_fileList2display->append(file);
                 }
             }
@@ -697,21 +647,6 @@ void Engine::addSourceDirs(SourceDir* parent) {
 }
 
 
-bool Engine::mustHandleFile(QString filename) {
-
-    QStringList filetypesToHandle = Settings::fileFilterFileToHandle();
-
-    for ( QStringList::Iterator it = filetypesToHandle.begin(); it != filetypesToHandle.end(); ++it ) {
-        QRegExp regExp(*it);
-        if (regExp.exactMatch(filename)) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-
 bool Engine::mustHandleDirectory(QString directoryName) {
 
     QStringList subdirsToIgnore = Settings::fileFilterSubdirsToIgnore();
@@ -724,6 +659,21 @@ bool Engine::mustHandleDirectory(QString directoryName) {
     }
 
     return true;
+}
+
+
+bool Engine::mustHandleFile(QString filename) {
+
+    QStringList filetypesToHandle = Settings::fileFilterFileToHandle();
+
+    for ( QStringList::Iterator it = filetypesToHandle.begin(); it != filetypesToHandle.end(); ++it ) {
+        QRegExp regExp(*it);
+        if (regExp.exactMatch(filename)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 

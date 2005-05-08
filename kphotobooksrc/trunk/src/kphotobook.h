@@ -25,6 +25,7 @@
 #include "exception.h"
 #include "engine/tagnode.h"
 #include "tracer/tracer.h"
+#include "engine/filternode.h"
 
 #include <kaction.h>
 #include <kapplication.h>
@@ -163,9 +164,9 @@ public:
 
     /**
      * Returns all files matching the specified filter.
-     * If the filter is QString::null, the filter is build from the selection in the tagtree.
+     * If the filter is 0, it is build from the selection in the tagtree.
      */
-    QPtrList<File>* files(QString filter);
+    QPtrList<File>* files(FilterNode *filterRootNode);
 
     /**
      * Refreshes the view only if autorefresh is enabled.
