@@ -260,8 +260,7 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
         QString msg = QString(i18n("Could not open file: '%1'")).arg(fileinfo.absFilePath());
         KMessageBox::detailedSorry(m_view, msg, ex->toString(), i18n("Opening file failed"));
 
-        // TODO
-        // it's very strange, but the application crashes if I delete the exception!!!
+        // TODO it's very strange, but the application crashes if I delete the exception!!!
 //        delete ex;
     }
 
