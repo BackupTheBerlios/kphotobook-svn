@@ -94,13 +94,13 @@ QString TagTreeNodeRadio::getFilterString() {
     
 void TagTreeNodeRadio::applyFilterString(QString filter) {
 
-    m_filterState = FILTERSTATE_IGNORE;
-
     if (filter == "exclude") {
         m_filterState = FILTERSTATE_EXCLUDE;
     } else if (filter == "include") {
         m_filterState = FILTERSTATE_INCLUDE;
-    }    
+    } else {
+        m_filterState = FILTERSTATE_IGNORE;
+    }
 }
 
 
