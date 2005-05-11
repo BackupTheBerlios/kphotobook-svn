@@ -484,22 +484,22 @@ class Settings : public KConfigSkeleton
     }
 
     /**
-      Set Contains the external to open an image with when doubleclicked.
+      set use an external or an internal ImageViewer
     */
     static
-    void setToolsDefaultExternalTool( const QString & v )
+    void setToolsUseInternalImageviewer( const bool b )
     {
-      if (!self()->isImmutable( "ToolsDefaultExternalTool" ))
-        self()->mToolsDefaultExternalTool = v;
+      if (!self()->isImmutable( "ToolsUseInternalImageViewer" ))
+        self()->mToolsUseInternalImageViewer = b;
     }
 
     /**
-      Get Contains the external to open an image with when doubleclicked.
+      returns, if the internal ImageViewer should be used
     */
     static
-    QString toolsDefaultExternalTool()
+    bool toolsUseInternalImageViewer()
     {
-      return self()->mToolsDefaultExternalTool;
+      return self()->mToolsUseInternalImageViewer;
     }
 
     /**
@@ -520,6 +520,27 @@ class Settings : public KConfigSkeleton
     {
       return self()->mToolsExternalTools;
     }
+
+    /**
+      Set Contains the external to open an image with when doubleclicked.
+    */
+    static
+    void setToolsDefaultExternalTool( const QString & v )
+    {
+      if (!self()->isImmutable( "ToolsDefaultExternalTool" ))
+        self()->mToolsDefaultExternalTool = v;
+    }
+
+
+    /**
+      Get Contains the external to open an image with when doubleclicked.
+    */
+    static
+    QString toolsDefaultExternalTool()
+    {
+        return self()->mToolsDefaultExternalTool;
+    }
+
 
     /**
       Set Contains the last opened kphotobook file.
@@ -592,7 +613,7 @@ class Settings : public KConfigSkeleton
     int mGeneralViewMode;
     bool mGeneralRescanWhileStartup;
     bool mGeneralCheckUntaggedOnExit;
-    
+
     // TagTree
     int mTagTreeToolBarIconSize;
     int mTagTreeIconSize;
@@ -623,6 +644,7 @@ class Settings : public KConfigSkeleton
     QStringList mFileFilterSubdirsToIgnore;
 
     // Tools
+    bool mToolsUseInternalImageViewer;
     QString mToolsDefaultExternalTool;
     QStringList mToolsExternalTools;
 

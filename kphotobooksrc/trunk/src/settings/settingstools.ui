@@ -36,7 +36,7 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QLayoutWidget" row="1" column="0">
+                <widget class="QLayoutWidget" row="2" column="0">
                     <property name="name">
                         <cstring>layout4</cstring>
                     </property>
@@ -71,20 +71,7 @@
                         </spacer>
                     </vbox>
                 </widget>
-                <widget class="QListBox" row="1" column="1">
-                    <property name="name">
-                        <cstring>kcfg_ToolsExternalTools</cstring>
-                    </property>
-                </widget>
-                <widget class="KLineEdit" row="0" column="1" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>kcfg_ToolsDefaultExternalTool</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="0" column="0">
+                <widget class="QLabel" row="1" column="0">
                     <property name="name">
                         <cstring>textLabel1</cstring>
                     </property>
@@ -92,7 +79,15 @@
                         <string>Default</string>
                     </property>
                 </widget>
-                <widget class="QLayoutWidget" row="1" column="2">
+                <widget class="KLineEdit" row="1" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>kcfg_ToolsDefaultExternalTool</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QLayoutWidget" row="2" column="2">
                     <property name="name">
                         <cstring>layout6</cstring>
                     </property>
@@ -175,7 +170,7 @@
                                 <bool>false</bool>
                             </property>
                             <property name="text">
-                                <string>Up</string>
+                                <string>&amp;Up</string>
                             </property>
                         </widget>
                         <widget class="QPushButton">
@@ -186,7 +181,7 @@
                                 <bool>false</bool>
                             </property>
                             <property name="text">
-                                <string>Down</string>
+                                <string>Dow&amp;n</string>
                             </property>
                         </widget>
                         <spacer>
@@ -219,9 +214,71 @@
                         </widget>
                     </vbox>
                 </widget>
+                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>kcfg_ToolsUseInternalImageViewer</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Use internal imageviewer</string>
+                    </property>
+                    <property name="accel">
+                        <string></string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Enables the internal Imageviewer</string>
+                    </property>
+                </widget>
+                <widget class="QListBox" row="2" column="1">
+                    <property name="name">
+                        <cstring>kcfg_ToolsExternalTools</cstring>
+                    </property>
+                </widget>
             </grid>
         </widget>
     </vbox>
 </widget>
+<connections>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>textLabel1</receiver>
+        <slot>setDisabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_ToolsDefaultExternalTool</receiver>
+        <slot>setDisabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>textLabel2</receiver>
+        <slot>setDisabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_ToolsExternalTools</receiver>
+        <slot>setDisabled(bool)</slot>
+    </connection>
+</connections>
+<tabstops>
+    <tabstop>kcfg_ToolsUseInternalImageViewer</tabstop>
+    <tabstop>kcfg_ToolsDefaultExternalTool</tabstop>
+    <tabstop>kcfg_ToolsExternalTools</tabstop>
+    <tabstop>pushButton5</tabstop>
+    <tabstop>pushButton3</tabstop>
+    <tabstop>pushButton6</tabstop>
+    <tabstop>pushButton1</tabstop>
+    <tabstop>pushButton2</tabstop>
+    <tabstop>pushButton4</tabstop>
+</tabstops>
+<slots>
+    <slot>chkUseInternalViewer_toggled(bool)</slot>
+</slots>
 <layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>klineedit.h</includehint>
+</includehints>
 </UI>

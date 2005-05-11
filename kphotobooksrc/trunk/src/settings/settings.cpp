@@ -165,6 +165,10 @@ Settings::Settings(  )
 
   setCurrentGroup( "Tools" );
 
+  KConfigSkeleton::ItemBool  *itemToolsUseInternalImageViewer;
+  itemToolsUseInternalImageViewer = new KConfigSkeleton::ItemBool( currentGroup(), "UseInternalImageViewer", mToolsUseInternalImageViewer, false );
+  addItem( itemToolsUseInternalImageViewer, "ToolsUseInternalImageViewer" );
+
   KConfigSkeleton::ItemString  *itemToolsDefaultExternalTool;
   itemToolsDefaultExternalTool = new KConfigSkeleton::ItemString( currentGroup(), "DefaultExternalTool", mToolsDefaultExternalTool, "kuickshow" );
   addItem( itemToolsDefaultExternalTool, "ToolsDefaultExternalTool" );
