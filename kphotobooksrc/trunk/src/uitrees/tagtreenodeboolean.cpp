@@ -68,7 +68,7 @@ FilterNode* TagTreeNodeBoolean::filter() {
     return filter;
 }
 
-    
+
 QString TagTreeNodeBoolean::getFilterString() {
 
     QString filter;
@@ -84,8 +84,8 @@ QString TagTreeNodeBoolean::getFilterString() {
 
     return filter;
 }
-    
-    
+
+
 void TagTreeNodeBoolean::applyFilterString(QString filter) {
 
     m_filterState = FILTERSTATE_IGNORE;
@@ -94,7 +94,7 @@ void TagTreeNodeBoolean::applyFilterString(QString filter) {
         m_filterState = FILTERSTATE_EXCLUDE;
     } else if (filter == "include") {
         m_filterState = FILTERSTATE_INCLUDE;
-    }    
+    }
 }
 
 
@@ -107,7 +107,7 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
         break;
 
     case TagTree::COLUMN_VALUE : {
-    
+
         // do nothing when tagging is locked
         if (Settings::tagTreeLocked()) {
             return;
@@ -225,7 +225,7 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
 
     case TagTree::COLUMN_VALUE : {
         // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor(0));
+        p->fillRect(0, 0, width, this->height(), backgroundColor(1));
 
         // draw the checkbox in the center of the cell in the size of the font
         int size = p->fontInfo().pixelSize()+2;
@@ -275,7 +275,7 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
     }
     case TagTree::COLUMN_FILTER :
         // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor(0));
+        p->fillRect(0, 0, width, this->height(), backgroundColor(2));
 
         // draw the checkbox in the center of the cell in the size of the font
         int size = p->fontInfo().pixelSize()+2;
