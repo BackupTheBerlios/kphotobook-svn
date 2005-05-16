@@ -407,7 +407,7 @@ This handbook is intended to give you an overview of all the functions and ease 
         <para>A Main Tag can be add through the menu "Manage" or via the context menu in the tag tree window. Make sure you do not right click on a already existing Tag there.</para>
         <para>As you can seen on the screenshot below, you can Give your Main Tag a Title, a comment and an Icon. If you do chose an icon, the text will be displayed anyway. Choosing no icon, no icon at all will be displayed. The comment will be shown as tooltip when hovering over the tag.</para>
 
-        <important>Do not click on an already existing Tag to crate Main Tags!</important>
+        <!--<important>Do not click on an already existing Tag to crate Main Tags!</important>-->
 
         <screenshot>
             <screeninfo>Adding Main Tag</screeninfo>
@@ -418,7 +418,7 @@ This handbook is intended to give you an overview of all the functions and ease 
                 <textobject>
                     <phrase>Adding a Main Tag</phrase>
                 </textobject>
-                <caption>Adding a Main Tag</caption>
+                <!--<caption>Adding a Main Tag</caption>-->
             </mediaobject>
         </screenshot>
     </sect3>
@@ -436,7 +436,7 @@ This handbook is intended to give you an overview of all the functions and ease 
                 <textobject>
                     <phrase>Adding a Sub Tag</phrase>
                 </textobject>
-                <caption>Adding a Sub Tag</caption>
+                <!--<caption>Adding a Sub Tag</caption>-->
             </mediaobject>
         </screenshot>
     </sect3>
