@@ -68,6 +68,26 @@ FilterNode* TagTreeNodeString::filter() {
 }
 
     
+void TagTreeNodeString::deselectFilter() {
+    
+    m_filterValue = QString("()");
+    setText(TagTree::COLUMN_FILTER, m_filterValue);
+
+    // force redrawing of this listviewitem
+    this->repaint();
+}
+
+
+void TagTreeNodeString::resetFilter() {
+    
+    m_filterValue = QString::null;
+    setText(TagTree::COLUMN_FILTER, m_filterValue);
+
+    // force redrawing of this listviewitem
+    this->repaint();
+}
+
+    
 QString TagTreeNodeString::getFilterString() {
 
     return m_filterValue;

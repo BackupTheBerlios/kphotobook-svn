@@ -51,6 +51,14 @@ public:
      * Adds the specified child to this parent and sets the parent of the child.
      */
     void addChild(FilterNode* child);
+
+    /**
+     * Returns the number of children this FilterNode has.
+     */
+    bool childrenCount() {
+        
+        return m_children->count();
+    }
     
     /**
      * Evaluates if this subtree or leafnode matches the given file.

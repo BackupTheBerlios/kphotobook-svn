@@ -67,7 +67,11 @@ FilterNode* TagTreeNodeRadioGroup::filter() {
         child = dynamic_cast<TagTreeNodeRadio*>(child->nextSibling());
     }
 
-    return filterRootNode;
+    if (filterRootNode->childrenCount()) {
+        return filterRootNode;
+    }
+
+    return 0;
 }
 
 

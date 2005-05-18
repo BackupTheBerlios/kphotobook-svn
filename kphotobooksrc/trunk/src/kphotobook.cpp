@@ -855,33 +855,6 @@ bool KPhotoBook::checkForUntagged()
     // and check, if there are untagged images
     if ( m_engine->filteredNumberOfFiles() ) {
 
-        // ALTERNATIVE 1 BEGIN
-        /*     QMessageBox mb(i18n("Untagged Images"),
-                       i18n("There are untagged images...<br><br><b>Do you want to exit anyway?</b>"),
-                       QMessageBox::Warning,
-                       QMessageBox::No  | QMessageBox::Escape,
-                       QMessageBox::Yes | QMessageBox::Default,
-                       QMessageBox::Cancel);
-
-        mb.setButtonText(QMessageBox::Cancel, "Yes, &don't\nask again!");
-
-        switch( mb.exec() ) {
-        case QMessageBox::Yes:
-            // simply quit
-            break;
-        case QMessageBox::No:
-            // Don't exit now
-            return false;
-            break;
-        case QMessageBox::Cancel:
-            // exit and never ask again.
-            Settings::setGeneralCheckUntaggedOnExit(false);
-            Settings::writeConfig();
-            break;
-        }*/
-        // ALTERNATIVE 1 END
-
-        // ALTERNATIVE 2 START
         //this misuses the nice kde "don't show again" function to disable our settings.
         int button = KMessageBox::warningYesNo(this,
                                                "<b></b>There are untagged images...<br><br><b>Do you want to exit anyway?</b>",
@@ -899,7 +872,6 @@ bool KPhotoBook::checkForUntagged()
         if ( button == KMessageBox::No ) {
             return false;
         }
-        // ALTERNATIVE 2 END
     } else {
         tracer->info("checkForUntagged", "No untagged files found.");
     }

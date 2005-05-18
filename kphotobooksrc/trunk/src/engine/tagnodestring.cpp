@@ -49,14 +49,16 @@ void TagNodeString::setTagged(File* file, QString value) {
 bool TagNodeString::tagged(File* file, QString pattern) {
 
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
+
     if (fileTagNodeAssoc == 0) {
-        return false;
+        // if no tag is linked to this file, the only matching pattern is '()' for matching an empty string
+        return pattern == "()";
     }
 
     FileTagNodeAssocString* fileTagNodeAssocString = dynamic_cast<FileTagNodeAssocString*>(fileTagNodeAssoc);
     QString value = fileTagNodeAssocString->value();
 
-    tracer->sinvoked("tagged") << "with pattern: '" << pattern << "', value: " << value << endl;
+    tracer->sinvoked("tagged") << "with pattern: '" << pattern << "', value: '" << value << "'" << endl;
 
     QRegExp regExp(pattern);
     if (regExp.exactMatch(value)) {

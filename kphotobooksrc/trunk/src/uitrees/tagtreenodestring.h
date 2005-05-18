@@ -52,22 +52,12 @@ public:
     /**
      * Sets the filter to find images without this tag set.
      */
-    virtual void deselectFilter() {
-        m_filterValue = QString("");
-
-        // force redrawing of this listviewitem
-        this->repaint();
-    }
+    virtual void deselectFilter();
 
     /**
      * Resets the filter.
      */
-    virtual void resetFilter() {
-        m_filterValue = QString::null;
-
-        // force redrawing of this listviewitem
-        this->repaint();
-    }
+    virtual void resetFilter();
 
     /**
      * Returns the currently set filter as string representation.
