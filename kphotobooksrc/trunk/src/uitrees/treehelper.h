@@ -38,9 +38,8 @@ public:
     static void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked, bool enabled);
     static void drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled);
 
-    static void drawRadioButton(QPainter* p, const QColorGroup& cg, QRect rect, bool checked, bool enabled);
     static void drawRadioButton(QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled);
-    
+
 protected:
     TreeHelper() {
     }

@@ -33,7 +33,7 @@ class TagNodeRadio;
 class TagTreeNodeRadio : public TagTreeNode {
 
 public:
-    enum FilterState {FILTERSTATE_EXCLUDE = -1, FILTERSTATE_IGNORE, FILTERSTATE_INCLUDE };   
+    enum FilterState {FILTERSTATE_EXCLUDE = -1, FILTERSTATE_IGNORE, FILTERSTATE_INCLUDE };
 
 public:
     TagTreeNodeRadio(TagTree* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
@@ -72,7 +72,7 @@ public:
      * This value is used to store in the database.
      */
     virtual QString getFilterString();
-    
+
     /**
      * Applies the filter returned by getFilter().
      */
@@ -84,6 +84,9 @@ public:
     virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
 private:
     TagTreeNodeRadio::FilterState m_filterState;
+
+    // saves the current state of the RadioButton (-1 = OFF, 1 = ON, 0 = TRISTATE_MIDDLE)
+    int m_currentState;
 };
 
 #endif

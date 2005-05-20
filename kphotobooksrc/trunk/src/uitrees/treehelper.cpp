@@ -110,51 +110,10 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, in
 }
 
 
+
 void TreeHelper::drawRadioButton(QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled)
 {
-    rect.setTop(2 + (rect.height() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
-    rect.setLeft(rect.left() + (rect.width() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
-    rect.setHeight(Constants::TREE_CHECKBOX_MAXSIZE - 2);
-    rect.setWidth(Constants::TREE_CHECKBOX_MAXSIZE - 2);
-
-    static QRadioButton radioBtn(0);
-
-    radioBtn.setEnabled(enabled);
-
-    //TODO how to emulate tristate here?
-    if (tristate == 0) {
-        radioBtn.setChecked(true);
-        radioBtn.setEnabled(false);
-    } else {
-        radioBtn.setChecked(tristate > 0);
-    }
-    
-
-    QStyle& style = KApplication::kApplication()->style();
-
-    QStyle::SFlags flags = QStyle::Style_Default;
-    if ( radioBtn.isEnabled() )
-        flags |= QStyle::Style_Enabled;
-    if ( radioBtn.hasFocus() )
-        flags |= QStyle::Style_HasFocus;
-    if ( radioBtn.isDown() )
-        flags |= QStyle::Style_Down;
-    if ( radioBtn.hasMouse() )
-        flags |= QStyle::Style_MouseOver;
-    if ( radioBtn.state() == QButton::On )
-        flags |= QStyle::Style_On;
-    else if ( radioBtn.state() == QButton::Off )
-        flags |= QStyle::Style_Off;
-    else if ( radioBtn.state() == QButton::NoChange )
-        flags |= QStyle::Style_NoChange;
-    
-    style.drawControl(QStyle::CE_RadioButton, p, &radioBtn, rect, cg, flags);
-}
-
-
-void TreeHelper::drawRadioButton(QPainter* p, const QColorGroup& cg, QRect rect, bool checked, bool enabled) 
-{
-    // we force the checkbox to a maximu size of Constants::TREE_CHECKBOX_MAXSIZE
+    // we force the checkbox to a maximum size of Constants::TREE_CHECKBOX_MAXSIZE
     if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
         rect.setTop(2 + (rect.height() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
         rect.setLeft(rect.left() + (rect.width() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
@@ -163,13 +122,21 @@ void TreeHelper::drawRadioButton(QPainter* p, const QColorGroup& cg, QRect rect,
     }
 
     static QRadioButton radioBtn(0);
-    
-    radioBtn.setChecked(checked);
-    radioBtn.setEnabled(enabled);
-    
+
+
+    //This simulates Tristate behaviour:
+    //  a radiobtn can be ON, OFF, or the middlestate is ON AND DISABLED
+    if (tristate == 0) {
+        radioBtn.setChecked(true);
+        radioBtn.setEnabled(false);
+    } else {
+        radioBtn.setChecked(tristate > 0);
+        radioBtn.setEnabled(enabled);
+    }
+
+
     QStyle& style = KApplication::kApplication()->style();
-    
-    // copied from qcheckbox.cpp
+
     QStyle::SFlags flags = QStyle::Style_Default;
     if ( radioBtn.isEnabled() )
         flags |= QStyle::Style_Enabled;
@@ -183,10 +150,7 @@ void TreeHelper::drawRadioButton(QPainter* p, const QColorGroup& cg, QRect rect,
         flags |= QStyle::Style_On;
     else if ( radioBtn.state() == QButton::Off )
         flags |= QStyle::Style_Off;
-    else if ( radioBtn.state() == QButton::NoChange )
-        flags |= QStyle::Style_NoChange;
-    
-    // draw the checkbox
-    style.drawControl(QStyle::CE_RadioButton, p, &radioBtn, rect, cg, flags); 
+
+    style.drawControl(QStyle::CE_RadioButton, p, &radioBtn, rect, cg, flags);
 }
 

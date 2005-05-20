@@ -39,8 +39,8 @@ TagTreeNodeRadio::TagTreeNodeRadio(TagTree* parent, TagNodeRadio* tagNode, KPhot
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , m_filterState(TagTreeNodeRadio::FILTERSTATE_IGNORE) {
 }
-    
-    
+
+
 TagTreeNodeRadio::TagTreeNodeRadio(TagTreeNode* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
         , m_filterState(TagTreeNodeRadio::FILTERSTATE_IGNORE) {
@@ -72,7 +72,7 @@ FilterNode* TagTreeNodeRadio::subfilter() {
     return filter;
 }
 
-    
+
 QString TagTreeNodeRadio::getFilterString() {
 
     QString filter;
@@ -90,8 +90,8 @@ QString TagTreeNodeRadio::getFilterString() {
 
     return filter;
 }
-    
-    
+
+
 void TagTreeNodeRadio::applyFilterString(QString filter) {
 
     if (filter == "exclude") {
@@ -111,7 +111,7 @@ void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int
         break;
 
     case TagTree::COLUMN_VALUE : {
-    
+
         // do nothing when tagging is locked
         if (Settings::tagTreeLocked()) {
             return;
@@ -120,16 +120,17 @@ void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int
         // otherwise tell my parent (which is my radiogroup managing item) that i have been selected
         TagTreeNodeRadioGroup* grp = dynamic_cast<TagTreeNodeRadioGroup*>(parent());
         if (grp) {
-            grp->setSelectedTag(this);
+            // if it's already selected, we unselect all
+            grp->setSelectedTag(m_currentState == 1 ? 0L : this);
         }
-        
+
         break;
     }
     case TagTree::COLUMN_FILTER :
         // change state of the filter: exclude -> ignore -> include -> exclude -> ...
         switch (m_filterState) {
         case FILTERSTATE_EXCLUDE:
-            m_filterState = FILTERSTATE_IGNORE;
+            m_filterState = FILTERSTATE_INCLUDE;
             break;
         case FILTERSTATE_IGNORE:
             m_filterState = FILTERSTATE_INCLUDE;
@@ -137,6 +138,12 @@ void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int
         case FILTERSTATE_INCLUDE:
             m_filterState = FILTERSTATE_EXCLUDE;
             break;
+        }
+
+        //now tell my father, that smth happened to me
+        TagTreeNodeRadioGroup* grp = dynamic_cast<TagTreeNodeRadioGroup*>(parent());
+        if (grp) {
+            grp->updateFilterState();
         }
 
         // force redrawing of this listviewitem
@@ -167,8 +174,14 @@ void TagTreeNodeRadio::rightClicked(__attribute__((unused)) TagTree* tagTree, in
             m_filterState = FILTERSTATE_EXCLUDE;
             break;
         case FILTERSTATE_INCLUDE:
-            m_filterState = FILTERSTATE_IGNORE;
+            m_filterState = FILTERSTATE_EXCLUDE;
             break;
+        }
+
+        //now tell my father, that smth happened to me
+        TagTreeNodeRadioGroup* grp = dynamic_cast<TagTreeNodeRadioGroup*>(parent());
+        if (grp) {
+            grp->updateFilterState();
         }
 
         // force redrawing of this listviewitem
@@ -191,11 +204,13 @@ void TagTreeNodeRadio::paintCell(QPainter *p, const QColorGroup &cg, int column,
 
     case TagTree::COLUMN_VALUE : {
         // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor(0));
+        p->fillRect(0, 0, width, this->height(), backgroundColor(1));
 
         // draw the checkbox in the center of the cell in the size of the font
         int size = p->fontInfo().pixelSize()+2;
         QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
+
+        bool enabled = false;
 
         // get all selected files
         const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
@@ -222,26 +237,27 @@ void TagTreeNodeRadio::paintCell(QPainter *p, const QColorGroup &cg, int column,
             }
 
             // we assume that some files are tagged, some not
-            int tristate = 0;
+            m_currentState = 0;
             // no file is tagged
             if (!taggedFilesCount && untaggedFilesCount) {
-                tristate = -1;
+                m_currentState = -1;
             } else
             // all files are tagged
             if (taggedFilesCount && !untaggedFilesCount) {
-                tristate = 1;
+                m_currentState = 1;
             }
 
-            TreeHelper::drawRadioButton(p, cg, rect, tristate, !Settings::tagTreeLocked());
+            enabled = !Settings::tagTreeLocked();
         } else {
             // no file is selected -> draw a disabled checkbox
-            TreeHelper::drawRadioButton(p, cg, rect, false, false);
+            m_currentState = -1;
         }
+        TreeHelper::drawRadioButton(p, cg, rect, m_currentState, enabled);
         break;
     }
     case TagTree::COLUMN_FILTER :
         // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor(0));
+        p->fillRect(0, 0, width, this->height(), backgroundColor(2));
 
         // draw the checkbox in the center of the cell in the size of the font
         int size = p->fontInfo().pixelSize()+2;

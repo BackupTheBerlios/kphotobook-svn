@@ -39,6 +39,8 @@ private:
     static Tracer* tracer;
 
 public:
+    enum FilterState {FILTERSTATE_EXCLUDE = -1, FILTERSTATE_IGNORE, FILTERSTATE_INCLUDE };
+
     TagTreeNodeRadioGroup(TagTree* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
     TagTreeNodeRadioGroup(TagTreeNode* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
@@ -54,25 +56,39 @@ public:
      * Sets the filter to find images without this tag set.
      */
     virtual void deselectFilter() {
-        // TODO: implement
-        tracer->warning("deselectFilter()", "Not Yet Implemented!");
+        m_filterState = FILTERSTATE_EXCLUDE;
+
+        // force redrawing of this listviewitem
+        this->repaint();
     }
 
     /**
      * Resets the filter.
      */
     virtual void resetFilter() {
-        // TODO: implement
-        tracer->warning("resetFilter()", "Not Yet Implemented!");
+        m_filterState = FILTERSTATE_IGNORE;
+
+        // force redrawing of this listviewitem
+        this->repaint();
     }
 
+    virtual void leftClicked( TagTree* tagTree, int column);
     virtual void rightClicked(TagTree* tagTree, int column);
 
-    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment) {
-        KListViewItem::paintCell(p, cg, column, width, alignment);
-    }
+    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
 
+    /**
+     * sets the selected child to src
+     */
     void setSelectedTag(TagTreeNodeRadio* src);
+
+    /**
+     * updates the filterstate of this group depending on its children states
+     */
+    void updateFilterState();
+
+private:
+    int m_filterState;
 };
 
 #endif
