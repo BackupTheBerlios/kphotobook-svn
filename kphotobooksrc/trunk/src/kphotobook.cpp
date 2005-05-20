@@ -857,7 +857,7 @@ bool KPhotoBook::checkForUntagged()
 
         //this misuses the nice kde "don't show again" function to disable our settings.
         int button = KMessageBox::warningYesNo(this,
-                                               "<b></b>There are untagged images...<br><br><b>Do you want to exit anyway?</b>",
+                                               "<b></b>There are untagged images...<br>The images without tags are shown in the iconview.<br><b>Do you want to exit anyway?</b>",
                                                "Untagged Images",
                                                KStdGuiItem::yes(),
                                                KStdGuiItem::no(),
