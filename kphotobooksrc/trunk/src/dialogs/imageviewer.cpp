@@ -50,6 +50,9 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     m_workTimer = new QTimer(0);
     connect(m_workTimer, SIGNAL(timeout()), this, SLOT(slotWorkTimerFired()));
 
+    m_timerSlideshow = new QTimer(0);
+    connect(m_timerSlideshow, SIGNAL(timeout()), this, SLOT(slotSlideshowTimerFired()));
+
     //and initialize the images
     m_curImage = new XImage(0L);
     m_nxtImage = new XImage(0L);
@@ -111,12 +114,21 @@ void ImageViewer::updateImageList()
 
     if (isVisible()) {
 
-        m_curImage->setFile(m_lstImages.current(), width(), height());
+        m_curImage->setFile(m_lstImages.current());
+        m_curImage->setImageContext(m_lstImages.curIdx(), m_lstImages.count());
+        m_curImage->setDesiredDimensions(width(), height());
         m_curImage->doWork(true);
         update();
 
-        m_nxtImage->setFile(m_lstImages.getNext(), width(), height(), m_screenWidth, m_screenHeight);
-        m_prvImage->setFile(m_lstImages.getPrev(), width(), height(), m_screenWidth, m_screenHeight);
+        m_nxtImage->setFile(m_lstImages.getNext());
+        m_nxtImage->setImageContext(m_lstImages.nxtIdx(), m_lstImages.count());
+        m_nxtImage->setDesiredDimensions(width(), height());
+        m_nxtImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+
+        m_prvImage->setFile(m_lstImages.getPrev());
+        m_prvImage->setImageContext(m_lstImages.prvIdx(), m_lstImages.count());
+        m_prvImage->setDesiredDimensions(width(), height());
+        m_prvImage->setMaxDimensions(m_screenWidth, m_screenHeight);
 
         //start preloader...
         m_workTimer->start(100, true);
@@ -135,14 +147,24 @@ void ImageViewer::show(File* selectedFile)
                 m_lstImages.first();
             }
 
-            m_curImage->setFile(m_lstImages.current(), width(), height(), m_screenWidth, m_screenHeight);
+            m_curImage->setFile(m_lstImages.current());
+            m_curImage->setImageContext(m_lstImages.curIdx(), m_lstImages.count());
+            m_curImage->setDesiredDimensions(width(), height());
+            m_curImage->setMaxDimensions(m_screenWidth, m_screenHeight);
             m_curImage->doWork(true);
             update();
         }
     }
 
-    m_nxtImage->setFile(m_lstImages.getNext(), width(), height(), m_screenWidth, m_screenHeight);
-    m_prvImage->setFile(m_lstImages.getPrev(), width(), height(), m_screenWidth, m_screenHeight);
+    m_nxtImage->setFile(m_lstImages.getNext());
+    m_nxtImage->setImageContext(m_lstImages.nxtIdx(), m_lstImages.count());
+    m_nxtImage->setDesiredDimensions(width(), height());
+    m_nxtImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+
+    m_prvImage->setFile(m_lstImages.getPrev());
+    m_prvImage->setImageContext(m_lstImages.prvIdx(), m_lstImages.count());
+    m_prvImage->setDesiredDimensions(width(), height());
+    m_prvImage->setMaxDimensions(m_screenWidth, m_screenHeight);
 
     //start preloader...
     m_workTimer->start(0, true);
@@ -245,23 +267,6 @@ void ImageViewer::paintEvent( QPaintEvent *e ) {
 
 
 
-/*
-
-
-
-void ImageViewer::mouseDoubleClickEvent ( __attribute__((unused)) QMouseEvent * e )
-{
-    //switch fullscreen mode...
-    if (isFullScreen()) {
-        setWindowState(windowState() & ~Qt::WindowFullScreen);
-    } else {
-        setWindowState(windowState() | Qt::WindowFullScreen);
-    }
-    setActiveWindow();
-}
-*/
-
-
 void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent * e )
 {
     QPopupMenu* popup = new QPopupMenu(this);
@@ -269,18 +274,35 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
     QString c = QString("<font color=black><b>%1</b></font>")
         .arg(m_lstImages.current()->fileInfo()->fileName());
 
-    QLabel *caption = new QLabel(c, this );
+    QLabel* caption = new QLabel(c, this );
     caption->setAlignment( Qt::AlignCenter );
     popup->insertItem( caption );
 
 
-    int id;
+    QPopupMenu* subSlideshow = new QPopupMenu(popup);
+    c = "<font color=black><b> Start Slideshow </b></font>";
+    caption = new QLabel(c, this );
+    caption->setAlignment( Qt::AlignCenter );
+
+    subSlideshow->insertItem( caption );
+    int id = subSlideshow->insertItem("Stop", 0);
+    subSlideshow->setItemEnabled(id, m_timerSlideshow->isActive());
+
+    subSlideshow->insertItem(" 5 sec", 5);
+    subSlideshow->insertItem("10 sec", 10);
+    subSlideshow->insertItem("20 sec", 20);
+    subSlideshow->insertItem("30 sec", 30);
+    subSlideshow->insertItem("40 sec", 40);
+    subSlideshow->insertItem("50 sec", 50);
+    subSlideshow->insertItem("60 sec", 60);
+
+    connect(subSlideshow, SIGNAL(activated(int)), this, SLOT(slotStartSlideshow(int)));
+
+
+    popup->insertItem("SlideShow", subSlideshow);
+
     id = popup->insertItem("SmoothScaling", this, SLOT(slotToggleSmoothScaling()));
     popup->setItemChecked(id, m_smoothScale);
-
-
-
-
 
 
     popup->exec(QCursor::pos());
@@ -290,10 +312,24 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
 }
 
 
+void ImageViewer::slotStartSlideshow(int id)
+{
+    if (id == 0) {
+        m_timerSlideshow->stop();
+    }
+    else {
+        m_timerSlideshow->start(id*1000);
+    }
+}
 
 
+void ImageViewer::slotSlideshowTimerFired()
+{
+    wheelEvent(new QWheelEvent(QPoint(), QPoint(), 10, 0));
+}
 
-void ImageViewer::wheelEvent (__attribute__((unused))   QWheelEvent* e ) {
+
+void ImageViewer::wheelEvent (QWheelEvent* e ) {
 
     bool up = e->delta() > 0;
 
@@ -310,13 +346,23 @@ void ImageViewer::wheelEvent (__attribute__((unused))   QWheelEvent* e ) {
             repaint();
             //first advance by one and then preload
             m_lstImages.next();
-            m_nxtImage = new XImage(m_lstImages.getNext(), width(), height());
+            m_nxtImage = new XImage(m_lstImages.getNext());
+            m_nxtImage->setImageContext(m_lstImages.nxtIdx(), m_lstImages.count());
+            m_nxtImage->setDesiredDimensions(width(), height());
          } else {
 
              delete m_prvImage;
              m_prvImage = m_curImage;
-             m_curImage->setFile(m_lstImages.next(), width(), height(), m_screenWidth, m_screenHeight);
-             m_nxtImage->setFile(m_lstImages.getNext(), width(), height(), m_screenWidth, m_screenHeight);
+
+             m_curImage->setFile(m_lstImages.next());
+             m_curImage->setImageContext(m_lstImages.curIdx(), m_lstImages.count());
+             m_curImage->setDesiredDimensions(width(), height());
+             m_curImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+
+             m_nxtImage->setFile(m_lstImages.getNext());
+             m_nxtImage->setImageContext(m_lstImages.nxtIdx(), m_lstImages.count());
+             m_nxtImage->setDesiredDimensions(width(), height());
+             m_nxtImage->setMaxDimensions(m_screenWidth, m_screenHeight);
          }
     } else {
         if (m_prvImage->isValid()) {
@@ -329,14 +375,27 @@ void ImageViewer::wheelEvent (__attribute__((unused))   QWheelEvent* e ) {
             //now force a redraw
             repaint();
 
+            //first advance back and then precache
             m_lstImages.prev();
-            m_prvImage = new XImage(m_lstImages.getPrev(), width(), height(), m_screenWidth, m_screenHeight);
+
+            m_prvImage = new XImage(m_lstImages.getPrev());
+            m_prvImage->setImageContext(m_lstImages.prvIdx(), m_lstImages.count());
+            m_prvImage->setDesiredDimensions(width(), height());
+            m_prvImage->setMaxDimensions(m_screenWidth, m_screenHeight);
         } else {
 
             delete m_nxtImage;
             m_nxtImage = m_curImage;
-            m_curImage->setFile(m_lstImages.prev(),    width(), height(), m_screenWidth, m_screenHeight);
-            m_prvImage->setFile(m_lstImages.getPrev(), width(), height(), m_screenWidth, m_screenHeight);
+
+            m_curImage->setFile(m_lstImages.prev());
+            m_curImage->setImageContext(m_lstImages.curIdx(), m_lstImages.count());
+            m_curImage->setDesiredDimensions(width(), height());
+            m_curImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+
+            m_prvImage->setFile(m_lstImages.getPrev());
+            m_prvImage->setImageContext(m_lstImages.prvIdx(), m_lstImages.count());
+            m_prvImage->setDesiredDimensions(width(), height());
+            m_prvImage->setMaxDimensions(m_screenWidth, m_screenHeight);
         }
     }
     m_workTimer->start(0, true);
@@ -366,7 +425,10 @@ XImage::XImage(File* file, int desiredWidth, int desiredHeight, int maxWidth, in
     m_pixmap       = new QPixmap();
     m_scaledPixmap = new QPixmap();
 
-    setFile(file, desiredWidth, desiredHeight, maxWidth, maxHeight);
+    setFile(file);
+
+    setDesiredDimensions(desiredWidth, desiredHeight);
+    setMaxDimensions(maxWidth, maxHeight);
 }
 
 
@@ -388,12 +450,14 @@ void XImage::free()
     if (!image()->isNull()) {
         *m_image = image()->scale(0,0);
     }
-    pixmap()->resize(0,0);
+    if (pixmap()) {
+        pixmap()->resize(0,0);
+    }
     scaled()->resize(0,0);
 }
 
 
-void XImage::setFile(File* file, int desiredWidth, int desiredHeight, int maxWidth, int maxHeight)
+void XImage::setFile(File* file)
 {
     if (m_file == file) {
         // nothing to be done!
@@ -403,16 +467,32 @@ void XImage::setFile(File* file, int desiredWidth, int desiredHeight, int maxWid
     m_file = file;
 
     free();
-
-    m_maxWidth = maxWidth;
-    m_maxHeight = maxHeight;
-
-    m_desiredWidth = desiredWidth;
-    m_desiredHeight = desiredHeight;
+    setImageContext(-2, -1);
 }
 
 
+void XImage::setImageContext(int imgNumber, int fromMaxImages)
+{
+    //FIXME here I add one, as I internally count from 1, not 0
+    m_imageNumber = imgNumber + 1;
+    m_fromMaxImages = fromMaxImages;
 
+    kdDebug() << "idx: " << m_imageNumber << " max: " << m_fromMaxImages << endl;
+}
+
+
+void XImage::setDesiredDimensions(int width, int height)
+{
+    m_desiredWidth = width;
+    m_desiredHeight = height;
+}
+
+
+void XImage::setMaxDimensions(int maxWidth, int maxHeight)
+{
+    m_maxWidth = maxWidth;
+    m_maxHeight = maxHeight;
+}
 
 bool XImage::doWork(bool forceFull)
 {
@@ -591,6 +671,79 @@ bool XImage::scaleImage()
 
 
 
+
+
+void drawContextCounter(QPainter* p, int x, int y, int width, int height, int cur, int max)
+{
+    //TODO what needs to be configurable?
+    //     fonts? colors? size? if its shown at all?
+
+
+    if (!p) {
+        return;
+    }
+    // full turn
+    int full = 360*16;
+
+    // want space be at most 3/4 of arc, but less then 4degrees
+    // | max * (space + arc) = 360 |
+    // | space = 3/4 *arc          |
+    int arc = (4 * full ) / (7 * max) ;
+    int space = 3 * arc / 4 ;
+
+    // if the space is too big, reduce it to 4 degrees
+    if (space > 4 * 16) {
+        space = 4 * 16;
+        arc = (full - (max * space)) / max;
+    }
+
+
+
+    //now draw the arcs, but, if we got more then 40, we don't draw them each...
+    if (max > 40) {
+
+        //first draw a full circle
+        p->setPen(QPen(Qt::darkGray, width / 4));
+        p->drawArc(x,y, width, height, 0, 360*16);
+
+        //then mark the current position
+        p->setPen(QPen(Qt::white, width / 4));
+
+        arc = full / max;
+
+        int pos = max - (cur - 2);
+        if (cur == 1) {
+            pos = 1;
+        }
+
+        p->drawArc(x,y, width, height, ((pos-1) * (arc)) + (90*16-arc), 4*16);
+
+    } else {
+        for (int i = 1; i <= max ; ++i) {
+
+            //this is stupid: as qt draws a circle counterclockwise, I have to
+            // translate the position of the current element
+            if (((i == cur) && (cur== 1)) || (cur == (max-(i-2)))) {
+                p->setPen(QPen(Qt::white, width / 4));
+            } else {
+                p->setPen(QPen(Qt::darkGray, width / 4));
+            }
+            p->drawArc(x,y, width, height, ((i-1) * (space+arc)) + (90*16-arc-(space/2)), arc);
+        }
+    }
+
+
+    //now draw the number inside the circle
+    p->setPen(Qt::red);
+    p->setFont(QFont("Bitstream Vera Sans", 20));
+
+    QString str = QString::number(cur);
+
+    p->drawText(x + width/2  - (p->fontMetrics().width(str)/2),
+                y + height/2 + (p->fontInfo().pixelSize()/2), str);
+}
+
+
 void XImage::drawFileInfos()
 {
     if (scaled()->isNull())
@@ -600,11 +753,11 @@ void XImage::drawFileInfos()
     //Playing with a painter...
     QPainter p(scaled());
 
-     p.setBrush(Qt::blue);
-     p.setPen(Qt::blue);
-//     p.drawRoundRect(50,50,100,100);
-//     p.drawArc(50,50,70,100, 100*16, 160*16 );
-//     p.drawPie(50,50,70,100, 100*16, 160*16);
+    p.setBrush(Qt::blue);
+    p.setPen(Qt::blue);
+    if (m_imageNumber >= 0 && m_fromMaxImages >= 0) {
+        drawContextCounter(&p, scaled()->width()-60, 10, 50, 50, m_imageNumber, m_fromMaxImages);
+    }
 
     p.setPen(Qt::red);
     p.setFont(QFont("Bitstream Vera Sans", 20));
@@ -617,9 +770,6 @@ void XImage::drawFileInfos()
 
     p.end();
 }
-
-
-
 
 
 

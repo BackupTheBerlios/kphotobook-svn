@@ -48,8 +48,11 @@ public:
 
     void   free();
 
-    void  setFile(File* file, int desiredWidth = 0, int desiredHeight = 0,
-                  int maxWidth = 0, int maxHeight = 0);
+    void  setFile(File* file);
+
+    void  setImageContext(int imgNumber, int fromMaxImages);
+    void  setMaxDimensions(int maxWidth, int maxHeight);
+    void  setDesiredDimensions(int width, int height);
 
     QImage*    image()                 { return m_image;        };
     QPixmap*   pixmap()                { return m_pixmap;       };
@@ -75,6 +78,9 @@ private:
     int      m_maxHeight;
     int      m_desiredWidth;
     int      m_desiredHeight;
+
+    int      m_imageNumber;
+    int      m_fromMaxImages;
 
     File*    m_file;
 
@@ -117,7 +123,9 @@ protected:
 
 private slots:
     void        slotWorkTimerFired();
+    void        slotSlideshowTimerFired();
     void        slotToggleSmoothScaling();
+    void        slotStartSlideshow(int id);
 
 private:
     int         m_screenWidth;
@@ -132,6 +140,7 @@ private:
 
 
     QTimer*     m_workTimer;
+    QTimer*     m_timerSlideshow;
 
 
     KFileIconView*      m_fileView;
