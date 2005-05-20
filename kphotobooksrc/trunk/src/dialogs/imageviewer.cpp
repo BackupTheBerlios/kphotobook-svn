@@ -54,9 +54,9 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     connect(m_timerSlideshow, SIGNAL(timeout()), this, SLOT(slotSlideshowTimerFired()));
 
     //and initialize the images
-    m_curImage = new XImage(0L);
-    m_nxtImage = new XImage(0L);
-    m_prvImage = new XImage(0L);
+    m_curImage = new XImage(this, 0L);
+    m_nxtImage = new XImage(this, 0L);
+    m_prvImage = new XImage(this, 0L);
 
     //smooth scaling is disabled by default. This can be made a setting later.
     m_smoothScale = false;
@@ -64,6 +64,7 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     //yes, we want a black background.
     this->setPaletteBackgroundColor(Qt::black);
 
+    //FIXME do we need this geometry feature?
     // retrieve screenGeometry of the screen the cursor is on
     QDesktopWidget* desktop = new QDesktopWidget();
     m_screenWidth  = desktop->screenGeometry(QCursor::pos()).width();
@@ -77,7 +78,10 @@ ImageViewer::~ImageViewer() {
 
     tracer->invoked("~ImageViewer") ;
 
+    //delete the timers
     delete m_workTimer;
+    delete m_timerSlideshow;
+    //and the images
     delete m_curImage;
     delete m_nxtImage;
     delete m_prvImage;
@@ -97,60 +101,63 @@ void ImageViewer::free()
 /**
  * Sets the List of images this viewer should show
  *
- * @param images The list of images to show
  */
 void ImageViewer::updateImageList()
 {
-    // remember the current for later reuse...
+    // remember the current image for later reuse...
     File* tmp = m_lstImages.current();
 
+    //now buildup the ringbuffer from the images shown in the listview
     buildPtrList(m_fileView, m_lstImages);
 
-    //if no file is given, try to make the images, that was previously current the current ;-)
+    //try to make the images, that was previously current the current again ;-)
     if (m_lstImages.findRef(tmp) < 0) {
         m_lstImages.first();
     }
 
-
+    // if we are visible, we update images on changes in the listview
     if (isVisible()) {
-
+        //first the current image
         m_curImage->setFile(m_lstImages.current());
         m_curImage->setImageContext(m_lstImages.curIdx(), m_lstImages.count());
-        m_curImage->setDesiredDimensions(width(), height());
+        m_curImage->scale(width(), height());
         m_curImage->doWork(true);
         update();
 
+        //and then the other cached ones
         m_nxtImage->setFile(m_lstImages.getNext());
         m_nxtImage->setImageContext(m_lstImages.nxtIdx(), m_lstImages.count());
-        m_nxtImage->setDesiredDimensions(width(), height());
-        m_nxtImage->setMaxDimensions(m_screenWidth, m_screenHeight);
-
+        m_nxtImage->scale(width(), height());
         m_prvImage->setFile(m_lstImages.getPrev());
         m_prvImage->setImageContext(m_lstImages.prvIdx(), m_lstImages.count());
-        m_prvImage->setDesiredDimensions(width(), height());
-        m_prvImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+        m_prvImage->scale(width(), height());
 
-        //start preloader...
+        //start preloader, but give it some time to rerender the listview...
         m_workTimer->start(100, true);
     }
 }
 
 
 
+/**
+ * @param selectedFile the file that is currently selected (ie doubleclickted) in
+ * the listview
+ */
 void ImageViewer::show(File* selectedFile)
 {
+    // if a new image should be shown....
     if (m_lstImages.current() != selectedFile) {
 
+        // and a non null one...
         if (selectedFile != 0) {
-        // if a file is given, set it as the current file
+            // try to set it as the current file
             if (m_lstImages.find(selectedFile) < 0) {
                 m_lstImages.first();
             }
 
             m_curImage->setFile(m_lstImages.current());
             m_curImage->setImageContext(m_lstImages.curIdx(), m_lstImages.count());
-            m_curImage->setDesiredDimensions(width(), height());
-            m_curImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+            m_curImage->scale(width(), height());
             m_curImage->doWork(true);
             update();
         }
@@ -158,13 +165,11 @@ void ImageViewer::show(File* selectedFile)
 
     m_nxtImage->setFile(m_lstImages.getNext());
     m_nxtImage->setImageContext(m_lstImages.nxtIdx(), m_lstImages.count());
-    m_nxtImage->setDesiredDimensions(width(), height());
-    m_nxtImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+    m_nxtImage->scale(width(), height());
 
     m_prvImage->setFile(m_lstImages.getPrev());
     m_prvImage->setImageContext(m_lstImages.prvIdx(), m_lstImages.count());
-    m_prvImage->setDesiredDimensions(width(), height());
-    m_prvImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+    m_prvImage->scale(width(), height());
 
     //start preloader...
     m_workTimer->start(0, true);
@@ -176,7 +181,7 @@ void ImageViewer::buildPtrList(KFileIconView* view, PtrRingBuffer<File>& ringbuf
 {
     ringbuffer.clear();
 
-    // loop over all selected files and add them to the ringbuffer
+    // loop over all files and add them to the ringbuffer
     QPtrListIterator<KFileItem> it(*view->items());
 
     for (; it.current(); ++it) {
@@ -192,7 +197,9 @@ void ImageViewer::buildPtrList(KFileIconView* view, PtrRingBuffer<File>& ringbuf
 
 
 
-
+/**
+ * this slot is called, when the working timer fires
+ */
 void ImageViewer::slotWorkTimerFired()
 {
     tracer->sinfo("slotWorkTimerFired") << endl;
@@ -228,10 +235,9 @@ void ImageViewer::resizeEvent( QResizeEvent * ) {
 
     int w = width();
     int h = height();
-    if ( w != m_curImage->scaled()->width() || h != m_curImage->scaled()->height()) {
-        m_curImage->scale(w, h);
-        m_curImage->doWork(true);
-    }
+
+    m_curImage->scale(w, h, true);
+
     m_nxtImage->scale(w,h);
     m_prvImage->scale(w,h);
 
@@ -253,17 +259,11 @@ void ImageViewer::paintEvent( QPaintEvent *e ) {
     QPainter painter(this);
     painter.setClipRect(e->rect());
 
-        //move the image to the center
+    //move the image to the center
     int x =( width()  - m_curImage->scaled()->width())  / 2;
     int y =( height() - m_curImage->scaled()->height()) / 2;
     painter.drawPixmap(x, y, *m_curImage->scaled());
 }
-
-
-
-
-
-
 
 
 
@@ -303,6 +303,7 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
 
     id = popup->insertItem("SmoothScaling", this, SLOT(slotToggleSmoothScaling()));
     popup->setItemChecked(id, m_smoothScale);
+
 
 
     popup->exec(QCursor::pos());
@@ -346,9 +347,9 @@ void ImageViewer::wheelEvent (QWheelEvent* e ) {
             repaint();
             //first advance by one and then preload
             m_lstImages.next();
-            m_nxtImage = new XImage(m_lstImages.getNext());
+            m_nxtImage = new XImage(this, m_lstImages.getNext());
             m_nxtImage->setImageContext(m_lstImages.nxtIdx(), m_lstImages.count());
-            m_nxtImage->setDesiredDimensions(width(), height());
+            m_nxtImage->scale(width(), height());
          } else {
 
              delete m_prvImage;
@@ -356,13 +357,11 @@ void ImageViewer::wheelEvent (QWheelEvent* e ) {
 
              m_curImage->setFile(m_lstImages.next());
              m_curImage->setImageContext(m_lstImages.curIdx(), m_lstImages.count());
-             m_curImage->setDesiredDimensions(width(), height());
-             m_curImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+             m_curImage->scale(width(), height());
 
              m_nxtImage->setFile(m_lstImages.getNext());
              m_nxtImage->setImageContext(m_lstImages.nxtIdx(), m_lstImages.count());
-             m_nxtImage->setDesiredDimensions(width(), height());
-             m_nxtImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+             m_nxtImage->scale(width(), height());
          }
     } else {
         if (m_prvImage->isValid()) {
@@ -378,10 +377,9 @@ void ImageViewer::wheelEvent (QWheelEvent* e ) {
             //first advance back and then precache
             m_lstImages.prev();
 
-            m_prvImage = new XImage(m_lstImages.getPrev());
+            m_prvImage = new XImage(this, m_lstImages.getPrev());
             m_prvImage->setImageContext(m_lstImages.prvIdx(), m_lstImages.count());
-            m_prvImage->setDesiredDimensions(width(), height());
-            m_prvImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+            m_prvImage->scale(width(), height());
         } else {
 
             delete m_nxtImage;
@@ -389,13 +387,11 @@ void ImageViewer::wheelEvent (QWheelEvent* e ) {
 
             m_curImage->setFile(m_lstImages.prev());
             m_curImage->setImageContext(m_lstImages.curIdx(), m_lstImages.count());
-            m_curImage->setDesiredDimensions(width(), height());
-            m_curImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+            m_curImage->scale(width(), height());
 
             m_prvImage->setFile(m_lstImages.getPrev());
             m_prvImage->setImageContext(m_lstImages.prvIdx(), m_lstImages.count());
-            m_prvImage->setDesiredDimensions(width(), height());
-            m_prvImage->setMaxDimensions(m_screenWidth, m_screenHeight);
+            m_prvImage->scale(width(), height());
         }
     }
     m_workTimer->start(0, true);
@@ -418,8 +414,9 @@ void ImageViewer::slotToggleSmoothScaling()
 ////////////////////////////////////////////////////////////////////////
 
 
-XImage::XImage(File* file, int desiredWidth, int desiredHeight, int maxWidth, int maxHeight)
+XImage::XImage(QWidget* parent, File* file, int desiredWidth, int desiredHeight, int maxWidth, int maxHeight)
 {
+    m_parent = parent;
     m_image        = new QImage();
 
     m_pixmap       = new QPixmap();
@@ -427,7 +424,7 @@ XImage::XImage(File* file, int desiredWidth, int desiredHeight, int maxWidth, in
 
     setFile(file);
 
-    setDesiredDimensions(desiredWidth, desiredHeight);
+    scale(desiredWidth, desiredHeight);
     setMaxDimensions(maxWidth, maxHeight);
 }
 
@@ -450,9 +447,7 @@ void XImage::free()
     if (!image()->isNull()) {
         *m_image = image()->scale(0,0);
     }
-    if (pixmap()) {
-        pixmap()->resize(0,0);
-    }
+    pixmap()->resize(0,0);
     scaled()->resize(0,0);
 }
 
@@ -479,18 +474,12 @@ void XImage::setImageContext(int imgNumber, int fromMaxImages)
 }
 
 
-void XImage::setDesiredDimensions(int width, int height)
-{
-    m_desiredWidth = width;
-    m_desiredHeight = height;
-}
-
-
 void XImage::setMaxDimensions(int maxWidth, int maxHeight)
 {
     m_maxWidth = maxWidth;
     m_maxHeight = maxHeight;
 }
+
 
 bool XImage::doWork(bool forceFull)
 {
@@ -517,7 +506,9 @@ bool XImage::doWork(bool forceFull)
     // TODO the big question is: do we need this middle step? as it increases mem usage pretty much
     //do we already have a converted tmp image?
     if (pixmap()->isNull()) {
+//         loadImage();
         convertImage();
+//         m_image->scale(0,0);
 
         if (!forceFull) {
             return workLeft();
@@ -549,7 +540,13 @@ bool XImage::isValid()
 }
 
 
-void XImage::scale(int width, int height) {
+
+
+void XImage::scale(int width, int height, bool forceDoWork) {
+
+    //if we already have that size, do nothing;
+    if (m_desiredWidth == width && m_desiredHeight == height)
+        return ;
 
     if (!scaled()->isNull()) {
         scaled()->resize(0,0);
@@ -557,11 +554,18 @@ void XImage::scale(int width, int height) {
 
     m_desiredWidth  = width;
     m_desiredHeight = height;
+
+    if (forceDoWork) {
+        doWork(true);
+    }
+
 }
 
 
 
-
+/**
+ * loads the image from a file to a QImage
+ */
 bool XImage::loadImage()
 {
     if (!m_file) {
@@ -570,11 +574,12 @@ bool XImage::loadImage()
 
     bool success = image()->load(m_file->fileInfo()->absFilePath());
 
-    if (success
-        && m_maxWidth > 0 && m_maxHeight > 0
-        && image()->width() > m_maxWidth && image()->height() > m_maxHeight) {
-            *m_image = image()->smoothScale(m_maxWidth, m_maxHeight, QImage::ScaleMin);
-    }
+//     //prescale the image to the windowgeometry
+//     if (success
+//         && m_maxWidth > 0 && m_maxHeight > 0
+//         && image()->width() > m_maxWidth && image()->height() > m_maxHeight) {
+//             *m_image = image()->smoothScale(m_maxWidth, m_maxHeight, QImage::ScaleMin);
+//     }
 
     return success;
 }
@@ -582,7 +587,9 @@ bool XImage::loadImage()
 
 
 
-
+/**
+ * converts the image from the QImage to the QPixmap
+ */
 bool XImage::convertImage()
 {
     if (image()->isNull()) {
@@ -667,78 +674,81 @@ bool XImage::scaleImage()
 
 
 
-
-
-
-
-void drawContextCounter(QPainter* p, int x, int y, int width, int height, int cur, int max)
+/**
+ * draws the file counter and numbering in the edge
+ */
+void XImage::drawContextCounter(QPainter* p, int x, int y, int side, int cur, int max)
 {
-    //TODO what needs to be configurable?
-    //     fonts? colors? size? if its shown at all?
+    //the following code is taken from kpdfs presentation widget :-)
 
+    side *= 2;
+    QPixmap doublePixmap(side, side);
+    doublePixmap.fill(Qt::black);
+    QPainter pixmapPainter(&doublePixmap);
 
-    if (!p) {
-        return;
-    }
-    // full turn
-    int full = 360*16;
+    if (max > 36) {
 
-    // want space be at most 3/4 of arc, but less then 4degrees
-    // | max * (space + arc) = 360 |
-    // | space = 3/4 *arc          |
-    int arc = (4 * full ) / (7 * max) ;
-    int space = 3 * arc / 4 ;
+        int degrees = (int)( 360 * (float)(cur) / (float)max);
 
-    // if the space is too big, reduce it to 4 degrees
-    if (space > 4 * 16) {
-        space = 4 * 16;
-        arc = (full - (max * space)) / max;
-    }
-
-
-
-    //now draw the arcs, but, if we got more then 40, we don't draw them each...
-    if (max > 40) {
-
-        //first draw a full circle
-        p->setPen(QPen(Qt::darkGray, width / 4));
-        p->drawArc(x,y, width, height, 0, 360*16);
-
-        //then mark the current position
-        p->setPen(QPen(Qt::white, width / 4));
-
-        arc = full / max;
-
-        int pos = max - (cur - 2);
-        if (cur == 1) {
-            pos = 1;
-        }
-
-        p->drawArc(x,y, width, height, ((pos-1) * (arc)) + (90*16-arc), 4*16);
+        pixmapPainter.setPen( 0x20 );
+        pixmapPainter.setBrush( 0x45 );
+        pixmapPainter.drawPie( 2, 2, side - 4, side - 4, 90*16, (360-degrees)*16 );
+        pixmapPainter.setBrush( 0xC0 );
+        pixmapPainter.drawPie( 2, 2, side - 4, side - 4, 90*16, -degrees*16 );
 
     } else {
-        for (int i = 1; i <= max ; ++i) {
-
-            //this is stupid: as qt draws a circle counterclockwise, I have to
-            // translate the position of the current element
-            if (((i == cur) && (cur== 1)) || (cur == (max-(i-2)))) {
-                p->setPen(QPen(Qt::white, width / 4));
-            } else {
-                p->setPen(QPen(Qt::darkGray, width / 4));
-            }
-            p->drawArc(x,y, width, height, ((i-1) * (space+arc)) + (90*16-arc-(space/2)), arc);
+        float oldCoord = -90;
+        for ( int i = 0; i <= max; i++ )
+        {
+            float newCoord = -90 + 360 * (float)(i ) / (float)max;
+            pixmapPainter.setPen( i <= cur ? 0x40 : 0x05 );
+            pixmapPainter.setBrush( i <= cur ? 0xC0 : 0x45 );
+            pixmapPainter.drawPie( 2, 2, side - 4, side - 4,
+                                   (int)( -16*(oldCoord + 1) ), (int)( -16*(newCoord - (oldCoord + 2)) ) );
+            oldCoord = newCoord;
         }
     }
 
+    int circleOut = side / 4;
+    pixmapPainter.setPen( Qt::black );
+    pixmapPainter.setBrush( Qt::black );
+    pixmapPainter.drawEllipse( circleOut, circleOut, side - 2*circleOut, side - 2*circleOut );
 
-    //now draw the number inside the circle
-    p->setPen(Qt::red);
-    p->setFont(QFont("Bitstream Vera Sans", 20));
+    // draw TEXT using maximum opacity
+    QFont f( pixmapPainter.font() );
+    f.setPixelSize( side / 4 );
+    pixmapPainter.setFont( f );
+    pixmapPainter.setPen( 0xFF );
+    // use a little offset to prettify output
+    pixmapPainter.drawText( 2, 2, side, side, Qt::AlignCenter, QString::number( cur ) );
 
-    QString str = QString::number(cur);
+    // end drawing pixmap and halve image
+    pixmapPainter.end();
+    side /= 2;
+    QImage image( doublePixmap.convertToImage().smoothScale( side, side ) );
+    image.setAlphaBuffer( true );
 
-    p->drawText(x + width/2  - (p->fontMetrics().width(str)/2),
-                y + height/2 + (p->fontInfo().pixelSize()/2), str);
+    // generate a monochrome pixmap using grey level as alpha channel and
+    // a saturated hilight color as base color
+    int hue, sat, val;
+    m_parent->palette().active().highlight().getHsv( &hue, &sat, &val );
+    sat = (sat + 255) / 2;
+    val += 50;
+    const QColor & color = QColor( hue, sat, val, QColor::Hsv );
+
+    int red = color.red(),
+        green = color.green(),
+        blue = color.blue(),
+        pixels = image.width() * image.height();
+
+    unsigned int * data = (unsigned int *)image.bits();
+    for( int i = 0; i < pixels; ++i )
+        data[i] = qRgba( red, green, blue, data[i] & 0xFF );
+
+    //finally draw it to the main painter
+    QPixmap tmp;
+    tmp.convertFromImage( image );
+    p->drawPixmap(x,y,tmp);
 }
 
 
@@ -754,7 +764,7 @@ void XImage::drawFileInfos()
     p.setBrush(Qt::blue);
     p.setPen(Qt::blue);
     if (m_imageNumber >= 0 && m_fromMaxImages >= 0) {
-        drawContextCounter(&p, scaled()->width()-60, 10, 50, 50, m_imageNumber, m_fromMaxImages);
+        drawContextCounter(&p, scaled()->width()-75, 5, 70, m_imageNumber, m_fromMaxImages);
     }
 
     p.setPen(Qt::red);

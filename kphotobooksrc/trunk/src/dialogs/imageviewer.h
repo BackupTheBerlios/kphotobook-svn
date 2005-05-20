@@ -42,7 +42,7 @@ class XImage
 {
 public:
 
-    XImage(File* file, int desiredWidth = 0, int desiredHeight = 0,
+    XImage(QWidget* parent, File* file, int desiredWidth = 0, int desiredHeight = 0,
            int maxWidth = 0, int maxHeight = 0);
     ~XImage();
 
@@ -52,7 +52,6 @@ public:
 
     void  setImageContext(int imgNumber, int fromMaxImages);
     void  setMaxDimensions(int maxWidth, int maxHeight);
-    void  setDesiredDimensions(int width, int height);
 
     QImage*    image()                 { return m_image;        };
     QPixmap*   pixmap()                { return m_pixmap;       };
@@ -60,7 +59,7 @@ public:
 
     bool       isValid();
 
-    void       scale(int desiredWidth, int desiredHeight) ;
+    void       scale(int desiredWidth, int desiredHeight, bool forceDoWork = false) ;
 
     bool       doWork(bool forceFull = false);
     bool       workLeft();
@@ -68,11 +67,16 @@ public:
 
 
 private:
+
+    void drawContextCounter(QPainter* p, int x, int y, int side, int cur, int max);
+
     bool      loadImage();
     bool      convertImage();
     bool      scaleImage();
 
     void      drawFileInfos();
+
+    QWidget* m_parent;
 
     int      m_maxWidth;
     int      m_maxHeight;
@@ -117,7 +121,6 @@ public:
 protected:
     void        paintEvent( QPaintEvent  * e);
     void        resizeEvent( QResizeEvent * e);
-//     void        mouseDoubleClickEvent ( QMouseEvent * e );
     void        contextMenuEvent ( QContextMenuEvent * e );
     void        wheelEvent ( QWheelEvent  * e );
 

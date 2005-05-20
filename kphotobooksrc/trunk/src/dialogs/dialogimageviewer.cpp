@@ -26,8 +26,11 @@
 DialogImageViewer::DialogImageViewer(QWidget* parent, KFileIconView* fileView)
 :KDialog(parent, "", false)
 {
-    m_imageViewer = new ImageViewer(this,fileView);
+    this->setWFlags(Qt::WStyle_StaysOnTop | Qt::WNoAutoErase | Qt::WPaintClever);
+    //FIXME this should be solved somehow clever
+    this->resize(640,480);
 
+    m_imageViewer = new ImageViewer(this, fileView);
 }
 
 
