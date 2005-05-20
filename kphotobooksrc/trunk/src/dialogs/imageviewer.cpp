@@ -476,8 +476,6 @@ void XImage::setImageContext(int imgNumber, int fromMaxImages)
     //FIXME here I add one, as I internally count from 1, not 0
     m_imageNumber = imgNumber + 1;
     m_fromMaxImages = fromMaxImages;
-
-    kdDebug() << "idx: " << m_imageNumber << " max: " << m_fromMaxImages << endl;
 }
 
 
@@ -619,8 +617,8 @@ bool XImage::scaleImage()
     if (pixmap()->isNull() || m_desiredWidth <= 0 || m_desiredHeight <= 0) {
         return false;
     }
-    QTime timer;
-    timer.start();
+//     QTime timer;
+//     timer.start();
 
     // is it already scaled right?
     if ( m_desiredWidth == pixmap()->width() && m_desiredHeight == pixmap()->height() ) {
@@ -659,10 +657,10 @@ bool XImage::scaleImage()
         }
     }
 
-    kdDebug() << "resize: "<<timer.restart() << endl;
+//     kdDebug() << "resize: "<<timer.restart() << endl;
 
     drawFileInfos();
-    kdDebug() << "drawFI: "<<timer.restart() << endl;
+//     kdDebug() << "drawFI: "<<timer.restart() << endl;
 
     return true;
 }
