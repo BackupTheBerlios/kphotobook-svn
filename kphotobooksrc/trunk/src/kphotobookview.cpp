@@ -17,6 +17,8 @@
 #include "uitrees/sourcedirtree.h"
 #include "uitrees/sourcedirtreenode.h"
 
+#include "dialogs/imageviewer.h"
+
 #include "kfile.h"
 #include <kmessagebox.h>
 #include <krun.h>
@@ -52,6 +54,9 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
     } else {
         m_fileView->setSelectionMode(KFile::Multi);
     }
+
+    m_dlgImageViewer = new DialogImageViewer(this, m_fileView);
+
     m_fileView->setResizeMode(KFileIconView::Adjust);
     m_fileView->setFont(Settings::imagePreviewFont());
     m_fileView->showPreviews();
@@ -67,8 +72,7 @@ KPhotoBookView::~KPhotoBookView() {
 
     tracer->invoked("~KPhotoBookView");
 
-    // TODO
-    // remove the current previewed files
+    // TODO remove the current previewed files
     //m_fileView->clearView();
 
     // all components are deleted automagically by the destructor of QWidget
@@ -108,6 +112,14 @@ void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
     QPtrListIterator<KFileItem> it(*selectedFiles);
     for (; it.current(); ++it) {
         m_fileView->setSelected(it.current(), true);
+    }
+
+    //these steps are only necessary, if the internal viewer is used
+    if (Settings::toolsUseInternalImageViewer) {
+        //force a redraw before the imageView is updated
+        m_fileView->updateView(true);
+        // and then update the viewer
+        m_dlgImageViewer->updateImages();
     }
 }
 
@@ -167,7 +179,7 @@ void KPhotoBookView::keyPressEvent(QKeyEvent* e) {
     if (e->key() == Qt::Key_Control) {
         m_photobook->startTemporaryUnlockTagging();
     }
-    
+
     e->ignore();
 }
 
@@ -177,7 +189,7 @@ void KPhotoBookView::keyReleaseEvent(QKeyEvent *e) {
     if (e->key() == Qt::Key_Control) {
         m_photobook->stopTemporaryUnlockTagging();
     }
-    
+
     e->ignore();
 }
 
@@ -193,18 +205,24 @@ void KPhotoBookView::focusOutEvent(__attribute__((unused)) QFocusEvent *e) {
 //
 void KPhotoBookView::slotShowCurrentImage() {
 
-    KFileItem* item = m_fileView->currentFileItem();
-    KURL file = item->url();
+    if (Settings::toolsUseInternalImageViewer()) {
+        tracer->sdebug("slotShowCurrentImage") << "Opening internal Imageviewer ... " << endl;
 
-    QString tool = Settings::toolsDefaultExternalTool();
+        m_dlgImageViewer->updateImages();
+        m_dlgImageViewer->show(dynamic_cast<File*>(m_fileView->currentFileItem()));
+    } else {
+        QString tool = Settings::toolsDefaultExternalTool();
 
-    tracer->debug("slotShowCurrentImage", "Showing file in %s. url=<%s>, path=<%s>", tool.ascii(), file.url().ascii(), file.path().ascii());
+        KFileItem* item = m_fileView->currentFileItem();
+        KURL file = item->url();
 
-    KProcess *proc = new KProcess();
+        tracer->debug("slotShowCurrentImage", "Showing file in %s. url=<%s>, path=<%s>", tool.ascii(), file.url().ascii(), file.path().ascii());
 
-    *proc << tool;
-    *proc << file.path();
-    proc->start(KProcess::DontCare);
+        KProcess *proc = new KProcess();
+
+        *proc << tool << file.path();
+        proc->start(KProcess::DontCare);
+    }
 }
 
 

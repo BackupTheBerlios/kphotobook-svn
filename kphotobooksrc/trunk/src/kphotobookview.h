@@ -6,6 +6,7 @@
 #define _KPHOTOBOOKVIEW_H_
 
 #include "tracer/tracer.h"
+#include "dialogs/dialogimageviewer.h"
 
 #include <kfileiconview.h>
 
@@ -39,7 +40,7 @@ class TagTreeNodeTitle;
 class KPhotoBookView : public KMdiChildView {
 
     Q_OBJECT
-    
+
 private:
     static Tracer* tracer;
 
@@ -95,6 +96,8 @@ private:
     KPhotoBook* m_photobook;
 
     KFileIconView* m_fileView;
+
+    DialogImageViewer* m_dlgImageViewer;
 
     int m_currentImagePreviewSize;
 };
