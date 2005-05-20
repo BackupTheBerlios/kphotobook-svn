@@ -36,6 +36,47 @@ public:
 
 
     /**
+     * returns the index of the previous element in this ring.
+     * As this is a RING, there always is a previous id
+     * @return the index of the previous item
+     */
+    int  prvIdx()      {
+        int i = curIdx() - 1;
+        return (i < 0  ? count()-1 : i);
+    }
+
+
+    /**
+     * @return the index of the current element in this ring
+     *
+     */
+    int  curIdx()      {
+        return m_data.at();
+    }
+
+
+    /**
+     * returns the index of the next element in this ring.
+     * if the current index is the last item in the ring, then 0 is
+     * returned
+     * @return the index of the next item
+     */
+    int  nxtIdx()      {
+        int i = curIdx() + 1;
+        kdDebug() << i << endl;
+        return (i >= count() ? 0 : i);
+    }
+
+
+    /**
+     * @return the count of elements in this ring
+     */
+    int  count()       {
+        return m_data.count();
+    }
+
+
+    /**
      * Sets the internal position marker to the first element
      *
      * @return the first item in this buffer
