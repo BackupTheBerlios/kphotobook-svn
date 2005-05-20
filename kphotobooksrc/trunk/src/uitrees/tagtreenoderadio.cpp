@@ -55,7 +55,7 @@ FilterNode* TagTreeNodeRadio::subfilter() {
 
     TagNodeRadio* tagNode = dynamic_cast<TagNodeRadio*>(m_tagNode);
 
-    FilterNode* filter;
+    FilterNode* filter = 0;
 
     switch (m_filterState) {
         case FILTERSTATE_EXCLUDE:

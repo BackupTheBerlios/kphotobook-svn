@@ -51,7 +51,7 @@ FilterNode* TagTreeNodeBoolean::filter() {
 
     TagNodeBoolean* tagNode = dynamic_cast<TagNodeBoolean*>(m_tagNode);
 
-    FilterNode* filter;
+    FilterNode* filter = 0;
 
     switch (m_filterState) {
     case FILTERSTATE_EXCLUDE:
