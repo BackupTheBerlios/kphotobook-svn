@@ -73,16 +73,6 @@ void DialogImageViewer::updateImages()
 
 
 
-
-
-
-
-
-
-
-
-
-
 void DialogImageViewer::mouseDoubleClickEvent ( __attribute__((unused)) QMouseEvent * e )
 {
     //switch fullscreen mode...
@@ -93,4 +83,6 @@ void DialogImageViewer::mouseDoubleClickEvent ( __attribute__((unused)) QMouseEv
     }
     setActiveWindow();
 }
+
+
 

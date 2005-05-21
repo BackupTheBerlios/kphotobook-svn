@@ -194,10 +194,18 @@ public:
     QString dump() {
 
         QString retval = "";
+        T* cur = m_data.current();
+
         T* data;
         for ( data = m_data.first(); data; data = m_data.next() ) {
-            retval.sprintf("%s, %p", retval.ascii(), data);
+            if (data == cur) {
+                retval.sprintf("%s, [%p]", retval.ascii(), data);
+            } else {
+                retval.sprintf("%s, %p", retval.ascii(), data);
+            }
         }
+        findRef(cur);
+
         return retval;
     }
 
