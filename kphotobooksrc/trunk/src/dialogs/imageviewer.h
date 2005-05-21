@@ -41,56 +41,43 @@ class File;
 class XImage
 {
 public:
-
-    XImage(QWidget* parent, File* file, int desiredWidth = 0, int desiredHeight = 0,
-           int maxWidth = 0, int maxHeight = 0);
+    XImage(int maxWidth = -1, int maxHeight = -1);
     ~XImage();
 
-    void   free();
+    void     setFile(File* file);
 
-    void  setFile(File* file);
+    void     free();
 
-    void  setImageContext(int imgNumber, int fromMaxImages);
-    void  setMaxDimensions(int maxWidth, int maxHeight);
+    QPixmap* scaled()                { return &m_scaled; };
 
-    QImage*    image()                 { return m_image;        };
-    QPixmap*   pixmap()                { return m_pixmap;       };
-    QPixmap*   scaled()                { return m_scaledPixmap; };
+    void     setSmoothScale(bool);
 
-    bool       isValid();
+    void     setMaxDimensions(int maxWidth, int maxHeight);
 
-    void       scale(int desiredWidth, int desiredHeight, bool forceDoWork = false) ;
+    bool     isValid();
+    bool     workLeft();
 
-    bool       doWork(bool forceFull = false);
-    bool       workLeft();
-
+    bool     doWork(bool forceFull = false);
+    void     scale(int desiredWidth, int desiredHeight, bool forceDoWork = false) ;
 
 
 private:
+    bool     loadImage();
+    bool     convertImage();
+    bool     scaleImage();
 
-    void drawContextCounter(QPainter* p, int x, int y, int side, int cur, int max);
-
-    bool      loadImage();
-    bool      convertImage();
-    bool      scaleImage();
-
-    void      drawFileInfos();
-
-    QWidget* m_parent;
+    bool     m_smoothScale;
 
     int      m_maxWidth;
     int      m_maxHeight;
     int      m_desiredWidth;
     int      m_desiredHeight;
 
-    int      m_imageNumber;
-    int      m_fromMaxImages;
-
     File*    m_file;
 
-    QImage*  m_image;
-    QPixmap* m_pixmap;
-    QPixmap* m_scaledPixmap;
+    QImage   m_image;
+    QPixmap  m_pixmap;
+    QPixmap  m_scaled;
 
     int      m_alloc_context;
 };
@@ -111,49 +98,65 @@ private:
 public:
     ImageViewer( QWidget *parent, KFileIconView* fileView, const char *name=0);
     ~ImageViewer();
-    bool        loadImage( File* , XImage* img);
 
-    void        updateImageList();
-    void        show(File* selectedFile);
+    void  updateImageList();
+    void  show(File* selectedFile);
 
-    void        free();
+    void  free();
+
+    void  showNextImage();
+    void  showPrevImage();
+
 
 protected:
-    void        paintEvent( QPaintEvent  * e);
-    void        resizeEvent( QResizeEvent * e);
-    void        contextMenuEvent ( QContextMenuEvent * e );
-    void        wheelEvent ( QWheelEvent  * e );
+    void  paintEvent( QPaintEvent  * e);
+    void  resizeEvent( QResizeEvent * e);
+    void  wheelEvent ( QWheelEvent  * e );
+    void  keyPressEvent ( QKeyEvent * e );
+
+    void  contextMenuEvent ( QContextMenuEvent * e );
+
 
 private slots:
-    void        slotWorkTimerFired();
-    void        slotSlideshowTimerFired();
-    void        slotToggleSmoothScaling();
-    void        slotStartSlideshow(int id);
+    void  slotWorkTimerFired();
+    void  slotSlideshowTimerFired();
+
+    void  slotToggleSmoothScaling();
+    void  slotToggleShowContextGauge();
+    void  slotToggleShowInfoOverlay();
+
+    void  slotStartSlideshow(int secs);
 
 private:
-    int         m_screenWidth;
-    int         m_screenHeight;
+    void  generateContextCounterOverlay();
+    void  generateInfoOverlay();
 
-    void        updateStatus();
-    void        setMenuItemFlags();
+    void  buildPtrList(KFileIconView* view, PtrRingBuffer<File>& ringbuffer);
 
-    void buildPtrList(KFileIconView* view, PtrRingBuffer<File>& ringbuffer);
+    //properties
+    bool  m_smoothScale;
+    bool  m_showContextGauge;
+    bool  m_showInfoOverlay;
 
-    bool m_smoothScale;
+    int   m_screenWidth;
+    int   m_screenHeight;
 
-
-    QTimer*     m_workTimer;
-    QTimer*     m_timerSlideshow;
-
+    QTimer*  m_workTimer;
+    QTimer*  m_timerSlideshow;
 
     KFileIconView*      m_fileView;
-
     PtrRingBuffer<File> m_lstImages;
 
+    XImage*  m_curImage;
+    XImage*  m_nxtImage;
+    XImage*  m_prvImage;
 
-    XImage*     m_curImage;
-    XImage*     m_nxtImage;
-    XImage*     m_prvImage;
+    XImage   m_imageData1;
+    XImage   m_imageData2;
+    XImage   m_imageData3;
+
+    QPixmap  m_contextOverlay;
+    QPixmap  m_infoOverlay;
 };
 
 
