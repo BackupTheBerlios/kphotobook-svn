@@ -78,6 +78,10 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     //yes, we want a black background.
     this->setPaletteBackgroundColor(Qt::black);
 
+    //this would disable deletion of pixels
+//     this->setBackgroundMode(NoBackground);
+
+
     //FIXME do we need this geometry feature?
     // retrieve screenGeometry of the screen the cursor is on
     QDesktopWidget* desktop = new QDesktopWidget();
@@ -207,7 +211,7 @@ void ImageViewer::buildPtrList(KFileIconView* view, PtrRingBuffer<File>& ringbuf
  */
 void ImageViewer::slotWorkTimerFired()
 {
-    tracer->sinfo("slotWorkTimerFired") << endl;
+    tracer->sdebug("slotWorkTimerFired") << endl;
 
     setCursor(Qt::BusyCursor);
 
@@ -626,16 +630,21 @@ void ImageViewer::resizeEvent( QResizeEvent * ) {
 */
 
 void ImageViewer::paintEvent( QPaintEvent *e ) {
+
     if ( m_curImage->scaled()->isNull() ) {
         tracer->sdebug("paintEvent") << "preScaled Image is null, unable to display!" << endl;
         return;
     }
+
     QPainter painter(this);
     painter.setClipRect(e->rect());
+
+//     kdDebug() << e->rect().x() << " ... " << e->rect().y() << " ... " << e->rect().width() << " ... " << e->rect().height() << endl;
 
     //move the image to the center
     int x =( width()  - m_curImage->scaled()->width())  / 2;
     int y =( height() - m_curImage->scaled()->height()) / 2;
+
     painter.drawPixmap(x, y, *m_curImage->scaled());
 
     //TODO the position stuff needs to be variable somehow
@@ -842,7 +851,7 @@ bool XImage::loadImage()
 
     bool success = m_image.load(m_file->fileInfo()->absFilePath());
 
-    //TODO does this give any advantage probably on lowend machines?
+    //TODO does this give any advantage probably on low-end machines?
 //     //prescale the image to the windowgeometry
 //     if (success
 //         && m_maxWidth > 0 && m_maxHeight > 0
