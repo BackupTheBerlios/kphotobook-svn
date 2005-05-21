@@ -315,6 +315,10 @@ void KPhotoBook::setupActions() {
 
     KStdAction::open(this, SLOT(slotFileOpen()), actionCollection())->setWhatsThis(i18n("Open an existing KPhotoBook database."));
 
+    m_recentFilesAction = KStdAction::openRecent(this, SLOT(slotFileOpen(const KURL&)), actionCollection());
+    m_recentFilesAction->setWhatsThis(i18n("Open a previously opened KPhotoBook database."));
+    m_recentFilesAction->loadEntries(kapp->config());
+
     m_save = KStdAction::save(this, SLOT(slotFileSave()), actionCollection());
     m_save->setWhatsThis(i18n("Save the current KPhotoBook database."));
     m_save->setEnabled(false);
@@ -773,6 +777,9 @@ bool KPhotoBook::queryClose() {
             break;
     }
 
+    //save the recent files
+    m_recentFilesAction->saveEntries(kapp->config());
+
     // force writing the settings
     Settings::writeConfig();
 
@@ -906,11 +913,12 @@ void KPhotoBook::slotFileNew() {
 }
 
 
-void KPhotoBook::slotFileOpen() {
+void KPhotoBook::slotFileOpen(const KURL& url) {
 
     // this slot is called whenever the File->Open menu is selected,
     // the Open shortcut is pressed (usually CTRL+O) or the Open toolbar
-    // button is clicked
+    // button is clicked. in those cases url isEmpty() !.
+    // if it is called by openRecent Action, url contains the url to load
 
     // store the data if necessary
     if (m_engine && m_engine->dirty()) {
@@ -949,23 +957,35 @@ void KPhotoBook::slotFileOpen() {
         }
     }
 
-    // try to get last opened file
-    QString lastFileName = Settings::fileSystemLastOpenedFile();
+    //again, if url.isEmpty(), the uses has to be querried for the file to
+    // open. otherwise we try to open the given KURL
+    QString fileName = "";
+    if (url.isEmpty()) {
+        // try to get last opened file
+        QString lastFileName = Settings::fileSystemLastOpenedFile();
 
-    QString lastDirName("");
-    if (!lastFileName.isEmpty()) {
-        lastDirName = QFileInfo(lastFileName).dirPath(true);
+        QString lastDirName("");
+        if (!lastFileName.isEmpty()) {
+            lastDirName = QFileInfo(lastFileName).dirPath(true);
+        }
+
+        // standard filedialog
+        QString fileFilter = QString("*.%1").arg(Constants::FILE_EXTENSION);
+        fileName = KFileDialog::getOpenFileName(lastDirName, fileFilter, this, i18n("Open Location"));
+    } else {
+        fileName = url.path();
     }
 
-
-    // standard filedialog
-    QString fileFilter = QString("*.%1").arg(Constants::FILE_EXTENSION);
-    QString fileName = KFileDialog::getOpenFileName(lastDirName, fileFilter, this, i18n("Open Location"));
     if (!fileName.isEmpty()) {
         QFileInfo fileInfo(fileName);
 
         if (fileInfo.exists()) {
             load(fileInfo);
+
+            //if we loaded by hand, save the file as recently used
+            if (url.isEmpty()) {
+                m_recentFilesAction->addURL(KURL(fileInfo.absFilePath()));
+            }
         }
     }
 

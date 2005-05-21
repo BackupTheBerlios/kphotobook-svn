@@ -39,6 +39,9 @@ class KListView;
 #include <qstringlist.h>
 #include <qintdict.h>
 
+#include <kactionclasses.h>
+#include <kurl.h>
+
 class Engine;
 
 class SettingsGeneral;
@@ -100,21 +103,21 @@ public:
     }
 
     void dirtyfy();
-    
+
     /**
      * This method is invoked for temporary unlocking the tagging.
      * As soon as this method is invoked, tagging is possible, even
      * it was lacked.
      */
     void startTemporaryUnlockTagging() {
-    
+
         m_inTagtreeTemporaryUnlocking = true;
-        
+
         m_tagtreeWasLocked = Settings::tagTreeLocked();
         Settings::setTagTreeLocked(false);
-        applyLockUnlockTaggingSettings();        
+        applyLockUnlockTaggingSettings();
     }
-    
+
     /**
      * This method must be invoked as soon, as the temporary unlocking must end.
      * When this method has finished, tagging is no longer possible, if tagging
@@ -125,12 +128,12 @@ public:
      * to get things working correct.
      */
     void stopTemporaryUnlockTagging() {
-    
+
         if (m_inTagtreeTemporaryUnlocking) {
           m_inTagtreeTemporaryUnlocking = false;
-        
+
           Settings::setTagTreeLocked(m_tagtreeWasLocked);
-          applyLockUnlockTaggingSettings();        
+          applyLockUnlockTaggingSettings();
         }
     }
 
@@ -192,11 +195,11 @@ public:
     KPopupMenu* contextMenuTagTreeItem() {
         return m_contextMenuTagTreeItem;
     }
-    
+
     KPopupMenu* contextMenuTagTreeItemLeaf() {
         return m_contextMenuTagTreeItemLeaf;
     }
-    
+
     /**
      * Enables or disables locking of tagging.
      */
@@ -216,7 +219,7 @@ protected:
 
 private slots:
     void slotFileNew();
-    void slotFileOpen();
+    void slotFileOpen(const KURL& = KURL());
     bool slotFileSave();
     bool slotFileSaveAs();
 
@@ -234,7 +237,7 @@ private slots:
     void slotDeleteTag();
 
     void slotToggleLockUnlockTagging();
-    
+
     void slotRescanFilesystem();
 
     void slotAutoRefreshView();
@@ -277,7 +280,7 @@ private slots:
 
     void slotLoadSettings();
     void slotConfigDefaultClicked();
-    
+
     void slotRestoreToolViews();
     void slotShowToolViewTagTree();
     void slotShowToolViewSourceDirTree();
@@ -298,7 +301,7 @@ private:
 
     void updateState();
     void updateStatusBar();
-    
+
     bool checkForUntagged();
 
     /**
@@ -335,12 +338,12 @@ private:
      * Activates or deactivates the autorefresh actions.
      */
     void applyAutorefreshSetting();
-    
+
     /**
      * Stores the state (open/closed nodes) of the trees.
      */
     void storeTreeState();
-    
+
     /**
      * Loads the state (open/closed nodes) of the trees.
      */
@@ -350,30 +353,30 @@ private:
      * Stores the filters set on the trees.
      */
     void storeFilter();
-    
+
     /**
      * Loads the filters and sets them on the trees.
      */
     void loadFilter();
-    
+
     /**
-     * Builds a list of strings containing as many entries as the specified 
+     * Builds a list of strings containing as many entries as the specified
      * int dictionary. Each entry of the dictionary is joined into one string.
      * The string is built by the int key followed by a colon and the value.
      * This helper method is used because the class KConfig or KConfigBase resp.
      * do not support writing/reading int dictionaries.
      */
     QStringList* intDict2stringList(QIntDict<QString>* intDict);
-    
+
     /**
      * Builds a int dictionary with the entries found in the specified stringlist.
      * The entries in the stringlist must begin with an int followed by a colon and
      * an alphanumeric string: <int>:<alphanumeric>.
      * This helper method is used because the class KConfig or KConfigBase resp.
      * do not support writing/reading int dictionaries.
-     */        
-    QIntDict<QString>* stringList2intDict(QStringList stringList); 
-    
+     */
+    QIntDict<QString>* stringList2intDict(QStringList stringList);
+
     /**
      * Lets the user choose an existing directory.
      * If the user aborts QString::null is returned otherwise an
@@ -390,7 +393,7 @@ private:
     TagTree* m_tagTree;
     SourceDirTree* m_sourcedirTree;
     KListView* m_metaInfoTree;
-    
+
     KMdiToolViewAccessor* m_tagTreeToolView;
     KMdiToolViewAccessor* m_sourceDirTreeToolView;
     KMdiToolViewAccessor* m_metaInfoTreeToolView;
@@ -401,7 +404,7 @@ private:
      * Truze whiel temporary unlocking is enabled.
      */
     bool m_inTagtreeTemporaryUnlocking;
-    
+
     /**
      * Is true if tagging was locked before the method
      * startTemporaryUnlockTagging was invoked.
@@ -416,6 +419,9 @@ private:
     KToggleAction* m_autoRefreshViewAction;
     KToolBarPopupAction* m_zoomIn;
     KToolBarPopupAction* m_zoomOut;
+
+    KRecentFilesAction* m_recentFilesAction;
+
     KAction* m_save;
     KAction* m_exportMatchingFiles;
     KAction* m_exportSelectedFiles;
