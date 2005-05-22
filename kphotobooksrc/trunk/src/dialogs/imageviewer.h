@@ -157,6 +157,8 @@ private:
 
     QPixmap  m_contextOverlay;
     QPixmap  m_infoOverlay;
+
+    QPixmap m_bgPixmap;
 };
 
 

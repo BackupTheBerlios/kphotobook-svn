@@ -75,12 +75,8 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     // we want file infos
     m_showInfoOverlay = true;
 
-    //yes, we want a black background.
-    this->setPaletteBackgroundColor(Qt::black);
-
-    //this would disable deletion of pixels
-//     this->setBackgroundMode(NoBackground);
-
+    //this disables deletion of pixels, we make the bg drawing ourself
+     this->setBackgroundMode(NoBackground);
 
     //FIXME do we need this geometry feature?
     // retrieve screenGeometry of the screen the cursor is on
@@ -89,6 +85,9 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     m_screenHeight = desktop->screenGeometry(QCursor::pos()).height();
     delete desktop;
     tracer->sinfo("ImageViewer") << "Screengeometry is " << m_screenWidth << "x" << m_screenHeight << endl;
+
+    //init the background pixmap
+    m_bgPixmap = QPixmap(0,0);
 }
 
 
@@ -341,7 +340,6 @@ void ImageViewer::showNextImage()
         m_nxtImage->setFile(m_lstImages.getNext());
         m_nxtImage->scale(width(), height());
     } else {
-
         XImage* tmp = m_prvImage;
         m_prvImage = m_curImage;
         m_curImage = tmp;
@@ -488,9 +486,9 @@ void ImageViewer::generateContextCounterOverlay()
         int degrees = (int)( 360 * (float)(cur) / (float)max);
         pixmapPainter.setPen( 0x20 );
         pixmapPainter.setBrush( 0x60 );
-        pixmapPainter.drawPie( 2, 2, side - 4, side - 4, 90*16, (360-degrees)*16 );
+        pixmapPainter.drawPie( 0, 0, side , side, 90*16, (360-degrees)*16 );
         pixmapPainter.setBrush( 0xD0 );
-        pixmapPainter.drawPie( 2, 2, side - 4, side - 4, 90*16, -degrees*16 );
+        pixmapPainter.drawPie( 0, 0, side, side, 90*16, -degrees*16 );
 
     } else {
         float oldCoord = -90;
@@ -498,32 +496,56 @@ void ImageViewer::generateContextCounterOverlay()
             float newCoord = -90 + 360 * (float)(i) / (float)max;
         pixmapPainter.setPen( i <= cur ? 0x40 : 0x05 );
         pixmapPainter.setBrush( i <= cur ? 0xD0 : 0x60 );
-            pixmapPainter.drawPie( 2, 2, side - 4, side - 4,
+            pixmapPainter.drawPie( 0, 0, side, side,
                                    (int)( -16*(oldCoord + 1) ), (int)( -16*(newCoord - (oldCoord + 2)) ) );
             oldCoord = newCoord;
         }
     }
 
-    int circleOut = side / 4;
+    int ic= side * 3 / 5;
+    QRect iRect = QRect((side - ic)/2, (side-ic)/2, ic, ic);
+
     pixmapPainter.setPen( Qt::black );
     pixmapPainter.setBrush( Qt::black);
-    pixmapPainter.drawEllipse( circleOut, circleOut, side - 2*circleOut, side - 2*circleOut );
+    pixmapPainter.drawEllipse( iRect );
 
     // draw TEXT using maximum opacity
     QFont f( pixmapPainter.font() );
-    //if the number has two digits, make it bold
-    f.setBold(cur < 100);
-    f.setPixelSize( side / 4 );
+
+    f.setBold(true);
+    if (cur < 100) {
+        f.setPixelSize( side / 4 );
+    }else if (cur < 1000) {
+        f.setPixelSize( side / 5 );
+    } else {
+        f.setPixelSize( side / 6 );
+    }
     pixmapPainter.setFont( f );
     pixmapPainter.setPen( 0xFF );
-    // use a little offset to prettify output
-    pixmapPainter.drawText( 2, 2, side, side, Qt::AlignCenter, QString::number( cur ) );
+     // use a little offset to prettify output
+    pixmapPainter.drawText( iRect.x()+2, iRect.y()+2, ic, ic * 7/12, Qt::AlignHCenter | Qt::AlignBottom, QString::number( cur ) );
+
+    //draw the little dividing line
+    pixmapPainter.setPen( QPen(0xAA, 4) );
+    pixmapPainter.drawLine(iRect.x() + 3, iRect.y() + ic * 7/12 , iRect.x() + ic - 3 - 3, iRect.y() + ic * 7/12 );
+
+    max = 88888;
+    if (max < 100) {
+        f.setPixelSize( side / 5 );
+    }else if (max < 1000) {
+        f.setPixelSize( side / 6 );
+    } else {
+        f.setBold(false);
+        f.setPixelSize( side / 6 );
+    }
+    pixmapPainter.setFont(f);
+    pixmapPainter.drawText(iRect.x()+2, iRect.y() + ic * 7/12, ic, ic /2, Qt::AlignHCenter | Qt::AlignTop, QString::number( max ) );
 
     // end drawing pixmap and halve image
     pixmapPainter.end();
     side /= 2;
 
-    QImage image( doublePixmap.convertToImage().smoothScale( side, side ));
+    QImage image( doublePixmap.convertToImage().smoothScale( side, side));
     image.setAlphaBuffer( true );
 
     int red = color.red(), green = color.green(), blue = color.blue();
@@ -612,6 +634,12 @@ void ImageViewer::resizeEvent( QResizeEvent * ) {
     int w = width();
     int h = height();
 
+    //prepare the bgImage
+    if (m_bgPixmap.width() < w || m_bgPixmap.height() < h) {
+        m_bgPixmap.resize(w,h);
+        m_bgPixmap.fill(Qt::black);
+    }
+
     //scale the main image
     m_curImage->scale(w, h, true);
 
@@ -633,27 +661,47 @@ void ImageViewer::paintEvent( QPaintEvent *e ) {
 
     if ( m_curImage->scaled()->isNull() ) {
         tracer->sdebug("paintEvent") << "preScaled Image is null, unable to display!" << endl;
+        //force the current image to finish its work!
+        m_curImage->doWork(true);
+        //though i don't know, if its clever to call repaint here
+        repaint(e->rect());
         return;
     }
+
+    int w = width();
+    int h = height();
 
     QPainter painter(this);
     painter.setClipRect(e->rect());
 
-//     kdDebug() << e->rect().x() << " ... " << e->rect().y() << " ... " << e->rect().width() << " ... " << e->rect().height() << endl;
 
-    //move the image to the center
-    int x =( width()  - m_curImage->scaled()->width())  / 2;
-    int y =( height() - m_curImage->scaled()->height()) / 2;
+    //calculate the base of the image to have it centered
+    int x =( w - m_curImage->scaled()->width())  / 2;
+    int y =( h - m_curImage->scaled()->height()) / 2;
+
+    //only draw the black bg, if the image does not cover the whole widget
+    if (x != 0 || y != 0) {
+        //ok, we draw a black background ourself and disable the bg handling of the
+        // widget (setBackgroundMode(NoBackground). this avoids flickering
+        //TODO see, if this is a speed issue
+        //TODO we could draw the bg only there, where it is visible, ie not behind the image
+        if (m_bgPixmap.width() < w || m_bgPixmap.height() < h) {
+            m_bgPixmap.resize(w,h);
+            m_bgPixmap.fill(Qt::black);
+        }
+        painter.drawPixmap(0, 0, m_bgPixmap);
+    }
 
     painter.drawPixmap(x, y, *m_curImage->scaled());
 
+
     //TODO the position stuff needs to be variable somehow
     if (m_showContextGauge) {
-        painter.drawPixmap(width() - m_contextOverlay.width() - 10, 10, m_contextOverlay);
+        painter.drawPixmap(w - m_contextOverlay.width() - 10, 10, m_contextOverlay);
     }
     //TODO the position stuff needs to be variable somehow
     if (m_showInfoOverlay) {
-        painter.drawPixmap(10, height() - m_infoOverlay.height() - 10, m_infoOverlay);
+        painter.drawPixmap(10, h - m_infoOverlay.height() - 10, m_infoOverlay);
     }
 
     painter.end();
