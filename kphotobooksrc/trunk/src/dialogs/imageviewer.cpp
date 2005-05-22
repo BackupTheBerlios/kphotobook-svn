@@ -529,7 +529,6 @@ void ImageViewer::generateContextCounterOverlay()
     pixmapPainter.setPen( QPen(0xAA, 4) );
     pixmapPainter.drawLine(iRect.x() + 3, iRect.y() + ic * 7/12 , iRect.x() + ic - 3 - 3, iRect.y() + ic * 7/12 );
 
-    max = 88888;
     if (max < 100) {
         f.setPixelSize( side / 5 );
     }else if (max < 1000) {
