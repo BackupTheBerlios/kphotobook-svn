@@ -294,6 +294,10 @@ void TagTreeNodeRadioGroup::paintCell(QPainter *p, const QColorGroup &cg, int co
         KListViewItem::paintCell(p, cg, column, width, alignment);
         break;
 
+    case TagTree::COLUMN_VALUE:
+        KListViewItem::paintCell(p, cg, column, width, alignment);
+        break;
+
     case TagTree::COLUMN_FILTER :
         // paint the cell with the alternating background color
         p->fillRect(0, 0, width, this->height(), backgroundColor(2));
