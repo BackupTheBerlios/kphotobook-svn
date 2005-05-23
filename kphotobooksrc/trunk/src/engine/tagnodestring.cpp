@@ -69,3 +69,25 @@ bool TagNodeString::tagged(File* file, QString pattern) {
     tracer->sdebug("tagged") << "NO match!!!" << endl;
     return false;
 }
+
+
+bool TagNodeString::tagged(File* file)
+{
+    FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
+
+    if (fileTagNodeAssoc == 0) {
+        // if no tag is linked to this file, the only matching pattern is '()' for matching an empty string
+        return false;
+    } else {
+        FileTagNodeAssocString* fileTagNodeAssocString = dynamic_cast<FileTagNodeAssocString*>(fileTagNodeAssoc);
+
+        QString s = fileTagNodeAssocString->value();
+        if (s.isNull() || s.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+

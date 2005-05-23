@@ -46,6 +46,7 @@ public:
 
     void setTagged(File* file, QString value);
     bool tagged(File* file, QString pattern);
+    bool tagged(File* file);
 };
 
 #endif
