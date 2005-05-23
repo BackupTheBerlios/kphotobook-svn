@@ -46,6 +46,9 @@ public:
 
     virtual bool close ( bool alsoDelete );
 
+public slots:
+    void    slotToggleFullscreen();
+
 protected:
     virtual void resizeEvent ( QResizeEvent * e);
 
