@@ -588,7 +588,7 @@ void ImageViewer::generateInfoOverlay()
 
     //TODO userdefinable
     QColor color(52,115,178);
-    int fontSize = 20;
+    int fontSize = 22;
 
     QFont f;
     f.setPixelSize(fontSize);
@@ -600,14 +600,14 @@ void ImageViewer::generateInfoOverlay()
 
     QRect rect = fm.boundingRect(str);
 
-    QPixmap pm(rect.width()+10, rect.height()+10);
+    QPixmap pm(rect.size() + QSize(10,14));
     pm.fill(Qt::black);
 
     QPainter pmp(&pm);
 
     pmp.setBrush(0x55);
     pmp.setPen(0x88);
-    pmp.drawRect(0,0, pm.width(), pm.height());
+    pmp.drawRoundRect(0,0, pm.width(), pm.height(), (8 * 200) / pm.width(), (8 * 200) / pm.height());
 
     pmp.setPen(0xFF);
     pmp.setFont(f);
