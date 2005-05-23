@@ -33,6 +33,8 @@
 #include <qcursor.h>
 #include <qdatetime.h>
 
+#include <klocale.h>
+
 
 
 Tracer* ImageViewer::tracer = Tracer::getInstance("kde.kphotobook.dialogs", "ImageViewer");
@@ -44,9 +46,10 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
 {
     tracer->invoked("ImageViewer");
 
-    this->setFocusPolicy(QWidget::WheelFocus);
-
     m_fileView = fileView;
+
+    //this is necessary, to be able to recieve key events
+    this->setFocusPolicy(QWidget::WheelFocus);
 
     //init the timer used for preloading
     m_workTimer = new QTimer(0);
@@ -58,10 +61,8 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     //and initialize the images
     m_imageData1 = XImage();
     m_curImage = &m_imageData1;
-
     m_imageData2 = XImage();
     m_nxtImage = &m_imageData2;
-
     m_imageData3 = XImage();
     m_prvImage = &m_imageData3;
 
@@ -76,9 +77,8 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     m_showInfoOverlay = true;
 
     //this disables deletion of pixels, we make the bg drawing ourself
-     this->setBackgroundMode(NoBackground);
+    this->setBackgroundMode(NoBackground);
 
-    //FIXME do we need this geometry feature?
     // retrieve screenGeometry of the screen the cursor is on
     QDesktopWidget* desktop = new QDesktopWidget();
     m_screenWidth  = desktop->screenGeometry(QCursor::pos()).width();
@@ -87,7 +87,8 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     tracer->sinfo("ImageViewer") << "Screengeometry is " << m_screenWidth << "x" << m_screenHeight << endl;
 
     //init the background pixmap
-    m_bgPixmap = QPixmap(0,0);
+    m_bgPixmap = QPixmap(m_screenWidth, m_screenHeight);
+    m_bgPixmap.fill(Qt::black);
 }
 
 
@@ -155,7 +156,7 @@ void ImageViewer::updateImageList()
  */
 void ImageViewer::show(File* selectedFile)
 {
-    // if a new image should be shown....
+    // if a NEW image should be shown....
     if (m_lstImages.current() != selectedFile) {
 
         // and a non null one...
@@ -169,10 +170,11 @@ void ImageViewer::show(File* selectedFile)
             m_curImage->setFile(m_lstImages.current());
             m_curImage->scale(width(), height());
             m_curImage->doWork(true);
-            update();
+            repaint();
         }
     }
 
+    //... else only update the surrounding images
     m_nxtImage->setFile(m_lstImages.getNext());
     m_nxtImage->scale(width(), height());
 
@@ -243,7 +245,7 @@ void ImageViewer::slotStartSlideshow(int secs)
 
 void ImageViewer::slotSlideshowTimerFired()
 {
-    showNextImage();
+    slotShowNextImage();
 }
 
 
@@ -290,34 +292,14 @@ void ImageViewer::wheelEvent (QWheelEvent* e ) {
     bool up = e->delta() > 0;
 
     if (up) {
-        showNextImage();
+        slotShowNextImage();
     } else {
-        showPrevImage();
+        slotShowPrevImage();
     }
 }
 
 
-
-//TODO make the key stuff configurable
-void ImageViewer::keyPressEvent ( QKeyEvent * e )
-{
-    switch (e->key()) {
-    case Qt::Key_Right:
-        showNextImage();
-        break;
-
-    case Qt::Key_Left:
-        showPrevImage();
-        break;
-
-    default:
-        e->ignore();
-        break;
-    }
-}
-
-
-void ImageViewer::showNextImage()
+void ImageViewer::slotShowNextImage()
 {
     if (m_nxtImage->isValid()) {
         tracer->sdebug("showNextImage") << "precached nextImage found, using it!" << endl;
@@ -358,7 +340,7 @@ void ImageViewer::showNextImage()
 }
 
 
-void ImageViewer::showPrevImage()
+void ImageViewer::slotShowPrevImage()
 {
     if (m_prvImage->isValid()) {
         tracer->sdebug("showPrevImage") << "precached prevImage found, using it!" << endl;
@@ -399,11 +381,35 @@ void ImageViewer::showPrevImage()
 }
 
 
+//TODO make the key stuff configurable, but I don't know how, yet
+void ImageViewer::keyPressEvent ( QKeyEvent * e )
+{
+    switch (e->key()) {
+    case Qt::Key_Right:
+        slotShowNextImage();
+        break;
 
-//FIXME probably move to the outer widget
+    case Qt::Key_Left:
+        slotShowPrevImage();
+        break;
+
+   //TODO
+//     case Qt::Key_Enter:
+//         ((QWidget*)parent())->toggleFullScreen();
+//         break;
+
+    default:
+        e->ignore();
+        break;
+    }
+}
+
+
+//TODO probably move to the outer widget
 void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent * e )
 {
     QPopupMenu* popup = new QPopupMenu(this);
+
 
     QString c = QString("<font color=black><b>%1</b></font>")
         .arg(m_lstImages.current()->fileInfo()->fileName());
@@ -412,14 +418,21 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
     caption->setAlignment( Qt::AlignCenter );
     popup->insertItem( caption );
 
+    //TODO use kde actions/icons here, but I don't know, how to do that!
+    popup->insertItem(i18n("Previous Image"), this, SLOT(slotShowPrevImage()));
+    popup->insertItem(i18n("Next Image"), this, SLOT(slotShowNextImage()));
+
+    popup->insertSeparator();
+    int id = popup->insertItem(i18n("Toggle Fullscreen"), parent(), SLOT(slotToggleFullscreen()));
+    popup->setItemChecked(id, ((QWidget*)parent())->isFullScreen());
 
     QPopupMenu* subSlideshow = new QPopupMenu(popup);
-    c = "<font color=black><b> Start Slideshow </b></font>";
+    c = QString("<font color=black><b> %1 </b></font>").arg(i18n("Slideshow"));
     caption = new QLabel(c, this );
     caption->setAlignment( Qt::AlignCenter );
 
     subSlideshow->insertItem( caption );
-    int id = subSlideshow->insertItem("Stop", 0);
+    id = subSlideshow->insertItem("Stop", 0);
     subSlideshow->setItemEnabled(id, m_timerSlideshow->isActive());
 
     subSlideshow->insertItem(" 5 sec", 5);
@@ -432,15 +445,19 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
 
     connect(subSlideshow, SIGNAL(activated(int)), this, SLOT(slotStartSlideshow(int)));
 
-    popup->insertItem("SlideShow", subSlideshow);
+    popup->insertSeparator();
 
-    id = popup->insertItem("SmoothScaling", this, SLOT(slotToggleSmoothScaling()));
+    popup->insertItem(i18n("SlideShow"), subSlideshow);
+
+    popup->insertSeparator();
+
+    id = popup->insertItem(i18n("Use SmoothScaling"), this, SLOT(slotToggleSmoothScaling()));
     popup->setItemChecked(id, m_smoothScale);
 
-    id = popup->insertItem("show context gauge", this, SLOT(slotToggleShowContextGauge()));
+    id = popup->insertItem(i18n("Show Image Counter"), this, SLOT(slotToggleShowContextGauge()));
     popup->setItemChecked(id, m_showContextGauge);
 
-    id = popup->insertItem("show file infos", this, SLOT(slotToggleShowInfoOverlay()));
+    id = popup->insertItem(i18n("Show Image Infos"), this, SLOT(slotToggleShowInfoOverlay()));
     popup->setItemChecked(id, m_showInfoOverlay);
 
     popup->exec(QCursor::pos());
@@ -564,11 +581,12 @@ void ImageViewer::generateContextCounterOverlay()
 
 void ImageViewer::generateInfoOverlay()
 {
+    //if we don't show it, we don't generate it!
     if (!m_showInfoOverlay) {
         return;
     }
 
-    //TODO don't make it fixed!
+    //TODO userdefinable
     QColor color(52,115,178);
     int fontSize = 20;
 
@@ -578,7 +596,7 @@ void ImageViewer::generateInfoOverlay()
 
     QFontMetrics fm(f);
 
-    QString str = QString("File %1").arg(m_lstImages.current()->fileInfo()->fileName());
+    QString str = QString(i18n("File %1")).arg(m_lstImages.current()->fileInfo()->fileName());
 
     QRect rect = fm.boundingRect(str);
 
@@ -662,8 +680,10 @@ void ImageViewer::paintEvent( QPaintEvent *e ) {
         tracer->sdebug("paintEvent") << "preScaled Image is null, unable to display!" << endl;
         //force the current image to finish its work!
         m_curImage->doWork(true);
-        //though i don't know, if its clever to call repaint here
-        repaint(e->rect());
+        // we only call repaint here, if all work is done for the curImage
+        if (!m_curImage->workLeft()) {
+            repaint(e->rect());
+        }
         return;
     }
 
@@ -693,12 +713,9 @@ void ImageViewer::paintEvent( QPaintEvent *e ) {
 
     painter.drawPixmap(x, y, *m_curImage->scaled());
 
-
-    //TODO the position stuff needs to be variable somehow
     if (m_showContextGauge) {
         painter.drawPixmap(w - m_contextOverlay.width() - 10, 10, m_contextOverlay);
     }
-    //TODO the position stuff needs to be variable somehow
     if (m_showInfoOverlay) {
         painter.drawPixmap(10, h - m_infoOverlay.height() - 10, m_infoOverlay);
     }

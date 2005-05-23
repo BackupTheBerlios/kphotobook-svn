@@ -104,10 +104,6 @@ public:
 
     void  free();
 
-    void  showNextImage();
-    void  showPrevImage();
-
-
 protected:
     void  paintEvent( QPaintEvent  * e);
     void  resizeEvent( QResizeEvent * e);
@@ -118,6 +114,9 @@ protected:
 
 
 private slots:
+    void  slotShowNextImage();
+    void  slotShowPrevImage();
+
     void  slotWorkTimerFired();
     void  slotSlideshowTimerFired();
 
