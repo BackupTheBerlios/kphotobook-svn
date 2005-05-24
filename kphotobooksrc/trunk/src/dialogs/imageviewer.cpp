@@ -208,17 +208,22 @@ void ImageViewer::slotWorkTimerFired()
 {
     tracer->sdebug("slotWorkTimerFired") << endl;
 
-    setCursor(Qt::BusyCursor);
+    //override current cursor with a busy one. the already overridden cursors
+    // are replaced, so the cursor stack doesn't grow beyond 1
+    QApplication::setOverrideCursor(Qt::BusyCursor, true);
 
-    if (m_curImage->doWork())
+    if (m_curImage->doWork()) {
         m_workTimer->start(0, true);
-    else if (m_nxtImage->doWork())
+    } else if (m_nxtImage->doWork()) {
         m_workTimer->start(0, true);
-    else if (m_prvImage->doWork())
+    } else if (m_prvImage->doWork()) {
         m_workTimer->start(0, true);
+    }
 
-    if (!m_workTimer->isActive())
-        setCursor(Qt::ArrowCursor);
+    // if we leave here with nonActive timer, we can reset the cursor
+    if (!m_workTimer->isActive()) {
+        QApplication::restoreOverrideCursor();
+    }
 }
 
 
