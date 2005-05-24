@@ -154,7 +154,7 @@ void ImageViewer::show(File* selectedFile)
         m_bgPixmap.fill(Qt::black);
 
         // and a NEW one should be shown....
-        if (selectedFile != m_lstImages.current()) {
+        if (selectedFile != m_curImage->file()) {
 
             // try to set it as the current file
             if (m_lstImages.find(selectedFile) < 0) {
@@ -692,7 +692,7 @@ void ImageViewer::paintEvent( QPaintEvent *e ) {
         //force the current image to finish its work!
         m_curImage->doWork(true);
         // we only call repaint here, if all work is done for the curImage
-        if (!m_curImage->workLeft()) {
+        if (m_curImage->isValid()) {
             repaint(e->rect());
         }
         return;
@@ -744,6 +744,10 @@ void ImageViewer::paintEvent( QPaintEvent *e ) {
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
+Tracer* XImage::tracer = Tracer::getInstance("kde.kphotobook.dialogs", "XImage");
+
+
 
 
 XImage::XImage(int maxWidth, int maxHeight)
@@ -821,11 +825,13 @@ void XImage::setMaxDimensions(int maxWidth, int maxHeight)
  */
 bool XImage::doWork(bool forceFull)
 {
-    if (m_file == NULL)
+    if (m_file == NULL) {
+        tracer->serror("doWork") << "has benn called with m_file = 0L ! This should not happen!" << endl;
         return false;
+    }
 
-//      kdDebug() << "doWork() " << m_file->fileInfo()->fileName() << ": " << !m_image->isNull() << "<>"
-//          << !m_pixmap->isNull() << "<>" << !m_scaledPixmap->isNull() << endl;
+// kdDebug() << "doWork() " << m_file->fileInfo()->fileName() << ": " << !m_image.isNull() << "<>"
+//         << !m_pixmap.isNull() << "<>" << !m_scaled.isNull() << endl;
 
 
     if (!workLeft()){
@@ -961,6 +967,7 @@ bool XImage::convertImage()
     m_alloc_context = QColor::enterAllocContext();
 
     bool success = m_pixmap.convertFromImage(m_image);
+
     if (!success) {
         m_pixmap.resize(0,0);
     }

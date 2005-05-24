@@ -40,11 +40,15 @@ class File;
 
 class XImage
 {
+private:
+    static Tracer* tracer;
+
 public:
     XImage(int maxWidth = -1, int maxHeight = -1);
     ~XImage();
 
     void     setFile(File* file);
+    File*    file() { return m_file; };
 
     void     free();
 

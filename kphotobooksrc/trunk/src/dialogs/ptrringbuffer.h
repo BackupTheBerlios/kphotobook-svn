@@ -63,7 +63,6 @@ public:
      */
     int  nxtIdx()      {
         int i = curIdx() + 1;
-        kdDebug() << i << endl;
         return (i >= count() ? 0 : i);
     }
 
@@ -105,10 +104,11 @@ public:
      * @return the item before the current Item
      */
     T*   prev() {
-        T* prev = m_data.prev();
+        return m_data.at(prvIdx());
+/*        T* prev = m_data.prev();
         if (!prev)
             prev = last();
-        return prev;
+        return prev;*/
     };
 
 
@@ -126,10 +126,11 @@ public:
      * @return the item after the current Item
      */
     T*   next(){
-        T* next = m_data.next();
+        return m_data.at(nxtIdx());
+/*        T* next = m_data.next();
         if (!next)
             next = first();
-        return next;
+        return next;*/
     };
 
 
@@ -139,10 +140,12 @@ public:
      * @return the next item in this buffer
      */
     T*   getNext()  {
+        int i = curIdx();
         //retrieve the next element
-        T* nxt = next();
+        T* nxt = m_data.at(nxtIdx());
         //and then return to the current one!
-        prev();
+        m_data.at(i);
+
         return nxt;
     };
 
@@ -152,10 +155,11 @@ public:
      * @return the previous item in this buffer
      */
     T*   getPrev()  {
+        int i = curIdx();
         //retrieve the next element
-        T* prv = prev();
+        T* prv = m_data.at(prvIdx());
         //and then return to the current one.
-        next();
+        m_data.at(i);
         return prv;
     };
 
@@ -192,20 +196,20 @@ public:
 
 
     QString dump() {
-
         QString retval = "";
-        T* cur = m_data.current();
 
-        T* data;
-        for ( data = m_data.first(); data; data = m_data.next() ) {
-            if (data == cur) {
-                retval.sprintf("%s, [%p]", retval.ascii(), data);
+        T* current = m_data.current();
+
+        QPtrListIterator<T> it(m_data);
+        T* o;
+        while (( o = it.current()) != 0) {
+            if (o == current) {
+                retval.sprintf("%s, [%p]", retval.ascii(), o);
             } else {
-                retval.sprintf("%s, %p", retval.ascii(), data);
+                retval.sprintf("%s, %p", retval.ascii(), o);
             }
+            ++it;
         }
-        findRef(cur);
-
         return retval;
     }
 
