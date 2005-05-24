@@ -229,6 +229,9 @@ void DialogManageTag::fillTypeCombo(TagTreeNode* parentNode)
 
         m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_RADIOGROUP));
         m_typeComboBoxEntries->append(TagNode::TYPE_RADIOGROUP);
+    
+        m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_DATETIME));
+        m_typeComboBoxEntries->append(TagNode::TYPE_DATETIME);
     }
 
     // RADIO is only allowed below RADIOGROUP

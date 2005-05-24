@@ -45,7 +45,7 @@
 #include "uitrees/tagtreenodestring.h"
 #include "uitrees/tagtreenoderadiogroup.h"
 #include "uitrees/tagtreenoderadio.h"
-#include "uitrees/tagtreenode.h"
+#include "uitrees/tagtreenodedatetime.h"
 
 #include "engine/sourcedir.h"
 #include "uitrees/sourcedirtree.h"
@@ -1248,7 +1248,7 @@ void KPhotoBook::slotCreateSubtag() {
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
         && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)
-        && typeid(*currentItem) != typeid(TagTreeNodeRadio)) {
+       ) {
 
         tracer->error("slotCreateSubtag", "Called on a tree item other than TagTreeNode!");
         return;
@@ -1281,7 +1281,9 @@ void KPhotoBook::slotEditTag() {
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
         && typeid(*currentItem) != typeid(TagTreeNodeString)
         && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)
-        && typeid(*currentItem) != typeid(TagTreeNodeRadio)) {
+        && typeid(*currentItem) != typeid(TagTreeNodeRadio)
+        && typeid(*currentItem) != typeid(TagTreeNodeDateTime)
+       ) {
 
         tracer->error("slotEditTag", "Called on a tree item other than TagTreeNode!");
         return;
@@ -1313,8 +1315,10 @@ void KPhotoBook::slotDeleteTag() {
     if (typeid(*currentItem) != typeid(TagTreeNodeTitle)
         && typeid(*currentItem) != typeid(TagTreeNodeBoolean)
         && typeid(*currentItem) != typeid(TagTreeNodeString)
+        && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)
         && typeid(*currentItem) != typeid(TagTreeNodeRadio)
-        && typeid(*currentItem) != typeid(TagTreeNodeRadioGroup)) {
+        && typeid(*currentItem) != typeid(TagTreeNodeDateTime)
+       ) {
         // TODO: can't we delete RadioGroup and Radio
 
         tracer->error("slotDeleteTag", "Called on a tree item other than TagTreeNode!");

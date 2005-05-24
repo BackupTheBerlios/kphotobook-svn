@@ -31,11 +31,13 @@
 #include "../engine/tagnodestring.h"
 #include "../engine/tagnoderadiogroup.h"
 #include "../engine/tagnoderadio.h"
+#include "../engine/tagnodedatetime.h"
 #include "tagtreenodetitle.h"
 #include "tagtreenodeboolean.h"
 #include "tagtreenodestring.h"
 #include "tagtreenoderadiogroup.h"
 #include "tagtreenoderadio.h"
+#include "tagtreenodedatetime.h"
 
 #include <klocale.h>
 #include <kstdaccel.h>
@@ -164,6 +166,9 @@ void TagTree::addTagNode(TagNode* rootNode) {
     } else if (typeid(*rootNode) == typeid(TagNodeRadio)) {
         TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(rootNode);
         tagTreeNode = new TagTreeNodeRadio(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+    } else if (typeid(*rootNode) == typeid(TagNodeDateTime)) {
+        TagNodeDateTime* node = dynamic_cast<TagNodeDateTime*>(rootNode);
+        tagTreeNode = new TagTreeNodeDateTime(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
     } else {
         tracer->swarning("addTagNode") << "unknown root tagtype received: " << rootNode->type() << "!"<< endl;
     }
@@ -195,6 +200,9 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
     } else if (typeid(*child) == typeid(TagNodeRadio)) {
         TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(child);
         tagTreeNode = new TagTreeNodeRadio(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+    } else if (typeid(*child) == typeid(TagNodeDateTime)) {
+        TagNodeDateTime* node = dynamic_cast<TagNodeDateTime*>(child);
+        tagTreeNode = new TagTreeNodeDateTime(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
     } else {
         tracer->swarning("addTagNode") << "unknown sub tagtype received: " << child->type() << "!"<< endl;
     }
@@ -396,8 +404,10 @@ void TagTree::slotItemRenamed(QListViewItem* item, int column, const QString& te
     tracer->sinvoked("slotItemRenamed") << "with text: >" << text << "<" << endl;
 
     if (typeid(*item) == typeid(TagTreeNodeString)) {
-
         TagTreeNodeString* tagTreeNode = dynamic_cast<TagTreeNodeString*>(item);
+        tagTreeNode->handleRenaming(column, text);
+    } else if (typeid(*item) == typeid(TagTreeNodeDateTime)) {
+        TagTreeNodeDateTime* tagTreeNode = dynamic_cast<TagTreeNodeDateTime*>(item);
         tagTreeNode->handleRenaming(column, text);
     } else {
         tracer->swarning("slotItemRenamed") << "unknown item received: " << item->text(0) << endl;

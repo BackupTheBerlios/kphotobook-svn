@@ -25,6 +25,7 @@
 #include "tagnodestring.h"
 #include "tagnoderadiogroup.h"
 #include "tagnoderadio.h"
+#include "tagnodedatetime.h"
 
 #include "file.h"
 #include "filetagnodeassoc.h"
@@ -59,6 +60,9 @@ TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QS
         break;
     case TagNode::TYPE_RADIO:
         newTagNode = new TagNodeRadio(id, text, comment, iconName, parent);
+        break;
+    case TagNode::TYPE_DATETIME:
+        newTagNode = new TagNodeDateTime(id, text, comment, iconName, parent);
         break;
     default:
         tracer->swarning("createInstance") << "Called with unknown TypeID!" << endl;

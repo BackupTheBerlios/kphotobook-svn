@@ -47,7 +47,15 @@ Q_OBJECT
 
 public:
 
-    enum Type {TYPE_INVALID = -1, TYPE_TITLE, TYPE_BOOLEAN, TYPE_STRING, TYPE_RADIOGROUP, TYPE_RADIO };
+    enum Type {
+        TYPE_INVALID = -1,
+        TYPE_TITLE,
+        TYPE_BOOLEAN,
+        TYPE_STRING,
+        TYPE_RADIOGROUP,
+        TYPE_RADIO,
+        TYPE_DATETIME
+    };
 
 public:
     /**
@@ -56,11 +64,11 @@ public:
     static TagNode* createInstance(TagNode::Type typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
 
     /**
-     * Returns the unequivocal string describing the type of the specified tagnode.
-     */
-    static QString tagNodeType(TagNode::Type typeId) {
-
-        switch(typeId) {
+    * Returns the unequivocal string describing the type of the specified tagnode.
+    */
+    static QString tagNodeType( TagNode::Type typeId ) {
+    
+        switch ( typeId ) {
         case TagNode::TYPE_TITLE:
             return "title";
         case TagNode::TYPE_BOOLEAN:
@@ -71,6 +79,8 @@ public:
             return "radiogroup";
         case TagNode::TYPE_RADIO:
             return "radio";
+        case TagNode::TYPE_DATETIME:
+            return "datetime";
         default:
             return QString::null;
         }
@@ -92,15 +102,12 @@ public:
             return i18n("tagNodeTypeName", "radiogroup");
         case TagNode::TYPE_RADIO:
             return i18n("tagNodeTypeName", "radio");
+        case TagNode::TYPE_DATETIME:
+            return i18n("tagNodeTypeName", "datetime");
         default:
             return QString::null;
         }
     }
-
-//     static int tagNodeTypeId(TagNode::Type typeId) {
-//
-//         return (int)typeId;
-//     }
 
     /**
      * Returns the type-id of the tagnode type with the specified type.
@@ -118,6 +125,8 @@ public:
             return TagNode::TYPE_RADIOGROUP;
         } else if (type == "radio") {
             return TagNode::TYPE_RADIO;
+        } else if (type == "datetime") {
+            return TagNode::TYPE_DATETIME;
         }
 
         return TagNode::TYPE_INVALID;
