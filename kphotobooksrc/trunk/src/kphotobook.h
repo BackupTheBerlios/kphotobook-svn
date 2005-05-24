@@ -223,6 +223,8 @@ private slots:
     bool slotFileSave();
     bool slotFileSaveAs();
 
+    void slotToggleFullscreen();
+
     void slotOptionsConfigureKeys();
     void slotOptionsConfigureToolbars();
     void slotOptionsPreferences();

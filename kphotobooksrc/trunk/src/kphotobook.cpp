@@ -329,7 +329,7 @@ void KPhotoBook::setupActions() {
 
     KStdAction::quit(kapp, SLOT(closeAllWindows()), actionCollection())->setWhatsThis(i18n("Close all windows and quit."));
 
-
+    KStdAction::fullScreen(this, SLOT(slotToggleFullscreen()), actionCollection(), this)->setWhatsThis(i18n("This toggles Fullscreen mode of the main programm."));
     //
     // settings menu
     //
@@ -1062,6 +1062,16 @@ bool KPhotoBook::slotFileSaveAs() {
 
     updateState();
     return fileSaved;
+}
+
+
+void KPhotoBook::slotToggleFullscreen() {
+    if (isFullScreen()) {
+        setWindowState(windowState() & ~Qt::WindowFullScreen);
+    } else {
+        setWindowState(windowState() | Qt::WindowFullScreen);
+    }
+    setActiveWindow();
 }
 
 
