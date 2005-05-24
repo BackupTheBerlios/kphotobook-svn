@@ -58,13 +58,12 @@ TagTreeNodeString::~TagTreeNodeString() {
 
 FilterNode* TagTreeNodeString::filter() {
 
-    if (!m_filterValue.isEmpty()) {
-        TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
-
-        return new FilterNodeTagString(tagNode, m_filterValue);
+    if (m_filterValue.isEmpty()) {
+        return 0;
     }
     
-    return 0;
+    TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
+    return new FilterNodeTagString(tagNode, m_filterValue);
 }
 
     
