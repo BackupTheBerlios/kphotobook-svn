@@ -82,11 +82,7 @@ bool TagNodeString::tagged(File* file)
         FileTagNodeAssocString* fileTagNodeAssocString = dynamic_cast<FileTagNodeAssocString*>(fileTagNodeAssoc);
 
         QString s = fileTagNodeAssocString->value();
-        if (s.isNull() || s.isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
+        return !s.isEmpty();
     }
 }
 
