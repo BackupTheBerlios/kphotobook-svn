@@ -16,7 +16,11 @@ kphotobook_LDADD = -lkmdi $(LIB_KFILE) $(LIB_KDEPRINT) backend/libbackend.la \
 	uitrees/libuitrees.la tracer/libtracer.la
 
 # which sources should be compiled for kphotobook
-kphotobook_SOURCES = main.cpp kphotobook.cpp kphotobookview.cpp exception.cpp \
+kphotobook_SOURCES = \
+	main.cpp \
+	kphotobook.cpp \
+	kphotobookview.cpp \
+	exception.cpp \
 	constants.cpp
 
 # these are the headers for your project
@@ -42,7 +46,7 @@ EXTRA_DIST = $(mime_DATA)
 
 # this is where the XML-GUI resource file goes
 rcdir = $(kde_datadir)/kphotobook
-rc_DATA = kphotobookui.rc
+rc_DATA = kphotobookui.rc tips
 
 # this is where the KConfigXT file goes
 #kde_kcfgdir = $(kde_datadir)/kphotobook

@@ -85,6 +85,7 @@
 #include <kedittoolbar.h>
 #include <kmditoolviewaccessor.h>
 #include <kurlrequesterdlg.h>
+#include <ktip.h>
 
 #include <qdragobject.h>
 #include <qpainter.h>
@@ -176,6 +177,16 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
 
     // read dock configuration
     readDockConfig(KGlobal::config(), "DockConfig");
+
+    // show tip of the day
+    // the default implementation does not show the TipOfDay dialog on first startup
+    // and shows the dielog only once a week... we want that the dialog is shown
+    // everytime if the user has not disabled it!
+    KConfigGroup configGroup(kapp->config(), "TipOfDay");
+    bool runOnStart = configGroup.readBoolEntry("RunOnStart", true);
+    if (runOnStart) {
+        KTipDialog::showTip(this, QString::null, true);
+    }
 }
 
 
@@ -338,6 +349,10 @@ void KPhotoBook::setupActions() {
     KStdAction::configureToolbars(this, SLOT(slotOptionsConfigureToolbars()), actionCollection())->setWhatsThis(i18n("Configure which items should appear in the toolbars."));
 
     KStdAction::preferences(this, SLOT(slotOptionsPreferences()), actionCollection())->setWhatsThis(i18n("Configure KPhotoBook."));
+    //
+    // help menu
+    //
+    KStdAction::tipOfDay(this, SLOT(slotTipOfDay()), actionCollection())->setWhatsThis(i18n("Show the 'Tip of Day' dialog."));
 
 
     //
@@ -1133,6 +1148,12 @@ void KPhotoBook::slotOptionsPreferences() {
     connect(dialog, SIGNAL(defaultClicked()), this, SLOT(slotConfigDefaultClicked()));
 
     dialog->show();
+}
+
+void KPhotoBook::slotTipOfDay()
+{
+    // show tip of the day
+    KTipDialog::showTip(this, QString::null, true);
 }
 
 void KPhotoBook::slotAddSourcedir() {

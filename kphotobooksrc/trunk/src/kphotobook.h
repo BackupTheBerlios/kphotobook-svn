@@ -228,6 +228,7 @@ private slots:
     void slotOptionsConfigureKeys();
     void slotOptionsConfigureToolbars();
     void slotOptionsPreferences();
+    void slotTipOfDay();
 
     void slotAddSourcedir();
     void slotEditSourceDir();

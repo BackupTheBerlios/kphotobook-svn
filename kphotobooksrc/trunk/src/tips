@@ -1,0 +1,10 @@
+<tip category="KPhotobook|database">
+<html>
+<p>KPhotobook stores all informations in an XML file.</p>
+<p>If you know what you do it can be useful to edit this database manually.</p>
+</html>
+<tip category="KPhotobook|tags">
+<html>
+<p>A tag is...</p>
+<p>Do you know now what a tag is?</p>
+</html>
