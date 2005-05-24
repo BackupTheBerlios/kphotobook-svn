@@ -36,7 +36,92 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QLayoutWidget" row="2" column="0">
+                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>kcfg_ToolsUseInternalImageViewer</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Use internal imageviewer</string>
+                    </property>
+                    <property name="accel">
+                        <string></string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Enables the internal Imageviewer</string>
+                    </property>
+                </widget>
+                <widget class="QGroupBox" row="1" column="0" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>groupBox2</cstring>
+                    </property>
+                    <property name="title">
+                        <string>Internal Image Viewer</string>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QCheckBox">
+                            <property name="name">
+                                <cstring>kcfg_ToolsViewerUseSmoothScaling</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Use Smooth Scaling</string>
+                            </property>
+                            <property name="accel">
+                                <string></string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>Enables the internal Imageviewer</string>
+                            </property>
+                        </widget>
+                        <widget class="QCheckBox">
+                            <property name="name">
+                                <cstring>kcfg_ToolsViewerShowImageCounter</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Show Image Counter</string>
+                            </property>
+                            <property name="accel">
+                                <string></string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>Enables the internal Imageviewer</string>
+                            </property>
+                        </widget>
+                        <widget class="QCheckBox">
+                            <property name="name">
+                                <cstring>kcfg_ToolsViewerShowFileInfos</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Show File Infos</string>
+                            </property>
+                            <property name="accel">
+                                <string></string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>Enables the internal Imageviewer</string>
+                            </property>
+                        </widget>
+                    </vbox>
+                </widget>
+                <widget class="KLineEdit" row="2" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>kcfg_ToolsDefaultExternalTool</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="2" column="0">
+                    <property name="name">
+                        <cstring>textLabel1</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Default</string>
+                    </property>
+                </widget>
+                <widget class="QLayoutWidget" row="3" column="0">
                     <property name="name">
                         <cstring>layout4</cstring>
                     </property>
@@ -71,23 +156,12 @@
                         </spacer>
                     </vbox>
                 </widget>
-                <widget class="QLabel" row="1" column="0">
+                <widget class="QListBox" row="3" column="1">
                     <property name="name">
-                        <cstring>textLabel1</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Default</string>
+                        <cstring>kcfg_ToolsExternalTools</cstring>
                     </property>
                 </widget>
-                <widget class="KLineEdit" row="1" column="1" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>kcfg_ToolsDefaultExternalTool</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QLayoutWidget" row="2" column="2">
+                <widget class="QLayoutWidget" row="3" column="2">
                     <property name="name">
                         <cstring>layout6</cstring>
                     </property>
@@ -214,25 +288,6 @@
                         </widget>
                     </vbox>
                 </widget>
-                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="3">
-                    <property name="name">
-                        <cstring>kcfg_ToolsUseInternalImageViewer</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Use internal imageviewer</string>
-                    </property>
-                    <property name="accel">
-                        <string></string>
-                    </property>
-                    <property name="whatsThis" stdset="0">
-                        <string>Enables the internal Imageviewer</string>
-                    </property>
-                </widget>
-                <widget class="QListBox" row="2" column="1">
-                    <property name="name">
-                        <cstring>kcfg_ToolsExternalTools</cstring>
-                    </property>
-                </widget>
             </grid>
         </widget>
     </vbox>
@@ -261,6 +316,30 @@
         <signal>toggled(bool)</signal>
         <receiver>kcfg_ToolsExternalTools</receiver>
         <slot>setDisabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>groupBox2</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_ToolsViewerUseSmoothScaling</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_ToolsViewerShowImageCounter</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_ToolsViewerShowFileInfos</receiver>
+        <slot>setEnabled(bool)</slot>
     </connection>
 </connections>
 <tabstops>

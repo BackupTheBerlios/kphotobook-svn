@@ -121,21 +121,16 @@ private slots:
     void  slotSlideshowTimerFired();
 
     void  slotToggleSmoothScaling();
-    void  slotToggleShowContextGauge();
+    void  slotToggleShowImageCounter();
     void  slotToggleShowInfoOverlay();
 
     void  slotStartSlideshow(int secs);
 
 private:
-    void  generateContextCounterOverlay();
+    void  generateImageCounterOverlay();
     void  generateInfoOverlay();
 
     void  buildPtrList(KFileIconView* view, PtrRingBuffer<File>& ringbuffer);
-
-    //properties
-    bool  m_smoothScale;
-    bool  m_showContextGauge;
-    bool  m_showInfoOverlay;
 
     int   m_screenWidth;
     int   m_screenHeight;
@@ -154,7 +149,7 @@ private:
     XImage   m_imageData2;
     XImage   m_imageData3;
 
-    QPixmap  m_contextOverlay;
+    QPixmap  m_imageCounterOverlay;
     QPixmap  m_infoOverlay;
 
     QPixmap m_bgPixmap;

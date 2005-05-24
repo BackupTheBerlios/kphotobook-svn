@@ -190,7 +190,21 @@ Settings::Settings(  )
   KConfigSkeleton::ItemString  *itemFileSystemLastExportedToDirectory;
   itemFileSystemLastExportedToDirectory = new KConfigSkeleton::ItemString( currentGroup(), "LastExportedToDirectory", mFileSystemLastExportedToDirectory );
   addItem( itemFileSystemLastExportedToDirectory, "FileSystemLastExportedToDirectory" );
+
+    KConfigSkeleton::ItemBool  *itemToolsViewerUseSmoothScale;
+    itemToolsViewerUseSmoothScale = new KConfigSkeleton::ItemBool( currentGroup(), "ViewerUseSmoothScale", mToolsViewerUseSmoothScale, false );
+    addItem( itemToolsViewerUseSmoothScale, "ToolsViewerUseSmoothScale" );
+
+    KConfigSkeleton::ItemBool  *itemToolsViewerShowImageCounter;
+    itemToolsViewerShowImageCounter = new KConfigSkeleton::ItemBool( currentGroup(), "ViewerShowImageCounter", mToolsViewerShowImageCounter, true );
+    addItem( itemToolsViewerShowImageCounter, "ToolsViewerShowImageCounter" );
+
+    KConfigSkeleton::ItemBool  *itemToolsViewerShowFileInfos;
+    itemToolsViewerShowFileInfos = new KConfigSkeleton::ItemBool( currentGroup(), "ViewerShowFileInfos", mToolsViewerShowFileInfos, true );
+    addItem( itemToolsViewerShowFileInfos, "ToolsViewerShowFileInfos" );
+
 }
+
 
 Settings::~Settings()
 {

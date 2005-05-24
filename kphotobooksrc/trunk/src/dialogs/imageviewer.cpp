@@ -21,6 +21,7 @@
 #include "imageviewer.h"
 
 #include "../tracer/tracer.h"
+#include "../settings/settings.h"
 
 #include <qmenubar.h>
 #include <qfiledialog.h>
@@ -65,16 +66,6 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     m_nxtImage = &m_imageData2;
     m_imageData3 = XImage();
     m_prvImage = &m_imageData3;
-
-    //TODO maybe make a persistent setting of these properties?
-    //smooth scaling is disabled by default. This can be made a setting later.
-    m_smoothScale = false;
-
-    //we want the contextGauge
-    m_showContextGauge = true;
-
-    // we want file infos
-    m_showInfoOverlay = true;
 
     //this disables deletion of pixels, we make the bg drawing ourself
     this->setBackgroundMode(NoBackground);
@@ -156,22 +147,25 @@ void ImageViewer::updateImageList()
  */
 void ImageViewer::show(File* selectedFile)
 {
-    // if a NEW image should be shown....
-    if (m_lstImages.current() != selectedFile) {
+    // if a non null image should be shown...
+    if (selectedFile != 0) {
 
-        // and a non null one...
-        if (selectedFile != 0) {
+        m_bgPixmap.resize(width(), height());
+        m_bgPixmap.fill(Qt::black);
+
+        // and a NEW one should be shown....
+        if (selectedFile != m_lstImages.current()) {
+
             // try to set it as the current file
             if (m_lstImages.find(selectedFile) < 0) {
                 m_lstImages.first();
             }
-            generateContextCounterOverlay();
-            generateInfoOverlay();
             m_curImage->setFile(m_lstImages.current());
-            m_curImage->scale(width(), height());
-            m_curImage->doWork(true);
-            repaint();
+            m_curImage->scale(width(), height(), true);
         }
+        generateImageCounterOverlay();
+        generateInfoOverlay();
+        repaint(true);
     }
 
     //... else only update the surrounding images
@@ -182,7 +176,7 @@ void ImageViewer::show(File* selectedFile)
     m_prvImage->scale(width(), height());
 
     //start preloader...
-    m_workTimer->start(0, true);
+    m_workTimer->start(125, true);
 }
 
 
@@ -251,20 +245,26 @@ void ImageViewer::slotSlideshowTimerFired()
 
 void ImageViewer::slotToggleSmoothScaling()
 {
-    m_smoothScale = !m_smoothScale;
+    bool b = !Settings::toolsViewerUseSmoothScale();
 
-    m_curImage->setSmoothScale(m_smoothScale);
-    m_prvImage->setSmoothScale(m_smoothScale);
-    m_nxtImage->setSmoothScale(m_smoothScale);
+    Settings::setToolsViewerUseSmoothScale(b);
+
+    m_curImage->setSmoothScale(b);
+    m_prvImage->setSmoothScale(b);
+    m_nxtImage->setSmoothScale(b);
 }
 
 
-void ImageViewer::slotToggleShowContextGauge()
+void ImageViewer::slotToggleShowImageCounter()
 {
-    m_showContextGauge = !m_showContextGauge;
+    bool b = !Settings::toolsViewerShowImageCounter();
 
-    if (m_showContextGauge) {
-        generateContextCounterOverlay();
+    Settings::setToolsViewerShowImageCounter( b );
+
+    if (b) {
+        generateImageCounterOverlay();
+    } else {
+        m_imageCounterOverlay.resize(0,0);
     }
 
     update();
@@ -272,10 +272,14 @@ void ImageViewer::slotToggleShowContextGauge()
 
 void ImageViewer::slotToggleShowInfoOverlay()
 {
-    m_showInfoOverlay = !m_showInfoOverlay;
+    bool b = !Settings::toolsViewerShowFileInfos();
 
-    if (m_showInfoOverlay) {
+    Settings::setToolsViewerShowFileInfos( b );
+
+    if (b) {
         generateInfoOverlay();
+    } else {
+        m_infoOverlay.resize(0,0);
     }
 
     update();
@@ -313,7 +317,7 @@ void ImageViewer::slotShowNextImage()
 
         //first advance by one and then preload
         m_lstImages.next();
-        generateContextCounterOverlay();
+        generateImageCounterOverlay();
         generateInfoOverlay();
 
         //now force a redraw
@@ -328,7 +332,7 @@ void ImageViewer::slotShowNextImage()
 
         m_curImage->setFile(m_lstImages.next());
         m_curImage->scale(width(), height(), true);
-        generateContextCounterOverlay();
+        generateImageCounterOverlay();
         generateInfoOverlay();
         repaint();
 
@@ -354,7 +358,7 @@ void ImageViewer::slotShowPrevImage()
         //first advance back and then precache
         m_lstImages.prev();
 
-        generateContextCounterOverlay();
+        generateImageCounterOverlay();
         generateInfoOverlay();
 
         //now force a redraw
@@ -370,7 +374,7 @@ void ImageViewer::slotShowPrevImage()
 
         m_curImage->setFile(m_lstImages.prev());
         m_curImage->scale(width(), height(), true);
-        generateContextCounterOverlay();
+        generateImageCounterOverlay();
         generateInfoOverlay();
         repaint();
 
@@ -452,13 +456,13 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
     popup->insertSeparator();
 
     id = popup->insertItem(i18n("Use SmoothScaling"), this, SLOT(slotToggleSmoothScaling()));
-    popup->setItemChecked(id, m_smoothScale);
+    popup->setItemChecked(id, Settings::toolsViewerUseSmoothScale());
 
-    id = popup->insertItem(i18n("Show Image Counter"), this, SLOT(slotToggleShowContextGauge()));
-    popup->setItemChecked(id, m_showContextGauge);
+    id = popup->insertItem(i18n("Show Image Counter"), this, SLOT(slotToggleShowImageCounter()));
+    popup->setItemChecked(id, Settings::toolsViewerShowImageCounter());
 
     id = popup->insertItem(i18n("Show Image Infos"), this, SLOT(slotToggleShowInfoOverlay()));
-    popup->setItemChecked(id, m_showInfoOverlay);
+    popup->setItemChecked(id, Settings::toolsViewerShowFileInfos());
 
     popup->exec(QCursor::pos());
 
@@ -478,10 +482,11 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
 /**
  * draws the file counter and numbering in the edge
  */
-void ImageViewer::generateContextCounterOverlay()
+void ImageViewer::generateImageCounterOverlay()
 {
     //if we don't show it, we dont generate it!
-    if (!m_showContextGauge) {
+    if (!Settings::toolsViewerShowImageCounter()) {
+        m_imageCounterOverlay.resize(0,0);
         return ;
     }
 
@@ -511,8 +516,8 @@ void ImageViewer::generateContextCounterOverlay()
         float oldCoord = -90;
         for ( int i = 0; i <= max; i++ ) {
             float newCoord = -90 + 360 * (float)(i) / (float)max;
-        pixmapPainter.setPen( i <= cur ? 0x40 : 0x05 );
-        pixmapPainter.setBrush( i <= cur ? 0xD0 : 0x60 );
+            pixmapPainter.setPen( i <= cur ? 0x40 : 0x05 );
+            pixmapPainter.setBrush( i <= cur ? 0xD0 : 0x60 );
             pixmapPainter.drawPie( 0, 0, side, side,
                                    (int)( -16*(oldCoord + 1) ), (int)( -16*(newCoord - (oldCoord + 2)) ) );
             oldCoord = newCoord;
@@ -573,7 +578,7 @@ void ImageViewer::generateContextCounterOverlay()
     }
 
     //then save it for the next time
-    m_contextOverlay.convertFromImage( image );
+    m_imageCounterOverlay.convertFromImage( image );
 }
 
 
@@ -582,7 +587,8 @@ void ImageViewer::generateContextCounterOverlay()
 void ImageViewer::generateInfoOverlay()
 {
     //if we don't show it, we don't generate it!
-    if (!m_showInfoOverlay) {
+    if (!Settings::toolsViewerShowFileInfos()) {
+        m_infoOverlay.resize(0,0);
         return;
     }
 
@@ -713,10 +719,10 @@ void ImageViewer::paintEvent( QPaintEvent *e ) {
 
     painter.drawPixmap(x, y, *m_curImage->scaled());
 
-    if (m_showContextGauge) {
-        painter.drawPixmap(w - m_contextOverlay.width() - 10, 10, m_contextOverlay);
+    if (!m_imageCounterOverlay.isNull()) {
+        painter.drawPixmap(w - m_imageCounterOverlay.width() - 10, 10, m_imageCounterOverlay);
     }
-    if (m_showInfoOverlay) {
+    if (!m_infoOverlay.isNull()) {
         painter.drawPixmap(10, h - m_infoOverlay.height() - 10, m_infoOverlay);
     }
 
@@ -884,8 +890,8 @@ bool XImage::isValid()
 void XImage::scale(int width, int height, bool forceDoWork) {
 
     //if we already have that size, do nothing;
-    if (m_desiredWidth == width && m_desiredHeight == height)
-        return ;
+//     if (m_desiredWidth == width && m_desiredHeight == height)
+//         return ;
 
     m_scaled.resize(0,0);
 

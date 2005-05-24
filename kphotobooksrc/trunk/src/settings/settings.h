@@ -50,19 +50,19 @@ class Settings : public KConfigSkeleton
       Set Defines if the filesystem is rescanned while starting up KPhotoBook.
     */
     static
-    void setGeneralRescanWhileStartup( bool v )
+        void setGeneralRescanWhileStartup( bool v )
     {
-      if (!self()->isImmutable( "GeneralRescanWhileStartup" ))
-        self()->mGeneralRescanWhileStartup = v;
+        if (!self()->isImmutable( "GeneralRescanWhileStartup" ))
+            self()->mGeneralRescanWhileStartup = v;
     }
 
     /**
       Get Defines if the filesystem is rescanned while starting up KPhotoBook.
     */
     static
-    bool generalRescanWhileStartup()
+        bool generalRescanWhileStartup()
     {
-      return self()->mGeneralRescanWhileStartup;
+        return self()->mGeneralRescanWhileStartup;
     }
 
     /**
@@ -502,6 +502,65 @@ class Settings : public KConfigSkeleton
       return self()->mToolsUseInternalImageViewer;
     }
 
+
+    /**
+     * @return Image viewer should use SmoothScaling
+     */
+    static
+        bool toolsViewerUseSmoothScale()
+    {
+        return self()->mToolsViewerUseSmoothScale;
+    }
+
+    /**
+     * set, if the imageViewer should use SmoothScaling
+     */
+    static
+        void setToolsViewerUseSmoothScale( bool v )
+    {
+        if (!self()->isImmutable( "ToolsViewerUseSmoothScale" ))
+            self()->mToolsViewerUseSmoothScale = v;
+    }
+
+    /**
+     * @return if the Context Gauge should be shown in the ImageViewer
+     */
+    static
+        bool toolsViewerShowImageCounter()
+    {
+        return self()->mToolsViewerShowImageCounter;
+    }
+
+    /**
+     * set, if the ImageCounter should be shown in the image viewer
+     */
+    static
+        void setToolsViewerShowImageCounter( bool v )
+    {
+        if (!self()->isImmutable( "ToolsViewerShowImageCounter" ))
+            self()->mToolsViewerShowImageCounter = v;
+    }
+
+    /**
+     * @return if the FileInfos should be shown in the ImageViewer
+     */
+    static
+        bool toolsViewerShowFileInfos()
+    {
+        return self()->mToolsViewerShowFileInfos;
+    }
+
+    /**
+     * set, if the FileInfos should be shown in the ImageViewer
+     */
+    static
+        void setToolsViewerShowFileInfos( bool v )
+    {
+        if (!self()->isImmutable( "ToolsViewerShowFileInfos" ))
+            self()->mToolsViewerShowFileInfos = v;
+    }
+
+
     /**
       Set Contains the list of tools an image can be opened with.
     */
@@ -645,6 +704,9 @@ class Settings : public KConfigSkeleton
 
     // Tools
     bool mToolsUseInternalImageViewer;
+    bool mToolsViewerUseSmoothScale;
+    bool mToolsViewerShowImageCounter;
+    bool mToolsViewerShowFileInfos;
     QString mToolsDefaultExternalTool;
     QStringList mToolsExternalTools;
 
