@@ -560,6 +560,22 @@ class Settings : public KConfigSkeleton
             self()->mToolsViewerShowFileInfos = v;
     }
 
+    /**
+     * returns the color of the overlays of the ImageViewer
+     */
+    static
+    QString toolsViewerOverlayColor() {
+        return self()->mToolsViewerOverlayColor;
+    }
+
+    /**
+     * sets the color of the overlays of the ImageViewer
+     */
+    static
+    void setToolsViewerOverlayColor(QString color) {
+        if (!self()->isImmutable( "ToolsViewerOverlayColor" ))
+            self()->mToolsViewerOverlayColor = color;
+    }
 
     /**
       Set Contains the list of tools an image can be opened with.
@@ -703,10 +719,11 @@ class Settings : public KConfigSkeleton
     QStringList mFileFilterSubdirsToIgnore;
 
     // Tools
-    bool mToolsUseInternalImageViewer;
-    bool mToolsViewerUseSmoothScale;
-    bool mToolsViewerShowImageCounter;
-    bool mToolsViewerShowFileInfos;
+    bool    mToolsUseInternalImageViewer;
+    bool    mToolsViewerUseSmoothScale;
+    bool    mToolsViewerShowImageCounter;
+    bool    mToolsViewerShowFileInfos;
+    QString mToolsViewerOverlayColor;
     QString mToolsDefaultExternalTool;
     QStringList mToolsExternalTools;
 

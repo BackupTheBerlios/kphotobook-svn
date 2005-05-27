@@ -498,9 +498,6 @@ void ImageViewer::generateImageCounterOverlay()
     int cur = m_lstImages.curIdx()+1;
     int max = m_lstImages.count();
 
-    //TODO userdefinable
-    QColor color(52,115,178);
-
     //the following code is taken from kpdfs presentation widget :-)
     int side = 70;
 
@@ -574,6 +571,7 @@ void ImageViewer::generateImageCounterOverlay()
     QImage image( doublePixmap.convertToImage().smoothScale( side, side));
     image.setAlphaBuffer( true );
 
+    QColor color(Settings::toolsViewerOverlayColor());
     int red = color.red(), green = color.green(), blue = color.blue();
     int pixels = image.width() * image.height();
 
@@ -598,7 +596,6 @@ void ImageViewer::generateInfoOverlay()
     }
 
     //TODO userdefinable
-    QColor color(52,115,178);
     int fontSize = 22;
 
     QFont f;
@@ -629,6 +626,7 @@ void ImageViewer::generateInfoOverlay()
     QImage image( pm.convertToImage());
     image.setAlphaBuffer( true );
 
+    QColor color(Settings::toolsViewerOverlayColor());
     int red = color.red(), green = color.green(), blue = color.blue();
     int pixels = image.width() * image.height();
 

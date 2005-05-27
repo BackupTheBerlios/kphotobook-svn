@@ -203,6 +203,10 @@ Settings::Settings(  )
     itemToolsViewerShowFileInfos = new KConfigSkeleton::ItemBool( currentGroup(), "ViewerShowFileInfos", mToolsViewerShowFileInfos, true );
     addItem( itemToolsViewerShowFileInfos, "ToolsViewerShowFileInfos" );
 
+    KConfigSkeleton::ItemString  *itemToolsViewerOverlayColor;
+    itemToolsViewerOverlayColor = new KConfigSkeleton::ItemString( currentGroup(), "ViewerOverlayColor", mToolsViewerOverlayColor, "#3473b2" );
+    addItem( itemToolsViewerOverlayColor, "ToolsViewerOverlayColor" );
+
 }
 
 
