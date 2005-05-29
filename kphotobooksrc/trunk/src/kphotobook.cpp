@@ -104,7 +104,7 @@
 Tracer* KPhotoBook::tracer = Tracer::getInstance("kde.kphotobook", "KPhotoBook");
 
 
-KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
+KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode)
     : KMdiMainFrm(0, "kphotobookMainWindow", mdiMode)
     , m_view(0)
     , m_tagTree(0)
@@ -136,7 +136,14 @@ KPhotoBook::KPhotoBook(KMdi::MdiMode mdiMode)
     , m_settingsTagTree(0)
     , m_settingsSourceDirTree(0)
     , m_settingsFileHandling(0)
-    , m_settingsTools(0) {
+    , m_settingsTools(0)
+{
+    if (splash) {
+        m_splashScreen = splash;
+        m_splashTimer = new QTimer(this);
+        connect(m_splashTimer, SIGNAL(timeout()), this, SLOT(slotSplashTimerFired()));
+        m_splashTimer->start(1000, true);
+    }
 
     // no idea why i call this, but it sounds good (because i do not really want an mdi application...)
     fakeSDIApplication();
@@ -913,6 +920,18 @@ bool KPhotoBook::queryExit() {
     return true;
 }
 
+/**
+ * this slot is called, when the splash timer fires.
+ *
+ */
+void KPhotoBook::slotSplashTimerFired()  {
+    if (m_splashScreen) {
+        m_splashScreen->finish(this);
+        delete m_splashScreen;
+
+        delete m_splashTimer;
+    }
+}
 
 //
 // private slots

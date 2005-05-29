@@ -10,9 +10,10 @@
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 #include <klocale.h>
+#include <ksplashscreen.h>
+#include <kstandarddirs.h>
 
 #include <qfileinfo.h>
-
 
 static Tracer* tracer = Tracer::getInstance( "kde.kphotobook", "" );
 
@@ -104,6 +105,7 @@ void configTracer( KCmdLineArgs *args ) {
 
 int main( int argc, char** argv ) {
 
+
     KAboutData about(
         "kphotobook", I18N_NOOP( "KPhotoBook" ), version, description,
         KAboutData::License_GPL, "(C) 2003, 2004, 2005 Michael Christen",
@@ -117,7 +119,7 @@ int main( int argc, char** argv ) {
     about.addAuthor( "Stefan Fink", I18N_NOOP( "One of Santa's little helpers.\nAdvises in design and usability questions.\n(He is also responsible for the KPhotoBook icon...)" ) );
     about.addAuthor( "Daniel Gerber", I18N_NOOP( "One of Santa's little helpers.\nAdvises in design and usability questions." ) );
 
-    about.addCredit( "George W. Bush, President of the USA", I18N_NOOP( "For being a stupid little git." ), "idiot@whitehouse.org" );
+    about.addCredit("Tom Dempsey", I18N_NOOP("He is the photographer and copyright holder of the nice Matterhorn\nimage used in the splashscreen. Thank you very much for giving us\npermission to use that image for kphotobook!"),"tom@photoseek.com");
 
     // initialize command line options
     KCmdLineArgs::init( argc, argv, &about );
@@ -132,15 +134,26 @@ int main( int argc, char** argv ) {
     // create the application instance
     KApplication app;
 
+    //initialize the splashscreen
+    KSplashScreen* splash = 0L;
+    QString url = locate("data", "kphotobook/images/kphotobook-splash.png");
+    if (!url.isEmpty()) {
+        QPixmap p( url );
+        splash = new KSplashScreen(p);
+        splash->show();
+    }
+
     // determine the MDI Model to use (default is IDEAl)
     KMdi::MdiMode mdiMode = KMdi::IDEAlMode;
     if ( Settings::generalViewMode() == Settings::EnumGeneralViewMode::TabPageMode ) {
         mdiMode = KMdi::TabPageMode;
     }
 
+    KPhotoBook* widget = 0L;
     if ( args->count() == 0 ) {
 
-        KPhotoBook * widget = new KPhotoBook( mdiMode );
+        widget = new KPhotoBook( splash, mdiMode );
+        app.setMainWidget(widget);
         widget->show();
 
         // try to load last opened file
@@ -152,7 +165,7 @@ int main( int argc, char** argv ) {
     } else {
         for ( int i = 0; i < args->count(); i++ ) {
             QFileInfo file( args->url( i ).path() );
-            KPhotoBook* widget = new KPhotoBook( mdiMode );
+            widget = new KPhotoBook(splash, mdiMode );
             widget->show();
             widget->load( file );
         }

@@ -41,6 +41,7 @@ class KListView;
 
 #include <kactionclasses.h>
 #include <kurl.h>
+#include <ksplashscreen.h>
 
 class Engine;
 
@@ -80,7 +81,7 @@ public:
     /**
      * Creates a new photobook mainwindow.
      */
-    KPhotoBook(KMdi::MdiMode mdiMode = KMdi::IDEAlMode);
+    KPhotoBook(KSplashScreen* splash = 0, KMdi::MdiMode mdiMode = KMdi::IDEAlMode);
 
     /**
      * Default Destructor
@@ -218,6 +219,9 @@ protected:
     bool queryExit();
 
 private slots:
+
+    void slotSplashTimerFired();
+
     void slotFileNew();
     void slotFileOpen(const KURL& = KURL());
     bool slotFileSave();
@@ -447,6 +451,9 @@ private:
     SettingsSourceDirTree* m_settingsSourceDirTree;
     SettingsFileHandling* m_settingsFileHandling;
     SettingsTools* m_settingsTools;
+
+    QTimer*        m_splashTimer;
+    KSplashScreen* m_splashScreen;
 
 };
 
