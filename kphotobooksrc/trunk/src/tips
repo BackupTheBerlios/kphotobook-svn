@@ -1,10 +1,82 @@
-<tip category="KPhotobook|database">
-<html>
-<p>KPhotobook stores all informations in an XML file.</p>
-<p>If you know what you do it can be useful to edit this database manually.</p>
-</html>
 <tip category="KPhotobook|tags">
 <html>
-<p>A tag is...</p>
-<p>Do you know now what a tag is?</p>
+<p>that there are two different ways to select several pictures. You can select your prefered way in the Configure dialog.</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that KPhotobook supports Drag 'n' Drop? you can easily move pictures from KPhotoBook to K3B or your e-mail message as an attachment?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that you can show all images which do not have any tag yet via View --> Tag Tree --> Show all untaged Images?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that you can autorefresh the preview window after having changed the filter (View --> Autorefresh)?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that you can organize your tags in a tree and that you can have as many tags as you whish?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that there are several types of tags which will help you organizing the photos in the way YOU want?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that it does not matter where on the harddrive your photos are. You don't need to move everything into one folder?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that you can add source directories recursively?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that you can give your tags individual icons?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that you can configure many aspects of KphotoBook at Settings --> Configure?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that you can lock the tag tree if you only want to browse your photos and not change the tags accidentaly?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that you can get in toch with the developers or just report bugs on <a href="http://developer.berlios.de/projects/kphotobook/">http://developer.berlios.de/projects/kphotobook/</a>?</p>
+<p>You can check the develpment status on <a href="http://kphotobook.berlios.de">http://kphotobook.berlios.de</a></p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that all options have a "What's this?" information available?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that you can filter your photos combining your tags with a "AND" or "OR" operator?</p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p>that you can even filter your photos by the EXIF values?</p>
+<p></p>
+</html>
+
+<tip category="KPhotobook|tags">
+<html>
+<p></p>
+<p></p>
 </html>
