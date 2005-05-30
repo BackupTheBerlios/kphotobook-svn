@@ -33,6 +33,8 @@
 
 #include <kfileitem.h>
 
+Tracer* TagTreeNodeRadio::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNodeRadio");
+
 TagTreeNodeRadio::TagTreeNodeRadio(TagTree* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , m_filterState(TagTreeNodeRadio::FILTERSTATE_IGNORE) {
@@ -50,6 +52,8 @@ TagTreeNodeRadio::~TagTreeNodeRadio() {
 
 
 FilterNode* TagTreeNodeRadio::subfilter() {
+
+    tracer->invoked(__func__);
 
     TagNodeRadio* tagNode = dynamic_cast<TagNodeRadio*>(m_tagNode);
 
@@ -73,6 +77,8 @@ FilterNode* TagTreeNodeRadio::subfilter() {
 
 QString TagTreeNodeRadio::getFilterString() {
 
+    tracer->invoked(__func__);
+
     QString filter;
 
     switch (m_filterState) {
@@ -83,6 +89,7 @@ QString TagTreeNodeRadio::getFilterString() {
         filter = "include";
         break;
     case FILTERSTATE_IGNORE:
+        filter = "ignore";
         break;
     }
 
@@ -91,6 +98,8 @@ QString TagTreeNodeRadio::getFilterString() {
 
 
 void TagTreeNodeRadio::applyFilterString(QString filter) {
+
+    tracer->sinvoked(__func__) << "@ " << tagNode()->name() << " with filter: '" << filter << "'" << endl;
 
     if (filter == "exclude") {
         m_filterState = FILTERSTATE_EXCLUDE;
@@ -103,6 +112,8 @@ void TagTreeNodeRadio::applyFilterString(QString filter) {
 
 
 void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int column) {
+
+    tracer->invoked(__func__);
 
     switch (column) {
     case TagTree::COLUMN_TEXT :
@@ -155,6 +166,8 @@ void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int
 
 void TagTreeNodeRadio::rightClicked(__attribute__((unused)) TagTree* tagTree, int column) {
 
+    tracer->invoked(__func__);
+
     switch (column) {
     case TagTree::COLUMN_TEXT :
         if (m_contextMenu) {
@@ -192,6 +205,8 @@ void TagTreeNodeRadio::rightClicked(__attribute__((unused)) TagTree* tagTree, in
 
 
 void TagTreeNodeRadio::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
+
+    tracer->invoked(__func__);
 
     switch (column) {
     case TagTree::COLUMN_TEXT :

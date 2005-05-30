@@ -32,6 +32,9 @@ class TagNodeRadio;
  */
 class TagTreeNodeRadio : public TagTreeNode {
 
+private:
+    static Tracer* tracer;
+
 public:
     enum FilterState {FILTERSTATE_EXCLUDE = -1, FILTERSTATE_IGNORE, FILTERSTATE_INCLUDE };
 

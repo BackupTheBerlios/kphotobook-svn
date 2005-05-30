@@ -52,6 +52,8 @@ TagTreeNodeRadioGroup::~TagTreeNodeRadioGroup() {
 
 FilterNode* TagTreeNodeRadioGroup::filter() {
 
+    tracer->invoked(__func__);
+
     FilterNode* rootFilter = new FilterNodeOpAnd(0);
     FilterNode* andFilter = new FilterNodeOpAnd(rootFilter);
     FilterNode* orFilter = new FilterNodeOpOr(rootFilter);
@@ -78,41 +80,19 @@ FilterNode* TagTreeNodeRadioGroup::filter() {
 
 
     return rootFilter;
-
-
-
-    //========================
-
-/*    // the filter set on a radiogroup must always be 'or'-linked
-    FilterNode* filterRootNode = new FilterNodeOpOr(0);
-
-    // loop over all radio children and add them to the filterRootNode
-    TagTreeNodeRadio* child = dynamic_cast<TagTreeNodeRadio*>(this->firstChild());
-    while( child ) {
-
-        // get the filter of the current child
-        FilterNode* childFilter = child->subfilter();
-        if (childFilter) {
-            filterRootNode->addChild(childFilter);
-        }
-
-        // get next child
-        child = dynamic_cast<TagTreeNodeRadio*>(child->nextSibling());
-    }
-
-    if (filterRootNode->childrenCount()) {
-        return filterRootNode;
-    }
-
-    return 0;
-    */
 }
 
 
 void TagTreeNodeRadioGroup::leftClicked(__attribute__((unused)) TagTree* tagTree, int column) {
 
+    tracer->invoked(__func__);
+
     switch (column) {
     case TagTree::COLUMN_FILTER :
+
+        // be sure that the filter reflects the children settings!
+        updateFilterState();
+        
         // change state of the filter: exclude -> ignore -> include -> exclude -> ...
         switch (m_filterState) {
         case FILTERSTATE_EXCLUDE:
@@ -135,6 +115,8 @@ void TagTreeNodeRadioGroup::leftClicked(__attribute__((unused)) TagTree* tagTree
             fstring = "exclude";
         }
 
+        tracer->sdebug(__func__) << "setting filter of all children to '" << fstring << "'." << endl;
+        
         //now set all children to my state
         TagTreeNodeRadio* act = NULL;
         QListViewItem * myChild = firstChild();
@@ -159,6 +141,8 @@ void TagTreeNodeRadioGroup::leftClicked(__attribute__((unused)) TagTree* tagTree
 
 
 void TagTreeNodeRadioGroup::rightClicked(__attribute__((unused)) TagTree* tagTree, int column) {
+
+    tracer->invoked(__func__);
 
     switch (column) {
     case TagTree::COLUMN_TEXT :
@@ -220,6 +204,8 @@ void TagTreeNodeRadioGroup::rightClicked(__attribute__((unused)) TagTree* tagTre
  */
 void TagTreeNodeRadioGroup::setSelectedTag(TagTreeNodeRadio* src)
 {
+    tracer->invoked(__func__);
+    
     // get all selected files
     const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
 
@@ -270,35 +256,51 @@ void TagTreeNodeRadioGroup::setSelectedTag(TagTreeNodeRadio* src)
 }
 
 
-void TagTreeNodeRadioGroup::updateFilterState(){
+void TagTreeNodeRadioGroup::updateFilterState()
+{
+    tracer->invoked(__func__);
 
-    int include = 0, exclude = 0;
-    TagTreeNodeRadio* act = NULL;
+    int includeFound = 0;
+    int excludeFound = 0;
+    int ignoreFound = 0;
+    
     QListViewItem * myChild = firstChild();
     while( myChild ) {
-        act = dynamic_cast<TagTreeNodeRadio*>(myChild);
-        if (act) {
+        TagTreeNodeRadio* child = dynamic_cast<TagTreeNodeRadio*>(myChild);
+        
+        if (child) {
+            QString filter = child->getFilterString();
 
-            QString s = act->getFilterString();
+            if (filter == "include") {
+                includeFound = 1;
+            } else if (filter == "exclude") {
+                excludeFound = 1;
+            } else {
+                ignoreFound = 1;
+            }
 
-            if (s == "include")
-                ++include;
-            else if (s = "exclude")
-                ++exclude;
-
-            if (exclude > 0 && include > 0)
+            // we can abort if there are different selections
+            if ((includeFound + excludeFound + ignoreFound) > 1) {
                 break;
+            }
         }
-            // and go on with the next child
+        
+        // and go on with the next child
         myChild = myChild->nextSibling();
     }
 
-    if (include > 0 && exclude > 0)
+    if ((includeFound + excludeFound + ignoreFound) == 1) {
+        if (includeFound) {
+            m_filterState = FILTERSTATE_INCLUDE;
+        } else if (excludeFound) {
+            m_filterState = FILTERSTATE_EXCLUDE;
+        } else {
+            m_filterState = FILTERSTATE_IGNORE;
+        }
+    } else {
+        // all radios are set to ignore...
         m_filterState = FILTERSTATE_IGNORE;
-    else if (include > 0)
-        m_filterState = FILTERSTATE_INCLUDE;
-    else
-        m_filterState = FILTERSTATE_EXCLUDE;
+    }
 
     repaint();
     m_photobook->dirtyfy();
@@ -306,6 +308,8 @@ void TagTreeNodeRadioGroup::updateFilterState(){
 
 
 void TagTreeNodeRadioGroup::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
+
+    tracer->invoked(__func__);
 
     switch (column) {
     case TagTree::COLUMN_TEXT :
