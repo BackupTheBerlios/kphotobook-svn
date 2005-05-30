@@ -39,8 +39,6 @@ public:
     void updateImages();
 
     void        mouseDoubleClickEvent ( QMouseEvent * e );
-//  void        contextMenuEvent ( QContextMenuEvent * e );
-//  void        wheelEvent ( QWheelEvent  * e );
 
     virtual void show (File* selectedImage);
 
