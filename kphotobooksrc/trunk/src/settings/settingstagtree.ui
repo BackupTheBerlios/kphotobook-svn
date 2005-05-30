@@ -109,7 +109,7 @@
                         <cstring>kcfg_TagTreeBoldMatches</cstring>
                     </property>
                     <property name="text">
-                        <string>Show matching tags bold</string>
+                        <string>Draw nodes with matches bold</string>
                     </property>
                 </widget>
                 <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="3">
@@ -120,7 +120,7 @@
                         <bool>false</bool>
                     </property>
                     <property name="text">
-                        <string>Onl&amp;y show closed tags bold</string>
+                        <string>Onl&amp;y draw collapsed nodes bold</string>
                     </property>
                     <property name="accel">
                         <string>Alt+Y</string>

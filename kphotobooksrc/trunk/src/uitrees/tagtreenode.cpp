@@ -115,7 +115,7 @@ void TagTreeNode::paintCell(QPainter* p, const QColorGroup& cg, int column, int 
 
         //toggle bold tags
         if (Settings::tagTreeBoldMatches() && recursiveFindTagged()
-            && (!Settings::tagTreeBoldMatchesClosedOnly() || (firstChild() && !isOpen()))) {
+            && (!Settings::tagTreeBoldMatchesCollapsedOnly() || (firstChild() && !isOpen()))) {
 
                 QFont f(p->font());
                 f.setBold(true);
