@@ -67,7 +67,7 @@ public:
     * Returns the unequivocal string describing the type of the specified tagnode.
     */
     static QString tagNodeType( TagNode::Type typeId ) {
-    
+
         switch ( typeId ) {
         case TagNode::TYPE_TITLE:
             return "title";
@@ -130,6 +130,10 @@ public:
         }
 
         return TagNode::TYPE_INVALID;
+    }
+
+    virtual bool tagged(__attribute__((unused))File* file) {
+        return false;
     }
 
 protected:

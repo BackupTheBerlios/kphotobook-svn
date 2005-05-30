@@ -20,7 +20,6 @@
 
 #include "tagtreenodedatetime.h"
 
-#include "../settings/settings.h"
 #include "../engine/tagnodedatetime.h"
 #include "../engine/filternodetagdatetime.h"
 #include "../engine/filetagnodeassocdatetime.h"
@@ -64,12 +63,12 @@ FilterNode* TagTreeNodeDateTime::filter()
     if (m_filterValue.isEmpty()) {
         return 0;
     }
-    
+
     TagNodeDateTime* tagNode = dynamic_cast<TagNodeDateTime*>(m_tagNode);
     return new FilterNodeTagDateTime(tagNode, m_filterValue);
 }
 
-    
+
 void TagTreeNodeDateTime::deselectFilter()
 {
     m_filterValue = QString("()");
@@ -89,13 +88,13 @@ void TagTreeNodeDateTime::resetFilter()
     this->repaint();
 }
 
-    
+
 QString TagTreeNodeDateTime::getFilterString()
 {
     return m_filterValue;
 }
-    
-    
+
+
 void TagTreeNodeDateTime::applyFilterString(QString filter)
 {
     m_filterValue = filter;
@@ -110,7 +109,7 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
         break;
 
     case TagTree::COLUMN_VALUE : {
-    
+
         // do nothing when tagging is locked
         if (Settings::tagTreeLocked()) {
             return;
@@ -124,7 +123,7 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
 //            KDateTimeWidget* x = new KDateTimeWidget(m_photobook->view(), "KDateTimeWidget");
 //            KDatePicker* x = new KDatePicker(m_photobook->view(), "KDateTimeWidget");
 //            x->show();
-            
+
             startRename(TagTree::COLUMN_VALUE);
         }
         break;
@@ -160,7 +159,7 @@ void TagTreeNodeDateTime::handleRenaming(int column, const QString& text)
         // TODO: do something useful!!!
         return;
     }
-    
+
     TagNodeDateTime* tagNode = dynamic_cast<TagNodeDateTime*>(m_tagNode);
 
     switch (column) {
@@ -231,7 +230,9 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
 
     switch (column) {
     case TagTree::COLUMN_TEXT :
-        KListViewItem::paintCell(p, cg, column, width, alignment);
+    case TagTree::COLUMN_FILTER :
+
+        TagTreeNode::paintCell(p, cg, column, width, alignment);
         break;
 
     case TagTree::COLUMN_VALUE : {
@@ -278,8 +279,5 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
         KListViewItem::paintCell(p, cg, column, width, alignment);
         break;
     }
-    case TagTree::COLUMN_FILTER :
-        KListViewItem::paintCell(p, cg, column, width, alignment);
-        break;
     }
 }

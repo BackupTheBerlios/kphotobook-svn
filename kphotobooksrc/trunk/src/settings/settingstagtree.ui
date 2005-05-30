@@ -32,74 +32,54 @@
             <property name="title">
                 <string>View</string>
             </property>
-            <vbox>
+            <grid>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QLayoutWidget">
+                <widget class="KFontRequester" row="1" column="2" rowspan="1" colspan="2">
                     <property name="name">
-                        <cstring>layout5</cstring>
+                        <cstring>kcfg_TagTreeFont</cstring>
                     </property>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QLayoutWidget" row="0" column="1">
-                            <property name="name">
-                                <cstring>layout3</cstring>
-                            </property>
-                            <hbox>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="KIntSpinBox">
-                                    <property name="name">
-                                        <cstring>kcfg_TagTreeIconSize</cstring>
-                                    </property>
-                                </widget>
-                                <spacer>
-                                    <property name="name">
-                                        <cstring>spacer2</cstring>
-                                    </property>
-                                    <property name="orientation">
-                                        <enum>Horizontal</enum>
-                                    </property>
-                                    <property name="sizeType">
-                                        <enum>Expanding</enum>
-                                    </property>
-                                    <property name="sizeHint">
-                                        <size>
-                                            <width>250</width>
-                                            <height>20</height>
-                                        </size>
-                                    </property>
-                                </spacer>
-                            </hbox>
-                        </widget>
-                        <widget class="KFontRequester" row="1" column="1">
-                            <property name="name">
-                                <cstring>kcfg_TagTreeFont</cstring>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="1" column="0">
-                            <property name="name">
-                                <cstring>textLabel3</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Font</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="0" column="0">
-                            <property name="name">
-                                <cstring>textLabel1</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Icon size</string>
-                            </property>
-                        </widget>
-                    </grid>
                 </widget>
-                <widget class="QCheckBox">
+                <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>textLabel3</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Font</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>textLabel1</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Icon size</string>
+                    </property>
+                </widget>
+                <widget class="KIntSpinBox" row="0" column="2">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeIconSize</cstring>
+                    </property>
+                </widget>
+                <spacer row="0" column="3">
+                    <property name="name">
+                        <cstring>spacer2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>440</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="4">
                     <property name="name">
                         <cstring>kcfg_TagTreeShowIcons</cstring>
                     </property>
@@ -107,7 +87,46 @@
                         <string>Show icons in the TagTree</string>
                     </property>
                 </widget>
-            </vbox>
+                <spacer row="4" column="0">
+                    <property name="name">
+                        <cstring>spacer9</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>23</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="4">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeBoldMatches</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Show matching tags bold</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeBoldMatchesClosedOnly</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="text">
+                        <string>Onl&amp;y show closed tags bold</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+Y</string>
+                    </property>
+                </widget>
+            </grid>
         </widget>
         <widget class="QGroupBox">
             <property name="name">
@@ -221,7 +240,7 @@
                         <cstring>kcfg_TagTreeRememberTree</cstring>
                     </property>
                     <property name="text">
-                        <string>Remember open/closed nodes</string>
+                        <string>Remem&amp;ber open/closed nodes</string>
                     </property>
                 </widget>
                 <widget class="QCheckBox">
@@ -253,10 +272,18 @@
         </spacer>
     </vbox>
 </widget>
+<connections>
+    <connection>
+        <sender>kcfg_TagTreeBoldMatches</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_TagTreeBoldMatchesClosedOnly</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+</connections>
 <layoutdefaults spacing="6" margin="11"/>
 <includehints>
-    <includehint>knuminput.h</includehint>
     <includehint>kfontrequester.h</includehint>
+    <includehint>knuminput.h</includehint>
     <includehint>knuminput.h</includehint>
     <includehint>kcombobox.h</includehint>
 </includehints>

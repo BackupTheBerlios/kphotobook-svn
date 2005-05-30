@@ -20,7 +20,6 @@
 
 #include "tagtreenodestring.h"
 
-#include "../settings/settings.h"
 #include "../engine/tagnodestring.h"
 #include "../engine/filternodetagstring.h"
 #include "../engine/filetagnodeassocstring.h"
@@ -61,14 +60,14 @@ FilterNode* TagTreeNodeString::filter() {
     if (m_filterValue.isEmpty()) {
         return 0;
     }
-    
+
     TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
     return new FilterNodeTagString(tagNode, m_filterValue);
 }
 
-    
+
 void TagTreeNodeString::deselectFilter() {
-    
+
     m_filterValue = QString("()");
     setText(TagTree::COLUMN_FILTER, m_filterValue);
 
@@ -78,7 +77,7 @@ void TagTreeNodeString::deselectFilter() {
 
 
 void TagTreeNodeString::resetFilter() {
-    
+
     m_filterValue = QString::null;
     setText(TagTree::COLUMN_FILTER, m_filterValue);
 
@@ -86,13 +85,13 @@ void TagTreeNodeString::resetFilter() {
     this->repaint();
 }
 
-    
+
 QString TagTreeNodeString::getFilterString() {
 
     return m_filterValue;
 }
-    
-    
+
+
 void TagTreeNodeString::applyFilterString(QString filter) {
 
     m_filterValue = filter;
@@ -107,7 +106,7 @@ void TagTreeNodeString::leftClicked(__attribute__((unused)) TagTree* tagTree, in
         break;
 
     case TagTree::COLUMN_VALUE : {
-    
+
         // do nothing when tagging is locked
         if (Settings::tagTreeLocked()) {
             return;
@@ -155,50 +154,29 @@ void TagTreeNodeString::handleRenaming(int column, const QString& text) {
 
     case TagTree::COLUMN_VALUE : {
 
-        // get all selected files
-        const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
 
-        if (selectedFiles->count()) {
-            int taggedFilesCount = 0;
-            int untaggedFilesCount = 0;
+        QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
 
-            // loop over all selected files and determine their state
-            QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
-            for (; it.current(); ++it) {
-                File* selectedFile = dynamic_cast<File*>(it.current());
+        // loop over all selected files and change their state
+        it.toFirst();
+        for (; it.current(); ++it) {
+            File* selectedFile = dynamic_cast<File*>(it.current());
 
-                if (tagNode->tagged(selectedFile, text)) {
-                    taggedFilesCount++;
-                } else {
-                    untaggedFilesCount++;
-                }
-
-                // we can abort the loop if we found a tagged and untagged file
-                if (taggedFilesCount && untaggedFilesCount) {
-                    break;
-                }
-            }
-
-            // if not all files are tagged, we tag all files
-            bool tagged = true;
-            // all files are tagged
-            if (taggedFilesCount && !untaggedFilesCount) {
-                tagged = false;
-            }
-
-            // loop over all selected files and change their state
-            it.toFirst();
-            for (; it.current(); ++it) {
-                File* selectedFile = dynamic_cast<File*>(it.current());
-
-                tagNode->setTagged(selectedFile, text);
-            }
-
-            m_photobook->dirtyfy();
-
-            // force redrawing of this listviewitem
-            this->repaint();
+            tagNode->setTagged(selectedFile, text);
         }
+
+        //update my internal state...
+        m_tagCurrentMatch = text.isEmpty() ? TagTreeNode::UNTAGGED : TagTreeNode::TAGGED;
+
+        //and then update all of my parents
+        TagTreeNode* node = this;
+        while (node) {
+            node->recursiveFindTagged();
+            node->repaint();
+            node = dynamic_cast<TagTreeNode*>(node->parent());
+        }
+
+        m_photobook->dirtyfy();
         break;
     }
     case TagTree::COLUMN_FILTER :
@@ -217,55 +195,53 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
 
     switch (column) {
     case TagTree::COLUMN_TEXT :
-        KListViewItem::paintCell(p, cg, column, width, alignment);
+    case TagTree::COLUMN_FILTER :
+        TagTreeNode::paintCell(p, cg, column, width, alignment);
         break;
 
     case TagTree::COLUMN_VALUE : {
 
-        // get all selected files
-        const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
+        QString text = "";
+        if (m_tagCurrentMatch == TagTreeNode::MIXTAGGED) {
+            text = "---";
+        } else {
 
-        if (selectedFiles->count()) {
+            // get all selected files
+            const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
 
-            QString text = QString::null;
+            if (selectedFiles->count()) {
 
-            QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
-            for (; it.current(); ++it) {
-                File* selectedFile = dynamic_cast<File*>(it.current());
+                QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
+                for (; it.current(); ++it) {
+                    File* selectedFile = dynamic_cast<File*>(it.current());
 
-                FileTagNodeAssocString* assoc = dynamic_cast<FileTagNodeAssocString*>(tagNode->getAssocToFile(selectedFile));
-                if (assoc) {
-                    // ok we got an assoc remember it
+                    FileTagNodeAssocString* assoc = dynamic_cast<FileTagNodeAssocString*>(tagNode->getAssocToFile(selectedFile));
+                    if (assoc) {
+                        // ok we got an assoc remember it
 
-                    if (!text.isNull() && assoc->valueAsString() != text) {
+                        if (!text.isEmpty() && assoc->valueAsString() != text) {
+                            // abort is not all selected images have the same tagvalue!
+                            text = "---";
+                            break;
+                        }
+                        text = assoc->valueAsString();
+                    } else {
+                        // no assoc found -> remove the text
+                        if (!text.isEmpty()) {
                         // abort is not all selected images have the same tagvalue!
-                        text = "---";
-                        break;
+                            text = "---";
+                            break;
+                        }
+                        text = "";
                     }
-                    text = assoc->valueAsString();
-                } else {
-                    // no assoc found -> remove the text
-
-                    if (!text.isEmpty()) {
-                        // abort is not all selected images have the same tagvalue!
-                        text = "---";
-                        break;
-                    }
-                    text = "";
                 }
             }
-
-            setText(TagTree::COLUMN_VALUE, text);
-        } else {
-            // no file is selected -> remove the text
-            setText(TagTree::COLUMN_VALUE, "");
         }
+
+        setText(TagTree::COLUMN_VALUE, text);
 
         KListViewItem::paintCell(p, cg, column, width, alignment);
         break;
     }
-    case TagTree::COLUMN_FILTER :
-        KListViewItem::paintCell(p, cg, column, width, alignment);
-        break;
     }
 }

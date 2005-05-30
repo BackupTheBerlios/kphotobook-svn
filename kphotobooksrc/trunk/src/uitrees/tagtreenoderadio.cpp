@@ -31,8 +31,6 @@
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
 
-#include "../settings/settings.h"
-
 #include <kfileitem.h>
 
 TagTreeNodeRadio::TagTreeNodeRadio(TagTree* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
@@ -121,7 +119,7 @@ void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int
         TagTreeNodeRadioGroup* grp = dynamic_cast<TagTreeNodeRadioGroup*>(parent());
         if (grp) {
             // if it's already selected, we unselect all
-            grp->setSelectedTag(m_currentState == 1 ? 0L : this);
+            grp->setSelectedTag(m_tagCurrentMatch == TagTreeNode::TAGGED ? 0L : this);
         }
 
         break;
@@ -130,7 +128,7 @@ void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int
         // change state of the filter: exclude -> ignore -> include -> exclude -> ...
         switch (m_filterState) {
         case FILTERSTATE_EXCLUDE:
-            m_filterState = FILTERSTATE_INCLUDE;
+            m_filterState = FILTERSTATE_IGNORE;
             break;
         case FILTERSTATE_IGNORE:
             m_filterState = FILTERSTATE_INCLUDE;
@@ -174,7 +172,7 @@ void TagTreeNodeRadio::rightClicked(__attribute__((unused)) TagTree* tagTree, in
             m_filterState = FILTERSTATE_EXCLUDE;
             break;
         case FILTERSTATE_INCLUDE:
-            m_filterState = FILTERSTATE_EXCLUDE;
+            m_filterState = FILTERSTATE_IGNORE;
             break;
         }
 
@@ -195,11 +193,9 @@ void TagTreeNodeRadio::rightClicked(__attribute__((unused)) TagTree* tagTree, in
 
 void TagTreeNodeRadio::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
 
-    TagNodeRadio* tagNode = dynamic_cast<TagNodeRadio*>(m_tagNode);
-
     switch (column) {
     case TagTree::COLUMN_TEXT :
-        KListViewItem::paintCell(p, cg, column, width, alignment);
+        TagTreeNode::paintCell(p, cg, column, width, alignment);
         break;
 
     case TagTree::COLUMN_VALUE : {
@@ -210,51 +206,15 @@ void TagTreeNodeRadio::paintCell(QPainter *p, const QColorGroup &cg, int column,
         int size = p->fontInfo().pixelSize()+2;
         QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
 
-        bool enabled = false;
-
-        // get all selected files
-        const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
-
-        if (selectedFiles->count()) {
-            int taggedFilesCount = 0;
-            int untaggedFilesCount = 0;
-
-            // loop over all selected files and determine their state
-            QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
-            for (; it.current(); ++it) {
-                File* selectedFile = dynamic_cast<File*>(it.current());
-
-                if (tagNode->tagged(selectedFile)) {
-                    taggedFilesCount++;
-                } else {
-                    untaggedFilesCount++;
-                }
-
-                // we can abort the loop if we found a tagged and utagged file
-                if (taggedFilesCount && untaggedFilesCount) {
-                    break;
-                }
-            }
-
-            // we assume that some files are tagged, some not
-            m_currentState = 0;
-            // no file is tagged
-            if (!taggedFilesCount && untaggedFilesCount) {
-                m_currentState = -1;
-            } else
-            // all files are tagged
-            if (taggedFilesCount && !untaggedFilesCount) {
-                m_currentState = 1;
-            }
-
-            enabled = !Settings::tagTreeLocked();
+        if (m_tagCurrentMatch == TagTreeNode::NOSELECT) {
+            TreeHelper::drawRadioButton(p, cg, rect, (int)TagTreeNode::UNTAGGED, false);
         } else {
-            // no file is selected -> draw a disabled checkbox
-            m_currentState = -1;
+            TreeHelper::drawRadioButton(p, cg, rect, (int)m_tagCurrentMatch, !Settings::tagTreeLocked());
         }
-        TreeHelper::drawRadioButton(p, cg, rect, m_currentState, enabled);
+
         break;
     }
+
     case TagTree::COLUMN_FILTER :
         // paint the cell with the alternating background color
         p->fillRect(0, 0, width, this->height(), backgroundColor(2));

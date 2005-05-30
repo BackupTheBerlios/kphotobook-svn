@@ -20,7 +20,6 @@
 
 #include "tagtreenodeboolean.h"
 
-#include "../settings/settings.h"
 #include "../engine/tagnodeboolean.h"
 #include "../engine/filternodetagboolean.h"
 #include "tagtree.h"
@@ -113,50 +112,28 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
             return;
         }
 
-        // get all selected files
-        const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
+        // if not all are currently tagged, tag them, otherwise untag them
+        bool newState = (m_tagCurrentMatch != TagTreeNode::TAGGED);
 
-        if (selectedFiles->count()) {
-            int taggedFilesCount = 0;
-            int untaggedFilesCount = 0;
+        //now set our new state
+        m_tagCurrentMatch = newState ? TagTreeNode::TAGGED : TagTreeNode::UNTAGGED;
 
-            // loop over all selected files and determine their state
-            QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
-            for (; it.current(); ++it) {
-                File* selectedFile = dynamic_cast<File*>(it.current());
-
-                if (tagNode->tagged(selectedFile)) {
-                    taggedFilesCount++;
-                } else {
-                    untaggedFilesCount++;
-                }
-
-                // we can abort the loop if we found a tagged and utagged file
-                if (taggedFilesCount && untaggedFilesCount) {
-                    break;
-                }
-            }
-
-            // if not all files are tagged, we tag all files
-            bool tagged = true;
-            // all files are tagged
-            if (taggedFilesCount && !untaggedFilesCount) {
-                tagged = false;
-            }
-
-            // loop over all selected files and change their state
-            it.toFirst();
-            for (; it.current(); ++it) {
-                File* selectedFile = dynamic_cast<File*>(it.current());
-
-                tagNode->setTagged(selectedFile, tagged);
-            }
-
-            m_photobook->dirtyfy();
-
-            // force redrawing of this listviewitem
-            this->repaint();
+        // loop over all selected files and change their state
+        QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
+        for (it.toFirst(); it.current(); ++it) {
+            File* selectedFile = dynamic_cast<File*>(it.current());
+            tagNode->setTagged(selectedFile, newState);
         }
+
+        //now loop through all of our parents to set their state according to my changes
+        TagTreeNode* node = this;
+        while (node) {
+            node->recursiveFindTagged();
+            node->repaint();
+            node = dynamic_cast<TagTreeNode*>(node->parent());
+        }
+
+        m_photobook->dirtyfy();
         break;
     }
     case TagTree::COLUMN_FILTER :
@@ -216,11 +193,9 @@ void TagTreeNodeBoolean::rightClicked(__attribute__((unused)) TagTree* tagTree, 
 
 void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
 
-    TagNodeBoolean* tagNode = dynamic_cast<TagNodeBoolean*>(m_tagNode);
-
     switch (column) {
     case TagTree::COLUMN_TEXT :
-        KListViewItem::paintCell(p, cg, column, width, alignment);
+        TagTreeNode::paintCell(p, cg, column, width, alignment);
         break;
 
     case TagTree::COLUMN_VALUE : {
@@ -231,45 +206,11 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
         int size = p->fontInfo().pixelSize()+2;
         QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
 
-        // get all selected files
-        const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
-
-        if (selectedFiles->count()) {
-            int taggedFilesCount = 0;
-            int untaggedFilesCount = 0;
-
-            // loop over all selected files and determine their state
-            QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
-            for (; it.current(); ++it) {
-                File* selectedFile = dynamic_cast<File*>(it.current());
-
-                if (tagNode->tagged(selectedFile)) {
-                    taggedFilesCount++;
-                } else {
-                    untaggedFilesCount++;
-                }
-
-                // we can abort the loop if we found a tagged and utagged file
-                if (taggedFilesCount && untaggedFilesCount) {
-                    break;
-                }
-            }
-
-            // we assume that some files are tagged, some not
-            int tristate = 0;
-            // no file is tagged
-            if (!taggedFilesCount && untaggedFilesCount) {
-                tristate = -1;
-            } else
-            // all files are tagged
-            if (taggedFilesCount && !untaggedFilesCount) {
-                tristate = 1;
-            }
-
-            TreeHelper::drawCheckBox(p, cg, rect, tristate, !Settings::tagTreeLocked());
-        } else {
+        if (m_tagCurrentMatch == TagTreeNode::NOSELECT) {
             // no file is selected -> draw a disabled checkbox
             TreeHelper::drawCheckBox(p, cg, rect, false, false);
+        } else {
+            TreeHelper::drawCheckBox(p, cg, rect, (int)m_tagCurrentMatch, !Settings::tagTreeLocked());
         }
         break;
     }

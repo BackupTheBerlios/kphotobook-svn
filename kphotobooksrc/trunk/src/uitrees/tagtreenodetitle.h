@@ -52,10 +52,6 @@ public:
     virtual void resetFilter() {
         // we do nothing, because we cannot yet filtertitles
     }
-
-    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment) {
-        KListViewItem::paintCell(p, cg, column, width, alignment);
-    }
 };
 
 #endif

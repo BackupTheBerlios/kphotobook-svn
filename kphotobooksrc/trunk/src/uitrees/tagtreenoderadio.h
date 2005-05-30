@@ -82,11 +82,12 @@ public:
     virtual void rightClicked(TagTree* tagTree, int column);
 
     virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
+
+    void setState(bool selected) {
+        m_tagCurrentMatch = (selected ? TagTreeNode::TAGGED : TagTreeNode::UNTAGGED);
+    }
 private:
     TagTreeNodeRadio::FilterState m_filterState;
-
-    // saves the current state of the RadioButton (-1 = OFF, 1 = ON, 0 = TRISTATE_MIDDLE)
-    int m_currentState;
 };
 
 #endif

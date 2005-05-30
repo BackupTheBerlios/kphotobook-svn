@@ -60,10 +60,19 @@ Settings::Settings(  )
   KConfigSkeleton::ItemFont  *itemTagTreeFont;
   itemTagTreeFont = new KConfigSkeleton::ItemFont( currentGroup(), "Font", mTagTreeFont, KGlobalSettings::generalFont() );
   addItem( itemTagTreeFont, "TagTreeFont" );
-  KConfigSkeleton::ItemBool  *itemTagTreeShowIcons;
-  itemTagTreeShowIcons = new KConfigSkeleton::ItemBool( currentGroup(), "ShowIcons", mTagTreeShowIcons, true );
-  addItem( itemTagTreeShowIcons, "TagTreeShowIcons" );
-  QValueList<KConfigSkeleton::ItemEnum::Choice> valuesTagTreeFilterOperator;
+    KConfigSkeleton::ItemBool  *itemTagTreeShowIcons;
+    itemTagTreeShowIcons = new KConfigSkeleton::ItemBool( currentGroup(), "ShowIcons", mTagTreeShowIcons, true );
+    addItem( itemTagTreeShowIcons, "TagTreeShowIcons" );
+
+    KConfigSkeleton::ItemBool  *itemTagTreeBoldMatches;
+    itemTagTreeBoldMatches = new KConfigSkeleton::ItemBool( currentGroup(), "BoldMatches", mTagTreeBoldMatches, false );
+    addItem( itemTagTreeBoldMatches, "TagTreeBoldMatches" );
+
+    KConfigSkeleton::ItemBool  *itemTagTreeBoldMatchesClosedOnly;
+    itemTagTreeBoldMatchesClosedOnly = new KConfigSkeleton::ItemBool( currentGroup(), "BoldMatchesClosedOnly", mTagTreeBoldMatchesClosedOnly, true );
+    addItem( itemTagTreeBoldMatchesClosedOnly, "TagTreeBoldMatchesClosedOnly" );
+
+    QValueList<KConfigSkeleton::ItemEnum::Choice> valuesTagTreeFilterOperator;
   {
     KConfigSkeleton::ItemEnum::Choice choice;
     choice.name = "And";

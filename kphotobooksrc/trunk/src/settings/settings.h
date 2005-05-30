@@ -161,6 +161,45 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+     * set, if tagtreeitems should be shown bold if they match an images
+     */
+    static
+    void setTagTreeBoldMatches( bool v )
+    {
+        if (!self()->isImmutable( "TagTreeBoldMatches" ))
+            self()->mTagTreeBoldMatches = v;
+    }
+
+    /**
+     * return if tagtreeitems should be drawn bold, if they match images
+     */
+    static
+    bool tagTreeBoldMatches()
+    {
+        return self()->mTagTreeBoldMatches;
+    }
+
+    /**
+     * set, if only closed tagtreeitems should be drawn bold
+     */
+    static
+    void setTagTreeBoldMatchesClosedOnly( bool v )
+    {
+        if (!self()->isImmutable( "TagTreeBoldMatchesClosedOnly" ))
+            self()->mTagTreeBoldMatchesClosedOnly = v;
+    }
+
+    /**
+     * return, if only closed tagtreeitems should be drawn bold
+     */
+    static
+    bool tagTreeBoldMatchesClosedOnly()
+    {
+        return self()->mTagTreeBoldMatchesClosedOnly;
+    }
+
+
+/**
       Set Defines the operator when filtering images by the TagTree.
     */
     static
@@ -694,6 +733,8 @@ class Settings : public KConfigSkeleton
     int mTagTreeIconSize;
     QFont mTagTreeFont;
     bool mTagTreeShowIcons;
+    bool mTagTreeBoldMatches;
+    bool mTagTreeBoldMatchesClosedOnly;
     int mTagTreeFilterOperator;
     bool mTagTreeRememberTree;
     bool mTagTreeRememberFilter;

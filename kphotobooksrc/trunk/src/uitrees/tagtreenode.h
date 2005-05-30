@@ -52,6 +52,15 @@ private:
 
 public:
     /**
+     * gives information about the tag status. ie if the current tagTreeNode is
+     * UNTAGGED for all selected images,
+     * TAGGED: all selected images contain this tag
+     * MIXTAGGED: some images contain this tag, and some don't
+     */
+    enum MatchType {NOSELECT = -2, UNTAGGED  = -1, MIXTAGGED = 0, TAGGED    = 1
+    };
+
+    /**
      * Creates a new toplevel tagtreenode in the specified TagTree.
      * @param parent The TagTree to add the created TagTreeNode to.
      * @param photobook The photobook.
@@ -101,7 +110,7 @@ public:
      * Resets the filter.
      */
     virtual void resetFilter() = 0;
-    
+
     /**
      * Returns the currently set filter as string representation.
      * This value is used to store in the database.
@@ -109,7 +118,7 @@ public:
     virtual QString getFilterString() {
         return QString::null;
     }
-    
+
     /**
      * Applies the filter returned by getFilter().
      */
@@ -129,18 +138,46 @@ public:
     virtual void rightClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column);
 
     /**
+     * draws the cells of the tagtreeitems defaultwise
+     */
+    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
+
+
+    /**
      * returns the tooltip to be shown in the tree of this node
      */
-    virtual QString toolTip()
-    {
+    virtual QString toolTip() {
         return *(m_tagNode->comment());
     }
-    
+
+    /**
+     * updates the internal tagMatch state.
+     * That means, all currently selected images are parsed and it is checked, how they match
+     * the current TagTreeNode
+     */
+    virtual void updateTagMatch() {
+        m_tagCurrentMatch = findTagMatch();
+    }
+
+    /**
+     * recursively asks all my children, if the are Tagged within the current selected images.
+     * this also returns true, if a MIXTAGGED state is found, as this is also 'tagged'
+     */
+    virtual bool recursiveFindTagged();
+
+
 protected:
+
+    /** parses the currently selected Images and looks, if a match can be found */
+    MatchType findTagMatch();
+
     KPhotoBook* m_photobook;
     TagNode* m_tagNode;
 
     KPopupMenu* m_contextMenu;
+
+    /** saves, whether the selected images have Matched the current tagTreeNode, or not (or Mixed) */
+    MatchType m_tagCurrentMatch;
 };
 
 #endif
