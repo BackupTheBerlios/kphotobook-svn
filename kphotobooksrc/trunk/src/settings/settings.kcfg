@@ -163,7 +163,7 @@
       <label>Contains the list of tools an image can be opened with.</label>
       <default>kuickshow</default>
     </entry>
-    <entry name="ToolsViewerUseSmoothScale" type="Bool" key="ViewerUseSmoothScale">
+    <entry name="ToolsViewerUseSmoothScaling" type="Bool" key="ViewerUseSmoothScaling">
         <label>Should the internal viewer use (slower) smooth scaling, or fast scaling algorithms?</label>
         <default>false</default>
     </entry>

@@ -183,9 +183,9 @@ Settings::Settings(  )
   KConfigSkeleton::ItemStringList  *itemToolsExternalTools;
   itemToolsExternalTools = new KConfigSkeleton::ItemStringList( currentGroup(), QString::fromLatin1( "ExternalTools" ), mToolsExternalTools, defaultToolsExternalTools );
   addItem( itemToolsExternalTools, QString::fromLatin1( "ToolsExternalTools" ) );
-  KConfigSkeleton::ItemBool  *itemToolsViewerUseSmoothScale;
-  itemToolsViewerUseSmoothScale = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerUseSmoothScale" ), mToolsViewerUseSmoothScale, false );
-  addItem( itemToolsViewerUseSmoothScale, QString::fromLatin1( "ToolsViewerUseSmoothScale" ) );
+  KConfigSkeleton::ItemBool  *itemToolsViewerUseSmoothScaling;
+  itemToolsViewerUseSmoothScaling = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerUseSmoothScaling" ), mToolsViewerUseSmoothScaling, false );
+  addItem( itemToolsViewerUseSmoothScaling, QString::fromLatin1( "ToolsViewerUseSmoothScaling" ) );
   KConfigSkeleton::ItemBool  *itemToolsViewerShowImageCounter;
   itemToolsViewerShowImageCounter = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerShowImageCounter" ), mToolsViewerShowImageCounter, true );
   addItem( itemToolsViewerShowImageCounter, QString::fromLatin1( "ToolsViewerShowImageCounter" ) );

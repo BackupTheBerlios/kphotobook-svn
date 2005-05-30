@@ -250,9 +250,9 @@ void ImageViewer::slotSlideshowTimerFired()
 
 void ImageViewer::slotToggleSmoothScaling()
 {
-    bool b = !Settings::toolsViewerUseSmoothScale();
+    bool b = !Settings::toolsViewerUseSmoothScaling();
 
-    Settings::setToolsViewerUseSmoothScale(b);
+    Settings::setToolsViewerUseSmoothScaling(b);
 
     m_curImage->setSmoothScale(b);
     m_prvImage->setSmoothScale(b);
@@ -461,7 +461,7 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
     popup->insertSeparator();
 
     id = popup->insertItem(i18n("Use SmoothScaling"), this, SLOT(slotToggleSmoothScaling()));
-    popup->setItemChecked(id, Settings::toolsViewerUseSmoothScale());
+    popup->setItemChecked(id, Settings::toolsViewerUseSmoothScaling());
 
     id = popup->insertItem(i18n("Show Image Counter"), this, SLOT(slotToggleShowImageCounter()));
     popup->setItemChecked(id, Settings::toolsViewerShowImageCounter());

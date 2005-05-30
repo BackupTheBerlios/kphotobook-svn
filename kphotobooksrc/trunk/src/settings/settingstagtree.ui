@@ -109,12 +109,12 @@
                         <cstring>kcfg_TagTreeBoldMatches</cstring>
                     </property>
                     <property name="text">
-                        <string>Draw nodes with matches bold</string>
+                        <string>Draw &amp;nodes with matches bold</string>
                     </property>
                 </widget>
                 <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="3">
                     <property name="name">
-                        <cstring>kcfg_TagTreeBoldMatchesClosedOnly</cstring>
+                        <cstring>kcfg_TagTreeBoldMatchesCollapsedOnly</cstring>
                     </property>
                     <property name="enabled">
                         <bool>false</bool>
@@ -276,7 +276,7 @@
     <connection>
         <sender>kcfg_TagTreeBoldMatches</sender>
         <signal>toggled(bool)</signal>
-        <receiver>kcfg_TagTreeBoldMatchesClosedOnly</receiver>
+        <receiver>kcfg_TagTreeBoldMatchesCollapsedOnly</receiver>
         <slot>setEnabled(bool)</slot>
     </connection>
 </connections>

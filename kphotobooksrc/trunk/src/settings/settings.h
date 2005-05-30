@@ -582,19 +582,19 @@ class Settings : public KConfigSkeleton
       Set Should the internal viewer use (slower) smooth scaling, or fast scaling algorithms?
     */
     static
-    void setToolsViewerUseSmoothScale( bool v )
+    void setToolsViewerUseSmoothScaling( bool v )
     {
-      if (!self()->isImmutable( QString::fromLatin1( "ToolsViewerUseSmoothScale" ) ))
-        self()->mToolsViewerUseSmoothScale = v;
+      if (!self()->isImmutable( QString::fromLatin1( "ToolsViewerUseSmoothScaling" ) ))
+        self()->mToolsViewerUseSmoothScaling = v;
     }
 
     /**
       Get Should the internal viewer use (slower) smooth scaling, or fast scaling algorithms?
     */
     static
-    bool toolsViewerUseSmoothScale()
+    bool toolsViewerUseSmoothScaling()
     {
-      return self()->mToolsViewerUseSmoothScale;
+      return self()->mToolsViewerUseSmoothScaling;
     }
 
     /**
@@ -761,7 +761,7 @@ class Settings : public KConfigSkeleton
     bool mToolsUseInternalImageViewer;
     QString mToolsDefaultExternalTool;
     QStringList mToolsExternalTools;
-    bool mToolsViewerUseSmoothScale;
+    bool mToolsViewerUseSmoothScaling;
     bool mToolsViewerShowImageCounter;
     bool mToolsViewerShowFileInfos;
     QString mToolsViewerOverlayColor;
