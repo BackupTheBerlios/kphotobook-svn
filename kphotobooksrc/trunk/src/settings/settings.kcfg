@@ -15,8 +15,12 @@
     </entry>
 
     <entry name="GeneralRescanWhileStartup" type="Bool" key="RescanWhileStartup">
-      <label>Defines if the filesystem is rescanned while starting up KPhotoBook.</label>
-      <default>true</default>
+        <label>Defines if the filesystem is rescanned while starting up KPhotoBook.</label>
+        <default>true</default>
+    </entry>
+    <entry name="GeneralCheckUntaggedOnExit" type="Bool" key="CheckUntaggedOnExit">
+        <label>Should a check be performed on exit, if images without tags are in the database?.</label>
+        <default>true</default>
     </entry>
   </group>
 
@@ -38,10 +42,17 @@
       <default code="true">KGlobalSettings::generalFont()</default>
     </entry>
     <entry name="TagTreeShowIcons" type="Bool" key="ShowIcons">
-      <label>Defines if the icons in the TagTree are shown.</label>
-      <default>true</default>
+        <label>Defines if the icons in the TagTree are shown.</label>
+        <default>true</default>
     </entry>
-
+    <entry name="TagTreeBoldMatches" type="Bool" key="BoldMatches">
+        <label>Should Treenodes, that match an image be drawn bold?</label>
+        <default>true</default>
+    </entry>
+    <entry name="TagTreeBoldMatchesCollapsedOnly" type="Bool" key="BoldMatchesCollapsedOnly">
+        <label>Should only collapsed Treenodes be drawn bold when the match an image?</label>
+        <default>false</default>
+    </entry>
     <entry name="TagTreeFilterOperator" type="Enum" key="FilterOperator">
       <label>Defines the operator when filtering images by the TagTree.</label>
       <default>And</default>
@@ -50,7 +61,7 @@
         <choice name="Or" />
       </choices>
     </entry>
-    
+
     <entry name="TagTreeRememberTree" type="Bool" key="RememberTree">
       <label>Defines if the state of the TagTree (opened/closed nodes) is remebered (stored/restored).</label>
       <default>true</default>
@@ -58,8 +69,8 @@
     <entry name="TagTreeRememberFilter" type="Bool" key="RememberFilter">
       <label>Defines if the filter of the TagTree is remembered (stored/restored).</label>
       <default>true</default>
-    </entry>    
-    
+    </entry>
+
     <entry name="TagTreeLocked" type="Bool" key="Locked">
       <label>Defines if the tagtree is locked or not.</label>
       <default>false</default>
@@ -87,7 +98,7 @@
       <label>Defines if the icons in the SourceDirTree are shown.</label>
       <default>true</default>
     </entry>
-    
+
     <entry name="SourceDirTreeRememberTree" type="Bool" key="RememberTree">
       <label>Defines if the state of the SourceDirTree (opened/closed nodes) is remebered (stored/restored).</label>
       <default>true</default>
@@ -95,7 +106,7 @@
     <entry name="SourceDirTreeRememberFilter" type="Bool" key="RememberFilter">
       <label>Defines if the filter of the SourceDirTree is remembered (stored/restored).</label>
       <default>true</default>
-    </entry>    
+    </entry>
   </group>
 
   <group name="ImagePreview">
@@ -140,6 +151,10 @@
   </group>
 
   <group name="Tools">
+      <entry name="ToolsUseInternalImageViewer" type="Bool" key="UseInternalImageViewer">
+          <label>Defines, if the internal image viewer is used to view images, rather then an external tool</label>
+          <default>true</default>
+      </entry>
     <entry name="ToolsDefaultExternalTool" type="String" key="DefaultExternalTool">
       <label>Contains the external to open an image with when doubleclicked.</label>
       <default>kuickshow</default>
@@ -147,6 +162,22 @@
     <entry name="ToolsExternalTools" type="StringList" key="ExternalTools">
       <label>Contains the list of tools an image can be opened with.</label>
       <default>kuickshow</default>
+    </entry>
+    <entry name="ToolsViewerUseSmoothScale" type="Bool" key="ViewerUseSmoothScale">
+        <label>Should the internal viewer use (slower) smooth scaling, or fast scaling algorithms?</label>
+        <default>false</default>
+    </entry>
+    <entry name="ToolsViewerShowImageCounter" type="Bool" key="ViewerShowImageCounter">
+        <label>Should the image counter be shown in the image viewer?</label>
+        <default>true</default>
+    </entry>
+    <entry name="ToolsViewerShowFileInfos" type="Bool" key="ViewerShowFileInfos">
+        <label>Should fileinfos (name etc.) be shown in the image viewer?</label>
+        <default>true</default>
+    </entry>
+    <entry name="ToolsViewerOverlayColor" type="String" key="ViewerOverlayColor">
+        <label>The color the overlay is drawn with in the image viewer.</label>
+        <default>#3473b2</default>
     </entry>
   </group>
 

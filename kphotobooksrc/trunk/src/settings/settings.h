@@ -11,17 +11,17 @@ class Settings : public KConfigSkeleton
     class EnumGeneralViewMode
     {
       public:
-      enum { IDEAlMode, TabPageMode, COUNT };
+      enum type { IDEAlMode, TabPageMode, COUNT };
     };
     class EnumTagTreeFilterOperator
     {
       public:
-      enum { And, Or, COUNT };
+      enum type { And, Or, COUNT };
     };
     class EnumImagePreviewSelectionMode
     {
       public:
-      enum { Extended, Multi, COUNT };
+      enum type { Extended, Multi, COUNT };
     };
 
     static Settings *self();
@@ -33,7 +33,7 @@ class Settings : public KConfigSkeleton
     static
     void setGeneralViewMode( int v )
     {
-      if (!self()->isImmutable( "GeneralViewMode" ))
+      if (!self()->isImmutable( QString::fromLatin1( "GeneralViewMode" ) ))
         self()->mGeneralViewMode = v;
     }
 
@@ -50,38 +50,38 @@ class Settings : public KConfigSkeleton
       Set Defines if the filesystem is rescanned while starting up KPhotoBook.
     */
     static
-        void setGeneralRescanWhileStartup( bool v )
+    void setGeneralRescanWhileStartup( bool v )
     {
-        if (!self()->isImmutable( "GeneralRescanWhileStartup" ))
-            self()->mGeneralRescanWhileStartup = v;
+      if (!self()->isImmutable( QString::fromLatin1( "GeneralRescanWhileStartup" ) ))
+        self()->mGeneralRescanWhileStartup = v;
     }
 
     /**
       Get Defines if the filesystem is rescanned while starting up KPhotoBook.
     */
     static
-        bool generalRescanWhileStartup()
+    bool generalRescanWhileStartup()
     {
-        return self()->mGeneralRescanWhileStartup;
+      return self()->mGeneralRescanWhileStartup;
     }
 
     /**
-        Set if a check for untagged Images is performed on exit.
+      Set Should a check be performed on exit, if images without tags are in the database?.
     */
     static
     void setGeneralCheckUntaggedOnExit( bool v )
     {
-        if (!self()->isImmutable( "GeneralCheckUntaggedOnExit" ))
-            self()->mGeneralCheckUntaggedOnExit = v;
+      if (!self()->isImmutable( QString::fromLatin1( "GeneralCheckUntaggedOnExit" ) ))
+        self()->mGeneralCheckUntaggedOnExit = v;
     }
 
     /**
-        Get if a check for untagged images is performed on exit.
+      Get Should a check be performed on exit, if images without tags are in the database?.
     */
     static
     bool generalCheckUntaggedOnExit()
     {
-        return self()->mGeneralCheckUntaggedOnExit;
+      return self()->mGeneralCheckUntaggedOnExit;
     }
 
     /**
@@ -90,7 +90,7 @@ class Settings : public KConfigSkeleton
     static
     void setTagTreeToolBarIconSize( int v )
     {
-      if (!self()->isImmutable( "TagTreeToolBarIconSize" ))
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeToolBarIconSize" ) ))
         self()->mTagTreeToolBarIconSize = v;
     }
 
@@ -109,7 +109,7 @@ class Settings : public KConfigSkeleton
     static
     void setTagTreeIconSize( int v )
     {
-      if (!self()->isImmutable( "TagTreeIconSize" ))
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeIconSize" ) ))
         self()->mTagTreeIconSize = v;
     }
 
@@ -128,7 +128,7 @@ class Settings : public KConfigSkeleton
     static
     void setTagTreeFont( const QFont & v )
     {
-      if (!self()->isImmutable( "TagTreeFont" ))
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeFont" ) ))
         self()->mTagTreeFont = v;
     }
 
@@ -147,7 +147,7 @@ class Settings : public KConfigSkeleton
     static
     void setTagTreeShowIcons( bool v )
     {
-      if (!self()->isImmutable( "TagTreeShowIcons" ))
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeShowIcons" ) ))
         self()->mTagTreeShowIcons = v;
     }
 
@@ -161,51 +161,50 @@ class Settings : public KConfigSkeleton
     }
 
     /**
-     * set, if tagtreeitems should be shown bold if they match an images
-     */
+      Set Should Treenodes, that match an image be drawn bold?
+    */
     static
     void setTagTreeBoldMatches( bool v )
     {
-        if (!self()->isImmutable( "TagTreeBoldMatches" ))
-            self()->mTagTreeBoldMatches = v;
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeBoldMatches" ) ))
+        self()->mTagTreeBoldMatches = v;
     }
 
     /**
-     * return if tagtreeitems should be drawn bold, if they match images
-     */
+      Get Should Treenodes, that match an image be drawn bold?
+    */
     static
     bool tagTreeBoldMatches()
     {
-        return self()->mTagTreeBoldMatches;
+      return self()->mTagTreeBoldMatches;
     }
 
     /**
-     * set, if only closed tagtreeitems should be drawn bold
-     */
+      Set Should only collapsed Treenodes be drawn bold when the match an image?
+    */
     static
-    void setTagTreeBoldMatchesClosedOnly( bool v )
+    void setTagTreeBoldMatchesCollapsedOnly( bool v )
     {
-        if (!self()->isImmutable( "TagTreeBoldMatchesClosedOnly" ))
-            self()->mTagTreeBoldMatchesClosedOnly = v;
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeBoldMatchesCollapsedOnly" ) ))
+        self()->mTagTreeBoldMatchesCollapsedOnly = v;
     }
 
     /**
-     * return, if only closed tagtreeitems should be drawn bold
-     */
+      Get Should only collapsed Treenodes be drawn bold when the match an image?
+    */
     static
-    bool tagTreeBoldMatchesClosedOnly()
+    bool tagTreeBoldMatchesCollapsedOnly()
     {
-        return self()->mTagTreeBoldMatchesClosedOnly;
+      return self()->mTagTreeBoldMatchesCollapsedOnly;
     }
 
-
-/**
+    /**
       Set Defines the operator when filtering images by the TagTree.
     */
     static
     void setTagTreeFilterOperator( int v )
     {
-      if (!self()->isImmutable( "TagTreeFilterOperator" ))
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeFilterOperator" ) ))
         self()->mTagTreeFilterOperator = v;
     }
 
@@ -224,7 +223,7 @@ class Settings : public KConfigSkeleton
     static
     void setTagTreeRememberTree( bool v )
     {
-      if (!self()->isImmutable( "TagTreeRememberTree" ))
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeRememberTree" ) ))
         self()->mTagTreeRememberTree = v;
     }
 
@@ -243,7 +242,7 @@ class Settings : public KConfigSkeleton
     static
     void setTagTreeRememberFilter( bool v )
     {
-      if (!self()->isImmutable( "TagTreeRememberFilter" ))
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeRememberFilter" ) ))
         self()->mTagTreeRememberFilter = v;
     }
 
@@ -262,7 +261,7 @@ class Settings : public KConfigSkeleton
     static
     void setTagTreeLocked( bool v )
     {
-      if (!self()->isImmutable( "TagTreeLocked" ))
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeLocked" ) ))
         self()->mTagTreeLocked = v;
     }
 
@@ -281,7 +280,7 @@ class Settings : public KConfigSkeleton
     static
     void setSourceDirTreeToolBarIconSize( int v )
     {
-      if (!self()->isImmutable( "SourceDirTreeToolBarIconSize" ))
+      if (!self()->isImmutable( QString::fromLatin1( "SourceDirTreeToolBarIconSize" ) ))
         self()->mSourceDirTreeToolBarIconSize = v;
     }
 
@@ -300,7 +299,7 @@ class Settings : public KConfigSkeleton
     static
     void setSourceDirTreeIconSize( int v )
     {
-      if (!self()->isImmutable( "SourceDirTreeIconSize" ))
+      if (!self()->isImmutable( QString::fromLatin1( "SourceDirTreeIconSize" ) ))
         self()->mSourceDirTreeIconSize = v;
     }
 
@@ -319,7 +318,7 @@ class Settings : public KConfigSkeleton
     static
     void setSourceDirTreeFont( const QFont & v )
     {
-      if (!self()->isImmutable( "SourceDirTreeFont" ))
+      if (!self()->isImmutable( QString::fromLatin1( "SourceDirTreeFont" ) ))
         self()->mSourceDirTreeFont = v;
     }
 
@@ -338,7 +337,7 @@ class Settings : public KConfigSkeleton
     static
     void setSourceDirTreeShowIcons( bool v )
     {
-      if (!self()->isImmutable( "SourceDirTreeShowIcons" ))
+      if (!self()->isImmutable( QString::fromLatin1( "SourceDirTreeShowIcons" ) ))
         self()->mSourceDirTreeShowIcons = v;
     }
 
@@ -357,7 +356,7 @@ class Settings : public KConfigSkeleton
     static
     void setSourceDirTreeRememberTree( bool v )
     {
-      if (!self()->isImmutable( "SourceDirTreeRememberTree" ))
+      if (!self()->isImmutable( QString::fromLatin1( "SourceDirTreeRememberTree" ) ))
         self()->mSourceDirTreeRememberTree = v;
     }
 
@@ -376,7 +375,7 @@ class Settings : public KConfigSkeleton
     static
     void setSourceDirTreeRememberFilter( bool v )
     {
-      if (!self()->isImmutable( "SourceDirTreeRememberFilter" ))
+      if (!self()->isImmutable( QString::fromLatin1( "SourceDirTreeRememberFilter" ) ))
         self()->mSourceDirTreeRememberFilter = v;
     }
 
@@ -395,7 +394,7 @@ class Settings : public KConfigSkeleton
     static
     void setImagePreviewSize( int v )
     {
-      if (!self()->isImmutable( "ImagePreviewSize" ))
+      if (!self()->isImmutable( QString::fromLatin1( "ImagePreviewSize" ) ))
         self()->mImagePreviewSize = v;
     }
 
@@ -414,7 +413,7 @@ class Settings : public KConfigSkeleton
     static
     void setImagePreviewFont( const QFont & v )
     {
-      if (!self()->isImmutable( "ImagePreviewFont" ))
+      if (!self()->isImmutable( QString::fromLatin1( "ImagePreviewFont" ) ))
         self()->mImagePreviewFont = v;
     }
 
@@ -433,7 +432,7 @@ class Settings : public KConfigSkeleton
     static
     void setImagePreviewShowName( bool v )
     {
-      if (!self()->isImmutable( "ImagePreviewShowName" ))
+      if (!self()->isImmutable( QString::fromLatin1( "ImagePreviewShowName" ) ))
         self()->mImagePreviewShowName = v;
     }
 
@@ -452,7 +451,7 @@ class Settings : public KConfigSkeleton
     static
     void setImagePreviewAutoRefresh( bool v )
     {
-      if (!self()->isImmutable( "ImagePreviewAutoRefresh" ))
+      if (!self()->isImmutable( QString::fromLatin1( "ImagePreviewAutoRefresh" ) ))
         self()->mImagePreviewAutoRefresh = v;
     }
 
@@ -471,7 +470,7 @@ class Settings : public KConfigSkeleton
     static
     void setImagePreviewSelectionMode( int v )
     {
-      if (!self()->isImmutable( "ImagePreviewSelectionMode" ))
+      if (!self()->isImmutable( QString::fromLatin1( "ImagePreviewSelectionMode" ) ))
         self()->mImagePreviewSelectionMode = v;
     }
 
@@ -490,7 +489,7 @@ class Settings : public KConfigSkeleton
     static
     void setFileFilterFileToHandle( const QStringList & v )
     {
-      if (!self()->isImmutable( "FileFilterFileToHandle" ))
+      if (!self()->isImmutable( QString::fromLatin1( "FileFilterFileToHandle" ) ))
         self()->mFileFilterFileToHandle = v;
     }
 
@@ -509,7 +508,7 @@ class Settings : public KConfigSkeleton
     static
     void setFileFilterSubdirsToIgnore( const QStringList & v )
     {
-      if (!self()->isImmutable( "FileFilterSubdirsToIgnore" ))
+      if (!self()->isImmutable( QString::fromLatin1( "FileFilterSubdirsToIgnore" ) ))
         self()->mFileFilterSubdirsToIgnore = v;
     }
 
@@ -523,17 +522,17 @@ class Settings : public KConfigSkeleton
     }
 
     /**
-      set use an external or an internal ImageViewer
+      Set Defines, if the internal image viewer is used to view images, rather then an external tool
     */
     static
-    void setToolsUseInternalImageviewer( const bool b )
+    void setToolsUseInternalImageViewer( bool v )
     {
-      if (!self()->isImmutable( "ToolsUseInternalImageViewer" ))
-        self()->mToolsUseInternalImageViewer = b;
+      if (!self()->isImmutable( QString::fromLatin1( "ToolsUseInternalImageViewer" ) ))
+        self()->mToolsUseInternalImageViewer = v;
     }
 
     /**
-      returns, if the internal ImageViewer should be used
+      Get Defines, if the internal image viewer is used to view images, rather then an external tool
     */
     static
     bool toolsUseInternalImageViewer()
@@ -541,79 +540,23 @@ class Settings : public KConfigSkeleton
       return self()->mToolsUseInternalImageViewer;
     }
 
-
     /**
-     * @return Image viewer should use SmoothScaling
-     */
+      Set Contains the external to open an image with when doubleclicked.
+    */
     static
-        bool toolsViewerUseSmoothScale()
+    void setToolsDefaultExternalTool( const QString & v )
     {
-        return self()->mToolsViewerUseSmoothScale;
+      if (!self()->isImmutable( QString::fromLatin1( "ToolsDefaultExternalTool" ) ))
+        self()->mToolsDefaultExternalTool = v;
     }
 
     /**
-     * set, if the imageViewer should use SmoothScaling
-     */
+      Get Contains the external to open an image with when doubleclicked.
+    */
     static
-        void setToolsViewerUseSmoothScale( bool v )
+    QString toolsDefaultExternalTool()
     {
-        if (!self()->isImmutable( "ToolsViewerUseSmoothScale" ))
-            self()->mToolsViewerUseSmoothScale = v;
-    }
-
-    /**
-     * @return if the Context Gauge should be shown in the ImageViewer
-     */
-    static
-        bool toolsViewerShowImageCounter()
-    {
-        return self()->mToolsViewerShowImageCounter;
-    }
-
-    /**
-     * set, if the ImageCounter should be shown in the image viewer
-     */
-    static
-        void setToolsViewerShowImageCounter( bool v )
-    {
-        if (!self()->isImmutable( "ToolsViewerShowImageCounter" ))
-            self()->mToolsViewerShowImageCounter = v;
-    }
-
-    /**
-     * @return if the FileInfos should be shown in the ImageViewer
-     */
-    static
-        bool toolsViewerShowFileInfos()
-    {
-        return self()->mToolsViewerShowFileInfos;
-    }
-
-    /**
-     * set, if the FileInfos should be shown in the ImageViewer
-     */
-    static
-        void setToolsViewerShowFileInfos( bool v )
-    {
-        if (!self()->isImmutable( "ToolsViewerShowFileInfos" ))
-            self()->mToolsViewerShowFileInfos = v;
-    }
-
-    /**
-     * returns the color of the overlays of the ImageViewer
-     */
-    static
-    QString toolsViewerOverlayColor() {
-        return self()->mToolsViewerOverlayColor;
-    }
-
-    /**
-     * sets the color of the overlays of the ImageViewer
-     */
-    static
-    void setToolsViewerOverlayColor(QString color) {
-        if (!self()->isImmutable( "ToolsViewerOverlayColor" ))
-            self()->mToolsViewerOverlayColor = color;
+      return self()->mToolsDefaultExternalTool;
     }
 
     /**
@@ -622,7 +565,7 @@ class Settings : public KConfigSkeleton
     static
     void setToolsExternalTools( const QStringList & v )
     {
-      if (!self()->isImmutable( "ToolsExternalTools" ))
+      if (!self()->isImmutable( QString::fromLatin1( "ToolsExternalTools" ) ))
         self()->mToolsExternalTools = v;
     }
 
@@ -636,25 +579,80 @@ class Settings : public KConfigSkeleton
     }
 
     /**
-      Set Contains the external to open an image with when doubleclicked.
+      Set Should the internal viewer use (slower) smooth scaling, or fast scaling algorithms?
     */
     static
-    void setToolsDefaultExternalTool( const QString & v )
+    void setToolsViewerUseSmoothScale( bool v )
     {
-      if (!self()->isImmutable( "ToolsDefaultExternalTool" ))
-        self()->mToolsDefaultExternalTool = v;
+      if (!self()->isImmutable( QString::fromLatin1( "ToolsViewerUseSmoothScale" ) ))
+        self()->mToolsViewerUseSmoothScale = v;
     }
-
 
     /**
-      Get Contains the external to open an image with when doubleclicked.
+      Get Should the internal viewer use (slower) smooth scaling, or fast scaling algorithms?
     */
     static
-    QString toolsDefaultExternalTool()
+    bool toolsViewerUseSmoothScale()
     {
-        return self()->mToolsDefaultExternalTool;
+      return self()->mToolsViewerUseSmoothScale;
     }
 
+    /**
+      Set Should the image counter be shown in the image viewer?
+    */
+    static
+    void setToolsViewerShowImageCounter( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ToolsViewerShowImageCounter" ) ))
+        self()->mToolsViewerShowImageCounter = v;
+    }
+
+    /**
+      Get Should the image counter be shown in the image viewer?
+    */
+    static
+    bool toolsViewerShowImageCounter()
+    {
+      return self()->mToolsViewerShowImageCounter;
+    }
+
+    /**
+      Set Should fileinfos (name etc.) be shown in the image viewer?
+    */
+    static
+    void setToolsViewerShowFileInfos( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ToolsViewerShowFileInfos" ) ))
+        self()->mToolsViewerShowFileInfos = v;
+    }
+
+    /**
+      Get Should fileinfos (name etc.) be shown in the image viewer?
+    */
+    static
+    bool toolsViewerShowFileInfos()
+    {
+      return self()->mToolsViewerShowFileInfos;
+    }
+
+    /**
+      Set The color the overlay is drawn with in the image viewer.
+    */
+    static
+    void setToolsViewerOverlayColor( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ToolsViewerOverlayColor" ) ))
+        self()->mToolsViewerOverlayColor = v;
+    }
+
+    /**
+      Get The color the overlay is drawn with in the image viewer.
+    */
+    static
+    QString toolsViewerOverlayColor()
+    {
+      return self()->mToolsViewerOverlayColor;
+    }
 
     /**
       Set Contains the last opened kphotobook file.
@@ -662,7 +660,7 @@ class Settings : public KConfigSkeleton
     static
     void setFileSystemLastOpenedFile( const QString & v )
     {
-      if (!self()->isImmutable( "FileSystemLastOpenedFile" ))
+      if (!self()->isImmutable( QString::fromLatin1( "FileSystemLastOpenedFile" ) ))
         self()->mFileSystemLastOpenedFile = v;
     }
 
@@ -681,7 +679,7 @@ class Settings : public KConfigSkeleton
     static
     void setFileSystemLastAddedSourcedir( const QString & v )
     {
-      if (!self()->isImmutable( "FileSystemLastAddedSourcedir" ))
+      if (!self()->isImmutable( QString::fromLatin1( "FileSystemLastAddedSourcedir" ) ))
         self()->mFileSystemLastAddedSourcedir = v;
     }
 
@@ -700,7 +698,7 @@ class Settings : public KConfigSkeleton
     static
     void setFileSystemLastExportedToDirectory( const QString & v )
     {
-      if (!self()->isImmutable( "FileSystemLastExportedToDirectory" ))
+      if (!self()->isImmutable( QString::fromLatin1( "FileSystemLastExportedToDirectory" ) ))
         self()->mFileSystemLastExportedToDirectory = v;
     }
 
@@ -734,7 +732,7 @@ class Settings : public KConfigSkeleton
     QFont mTagTreeFont;
     bool mTagTreeShowIcons;
     bool mTagTreeBoldMatches;
-    bool mTagTreeBoldMatchesClosedOnly;
+    bool mTagTreeBoldMatchesCollapsedOnly;
     int mTagTreeFilterOperator;
     bool mTagTreeRememberTree;
     bool mTagTreeRememberFilter;
@@ -760,13 +758,13 @@ class Settings : public KConfigSkeleton
     QStringList mFileFilterSubdirsToIgnore;
 
     // Tools
-    bool    mToolsUseInternalImageViewer;
-    bool    mToolsViewerUseSmoothScale;
-    bool    mToolsViewerShowImageCounter;
-    bool    mToolsViewerShowFileInfos;
-    QString mToolsViewerOverlayColor;
+    bool mToolsUseInternalImageViewer;
     QString mToolsDefaultExternalTool;
     QStringList mToolsExternalTools;
+    bool mToolsViewerUseSmoothScale;
+    bool mToolsViewerShowImageCounter;
+    bool mToolsViewerShowFileInfos;
+    QString mToolsViewerOverlayColor;
 
     // FileSystem
     QString mFileSystemLastOpenedFile;
