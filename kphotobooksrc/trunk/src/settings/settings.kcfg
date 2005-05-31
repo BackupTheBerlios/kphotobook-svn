@@ -61,6 +61,10 @@
         <choice name="Or" />
       </choices>
     </entry>
+    <entry name="TagTreeFilterRegexp" type="Bool" key="FilterRegexp">
+      <label>Defines if the filter of string tags uses regular expressions or wildcards.</label>
+      <default>false</default>
+    </entry>
 
     <entry name="TagTreeRememberTree" type="Bool" key="RememberTree">
       <label>Defines if the state of the TagTree (opened/closed nodes) is remebered (stored/restored).</label>
@@ -142,11 +146,11 @@
   <group name="FileFilter">
     <entry name="FileFilterFileToHandle" type="StringList" key="FileToHandle">
       <label>Contains the regularexpressions for files to handle.</label>
-      <default>.*\\.jpg,.*\\.jpeg</default>
+      <default>*.jpg,*.jpeg</default>
     </entry>
     <entry name="FileFilterSubdirsToIgnore" type="StringList" key="SubdirsToIgnore">
       <label>Contains the regularexpressions for subdirectories to ignore.</label>
-      <default>\\..*,[Tt]humbs,[Tt]humbnails,[Tt]humbNails</default>
+      <default>.*,[Tt]humbs,[Tt]humbnails,[Tt]humbNails</default>
     </entry>
   </group>
 

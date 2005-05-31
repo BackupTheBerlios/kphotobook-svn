@@ -217,11 +217,25 @@
                     </property>
                     <property name="sizeHint">
                         <size>
-                            <width>40</width>
+                            <width>110</width>
                             <height>20</height>
                         </size>
                     </property>
                 </spacer>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeFilterRegexp</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Use Regular E&amp;xpression</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+X</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Defines if the filter of string tags uaes regular expressions or wildcards.</string>
+                    </property>
+                </widget>
             </hbox>
         </widget>
         <widget class="QGroupBox">

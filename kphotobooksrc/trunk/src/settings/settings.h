@@ -218,6 +218,25 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+      Set Defines if the filter of string tags uses regular expressions or wildcards.
+    */
+    static
+    void setTagTreeFilterRegexp( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeFilterRegexp" ) ))
+        self()->mTagTreeFilterRegexp = v;
+    }
+
+    /**
+      Get Defines if the filter of string tags uses regular expressions or wildcards.
+    */
+    static
+    bool tagTreeFilterRegexp()
+    {
+      return self()->mTagTreeFilterRegexp;
+    }
+
+    /**
       Set Defines if the state of the TagTree (opened/closed nodes) is remebered (stored/restored).
     */
     static
@@ -734,6 +753,7 @@ class Settings : public KConfigSkeleton
     bool mTagTreeBoldMatches;
     bool mTagTreeBoldMatchesCollapsedOnly;
     int mTagTreeFilterOperator;
+    bool mTagTreeFilterRegexp;
     bool mTagTreeRememberTree;
     bool mTagTreeRememberFilter;
     bool mTagTreeLocked;

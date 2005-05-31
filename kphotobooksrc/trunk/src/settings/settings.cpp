@@ -83,6 +83,9 @@ Settings::Settings(  )
   KConfigSkeleton::ItemEnum  *itemTagTreeFilterOperator;
   itemTagTreeFilterOperator = new KConfigSkeleton::ItemEnum( currentGroup(), QString::fromLatin1( "FilterOperator" ), mTagTreeFilterOperator, valuesTagTreeFilterOperator, EnumTagTreeFilterOperator::And );
   addItem( itemTagTreeFilterOperator, QString::fromLatin1( "TagTreeFilterOperator" ) );
+  KConfigSkeleton::ItemBool  *itemTagTreeFilterRegexp;
+  itemTagTreeFilterRegexp = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "FilterRegexp" ), mTagTreeFilterRegexp, false );
+  addItem( itemTagTreeFilterRegexp, QString::fromLatin1( "TagTreeFilterRegexp" ) );
   KConfigSkeleton::ItemBool  *itemTagTreeRememberTree;
   itemTagTreeRememberTree = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "RememberTree" ), mTagTreeRememberTree, true );
   addItem( itemTagTreeRememberTree, QString::fromLatin1( "TagTreeRememberTree" ) );
@@ -153,14 +156,14 @@ Settings::Settings(  )
   setCurrentGroup( QString::fromLatin1( "FileFilter" ) );
 
   QStringList defaultFileFilterFileToHandle;
-  defaultFileFilterFileToHandle.append( QString::fromUtf8( ".*\\.jpg" ) );
-  defaultFileFilterFileToHandle.append( QString::fromUtf8( ".*\\.jpeg" ) );
+  defaultFileFilterFileToHandle.append( QString::fromUtf8( "*.jpg" ) );
+  defaultFileFilterFileToHandle.append( QString::fromUtf8( "*.jpeg" ) );
 
   KConfigSkeleton::ItemStringList  *itemFileFilterFileToHandle;
   itemFileFilterFileToHandle = new KConfigSkeleton::ItemStringList( currentGroup(), QString::fromLatin1( "FileToHandle" ), mFileFilterFileToHandle, defaultFileFilterFileToHandle );
   addItem( itemFileFilterFileToHandle, QString::fromLatin1( "FileFilterFileToHandle" ) );
   QStringList defaultFileFilterSubdirsToIgnore;
-  defaultFileFilterSubdirsToIgnore.append( QString::fromUtf8( "\\..*" ) );
+  defaultFileFilterSubdirsToIgnore.append( QString::fromUtf8( ".*" ) );
   defaultFileFilterSubdirsToIgnore.append( QString::fromUtf8( "[Tt]humbs" ) );
   defaultFileFilterSubdirsToIgnore.append( QString::fromUtf8( "[Tt]humbnails" ) );
   defaultFileFilterSubdirsToIgnore.append( QString::fromUtf8( "[Tt]humbNails" ) );
