@@ -22,6 +22,7 @@
 
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocstring.h"
+#include "../settings/settings.h"
 
 #include <qregexp.h>
 
@@ -61,6 +62,7 @@ bool TagNodeString::tagged(File* file, QString pattern) {
     tracer->sinvoked("tagged") << "with pattern: '" << pattern << "', value: '" << value << "'" << endl;
 
     QRegExp regExp(pattern);
+    regExp.setWildcard(!Settings::tagTreeFilterRegexp());
     if (regExp.exactMatch(value)) {
         tracer->sdebug("tagged") <<  "MATCHES!!!" << endl;
         return true;

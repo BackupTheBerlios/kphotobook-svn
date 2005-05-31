@@ -653,6 +653,7 @@ bool Engine::mustHandleDirectory(QString directoryName) {
 
     for (QStringList::Iterator it = subdirsToIgnore.begin(); it != subdirsToIgnore.end(); ++it) {
         QRegExp regExp(*it);
+        regExp.setWildcard(true);
         if (regExp.exactMatch(directoryName)) {
             return false;
         }
@@ -668,6 +669,7 @@ bool Engine::mustHandleFile(QString filename) {
 
     for ( QStringList::Iterator it = filetypesToHandle.begin(); it != filetypesToHandle.end(); ++it ) {
         QRegExp regExp(*it);
+        regExp.setWildcard(true);
         if (regExp.exactMatch(filename)) {
             return true;
         }
