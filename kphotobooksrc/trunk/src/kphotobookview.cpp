@@ -17,8 +17,6 @@
 #include "uitrees/sourcedirtree.h"
 #include "uitrees/sourcedirtreenode.h"
 
-#include "dialogs/imageviewer.h"
-
 #include "kfile.h"
 #include <kmessagebox.h>
 #include <krun.h>
