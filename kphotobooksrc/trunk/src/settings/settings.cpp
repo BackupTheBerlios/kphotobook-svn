@@ -196,7 +196,7 @@ Settings::Settings(  )
   itemToolsViewerShowFileInfos = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerShowFileInfos" ), mToolsViewerShowFileInfos, true );
   addItem( itemToolsViewerShowFileInfos, QString::fromLatin1( "ToolsViewerShowFileInfos" ) );
   KConfigSkeleton::ItemString  *itemToolsViewerOverlayColor;
-  itemToolsViewerOverlayColor = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "ViewerOverlayColor" ), mToolsViewerOverlayColor, QString::fromLatin1( "#3473b2" ) );
+  itemToolsViewerOverlayColor = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "ViewerOverlayColor" ), mToolsViewerOverlayColor, QString::fromLatin1( "#FFEB10" ) );
   addItem( itemToolsViewerOverlayColor, QString::fromLatin1( "ToolsViewerOverlayColor" ) );
 
   setCurrentGroup( QString::fromLatin1( "FileSystem" ) );

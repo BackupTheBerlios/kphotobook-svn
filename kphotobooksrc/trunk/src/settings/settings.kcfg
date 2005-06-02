@@ -181,7 +181,7 @@
     </entry>
     <entry name="ToolsViewerOverlayColor" type="String" key="ViewerOverlayColor">
         <label>The color the overlay is drawn with in the image viewer.</label>
-        <default>#3473b2</default>
+        <default>#FFEB10</default>
     </entry>
   </group>
 
