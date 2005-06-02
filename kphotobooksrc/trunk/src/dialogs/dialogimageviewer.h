@@ -22,7 +22,7 @@
 #ifndef DIALOGIMAGEVIEWER_H
 #define DIALOGIMAGEVIEWER_H
 
-#include "imageviewer.h"
+#include "../widgets/imageviewer.h"
 #include "../engine/file.h"
 
 #include <kdialog.h>
