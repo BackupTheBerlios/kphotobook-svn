@@ -33,11 +33,6 @@ class TagNodeBoolean;
 class TagTreeNodeBoolean : public TagTreeNode {
 
 public:
-    static const int FILTERSTATE_EXCLUDE = -1;
-    static const int FILTERSTATE_IGNORE = 0;
-    static const int FILTERSTATE_INCLUDE = 1;
-
-public:
     TagTreeNodeBoolean(TagTree* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
     TagTreeNodeBoolean(TagTreeNode* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
@@ -49,43 +44,10 @@ public:
      */
     virtual FilterNode* filter();
 
-    /**
-     * Sets the filter to find images without this tag set.
-     */
-    virtual void deselectFilter() {
-        m_filterState = FILTERSTATE_EXCLUDE;
-
-        // force redrawing of this listviewitem
-        this->repaint();
-    }
-
-    /**
-     * Resets the filter.
-     */
-    virtual void resetFilter() {
-        m_filterState = FILTERSTATE_IGNORE;
-
-        // force redrawing of this listviewitem
-        this->repaint();
-    }
-
-    /**
-     * Returns the currently set filter as string representation.
-     * This value is used to store in the database.
-     */
-    virtual QString getFilterString();
-    
-    /**
-     * Applies the filter returned by getFilter().
-     */
-    virtual void applyFilterString(QString filter);
-
     virtual void leftClicked(TagTree* tagTree, int column);
     virtual void rightClicked(TagTree* tagTree, int column);
 
     virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
-private:
-    int m_filterState;
 };
 
 #endif

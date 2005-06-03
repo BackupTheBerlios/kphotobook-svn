@@ -37,13 +37,14 @@ Tracer* TagTreeNodeRadio::tracer = Tracer::getInstance("kde.kphotobook.uitrees",
 
 TagTreeNodeRadio::TagTreeNodeRadio(TagTree* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
-    , m_filterState(TagTreeNodeRadio::FILTERSTATE_IGNORE) {
+{
+
 }
 
 
 TagTreeNodeRadio::TagTreeNodeRadio(TagTreeNode* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
-        , m_filterState(TagTreeNodeRadio::FILTERSTATE_IGNORE) {
+{
 }
 
 
@@ -75,42 +76,6 @@ FilterNode* TagTreeNodeRadio::subfilter() {
 }
 
 
-QString TagTreeNodeRadio::getFilterString() {
-
-    tracer->invoked(__func__);
-
-    QString filter;
-
-    switch (m_filterState) {
-    case FILTERSTATE_EXCLUDE:
-        filter = "exclude";
-        break;
-    case FILTERSTATE_INCLUDE:
-        filter = "include";
-        break;
-    case FILTERSTATE_IGNORE:
-        filter = "ignore";
-        break;
-    }
-
-    return filter;
-}
-
-
-void TagTreeNodeRadio::applyFilterString(QString filter) {
-
-    tracer->sinvoked(__func__) << "@ " << tagNode()->name() << " with filter: '" << filter << "'" << endl;
-
-    if (filter == "exclude") {
-        m_filterState = FILTERSTATE_EXCLUDE;
-    } else if (filter == "include") {
-        m_filterState = FILTERSTATE_INCLUDE;
-    } else {
-        m_filterState = FILTERSTATE_IGNORE;
-    }
-}
-
-
 void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int column) {
 
     tracer->invoked(__func__);
@@ -136,18 +101,7 @@ void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int
         break;
     }
     case TagTree::COLUMN_FILTER :
-        // change state of the filter: exclude -> ignore -> include -> exclude -> ...
-        switch (m_filterState) {
-        case FILTERSTATE_EXCLUDE:
-            m_filterState = FILTERSTATE_IGNORE;
-            break;
-        case FILTERSTATE_IGNORE:
-            m_filterState = FILTERSTATE_INCLUDE;
-            break;
-        case FILTERSTATE_INCLUDE:
-            m_filterState = FILTERSTATE_EXCLUDE;
-            break;
-        }
+        TagTreeNode::leftClicked(tagTree, column);
 
         //now tell my father, that smth happened to me
         TagTreeNodeRadioGroup* grp = dynamic_cast<TagTreeNodeRadioGroup*>(parent());
@@ -170,24 +124,11 @@ void TagTreeNodeRadio::rightClicked(__attribute__((unused)) TagTree* tagTree, in
 
     switch (column) {
     case TagTree::COLUMN_TEXT :
-        if (m_contextMenu) {
-            m_contextMenu->exec(QCursor::pos());
-        }
+        TagTreeNode::rightClicked(tagTree, column);
         break;
 
     case TagTree::COLUMN_FILTER :
-        // change state of the filter: exclude -> include -> ignore -> exclude -> ...
-        switch (m_filterState) {
-        case FILTERSTATE_EXCLUDE:
-            m_filterState = FILTERSTATE_INCLUDE;
-            break;
-        case FILTERSTATE_IGNORE:
-            m_filterState = FILTERSTATE_EXCLUDE;
-            break;
-        case FILTERSTATE_INCLUDE:
-            m_filterState = FILTERSTATE_IGNORE;
-            break;
-        }
+        TagTreeNode::rightClicked(tagTree, column);
 
         //now tell my father, that smth happened to me
         TagTreeNodeRadioGroup* grp = dynamic_cast<TagTreeNodeRadioGroup*>(parent());

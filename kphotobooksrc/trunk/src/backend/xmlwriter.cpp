@@ -139,9 +139,13 @@ void XmlWriter::dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString inde
     if (tagnode->comment()) {
         stream << " " << ATTRIBUTE_TAG_COMMENT << "=\"" << entitize(*(tagnode->comment())) << "\"";
     }
-    
+
     if (tagnode->iconName()) {
         stream << " " << ATTRIBUTE_TAG_ICON << "=\"" << *(tagnode->iconName()) << "\"";
+    }
+
+    if (tagnode->secret()) {
+        stream << " " << ATTRIBUTE_TAG_SECRET << "=\"yes\"";
     }
 
     // handle children if there are any

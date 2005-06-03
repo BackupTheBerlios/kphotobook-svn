@@ -192,6 +192,13 @@ public:
         return m_comment;
     }
 
+    void setSecret(bool s) {
+        m_bIsSecret = s;
+    }
+    bool secret() {
+        return m_bIsSecret;
+    }
+
     void setIconName(const QString& iconName);
     QString* iconName() {
         return m_iconName;
@@ -253,6 +260,11 @@ protected:
      * The comment of this tagnode.
      */
     QString* m_comment;
+
+    /**
+     * defines this node as node handled with special secrecy
+     */
+    bool m_bIsSecret;
 
     /**
      * The name or the path of the icon to use.

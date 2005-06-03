@@ -55,6 +55,7 @@
 #include "engine/filternodeopand.h"
 
 #include "export/exportsymlinks.h"
+#include "import/imageimporter.h"
 
 
 #include <kapplication.h>
@@ -383,6 +384,7 @@ void KPhotoBook::setupActions() {
     m_exportSelectedFiles->setWhatsThis(i18n("Exports all selected files as symbolic links."));
     m_exportSelectedFiles->setEnabled(false);
 
+    new KAction(i18n("Images"), 0, 0, this, SLOT(slotImportImages()), actionCollection(), "importImages");
 
     //
     // engine actions
@@ -1271,6 +1273,7 @@ void KPhotoBook::slotAddMaintag() {
 
         // let the engine create the new tagnode
         TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon());
+        newTagNode->setSecret(dialog->tagSecret());
 
         // add the new tagnode to the tagnodetree
         m_tagTree->addTagNode(newTagNode);
@@ -1337,6 +1340,7 @@ void KPhotoBook::slotEditTag() {
 
         // update the tagnode and the tagtreenode
         m_engine->editTag(tagTreeNode->tagNode(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon());
+        tagTreeNode->tagNode()->setSecret(dialog->tagSecret());
         tagTreeNode->refresh();
 
     }
@@ -1359,8 +1363,6 @@ void KPhotoBook::slotDeleteTag() {
         && typeid(*currentItem) != typeid(TagTreeNodeRadio)
         && typeid(*currentItem) != typeid(TagTreeNodeDateTime)
        ) {
-        // TODO: can't we delete RadioGroup and Radio
-
         tracer->error("slotDeleteTag", "Called on a tree item other than TagTreeNode!");
         return;
     }
@@ -1804,6 +1806,10 @@ void KPhotoBook::slotExportSelectedFiles() {
     }
 }
 
+///@todo finish implementation of the imageImporter
+void KPhotoBook::slotImportImages() {
+    (new ImageImporter(this))->show();
+}
 
 //
 // private

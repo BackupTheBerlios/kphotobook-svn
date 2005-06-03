@@ -535,6 +535,7 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
     QString comment = "";
     TagNode::Type tagNodeTypeId = TagNode::TYPE_INVALID;
     QString icon;
+    bool secret = false;
 
     QString curKey, curVal;
     // first read all arguments...
@@ -574,6 +575,9 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
         else if (curKey == ATTRIBUTE_TAG_ICON) {
             icon = curVal;
         }
+        else if (curKey == ATTRIBUTE_TAG_SECRET) {
+            secret = (curVal == "yes");
+        }
     }
 
 
@@ -611,6 +615,12 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
             << "' is empty." << endl;
     }
 
+        // icon is optional`
+    if (!secret) {
+        tracer->sdebug("handleTag") << "Optional attribute 'secret' of tagnode with the name '" << name
+            << "' is empty." << endl;
+    }
+
 
 
     // check that the id of the tagNode is not already used
@@ -632,6 +642,7 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
 
     // everything is ok --> create the concrete tagnode
     TagNode* tagNode = TagNode::createInstance(tagNodeTypeId, id, name, comment, icon, parentTagNode);
+    tagNode->setSecret(secret);
 
     if (!parentTagNode) {
         // the current tagNode seems to be a toplevel tagNode --> add the tagNode to the engine

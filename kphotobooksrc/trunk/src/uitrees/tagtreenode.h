@@ -57,8 +57,12 @@ public:
      * TAGGED: all selected images contain this tag
      * MIXTAGGED: some images contain this tag, and some don't
      */
-    enum MatchType {NOSELECT = -2, UNTAGGED  = -1, MIXTAGGED = 0, TAGGED    = 1
-    };
+    enum MatchType {NOSELECT = -2, UNTAGGED  = -1, MIXTAGGED = 0, TAGGED    = 1 };
+
+    /**
+     * This enumeration is basis of the filterstates of the TagTreeNodes
+     */
+    enum FilterState { FILTERSTATE_EXCLUDE = -1, FILTERSTATE_IGNORE, FILTERSTATE_INCLUDE };
 
     /**
      * Creates a new toplevel tagtreenode in the specified TagTree.
@@ -104,38 +108,58 @@ public:
     /**
      * Sets the filter to find images without this tag set.
      */
-    virtual void deselectFilter() = 0;
+    virtual void deselectFilter() {
+        m_filterState = TagTreeNode::FILTERSTATE_EXCLUDE;
+        // force redrawing of this listviewitem
+        this->repaint();
+    }
 
     /**
      * Resets the filter.
      */
-    virtual void resetFilter() = 0;
+    virtual void resetFilter() {
+        m_filterState = TagTreeNode::FILTERSTATE_IGNORE;
+        // force redrawing of this listviewitem
+        this->repaint();
+    }
 
     /**
      * Returns the currently set filter as string representation.
      * This value is used to store in the database.
      */
-    virtual QString getFilterString() {
-        return QString::null;
+    virtual QString filterString();
+
+    /**
+     * returns the current state of the filternode
+     */
+    virtual TagTreeNode::FilterState filterState() {
+        return m_filterState;
     }
 
     /**
-     * Applies the filter returned by getFilter().
+     * sets the filter according to the string
      */
-    virtual void applyFilterString(__attribute__((unused)) QString filter) {
+    virtual void applyFilterString(QString filter);
+
+
+    /**
+     * sets the filter to state
+     */
+    virtual void applyFilterState(TagTreeNode::FilterState state) {
+        m_filterState = state;
     }
 
     /**
      * This method is called by the tagtree when this TagTreeNode is clicked with the
      * left mouse button.
      */
-    virtual void leftClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column) {
-    }
+    virtual void leftClicked(__attribute__((unused)) TagTree* tagTree, int column);
+
     /**
      * This method is called by the tagtree when this TagTreeNode is clicked with the
      * right mouse button.
      */
-    virtual void rightClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column);
+    virtual void rightClicked(__attribute__((unused)) TagTree* tagTree, int column);
 
     /**
      * draws the cells of the tagtreeitems defaultwise
@@ -165,7 +189,6 @@ public:
      */
     virtual bool recursiveFindTagged();
 
-
 protected:
 
     /** parses the currently selected Images and looks, if a match can be found */
@@ -178,6 +201,9 @@ protected:
 
     /** saves, whether the selected images have Matched the current tagTreeNode, or not (or Mixed) */
     MatchType m_tagCurrentMatch;
+
+    TagTreeNode::FilterState m_filterState;
+
 };
 
 #endif

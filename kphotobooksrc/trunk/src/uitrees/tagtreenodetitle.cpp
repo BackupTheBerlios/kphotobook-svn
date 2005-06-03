@@ -36,28 +36,3 @@ TagTreeNodeTitle::TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, K
 
 TagTreeNodeTitle::~TagTreeNodeTitle() {
 }
-
-// void TagTreeNodeTitle::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
-//
-//     switch (column) {
-//     case TagTree::COLUMN_TEXT : {
-//
-//         //toggle bold tags
-//         if (Settings::tagTreeBoldMatches() && recursiveFindTagged()
-//             && (!Settings::tagTreeBoldMatchesClosedOnly() || (firstChild() && !isOpen()))) {
-//
-//                 QFont f(p->font());
-//                 f.setBold(true);
-//                 p->setFont(f);
-//             }
-//         KListViewItem::paintCell(p, cg, column, width, alignment);
-//         break;
-//     }
-//
-//     case TagTree::COLUMN_VALUE:
-//     case TagTree::COLUMN_FILTER :
-//
-//         KListViewItem::paintCell(p, cg, column, width, alignment);
-//         break;
-//     }
-// }

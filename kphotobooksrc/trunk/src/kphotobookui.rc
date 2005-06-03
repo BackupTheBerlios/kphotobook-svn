@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<gui name="kphotobook" version="15">
+<gui name="kphotobook" version="16">
 
 <MenuBar>
     <Menu name="file">
@@ -7,6 +7,10 @@
             <text>&amp;Export</text>
             <Action name="exportMatchingFiles" />
             <Action name="exportSelectedFiles" />
+        </Menu>
+        <Menu name="import">
+            <text>&amp;Import</text>
+            <Action name="importImages" />
         </Menu>
         <Separator/>
         <Action name="rescanFilesystem" />
@@ -36,7 +40,7 @@
         <Action name="restoreToolViews" />
     </Menu>
     <Menu name="settings">
-        <Menu name="toolviews">            
+        <Menu name="toolviews">
             <text>&amp;Tool Views</text>
             <Action name="showToolViewTagTree" />
             <Action name="showToolViewSourceDirTree" />

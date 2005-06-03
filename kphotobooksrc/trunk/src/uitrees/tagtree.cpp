@@ -299,7 +299,7 @@ QIntDict<QString>* TagTree::getFilter() {
 
         TagTreeNode* node = dynamic_cast<TagTreeNode*>(it.current());
         // add the filterstring to the filter list
-        QString filter = node->getFilterString();
+        QString filter = node->filterString();
         if (filter != QString::null) {
             filterList->insert(node->tagNode()->id(), new QString(filter));
         }

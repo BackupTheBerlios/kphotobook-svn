@@ -86,12 +86,6 @@ void TagTreeNodeString::resetFilter() {
 }
 
 
-QString TagTreeNodeString::getFilterString() {
-
-    return m_filterValue;
-}
-
-
 void TagTreeNodeString::applyFilterString(QString filter) {
 
     m_filterValue = filter;
@@ -128,19 +122,10 @@ void TagTreeNodeString::leftClicked(__attribute__((unused)) TagTree* tagTree, in
     }
 }
 
-
-void TagTreeNodeString::rightClicked(__attribute__((unused)) TagTree* tagTree, int column) {
-
-    switch (column) {
-    case TagTree::COLUMN_TEXT :
-        if (m_contextMenu) {
-            m_contextMenu->exec(QCursor::pos());
-        }
-        break;
-
-    case TagTree::COLUMN_FILTER :
-        break;
-    }
+///@todo this derived method may be deleted by time, as it does nothing special
+void TagTreeNodeString::rightClicked(__attribute__((unused)) TagTree* tagTree, int column)
+{
+    TagTreeNode::rightClicked(tagTree, column);
 }
 
 

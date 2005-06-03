@@ -296,6 +296,8 @@ private slots:
     void slotExportMatchingFiles();
     void slotExportSelectedFiles();
 
+    void slotImportImages();
+
 private:
     void init();
     void setupAccel();

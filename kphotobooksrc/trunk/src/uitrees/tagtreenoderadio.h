@@ -36,9 +36,6 @@ private:
     static Tracer* tracer;
 
 public:
-    enum FilterState {FILTERSTATE_EXCLUDE = -1, FILTERSTATE_IGNORE, FILTERSTATE_INCLUDE };
-
-public:
     TagTreeNodeRadio(TagTree* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
     TagTreeNodeRadio(TagTreeNode* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
@@ -50,37 +47,6 @@ public:
      */
     FilterNode* subfilter();
 
-    /**
-     * Sets the filter to find images without this tag set.
-     */
-    virtual void deselectFilter() {
-        m_filterState = TagTreeNodeRadio::FILTERSTATE_EXCLUDE;
-
-        // force redrawing of this listviewitem
-        this->repaint();
-    }
-
-    /**
-     * Resets the filter.
-     */
-    virtual void resetFilter() {
-        m_filterState = TagTreeNodeRadio::FILTERSTATE_IGNORE;
-
-        // force redrawing of this listviewitem
-        this->repaint();
-    }
-
-    /**
-     * Returns the currently set filter as string representation.
-     * This value is used to store in the database.
-     */
-    virtual QString getFilterString();
-
-    /**
-     * Applies the filter returned by getFilter().
-     */
-    virtual void applyFilterString(QString filter);
-
     virtual void leftClicked(TagTree* tagTree, int column);
     virtual void rightClicked(TagTree* tagTree, int column);
 
@@ -89,8 +55,6 @@ public:
     void setState(bool selected) {
         m_tagCurrentMatch = (selected ? TagTreeNode::TAGGED : TagTreeNode::UNTAGGED);
     }
-private:
-    TagTreeNodeRadio::FilterState m_filterState;
 };
 
 #endif

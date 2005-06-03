@@ -43,6 +43,7 @@ const QString XmlConstants::ATTRIBUTE_TAG_NAME = QString("name");
 const QString XmlConstants::ATTRIBUTE_TAG_COMMENT = QString("comment");
 const QString XmlConstants::ATTRIBUTE_TAG_TYPE = QString("type");
 const QString XmlConstants::ATTRIBUTE_TAG_ICON = QString("icon");
+const QString XmlConstants::ATTRIBUTE_TAG_SECRET = QString("secret");
 
 const QString XmlConstants::ATTRIBUTE_FILES_SOURCEDIRID = QString("sourcedirId");
 

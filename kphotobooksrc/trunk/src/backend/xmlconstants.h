@@ -53,6 +53,7 @@ public:
     static const QString ATTRIBUTE_TAG_COMMENT;
     static const QString ATTRIBUTE_TAG_TYPE;
     static const QString ATTRIBUTE_TAG_ICON;
+    static const QString ATTRIBUTE_TAG_SECRET;
 
     static const QString ATTRIBUTE_FILES_SOURCEDIRID;
 

@@ -136,18 +136,11 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
 }
 
 
+///@todo This derived method may be deleted by time, but as we are in the middle of the tagTreeNode
+/// redesign process, I rather don't delete it yet.
 void TagTreeNodeDateTime::rightClicked(__attribute__((unused)) TagTree* tagTree, int column)
 {
-    switch (column) {
-    case TagTree::COLUMN_TEXT :
-        if (m_contextMenu) {
-            m_contextMenu->exec(QCursor::pos());
-        }
-        break;
-
-    case TagTree::COLUMN_FILTER :
-        break;
-    }
+    TagTreeNode::rightClicked(tagTree, column);
 }
 
 

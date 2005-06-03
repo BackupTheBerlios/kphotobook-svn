@@ -32,13 +32,15 @@
 
 TagTreeNodeBoolean::TagTreeNodeBoolean(TagTree* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
-    , m_filterState(FILTERSTATE_IGNORE) {
+{
+
 }
 
 
 TagTreeNodeBoolean::TagTreeNodeBoolean(TagTreeNode* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
-    , m_filterState(FILTERSTATE_IGNORE) {
+{
+
 }
 
 
@@ -53,47 +55,18 @@ FilterNode* TagTreeNodeBoolean::filter() {
     FilterNode* filter = 0;
 
     switch (m_filterState) {
-    case FILTERSTATE_EXCLUDE:
+    case TagTreeNode::FILTERSTATE_EXCLUDE:
         filter = new FilterNodeTagBoolean(tagNode, false);
         break;
-    case FILTERSTATE_IGNORE:
+    case TagTreeNode::FILTERSTATE_IGNORE:
         filter = 0;
         break;
-    case FILTERSTATE_INCLUDE:
+    case TagTreeNode::FILTERSTATE_INCLUDE:
         filter = new FilterNodeTagBoolean(tagNode, true);
         break;
     }
 
     return filter;
-}
-
-
-QString TagTreeNodeBoolean::getFilterString() {
-
-    QString filter;
-
-    switch (m_filterState) {
-    case FILTERSTATE_EXCLUDE:
-        filter = "exclude";
-        break;
-    case FILTERSTATE_INCLUDE:
-        filter = "include";
-        break;
-    }
-
-    return filter;
-}
-
-
-void TagTreeNodeBoolean::applyFilterString(QString filter) {
-
-    m_filterState = FILTERSTATE_IGNORE;
-
-    if (filter == "exclude") {
-        m_filterState = FILTERSTATE_EXCLUDE;
-    } else if (filter == "include") {
-        m_filterState = FILTERSTATE_INCLUDE;
-    }
 }
 
 
@@ -137,50 +110,27 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
         break;
     }
     case TagTree::COLUMN_FILTER :
-        // change state of the filter: exclude -> ignore -> include -> exclude -> ...
-        switch (m_filterState) {
-        case FILTERSTATE_EXCLUDE:
-            m_filterState = FILTERSTATE_IGNORE;
-            break;
-        case FILTERSTATE_IGNORE:
-            m_filterState = FILTERSTATE_INCLUDE;
-            break;
-        case FILTERSTATE_INCLUDE:
-            m_filterState = FILTERSTATE_EXCLUDE;
-            break;
-        }
+        TagTreeNode::leftClicked(tagTree, column);
 
         // force redrawing of this listviewitem
         this->repaint();
 
         m_photobook->autoRefreshView();
         break;
+
     }
 }
 
 
-void TagTreeNodeBoolean::rightClicked(__attribute__((unused)) TagTree* tagTree, int column) {
-
+void TagTreeNodeBoolean::rightClicked(__attribute__((unused)) TagTree* tagTree, int column)
+{
     switch (column) {
     case TagTree::COLUMN_TEXT :
-        if (m_contextMenu) {
-            m_contextMenu->exec(QCursor::pos());
-        }
+        TagTreeNode::rightClicked(tagTree, column);
         break;
 
     case TagTree::COLUMN_FILTER :
-        // change state of the filter: exclude -> include -> ignore -> exclude -> ...
-        switch (m_filterState) {
-        case FILTERSTATE_EXCLUDE:
-            m_filterState = FILTERSTATE_INCLUDE;
-            break;
-        case FILTERSTATE_IGNORE:
-            m_filterState = FILTERSTATE_EXCLUDE;
-            break;
-        case FILTERSTATE_INCLUDE:
-            m_filterState = FILTERSTATE_IGNORE;
-            break;
-        }
+        TagTreeNode::rightClicked(tagTree, column);
 
         // force redrawing of this listviewitem
         this->repaint();
@@ -222,7 +172,7 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
         int size = p->fontInfo().pixelSize()+2;
         QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
 
-        TreeHelper::drawCheckBox(p, cg, rect, m_filterState, true);
+        TreeHelper::drawCheckBox(p, cg, rect, (int)m_filterState, true);
 
         break;
     }

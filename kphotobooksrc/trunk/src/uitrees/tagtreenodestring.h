@@ -63,8 +63,11 @@ public:
      * Returns the currently set filter as string representation.
      * This value is used to store in the database.
      */
-    virtual QString getFilterString();
-    
+    virtual QString filterString() {
+        return m_filterValue;
+    }
+
+
     /**
      * Applies the filter returned by getFilter().
      */

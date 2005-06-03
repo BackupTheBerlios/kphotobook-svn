@@ -49,7 +49,9 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
     , m_nameLineEdit(0)
     , m_commentLineEdit(0)
     , m_iconLineEdit(0)
-    , m_iconButton(0) {
+    , m_iconButton(0)
+    , m_chkSecret(0)
+{
 
     if (mode == MODE_CREATE_TAG) {
         if (parentNode) {
@@ -70,7 +72,7 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
     if (mode == MODE_CREATE_TAG && parentNode) {
         // newTagGroup
         QGroupBox* parentTagGroup = new QGroupBox(i18n("Parent tag"), mainPanel, "parentTagGroup");
-        QGridLayout* parentTagGroupLayout = new QGridLayout(parentTagGroup, 4, 3, 20, 5, "parentTagGroupLayout");
+        QGridLayout* parentTagGroupLayout = new QGridLayout(parentTagGroup, 5, 3, 20, 5, "parentTagGroupLayout");
 
         parentTagGroupLayout->setRowSpacing(0, 10);
 
@@ -120,11 +122,20 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
         iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         iconButton->setEnabled(true);
         parentTagGroupLayout->addWidget(iconButton, 3, 2);
+
+        QLabel* iconSecret = new QLabel(i18n("Secret"), parentTagGroup, "iconSecret");
+        parentTagGroupLayout->addWidget(iconSecret, 4, 0);
+
+        QCheckBox* chk = new QCheckBox(parentTagGroup);
+        parentTagGroupLayout->addWidget(chk, 4, 1);
+        chk->setChecked(parentNode->tagNode()->secret());
+        chk->setEnabled(false);
+
     }
 
     // newTagGroup
     QGroupBox* newTagGroup = new QGroupBox(mode == MODE_CREATE_TAG ? i18n("New tag") : i18n("Edit tag"), mainPanel, "newTagGroup");
-    QGridLayout* newTagGroupLayout = new QGridLayout(newTagGroup, 4, 3, 20, 5, "newTagGroupLayout");
+    QGridLayout* newTagGroupLayout = new QGridLayout(newTagGroup, 5, 3, 20, 5, "newTagGroupLayout");
 
     newTagGroupLayout->setRowSpacing(0, 10);
 
@@ -176,6 +187,12 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
 
     QObject::connect(m_iconButton, SIGNAL(clicked()), this, SLOT(slotIconButtonClicked()));
 
+    QLabel* iconSecret = new QLabel(i18n("Secret"), newTagGroup, "iconSecret");
+    newTagGroupLayout->addWidget(iconSecret, 4, 0);
+
+    m_chkSecret = new QCheckBox(newTagGroup);
+    newTagGroupLayout->addWidget(m_chkSecret, 4, 1);
+
     // spacer
     QWidget* spacer = new QWidget(mainPanel, "spacer");
     spacer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
@@ -185,6 +202,7 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
         m_nameLineEdit->setText(*tagTreeNode->tagNode()->text());
         m_commentLineEdit->setText(*tagTreeNode->tagNode()->comment());
         m_iconLineEdit->setText(*tagTreeNode->tagNode()->iconName());
+        m_chkSecret->setChecked(tagTreeNode->tagNode()->secret());
     }
 
     // disable ok button
@@ -229,7 +247,7 @@ void DialogManageTag::fillTypeCombo(TagTreeNode* parentNode)
 
         m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_RADIOGROUP));
         m_typeComboBoxEntries->append(TagNode::TYPE_RADIOGROUP);
-    
+
         m_typeComboBox->insertItem(TagNode::tagNodeTypeName(TagNode::TYPE_DATETIME));
         m_typeComboBoxEntries->append(TagNode::TYPE_DATETIME);
     }

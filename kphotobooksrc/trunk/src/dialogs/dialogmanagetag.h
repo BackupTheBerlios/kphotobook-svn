@@ -30,6 +30,7 @@
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <qvaluelist.h>
+#include <qcheckbox.h>
 
 class TagTreeNode;
 
@@ -67,6 +68,11 @@ public:
         return m_iconLineEdit->text();
     }
 
+    bool tagSecret() {
+        return m_chkSecret->isChecked();
+    }
+
+
 private slots:
     void slotNameChanged(const QString& text);
     void slotIconTextChanged(const QString& text);
@@ -75,7 +81,7 @@ private slots:
 private:
 
     void fillTypeCombo(TagTreeNode* parentNode);
-    
+
     Mode m_mode;
 
     TagTreeNode* m_parentNode;
@@ -90,6 +96,7 @@ private:
     KLineEdit* m_commentLineEdit;
     KLineEdit* m_iconLineEdit;
     QPushButton* m_iconButton;
+    QCheckBox* m_chkSecret;
 
     void validate();
 };
