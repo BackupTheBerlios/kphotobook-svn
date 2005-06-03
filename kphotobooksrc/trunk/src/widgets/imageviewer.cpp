@@ -390,7 +390,7 @@ void ImageViewer::slotShowPrevImage()
 }
 
 
-///@TODO make the key stuff configurable, but I don't know how, yet
+///@todo make the key stuff configurable, but I don't know how, yet
 void ImageViewer::keyPressEvent ( QKeyEvent * e )
 {
     switch (e->key()) {
@@ -402,7 +402,7 @@ void ImageViewer::keyPressEvent ( QKeyEvent * e )
         slotShowPrevImage();
         break;
 
-   ///@TODO make enter toggle fullscreen
+   ///@todo make enter toggle fullscreen
 //     case Qt::Key_Enter:
 //         ((QWidget*)parent())->toggleFullScreen();
 //         break;
@@ -426,7 +426,7 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
     caption->setAlignment( Qt::AlignCenter );
     popup->insertItem( caption );
 
-    ///@TODO use kde actions/icons here, but I don't know, how to do that!
+    ///@todo use kde actions/icons here, but I don't know, how to do that!
     popup->insertItem(i18n("Previous Image"), this, SLOT(slotShowPrevImage()));
     popup->insertItem(i18n("Next Image"), this, SLOT(slotShowNextImage()));
 
@@ -594,7 +594,7 @@ void ImageViewer::generateInfoOverlay()
         return;
     }
 
-    ///@TODO userdefinable fontsizes
+    ///@todo userdefinable fontsizes
     int fontSize = 22;
 
     QFont f;
@@ -710,8 +710,8 @@ void ImageViewer::paintEvent( QPaintEvent *e ) {
     if (x != 0 || y != 0) {
         //ok, we draw a black background ourself and disable the bg handling of the
         // widget (setBackgroundMode(NoBackground). this avoids flickering
-        ///@TODO see, if this is a speed issue
-        ///@TODO we could draw the bg only there, where it is visible, ie not behind the image
+        ///@todo see, if this is a speed issue
+        ///@todo we could draw the bg only there, where it is visible, ie not behind the image
         if (m_bgPixmap.width() < w || m_bgPixmap.height() < h) {
             m_bgPixmap.resize(w,h);
             m_bgPixmap.fill(Qt::black);
@@ -929,7 +929,7 @@ bool XImage::loadImage()
 
     bool success = m_image.load(m_file->fileInfo()->absFilePath());
 
-    /// @tODO does this give any advantage probably on low-end machines?
+    ///@todo does this give any advantage probably on low-end machines?
 //     //prescale the image to the windowgeometry
 //     if (success
 //         && m_maxWidth > 0 && m_maxHeight > 0

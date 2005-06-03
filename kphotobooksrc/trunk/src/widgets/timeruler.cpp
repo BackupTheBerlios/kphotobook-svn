@@ -198,7 +198,7 @@ void TimeRuler::initUI()
                 p.setPen(QPen(Qt::black, 1));
                 p.drawLine(x, m_yBase+over, x, m_yBase+8);
             }
-            /// @TODO here the max should be checked for percentage calculation
+            ///@todo here the max should be checked for percentage calculation
             drawBeam(&p, m_lstDates.count(y,m), y, m);
         }
     }

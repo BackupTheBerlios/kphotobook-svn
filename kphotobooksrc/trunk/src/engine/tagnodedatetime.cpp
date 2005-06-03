@@ -49,7 +49,7 @@ void TagNodeDateTime::setTagged(File* file, QDateTime value)
 
 bool TagNodeDateTime::tagged(File* file, QString pattern)
 {
-    // TODO: implement
+    ///@todo implement method 'tagged(...)'
     /*
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
 
@@ -77,7 +77,7 @@ bool TagNodeDateTime::tagged(File* file, QString pattern)
 
 bool TagNodeDateTime::tagged(File* file)
 {
-    // TODO: implement
+    ///@todo implement method 'tagged(...)'
     /*
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
 

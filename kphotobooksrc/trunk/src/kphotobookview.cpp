@@ -70,7 +70,7 @@ KPhotoBookView::~KPhotoBookView() {
 
     tracer->invoked("~KPhotoBookView");
 
-    // TODO remove the current previewed files
+    ///@todo remove the current previewed files
     //m_fileView->clearView();
 
     // all components are deleted automagically by the destructor of QWidget

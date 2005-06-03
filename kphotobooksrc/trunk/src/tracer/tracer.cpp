@@ -186,7 +186,7 @@ void Tracer::debug(const char* method, const char* message, ...) {
         return;
     }
     
-    // TODO: with qt4 the follwing code can be used:
+    ///@todo with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -238,7 +238,7 @@ void Tracer::invoked(const char* method, const char* message, ...) {
         return;
     }
 
-    // TODO: with qt4 the follwing code can be used:
+    ///@todo with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -279,7 +279,7 @@ void Tracer::info(const char* method, const char* message, ...) {
         return;
     }
 
-    // TODO: with qt4 the follwing code can be used:
+    ///@todo with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -320,7 +320,7 @@ void Tracer::warning(const char* method, const char* message, ...) {
         return;
     }
 
-    // TODO: with qt4 the follwing code can be used:
+    ///@todo with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -361,7 +361,7 @@ void Tracer::error(const char* method, const char* message, ...) {
         return;
     }
 
-    // TODO: with qt4 the follwing code can be used:
+    ///@todo with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -399,7 +399,7 @@ void Tracer::fatal(const char* method, const char* message, ...) {
 
     // fatal traces cannot be suppressed!
 
-    // TODO: with qt4 the follwing code can be used:
+    ///@todo with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);
@@ -440,7 +440,7 @@ void Tracer::trace(TraceLevel level, const char* method, const char* message, ..
         return;
     }
 
-    // TODO: with qt4 the follwing code can be used:
+    ///@todo with qt4 the follwing code can be used:
     /*
     va_list ap;
     va_start(ap, message);

@@ -149,7 +149,7 @@ void TagTreeNodeDateTime::handleRenaming(int column, const QString& text)
     QDateTime value = QDateTime::fromString(text, Qt::ISODate);
     if (!value.isValid()) {
 
-        // TODO: do something useful!!!
+        ///@todo what todo if the enetered date is invalid???
         return;
     }
 

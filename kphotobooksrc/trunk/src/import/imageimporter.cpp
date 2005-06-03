@@ -247,7 +247,7 @@ void ImageImporter::slotImport()
 
 void ImageImporter::slotQuit()
 {
-    //TODO save settings and then exit;
+    ///@todo save settings and then exit;
     accept();
 }
 

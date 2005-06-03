@@ -465,7 +465,7 @@ void Engine::rescanSourceDir(SourceDir* sourceDir) {
 
     tracer->sdebug("rescanSourceDir") << "adding files in sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath() << endl;
 
-    // TODO: setFound(false) on all files in the sourcedir!
+    ///@todo setFound(false) on all files in the sourcedir!
 
     if (sourceDir->dir()->exists()) {
         // get a list with all files in the current sourcedir

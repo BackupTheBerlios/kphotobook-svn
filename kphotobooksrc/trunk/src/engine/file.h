@@ -129,7 +129,7 @@ private:
     int m_rotate;
 
     /**
-     * Indicactes if this file existed while the startup oder the last rescan
+     * Indicates if this file existed while the startup or the last rescan
      * of the filesystem;
      */
     bool m_found;

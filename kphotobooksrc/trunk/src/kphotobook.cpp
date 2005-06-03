@@ -279,8 +279,8 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
         QString msg = QString(i18n("Could not open file: '%1'")).arg(fileinfo.absFilePath());
         KMessageBox::detailedSorry(m_view, msg, ex->toString(), i18n("Opening file failed"));
 
-        // TODO it's very strange, but the application crashes if I delete the exception!!!
-//        delete ex;
+        ///@todo it's very strange, but the application crashes if I delete the exception!!!
+        //delete ex;
     }
 
     tracer->sdebug("load") << "New engine instantiated: " << newEngine << endl;
@@ -916,9 +916,6 @@ bool KPhotoBook::queryExit() {
 
     tracer->invoked("queryExit");
 
-    // TODO
-//    saveMainWindowSettings(kapp->config());
-
     return true;
 }
 
@@ -1045,9 +1042,8 @@ bool KPhotoBook::slotFileSave() {
                 fileSaved = true;
             } catch(PersistingException* ex) {
                 KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
-                // TODO
-                // it's very strange, but the application crashes if I delete the exception!!!
-//                delete ex;
+                ///@todo it's very strange, but the application crashes if I delete the exception!!!
+                //delete ex;
             }
         } else {
             return slotFileSaveAs();
@@ -1089,9 +1085,8 @@ bool KPhotoBook::slotFileSaveAs() {
                 fileSaved = true;
             } catch(PersistingException* ex) {
                 KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
-                // TODO
-                // it's very strange, but the application crashes if I delete the exception!!!
-//                delete ex;
+                ///@todo it's very strange, but the application crashes if I delete the exception!!!
+                //delete ex;
             }
         }
     }
@@ -1206,8 +1201,7 @@ void KPhotoBook::slotAddSourcedir() {
 
             KMessageBox::detailedError(dialog, ex->message(), ex->detailMessage(), i18n("Adding sourcedir failed"));
 
-            // TODO
-            // it's very strange, but the application crashes if I delete the exception!!!
+            ///@todo it's very strange, but the application crashes if I delete the exception!!!
             //delete ex;
         }
     }
@@ -1221,7 +1215,7 @@ void KPhotoBook::slotEditSourceDir() {
 
     tracer->error("slotEditSourceDir", "NOT IMPLEMENTED YET");
 
-    // TODO: implement SourceDirPopupMenu::editSourceDir()
+    ///@todo implement SourceDirPopupMenu::editSourceDir()
 }
 
 
