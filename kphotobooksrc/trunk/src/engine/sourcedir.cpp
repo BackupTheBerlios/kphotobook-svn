@@ -39,7 +39,7 @@ SourceDir::SourceDir(unsigned int id, QDir* dir, bool recursive)
 
 SourceDir::~SourceDir() {
 
-    tracer->sinvoked("~SourceDir") << "For sourcedir '" << m_dir->absPath() << "'." << endl;
+    tracer->sinvoked(__func__) << "For sourcedir '" << m_dir->absPath() << "'." << endl;
 
     m_deleteInProgress = true;
 
@@ -69,7 +69,7 @@ SourceDir::~SourceDir() {
 void SourceDir::setParent(SourceDir* parent) {
 
     if (m_parent) {
-        tracer->swarning("setParent") << "SourceDir '" << this->toString() << "' already has a parent directory: '" << parent->toString() << "'." << endl;
+        tracer->swarning(__func__) << "SourceDir '" << this->toString() << "' already has a parent directory: '" << parent->toString() << "'." << endl;
         return;
     }
 

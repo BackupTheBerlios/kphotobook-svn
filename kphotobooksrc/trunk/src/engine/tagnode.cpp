@@ -65,7 +65,7 @@ TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QS
         newTagNode = new TagNodeDateTime(id, text, comment, iconName, parent);
         break;
     default:
-        tracer->swarning("createInstance") << "Called with unknown TypeID!" << endl;
+        tracer->swarning(__func__) << "Called with unknown TypeID!" << endl;
         return 0;
     }
 
@@ -87,7 +87,7 @@ TagNode::TagNode(unsigned int id, const QString& text, const QString& comment, c
     , m_children(0)
     , m_assocs(new QPtrList<FileTagNodeAssoc>()) {
 
-        tracer->sinvoked("TagNode") << "with id: " << id << ", text: " << text
+        tracer->sinvoked(__func__) << "with id: " << id << ", text: " << text
             << ", comment: " << comment << "icon: " << iconName << endl;
 
     setIconName(iconName);
@@ -132,12 +132,12 @@ TagNode::~TagNode() {
 void TagNode::setParent(TagNode* parent) {
 
     if (!parent) {
-        tracer->sdebug("setParent") << "no parent specified, doing noting" << endl;
+        tracer->sdebug(__func__) << "no parent specified, doing noting" << endl;
         return;
     }
 
     if (m_parent) {
-        tracer->sdebug("setParent") << "TagNode '" << this->toString() << "' already has a parent tagnode: '" << parent->toString() << "'" << endl;
+        tracer->sdebug(__func__) << "TagNode '" << this->toString() << "' already has a parent tagnode: '" << parent->toString() << "'" << endl;
         return;
     }
 
@@ -170,7 +170,7 @@ void TagNode::appendAssoc(FileTagNodeAssoc* assoc) {
 
         // test if the file of the specified association is already referenced from this tagNode
         if (currentAssoc->file() == assoc->file()) {
-            tracer->sdebug("appendAssoc") << "Association between file '" << assoc->file()->fileInfo()->absFilePath()
+            tracer->sdebug(__func__) << "Association between file '" << assoc->file()->fileInfo()->absFilePath()
                 << "' and tagnode '" << *assoc->tagNode()->text() << "' already exists." << endl;
 
             // update the existing association to reflect value of the specified one

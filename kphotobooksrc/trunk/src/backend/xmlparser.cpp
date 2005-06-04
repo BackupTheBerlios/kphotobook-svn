@@ -605,19 +605,19 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
 
     // comment is optional`
     if (comment.length() <= 0) {
-        tracer->sdebug("handleTag") << "Optional attribute 'comment' of tagnode with the name '" << name
+        tracer->sdebug(__func__) << "Optional attribute 'comment' of tagnode with the name '" << name
             << "' is empty." << endl;
     }
 
     // icon is optional`
     if (icon.length() <= 0) {
-        tracer->sdebug("handleTag") << "Optional attribute 'icon' of tagnode with the name '" << name
+        tracer->sdebug(__func__) << "Optional attribute 'icon' of tagnode with the name '" << name
             << "' is empty." << endl;
     }
 
         // icon is optional`
     if (!secret) {
-        tracer->sdebug("handleTag") << "Optional attribute 'secret' of tagnode with the name '" << name
+        tracer->sdebug(__func__) << "Optional attribute 'secret' of tagnode with the name '" << name
             << "' is empty." << endl;
     }
 

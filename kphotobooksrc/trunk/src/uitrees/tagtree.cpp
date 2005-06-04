@@ -146,7 +146,7 @@ void TagTree::addTagNodes(QPtrList<TagNode>* rootNodeList) {
 
 void TagTree::addTagNode(TagNode* rootNode) {
 
-    tracer->sdebug("addTagNode") << "Converting subtree with root node: " << *rootNode->text() << "..." << endl;
+    tracer->sdebug(__func__) << "Converting subtree with root node: " << *rootNode->text() << "..." << endl;
 
     TagTreeNode* tagTreeNode = 0;
 
@@ -170,7 +170,7 @@ void TagTree::addTagNode(TagNode* rootNode) {
         TagNodeDateTime* node = dynamic_cast<TagNodeDateTime*>(rootNode);
         tagTreeNode = new TagTreeNodeDateTime(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
     } else {
-        tracer->swarning("addTagNode") << "unknown root tagtype received: " << rootNode->type() << "!"<< endl;
+        tracer->swarning(__func__) << "unknown root tagtype received: " << rootNode->type() << "!"<< endl;
     }
 
     // build the whole tree
@@ -180,7 +180,7 @@ void TagTree::addTagNode(TagNode* rootNode) {
 
 void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
 
-    tracer->sdebug("addTagNode") << "Converting node: " << *child->text() << "..." << endl;
+    tracer->sdebug(__func__) << "Converting node: " << *child->text() << "..." << endl;
 
     TagTreeNode* tagTreeNode = 0;
 
@@ -204,7 +204,7 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
         TagNodeDateTime* node = dynamic_cast<TagNodeDateTime*>(child);
         tagTreeNode = new TagTreeNodeDateTime(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
     } else {
-        tracer->swarning("addTagNode") << "unknown sub tagtype received: " << child->type() << "!"<< endl;
+        tracer->swarning(__func__) << "unknown sub tagtype received: " << child->type() << "!"<< endl;
     }
 
     // build the whole tree
@@ -401,7 +401,7 @@ void TagTree::slotListViewClicked(int button, QListViewItem* item,__attribute__(
 
 void TagTree::slotItemRenamed(QListViewItem* item, int column, const QString& text) {
 
-    tracer->sinvoked("slotItemRenamed") << "with text: >" << text << "<" << endl;
+    tracer->sinvoked(__func__) << "with text: >" << text << "<" << endl;
 
     if (typeid(*item) == typeid(TagTreeNodeString)) {
         TagTreeNodeString* tagTreeNode = dynamic_cast<TagTreeNodeString*>(item);
@@ -410,7 +410,7 @@ void TagTree::slotItemRenamed(QListViewItem* item, int column, const QString& te
         TagTreeNodeDateTime* tagTreeNode = dynamic_cast<TagTreeNodeDateTime*>(item);
         tagTreeNode->handleRenaming(column, text);
     } else {
-        tracer->swarning("slotItemRenamed") << "unknown item received: " << item->text(0) << endl;
+        tracer->swarning(__func__) << "unknown item received: " << item->text(0) << endl;
     }
 }
 

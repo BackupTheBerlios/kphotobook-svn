@@ -50,7 +50,7 @@ void FileTagNodeAssocBoolean::update(FileTagNodeAssoc* assoc) {
         FileTagNodeAssocBoolean* concreteAssoc = dynamic_cast<FileTagNodeAssocBoolean*>(assoc);
         m_value = concreteAssoc->value();
     } else {
-        tracer->error("update", "The specified association is not of the type 'FileTagNodeAssocBoolean'.");
+        tracer->error(__func__, "The specified association is not of the type 'FileTagNodeAssocBoolean'.");
     }
 }
 

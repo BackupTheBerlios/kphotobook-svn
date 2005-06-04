@@ -48,7 +48,7 @@ void configTracer( KCmdLineArgs *args ) {
     // apply the tracelevel set by the user or the default tracelevel
     QCString tracelevel = args->getOption( "tracelevel" );
     if ( !Tracer::getRootTracer() ->setTraceLevel( tracelevel, true ) ) {
-        tracer->sfatal( "configTracer" ) << "Invalid tracelevel specified: '" << tracelevel << "'." << endl;
+        tracer->sfatal( __func__ ) << "Invalid tracelevel specified: '" << tracelevel << "'." << endl;
     }
 
     // apply the traceconfiguration from the specified traceconfig file
@@ -57,7 +57,7 @@ void configTracer( KCmdLineArgs *args ) {
 
         QFile file( traceconfigFileName );
         if ( !file.exists() ) {
-            tracer->sfatal( "configTracer" ) << "The specified tracer config file does not exist: '" << traceconfigFileName << "'." << endl;
+            tracer->sfatal( __func__ ) << "The specified tracer config file does not exist: '" << traceconfigFileName << "'." << endl;
         }
 
         if ( file.open( IO_ReadOnly ) ) {
@@ -81,7 +81,7 @@ void configTracer( KCmdLineArgs *args ) {
 
                 // there must be exactly 1 equal sign (=)
                 if ( line.contains( '=' ) != 1 ) {
-                    tracer->sfatal( "configTracer" ) << "Configline does not contain exactly 1 equal sign (=): <" << line << ">" << endl;
+                    tracer->sfatal( __func__ ) << "Configline does not contain exactly 1 equal sign (=): <" << line << ">" << endl;
                 }
 
                 // split the line

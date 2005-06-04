@@ -87,13 +87,13 @@
  *
  * There are two different ways to trace messages:
  * - via the vararg methods:
- *     tracer->debug("mymethod", "The value %d is invalid!", myvalue)
+ *     tracer->debug(__func__, "The value %d is invalid!", myvalue)
  * - using streams
- *     tracer->sdebug("mymethod") << "The value " << myvalue << " is invalid!" << endl;
+ *     tracer->sdebug(__func__) << "The value " << myvalue << " is invalid!" << endl;
  * We don't prefere one of these ways to trace. Both methods have advantages and
  * disadvantages. E.g. with the vararg method you cannot trace QStrings directly,
  * you must use the method ascii() method on the string first:
- *     tracer->debug("mymethod", "The string %s is invalid!", mystring.ascii())
+ *     tracer->debug(__func__, "The string %s is invalid!", mystring.ascii())
  *
  * There also exists an isXxxEnabled() method for each tracelevel. These methods can
  * be useful for improving performance! If you are tracing a debug message in a
@@ -101,8 +101,11 @@
  * the message is not traced at all. To avoid the execution of the code totally
  * you should execute the trace statement only if it would be traced:
  * if (tracer->isDebugEnabled()) {
- *     tracer->debug("mymethod", "mymessage", myparameter)
+ *     tracer->debug(__func__, "mymessage", myparameter)
  * }
+ *
+ * BTW: '__func__' is a preprocessor macro which will be replaced automatically
+ * with the name of the actual function the macro.
  *
  * CVS-ID $Id: tagnode.h 299 2005-04-08 22:16:51Z starcube $
  */

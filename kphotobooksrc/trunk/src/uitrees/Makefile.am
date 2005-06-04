@@ -19,3 +19,4 @@ libuitrees_la_SOURCES = \
 	treehelper.h treehelper.cpp
 
 libuitrees_la_LIBADD = $(top_builddir)/src/engine/libengine.la
+

@@ -55,7 +55,7 @@ Engine::Engine()
     , m_nextSourceDirId(1)
     , m_nextTagNodeId(1) {
 
-    tracer->sinvoked("Engine") << "empty engine" << endl;
+    tracer->sinvoked(__func__) << "empty engine" << endl;
 
     // initialize the variables
     m_sourceDirs = new QPtrList<SourceDir>();
@@ -79,12 +79,12 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
     , m_nextSourceDirId(1)
     , m_nextTagNodeId(1) {
 
-    tracer->sinvoked("Engine") << "with file '" << m_fileinfo->absFilePath() << "'" << endl;
+    tracer->sinvoked(__func__) << "with file '" << m_fileinfo->absFilePath() << "'" << endl;
 
     // if file does not exist, we have nothing to do
     if (!m_fileinfo->exists()) {
         QString msg = QString("File '%1' does not exist.").arg(m_fileinfo->absFilePath());
-        tracer->serror("Engine") << msg << endl;
+        tracer->serror(__func__) << msg << endl;
         throw new EngineException(msg, "no detailmessage");
     }
 
@@ -98,7 +98,7 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
     // open the file for reading
     if (!file.open( IO_ReadOnly )) {
         QString msg = QString("Could not open file '%1'.").arg(file.name());
-        tracer->serror("Engine") << msg << ": " << file.errorString() << endl;
+        tracer->serror(__func__) << msg << ": " << file.errorString() << endl;
         throw new EngineException(msg, file.errorString());
     }
 
@@ -134,11 +134,11 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
     file.close();
 
     if (!success) {
-        tracer->serror("Engine") << "Error occured during parsing the file '" << file.name() << "'" << endl;
+        tracer->serror(__func__) << "Error occured during parsing the file '" << file.name() << "'" << endl;
 
         cleanUp();
         if (parser.exception()) {
-            tracer->serror("Engine") << "exception occured: " << parser.exception()->message() << endl;
+            tracer->serror(__func__) << "exception occured: " << parser.exception()->message() << endl;
 
             throw parser.exception();
         } else {
@@ -157,7 +157,7 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
     }
 
     // trace a little
-    tracer->sdebug("Engine") << m_fileList->count() << " images added" << endl;
+    tracer->sdebug(__func__) << m_fileList->count() << " images added" << endl;
 }
 
 
@@ -195,7 +195,7 @@ void Engine::cleanUp() {
 
 void Engine::rescanSourceDirs() {
 
-    tracer->sinvoked("rescanSourceDirs") << "scanning..." << endl;
+    tracer->sinvoked(__func__) << "scanning..." << endl;
 
     rescanSourceDirs(m_sourceDirs);
 }
@@ -206,7 +206,7 @@ SourceDir* Engine::addSourceDir(QDir* newSourceDir, bool recursive) throw(Engine
     // test if sourcedir is addable
     testIfSourceDirIsAddable(newSourceDir, recursive);
 
-    tracer->sdebug("addSourceDir") << "adding sourcedir: " << newSourceDir->absPath() << ", recursive: " << recursive << "..." << endl;
+    tracer->sdebug(__func__) << "adding sourcedir: " << newSourceDir->absPath() << ", recursive: " << recursive << "..." << endl;
 
     m_dirty = true;
 
@@ -234,7 +234,7 @@ SourceDir* Engine::addSourceDir(QDir* newSourceDir, bool recursive) throw(Engine
 
 void Engine::removeSourceDir(SourceDir* sourceDir) {
 
-    tracer->sdebug("removeSourceDir") << "removing sourcedir: " << sourceDir->dir()->absPath() << "..." << endl;
+    tracer->sdebug(__func__) << "removing sourcedir: " << sourceDir->dir()->absPath() << "..." << endl;
 
     m_dirty = true;
 
@@ -261,7 +261,7 @@ void Engine::removeSourceDir(SourceDir* sourceDir) {
 
 TagNode* Engine::createTag(TagNode* parent, TagNode::Type type, const QString& text, const QString& comment, const QString& iconName) {
 
-    tracer->sinvoked("createTag") << "with type: " << type  << ", text: " << text
+    tracer->sinvoked(__func__) << "with type: " << type  << ", text: " << text
             << ", comment: " << comment << ", icon: " << iconName << endl;
 
     TagNode* tagNode = TagNode::createInstance(type, m_nextTagNodeId++, text, comment, iconName, parent);
@@ -291,7 +291,7 @@ void Engine::editTag(TagNode* tag, const QString& text, const QString& comment, 
 
 void Engine::removeTag(TagNode* tag) {
 
-    tracer->sinvoked("removeTag") << "with tagnode: " << tag->text() << "..." << endl;
+    tracer->sinvoked(__func__) << "with tagnode: " << tag->text() << "..." << endl;
 
     m_dirty = true;
 
@@ -344,7 +344,7 @@ bool Engine::isTagTextValid(TagNode* parent, QString& text) {
 
 QPtrList<File>* Engine::files(FilterNode* filterRootNode) {
 
-    tracer->sinvoked("files") << "with filter:" << endl;
+    tracer->sinvoked(__func__) << "with filter:" << endl;
     if (filterRootNode) {
         filterRootNode->dump("");
     }
@@ -378,10 +378,10 @@ QPtrList<File>* Engine::files(FilterNode* filterRootNode) {
 
 void Engine::save() throw(PersistingException*) {
 
-    tracer->invoked("save");
+    tracer->invoked(__func__);
 
     if (m_dirty) {
-        tracer->sdebug("save") << "engine is dirty --> saving it..." << endl;
+        tracer->sdebug(__func__) << "engine is dirty --> saving it..." << endl;
 
         // rename current file
         QDir path = m_fileinfo->dirPath(true);
@@ -392,7 +392,7 @@ void Engine::save() throw(PersistingException*) {
         QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd-hhmmsszzz");
         QString newFileName = QString("%1-%2.%3").arg(basename).arg(timestamp).arg(Constants::FILE_EXTENSION);
 
-        tracer->sdebug("save") << "backing up file in directory '" << path.absPath() << "': '" << oldFileName << "' --> '" << newFileName << "'..." << endl;
+        tracer->sdebug(__func__) << "backing up file in directory '" << path.absPath() << "': '" << oldFileName << "' --> '" << newFileName << "'..." << endl;
 
         if (!path.rename(oldFileName, newFileName, false)) {
             QString msg = QString("Could not move old file '%1/%2' to '%3/%4'. Not saving file. Use 'Save As'.").arg(path.absPath()).arg(oldFileName).arg(path.absPath()).arg(newFileName);
@@ -431,7 +431,7 @@ void Engine::rescanSourceDirs(QPtrList<SourceDir>* sourceDirs) {
 
     SourceDir* sourceDir = 0;
     for (sourceDir = sourceDirs->first(); sourceDir; sourceDir = sourceDirs->next()) {
-        tracer->sdebug("rescanSourceDirs") << "rescanning sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath() << endl;
+        tracer->sdebug(__func__) << "rescanning sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath() << endl;
 
         sourceDir->setFound(false);
 
@@ -445,7 +445,7 @@ void Engine::rescanSourceDirs(QPtrList<SourceDir>* sourceDirs) {
                 rescanSourceDirs(sourceDir->children());
             }
         } else {
-        tracer->sdebug("rescanSourceDirs") << " sourcedir: " << sourceDir->id() << ": '" << sourceDir->dir()->absPath() << "' not found" << endl;
+            tracer->sdebug(__func__) << " sourcedir: " << sourceDir->id() << ": '" << sourceDir->dir()->absPath() << "' not found" << endl;
         }
 
         // scan the filesystem for new sourcedirs
@@ -463,7 +463,7 @@ void Engine::rescanSourceDirs(QPtrList<SourceDir>* sourceDirs) {
 
 void Engine::rescanSourceDir(SourceDir* sourceDir) {
 
-    tracer->sdebug("rescanSourceDir") << "adding files in sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath() << endl;
+    tracer->sdebug(__func__) << "adding files in sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath() << endl;
 
     ///@todo setFound(false) on all files in the sourcedir!
 
@@ -482,7 +482,7 @@ void Engine::rescanSourceDir(SourceDir* sourceDir) {
                     File* file = m_fileDict->find(fileInfo->absFilePath());
                     if (!file) {
                         // the file is seen for the first time --> create it
-                        tracer->sdebug("rescanSourceDir") << "found new file to add: '" << fileInfo->absFilePath() << "'" << endl;
+                        tracer->sdebug(__func__) << "found new file to add: '" << fileInfo->absFilePath() << "'" << endl;
                         file = new File(this, sourceDir, new QFileInfo(*fileInfo));
                         m_dirty = true;
 
@@ -495,7 +495,7 @@ void Engine::rescanSourceDir(SourceDir* sourceDir) {
             }
         }
     } else {
-        tracer->swarning("rescanSourceDir") << "sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath()
+        tracer->swarning(__func__) << "sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath()
             << " does no longer exist --> ignoring it!!!" << endl;
     }
 }
@@ -503,7 +503,7 @@ void Engine::rescanSourceDir(SourceDir* sourceDir) {
 
 void Engine::testIfSourceDirIsAddable(QDir* newDir, bool recursive) throw(EngineException*) {
 
-    tracer->sinvoked("testIfSourceDirIsAddable")  << newDir->absPath()
+    tracer->sinvoked(__func__)  << newDir->absPath()
         << ", recursive: " << recursive << "..." << endl;
 
     // test if the chosen sourcedir is already added
@@ -552,7 +552,7 @@ void Engine::testIfSourceDirIsAddable(QDir* newDir, bool recursive) throw(Engine
 
 void Engine::addSourceDirs(SourceDir* parent) {
 
-    tracer->sinvoked("addSourceDirs") << "with SourceDir: " << parent->dir()->absPath() << endl;
+    tracer->sinvoked(__func__) << "with SourceDir: " << parent->dir()->absPath() << endl;
 
     // get all directories in the current directory
     const QFileInfoList* subdirlist = parent->dir()->entryInfoList(QDir::Dirs);
@@ -570,7 +570,7 @@ void Engine::addSourceDirs(SourceDir* parent) {
 
                 QDir subfolder(fileInfo->absFilePath());
 
-                    tracer->sdebug("addSourceDirs") << "handling subfolder: " << subfolder.absPath() << endl;
+                tracer->sdebug(__func__) << "handling subfolder: " << subfolder.absPath() << endl;
 
                 bool loopDetected = false;
 
@@ -580,12 +580,12 @@ void Engine::addSourceDirs(SourceDir* parent) {
 
                     if (*alreadyAddedDir == subfolder.canonicalPath()) {
                         loopDetected = true;
-                        tracer->swarning("addSourceDirs") << "loop detected, not adding directory again: '" << fileInfo->absFilePath() << "' is pointing to '" << *alreadyAddedDir << "'" << endl;
+                        tracer->swarning(__func__) << "loop detected, not adding directory again: '" << fileInfo->absFilePath() << "' is pointing to '" << *alreadyAddedDir << "'" << endl;
                         break;
                     }
                     if ((*alreadyAddedDir).startsWith(subfolder.canonicalPath(), true)) {
                         loopDetected = true;
-                        tracer->swarning("addSourceDirs") << "loop detected, not adding directory because it is a super directory (" << subfolder.canonicalPath() << ") of an already added directory: '" << *alreadyAddedDir << "'" << endl;
+                        tracer->swarning(__func__) << "loop detected, not adding directory because it is a super directory (" << subfolder.canonicalPath() << ") of an already added directory: '" << *alreadyAddedDir << "'" << endl;
                         break;
                     }
                 }
@@ -601,7 +601,7 @@ void Engine::addSourceDirs(SourceDir* parent) {
 
                         if (current->dir()->canonicalPath() == subfolder.canonicalPath()) {
                             existingSourceDir = current;
-                            tracer->sdebug("addSourceDirs") << "directory is already added: " << current->dir()->canonicalPath() << endl;
+                            tracer->sdebug(__func__) << "directory is already added: " << current->dir()->canonicalPath() << endl;
                         }
 
                         ++it;
@@ -618,7 +618,7 @@ void Engine::addSourceDirs(SourceDir* parent) {
                         // make recursive call
                         addSourceDirs(existingSourceDir);
                     } else {
-                        tracer->sdebug("addSourceDirs") << "found new sourcedir to add " << fileInfo->absFilePath() << endl;
+                        tracer->sdebug(__func__) << "found new sourcedir to add " << fileInfo->absFilePath() << endl;
 
                         // create the new SourceDir
                         SourceDir* child = new SourceDir(m_nextSourceDirId++, new QDir(fileInfo->absFilePath()), false);

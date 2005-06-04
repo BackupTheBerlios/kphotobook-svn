@@ -68,7 +68,7 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
 
 KPhotoBookView::~KPhotoBookView() {
 
-    tracer->invoked("~KPhotoBookView");
+    tracer->invoked(__func__);
 
     ///@todo remove the current previewed files
     //m_fileView->clearView();
@@ -86,7 +86,7 @@ void KPhotoBookView::removeTagNode(TagTreeNode* node) {
 
 void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
 
-    tracer->invoked("updateFiles", "updating the displayed images...");
+    tracer->invoked(__func__, "updating the displayed images...");
 
     // remember all selected files if no selected files are specified
     QPtrList<KFileItem> temp;
@@ -204,7 +204,7 @@ void KPhotoBookView::focusOutEvent(__attribute__((unused)) QFocusEvent *e) {
 void KPhotoBookView::slotShowCurrentImage() {
 
     if (Settings::toolsUseInternalImageViewer()) {
-        tracer->sdebug("slotShowCurrentImage") << "Opening internal Imageviewer ... " << endl;
+        tracer->sdebug(__func__) << "Opening internal Imageviewer ... " << endl;
 
         m_dlgImageViewer->updateImages();
         m_dlgImageViewer->show(dynamic_cast<File*>(m_fileView->currentFileItem()));
@@ -214,7 +214,7 @@ void KPhotoBookView::slotShowCurrentImage() {
         KFileItem* item = m_fileView->currentFileItem();
         KURL file = item->url();
 
-        tracer->debug("slotShowCurrentImage", "Showing file in %s. url=<%s>, path=<%s>", tool.ascii(), file.url().ascii(), file.path().ascii());
+        tracer->debug(__func__, "Showing file in %s. url=<%s>, path=<%s>", tool.ascii(), file.url().ascii(), file.path().ascii());
 
         KProcess *proc = new KProcess();
 

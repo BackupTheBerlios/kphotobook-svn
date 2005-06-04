@@ -45,7 +45,7 @@ Tracer* ImageViewer::tracer = Tracer::getInstance("kde.kphotobook.dialogs", "Ima
 ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* name)
 : QWidget( parent, name, Qt::WDestructiveClose)
 {
-    tracer->invoked("ImageViewer");
+    tracer->invoked(__func__);
 
     m_fileView = fileView;
 
@@ -75,7 +75,7 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     m_screenWidth  = desktop->screenGeometry(QCursor::pos()).width();
     m_screenHeight = desktop->screenGeometry(QCursor::pos()).height();
     delete desktop;
-    tracer->sinfo("ImageViewer") << "Screengeometry is " << m_screenWidth << "x" << m_screenHeight << endl;
+    tracer->sinfo(__func__) << "Screengeometry is " << m_screenWidth << "x" << m_screenHeight << endl;
 
     //init the background pixmap
     m_bgPixmap = QPixmap(m_screenWidth, m_screenHeight);
@@ -85,7 +85,7 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
 
 ImageViewer::~ImageViewer() {
 
-    tracer->invoked("~ImageViewer") ;
+    tracer->invoked(__func__) ;
 
     //delete the timers
     delete m_workTimer;
@@ -206,7 +206,7 @@ void ImageViewer::buildPtrList(KFileIconView* view, PtrRingBuffer<File>& ringbuf
  */
 void ImageViewer::slotWorkTimerFired()
 {
-    tracer->sdebug("slotWorkTimerFired") << endl;
+    tracer->sdebug(__func__) << endl;
 
     //override current cursor with a busy one. the already overridden cursors
     // are replaced, so the cursor stack doesn't grow beyond 1
@@ -311,7 +311,7 @@ void ImageViewer::wheelEvent (QWheelEvent* e ) {
 void ImageViewer::slotShowNextImage()
 {
     if (m_nxtImage->isValid()) {
-        tracer->sdebug("showNextImage") << "precached nextImage found, using it!" << endl;
+        tracer->sdebug(__func__) << "precached nextImage found, using it!" << endl;
 
             //preserve the link...
         XImage* tmp = m_prvImage;
@@ -352,7 +352,7 @@ void ImageViewer::slotShowNextImage()
 void ImageViewer::slotShowPrevImage()
 {
     if (m_prvImage->isValid()) {
-        tracer->sdebug("showPrevImage") << "precached prevImage found, using it!" << endl;
+        tracer->sdebug(__func__) << "precached prevImage found, using it!" << endl;
 
             //shift the data back by one
         XImage* tmp = m_nxtImage;
@@ -652,7 +652,7 @@ void ImageViewer::generateInfoOverlay()
 void ImageViewer::resizeEvent( QResizeEvent * ) {
 
     if ( !m_curImage->isValid() )  {         // we couldn't load the image
-        tracer->sdebug("resizeEvent") << "pixmap is null, unable to display!" << endl;
+        tracer->sdebug(__func__) << "pixmap is null, unable to display!" << endl;
         return;
     }
 
@@ -685,7 +685,7 @@ void ImageViewer::resizeEvent( QResizeEvent * ) {
 void ImageViewer::paintEvent( QPaintEvent *e ) {
 
     if ( m_curImage->scaled()->isNull() ) {
-        tracer->sdebug("paintEvent") << "preScaled Image is null, unable to display!" << endl;
+        tracer->sdebug(__func__) << "preScaled Image is null, unable to display!" << endl;
         //force the current image to finish its work!
         m_curImage->doWork(true);
         // we only call repaint here, if all work is done for the curImage
@@ -818,12 +818,13 @@ void XImage::setMaxDimensions(int maxWidth, int maxHeight)
  *     o scaling
  *
  * if forceFull is true, not only one of these steps is done, but all!
+ * 
  * @returns true, if work is left to be done, ie the 3 steps are not all done
  */
 bool XImage::doWork(bool forceFull)
 {
     if (m_file == NULL) {
-        tracer->serror("doWork") << "has benn called with m_file = 0L ! This should not happen!" << endl;
+        tracer->serror(__func__) << "has benn called with m_file = 0L ! This should not happen!" << endl;
         return false;
     }
 

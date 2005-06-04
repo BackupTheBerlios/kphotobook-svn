@@ -30,7 +30,7 @@ Tracer* TagNodeDateTime::tracer = Tracer::getInstance("kde.kphotobook.engine", "
 TagNodeDateTime::TagNodeDateTime(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
     : TagNode(id, text, comment, iconName, parent)
 {
-    tracer->sinvoked("TagNodeDateTime") << "with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
+    tracer->sinvoked(__func__) << "with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
 }
 
 
@@ -61,15 +61,15 @@ bool TagNodeDateTime::tagged(File* file, QString pattern)
     FileTagNodeAssocString* fileTagNodeAssocString = dynamic_cast<FileTagNodeAssocString*>(fileTagNodeAssoc);
     QString value = fileTagNodeAssocString->value();
 
-    tracer->sinvoked("tagged") << "with pattern: '" << pattern << "', value: '" << value << "'" << endl;
+    tracer->sinvoked(__func__) << "with pattern: '" << pattern << "', value: '" << value << "'" << endl;
 
     QRegExp regExp(pattern);
     if (regExp.exactMatch(value)) {
-        tracer->sdebug("tagged") <<  "MATCHES!!!" << endl;
+    tracer->sdebug(__func__) <<  "MATCHES!!!" << endl;
         return true;
     }
 
-    tracer->sdebug("tagged") << "NO match!!!" << endl;
+    tracer->sdebug(__func__) << "NO match!!!" << endl;
     */
     return false;
 }

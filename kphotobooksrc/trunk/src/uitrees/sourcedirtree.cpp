@@ -170,7 +170,7 @@ void SourceDirTree::addSourceDirs(QPtrList<SourceDir>* rootNodeList) {
 
 void SourceDirTree::addSourceDir(SourceDir* rootNode) {
 
-    tracer->sinvoked("addSourceDir") << " with sourcedir: '" << rootNode->dir()->absPath() << "'..." << endl;
+    tracer->sinvoked(__func__) << " with sourcedir: '" << rootNode->dir()->absPath() << "'..." << endl;
 
     SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(this, m_photobook, rootNode, m_photobook->contextMenuSourceDir());
 
@@ -217,7 +217,7 @@ void SourceDirTree::reflectSelectedFiles(const KFileItemList* selectedFiles) {
 SourceDirTreeNode* SourceDirTree::selectedSourceDir() {
 
     if (typeid(*currentItem()) != typeid(SourceDirTreeNode)) {
-        tracer->swarning("selectedSourceDir") << "sourcedirTree contains a node of other type than 'SourceDirTreeNode'" << endl;
+        tracer->swarning(__func__) << "sourcedirTree contains a node of other type than 'SourceDirTreeNode'" << endl;
         return 0;
     }
 

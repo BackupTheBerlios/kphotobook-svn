@@ -46,7 +46,7 @@ void FileTagNodeAssocDateTime::update(FileTagNodeAssoc* assoc)
         FileTagNodeAssocDateTime* concreteAssoc = dynamic_cast<FileTagNodeAssocDateTime*>(assoc);
         m_value = concreteAssoc->value();
     } else {
-        tracer->error("update", "The specified association is not of the type 'FileTagNodeAssocDateTime'.");
+        tracer->error(__func__, "The specified association is not of the type 'FileTagNodeAssocDateTime'.");
     }
 }
 

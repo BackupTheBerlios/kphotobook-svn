@@ -35,7 +35,7 @@ Tracer* XmlWriter::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlWr
 
 void XmlWriter::store(QFile* file2write) throw(PersistingException*) {
 
-    tracer->sinvoked("store") << "With file: '" << QFileInfo(*file2write).absFilePath() << "'." << endl;
+    tracer->sinvoked(__func__) << "With file: '" << QFileInfo(*file2write).absFilePath() << "'." << endl;
 
     if (!file2write->open(IO_WriteOnly)) {
         QString msg = QString("Could not open file for writing: '%1'").arg(QFileInfo(*file2write).absFilePath());

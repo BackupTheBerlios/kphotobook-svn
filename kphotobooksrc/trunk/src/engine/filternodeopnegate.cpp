@@ -40,13 +40,13 @@ bool FilterNodeOpNegate::evaluate(File* file) throw(FilterException*)
     FilterNode* child = m_children->first();
     if (!child) {
         QString msg = QString("Negate operator with no child found!");
-        tracer->serror("evaluate") << msg << endl;
+        tracer->serror(__func__) << msg << endl;
         throw new FilterException(msg, "no detailmessage");
     }
 
     if (m_children->next()) {
         QString msg = QString("Negate operator with more than one child found!");
-        tracer->serror("evaluate") << msg << endl;
+        tracer->serror(__func__) << msg << endl;
         throw new FilterException(msg, "no detailmessage");
     }
 

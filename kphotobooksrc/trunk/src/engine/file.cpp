@@ -68,7 +68,7 @@ void File::appendAssoc(FileTagNodeAssoc* assoc) {
 
         // test if the tagNode of the specified association is already referenced from this file
         if (currentAssoc->tagNode() == assoc->tagNode()) {
-            tracer->swarning("appendAssoc") << "Association between file '" << assoc->file()->fileInfo()->absFilePath() << "' and tagnode '" << assoc->tagNode()->text() << "' already exists." << endl;
+            tracer->swarning(__func__) << "Association between file '" << assoc->file()->fileInfo()->absFilePath() << "' and tagnode '" << assoc->tagNode()->text() << "' already exists." << endl;
 
             // update the existing association to reflect value of the specified one
             currentAssoc->update(assoc);

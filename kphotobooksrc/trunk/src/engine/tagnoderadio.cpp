@@ -28,7 +28,7 @@ Tracer* TagNodeRadio::tracer = Tracer::getInstance("kde.kphotobook.engine", "Tag
 TagNodeRadio::TagNodeRadio(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
     : TagNode(id, text, comment, iconName, parent) {
 
-        tracer->sinvoked("TagNodeRadio") << "with id: " << id << ", text: " << text << ", icon: " << iconName << endl;
+    tracer->sinvoked(__func__) << "with id: " << id << ", text: " << text << ", icon: " << iconName << endl;
 }
 
 

@@ -50,7 +50,7 @@ void FileTagNodeAssocRadio::update(FileTagNodeAssoc* assoc) {
         FileTagNodeAssocRadio* concreteAssoc = dynamic_cast<FileTagNodeAssocRadio*>(assoc);
         m_value = concreteAssoc->value();
     } else {
-        tracer->error("update", "The specified association is not of the type 'FileTagNodeAssocRadio'.");
+        tracer->error(__func__, "The specified association is not of the type 'FileTagNodeAssocRadio'.");
     }
 }
 

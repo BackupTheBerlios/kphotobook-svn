@@ -44,7 +44,7 @@ void FileTagNodeAssocString::update(FileTagNodeAssoc* assoc) {
         FileTagNodeAssocString* concreteAssoc = dynamic_cast<FileTagNodeAssocString*>(assoc);
         m_value = concreteAssoc->value();
     } else {
-        tracer->error("update", "The specified association is not of the type 'FileTagNodeAssocString'.");
+        tracer->error(__func__, "The specified association is not of the type 'FileTagNodeAssocString'.");
     }
 }
 
