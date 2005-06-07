@@ -31,6 +31,10 @@
 
 #include <kfileitem.h>
 
+
+Tracer* TagTreeNodeString::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNodeSTring");
+
+
 TagTreeNodeString::TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , m_filterValue(QString::null) {
@@ -180,15 +184,15 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
 
     switch (column) {
     case TagTree::COLUMN_TEXT :
-    case TagTree::COLUMN_FILTER :
         TagTreeNode::paintCell(p, cg, column, width, alignment);
         break;
 
     case TagTree::COLUMN_VALUE : {
 
+        bool mixed = false;
         QString text = "";
         if (m_tagCurrentMatch == TagTreeNode::MIXTAGGED) {
-            text = "---";
+            mixed = true;
         } else {
 
             // get all selected files
@@ -205,16 +209,16 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
                         // ok we got an assoc remember it
 
                         if (!text.isEmpty() && assoc->valueAsString() != text) {
-                            // abort is not all selected images have the same tagvalue!
-                            text = "---";
+                            // abort if not all selected images have the same tagvalue!
+                            mixed = true;
                             break;
                         }
                         text = assoc->valueAsString();
                     } else {
                         // no assoc found -> remove the text
                         if (!text.isEmpty()) {
-                        // abort is not all selected images have the same tagvalue!
-                            text = "---";
+                            // abort if not all selected images have the same tagvalue!
+                            mixed = true;
                             break;
                         }
                         text = "";
@@ -223,10 +227,51 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
             }
         }
 
-        setText(TagTree::COLUMN_VALUE, text);
+        // if mixed is true, we display the third state of the checkbox
+        if (mixed) {
+            // paint the cell with the alternating background color
+            p->fillRect(0, 0, width, this->height(), backgroundColor(2));
 
-        KListViewItem::paintCell(p, cg, column, width, alignment);
+            // draw the checkbox in the center of the cell in the size of the font
+            int size = p->fontInfo().pixelSize()+2;
+            QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
+
+            TreeHelper::drawCheckBox(p, cg, rect, 0, true);
+        } else {
+            setText(TagTree::COLUMN_VALUE, text);
+
+            KListViewItem::paintCell(p, cg, column, width, alignment);
+        }
         break;
     }
+        
+    case TagTree::COLUMN_FILTER :
+
+        // if filtering an empty string (the filter is ignored), we display the third state of the checkbox
+        if (m_filterValue.isEmpty()) {
+            // paint the cell with the alternating background color
+            p->fillRect(0, 0, width, this->height(), backgroundColor(2));
+
+            // draw the checkbox in the center of the cell in the size of the font
+            int size = p->fontInfo().pixelSize()+2;
+            QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
+
+            TreeHelper::drawCheckBox(p, cg, rect, 0, true);
+
+        // if filtering an empty string (the value must be an empty string), we display an empty checkbox
+        } else if (m_filterValue == "()") {
+            // paint the cell with the alternating background color
+            p->fillRect(0, 0, width, this->height(), backgroundColor(2));
+
+            // draw the checkbox in the center of the cell in the size of the font
+            int size = p->fontInfo().pixelSize()+2;
+            QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
+
+            TreeHelper::drawCheckBox(p, cg, rect, -1, true);
+
+        } else {
+            TagTreeNode::paintCell(p, cg, column, width, alignment);
+        }
+        break;
     }
 }

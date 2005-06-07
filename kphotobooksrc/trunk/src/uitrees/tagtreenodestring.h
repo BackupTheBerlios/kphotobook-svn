@@ -22,6 +22,7 @@
 #define TAGTREENODESTRING_H
 
 #include "tagtreenode.h"
+#include "../tracer/tracer.h"
 
 class TagNodeString;
 
@@ -30,61 +31,64 @@ class TagNodeString;
  *
  * CVS-ID $Id: tagtreenodeboolean.h 274 2005-03-25 08:52:15Z choenig $
  */
-class TagTreeNodeString : public TagTreeNode {
-
-public:
-    TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
-    TagTreeNodeString(TagTreeNode* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
-    virtual ~TagTreeNodeString();
-
-    void setFilterValue(QString filterValue) {
-
-        m_filterValue = filterValue;
-    }
-
-    /**
-     * Returns an FilterNode used to describe this filter.
-     */
-    virtual FilterNode* filter();
-
-    /**
-     * Sets the filter to find images without this tag set.
-     */
-    virtual void deselectFilter();
-
-    /**
-     * Resets the filter.
-     */
-    virtual void resetFilter();
-
-    /**
-     * Returns the currently set filter as string representation.
-     * This value is used to store in the database.
-     */
-    virtual QString filterString() {
-        return m_filterValue;
-    }
-
-
-    /**
-     * Applies the filter returned by getFilter().
-     */
-    virtual void applyFilterString(QString filter);
-
-    virtual void leftClicked(TagTree* tagTree, int column);
-    virtual void rightClicked(TagTree* tagTree, int column);
-
-    /**
-     * This method is called by the tagtree after the value or filter
-     * was changed by the user.
-     */
-    void handleRenaming(int column, const QString& text);
-
-    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
-private:
-    QString m_filterValue;
+class TagTreeNodeString : public TagTreeNode
+{
+    private:
+        static Tracer* tracer;
+    
+    public:
+        TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+    
+        TagTreeNodeString(TagTreeNode* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+    
+        virtual ~TagTreeNodeString();
+    
+        void setFilterValue(QString filterValue) {
+    
+            m_filterValue = filterValue;
+        }
+    
+        /**
+        * Returns an FilterNode used to describe this filter.
+        */
+        virtual FilterNode* filter();
+    
+        /**
+        * Sets the filter to find images without this tag set.
+        */
+        virtual void deselectFilter();
+    
+        /**
+        * Resets the filter.
+        */
+        virtual void resetFilter();
+    
+        /**
+        * Returns the currently set filter as string representation.
+        * This value is used to store in the database.
+        */
+        virtual QString filterString() {
+            return m_filterValue;
+        }
+    
+    
+        /**
+        * Applies the filter returned by getFilter().
+        */
+        virtual void applyFilterString(QString filter);
+    
+        virtual void leftClicked(TagTree* tagTree, int column);
+        virtual void rightClicked(TagTree* tagTree, int column);
+    
+        /**
+        * This method is called by the tagtree after the value or filter
+        * was changed by the user.
+        */
+        void handleRenaming(int column, const QString& text);
+    
+        virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
+    private:
+        QString m_filterValue;
 };
 
 #endif

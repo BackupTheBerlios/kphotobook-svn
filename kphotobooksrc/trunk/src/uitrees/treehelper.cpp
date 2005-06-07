@@ -69,7 +69,7 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bo
 
 void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled)
 {
-    // we force the checkbox to a maximu size of Constants::TREE_CHECKBOX_MAXSIZE
+    // we force the checkbox to a maximum size of Constants::TREE_CHECKBOX_MAXSIZE
     if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
         rect.setTop(2 + (rect.height() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
         rect.setLeft(rect.left() + (rect.width() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
