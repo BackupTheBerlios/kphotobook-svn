@@ -90,7 +90,7 @@ QString TagTreeNode::filterString() {
 
 
 void TagTreeNode::applyFilterString(QString filter) {
-    trace->invoked(__func__);
+    tracer->invoked(__func__);
 
     // this automatically sets the filter to EXCLUDE, if it is a secret tag and the user
     // has the settings corresponding.
