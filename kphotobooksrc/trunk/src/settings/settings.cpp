@@ -92,6 +92,9 @@ Settings::Settings(  )
   KConfigSkeleton::ItemBool  *itemTagTreeRememberFilter;
   itemTagTreeRememberFilter = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "RememberFilter" ), mTagTreeRememberFilter, true );
   addItem( itemTagTreeRememberFilter, QString::fromLatin1( "TagTreeRememberFilter" ) );
+  KConfigSkeleton::ItemBool  *itemTagTreeUnsetSecretFilter;
+  itemTagTreeUnsetSecretFilter = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "UnsetSecretFilter" ), mTagTreeUnsetSecretFilter, true );
+  addItem( itemTagTreeUnsetSecretFilter, QString::fromLatin1( "TagTreeUnsetSecretFilter" ) );
   KConfigSkeleton::ItemBool  *itemTagTreeLocked;
   itemTagTreeLocked = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "Locked" ), mTagTreeLocked, false );
   addItem( itemTagTreeLocked, QString::fromLatin1( "TagTreeLocked" ) );
@@ -210,6 +213,48 @@ Settings::Settings(  )
   KConfigSkeleton::ItemString  *itemFileSystemLastExportedToDirectory;
   itemFileSystemLastExportedToDirectory = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "LastExportedToDirectory" ), mFileSystemLastExportedToDirectory );
   addItem( itemFileSystemLastExportedToDirectory, QString::fromLatin1( "FileSystemLastExportedToDirectory" ) );
+
+  setCurrentGroup( QString::fromLatin1( "ImageImporter" ) );
+
+  KConfigSkeleton::ItemString  *itemImageImporterSourceFolder;
+  itemImageImporterSourceFolder = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "SourceFolder" ), mImageImporterSourceFolder );
+  addItem( itemImageImporterSourceFolder, QString::fromLatin1( "ImageImporterSourceFolder" ) );
+  KConfigSkeleton::ItemString  *itemImageImporterSourceFilenameRegexp;
+  itemImageImporterSourceFilenameRegexp = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "SourceFilenameRegexp" ), mImageImporterSourceFilenameRegexp );
+  addItem( itemImageImporterSourceFilenameRegexp, QString::fromLatin1( "ImageImporterSourceFilenameRegexp" ) );
+  KConfigSkeleton::ItemBool  *itemImageImporterSourceIncludeSubfolders;
+  itemImageImporterSourceIncludeSubfolders = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "SourceIncludeSubfolders" ), mImageImporterSourceIncludeSubfolders, true );
+  addItem( itemImageImporterSourceIncludeSubfolders, QString::fromLatin1( "ImageImporterSourceIncludeSubfolders" ) );
+  KConfigSkeleton::ItemString  *itemImageImporterSourceDevice;
+  itemImageImporterSourceDevice = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "SourceDevice" ), mImageImporterSourceDevice );
+  addItem( itemImageImporterSourceDevice, QString::fromLatin1( "ImageImporterSourceDevice" ) );
+  KConfigSkeleton::ItemBool  *itemImageImporterArchiveImages;
+  itemImageImporterArchiveImages = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ArchiveImages" ), mImageImporterArchiveImages, true );
+  addItem( itemImageImporterArchiveImages, QString::fromLatin1( "ImageImporterArchiveImages" ) );
+  KConfigSkeleton::ItemString  *itemImageImporterArchiveBaseFolder;
+  itemImageImporterArchiveBaseFolder = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "ArchiveBaseFolder" ), mImageImporterArchiveBaseFolder );
+  addItem( itemImageImporterArchiveBaseFolder, QString::fromLatin1( "ImageImporterArchiveBaseFolder" ) );
+  KConfigSkeleton::ItemString  *itemImageImporterArchiveSubfolders;
+  itemImageImporterArchiveSubfolders = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "ArchiveSubfolders" ), mImageImporterArchiveSubfolders );
+  addItem( itemImageImporterArchiveSubfolders, QString::fromLatin1( "ImageImporterArchiveSubfolders" ) );
+  KConfigSkeleton::ItemString  *itemImageImporterArchiveFilename;
+  itemImageImporterArchiveFilename = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "ArchiveFilename" ), mImageImporterArchiveFilename );
+  addItem( itemImageImporterArchiveFilename, QString::fromLatin1( "ImageImporterArchiveFilename" ) );
+  KConfigSkeleton::ItemBool  *itemImageImporterArchiveLowercaseFilenames;
+  itemImageImporterArchiveLowercaseFilenames = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ArchiveLowercaseFilenames" ), mImageImporterArchiveLowercaseFilenames, true );
+  addItem( itemImageImporterArchiveLowercaseFilenames, QString::fromLatin1( "ImageImporterArchiveLowercaseFilenames" ) );
+  KConfigSkeleton::ItemString  *itemImageImporterDestBaseFolder;
+  itemImageImporterDestBaseFolder = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "DestBaseFolder" ), mImageImporterDestBaseFolder );
+  addItem( itemImageImporterDestBaseFolder, QString::fromLatin1( "ImageImporterDestBaseFolder" ) );
+  KConfigSkeleton::ItemString  *itemImageImporterDestSubfolders;
+  itemImageImporterDestSubfolders = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "DestSubfolders" ), mImageImporterDestSubfolders );
+  addItem( itemImageImporterDestSubfolders, QString::fromLatin1( "ImageImporterDestSubfolders" ) );
+  KConfigSkeleton::ItemString  *itemImageImporterDestFilenames;
+  itemImageImporterDestFilenames = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "DestFilename" ), mImageImporterDestFilenames );
+  addItem( itemImageImporterDestFilenames, QString::fromLatin1( "ImageImporterDestFilenames" ) );
+  KConfigSkeleton::ItemBool  *itemImageImporterDestLowercaseFilenames;
+  itemImageImporterDestLowercaseFilenames = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "DestLowercaseFilenames" ), mImageImporterDestLowercaseFilenames, true );
+  addItem( itemImageImporterDestLowercaseFilenames, QString::fromLatin1( "ImageImporterDestLowercaseFilenames" ) );
 }
 
 Settings::~Settings()

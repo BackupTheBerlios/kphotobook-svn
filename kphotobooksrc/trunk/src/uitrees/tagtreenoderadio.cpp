@@ -76,7 +76,7 @@ FilterNode* TagTreeNodeRadio::subfilter() {
 }
 
 
-void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int column) {
+void TagTreeNodeRadio::leftClicked(TagTree* tagTree, int column) {
 
     tracer->invoked(__func__);
 
@@ -118,7 +118,7 @@ void TagTreeNodeRadio::leftClicked(__attribute__((unused)) TagTree* tagTree, int
 }
 
 
-void TagTreeNodeRadio::rightClicked(__attribute__((unused)) TagTree* tagTree, int column) {
+void TagTreeNodeRadio::rightClicked(TagTree* tagTree, int column) {
 
     tracer->invoked(__func__);
 

@@ -96,7 +96,7 @@ public:
      * Returns the currently set filter as string representation.
      */
     virtual QString getFilterString();
-    
+
     /**
      * Applies the filter returned by getFilter().
      */
@@ -116,7 +116,7 @@ public:
      * @param sourceDirTree The SourceDirTree we belong to.
      * @param column The column number the user clicked in.
      */
-    void rightClicked(__attribute__((unused)) SourceDirTree* sourceDirTree, __attribute__((unused)) int column);
+    void rightClicked(SourceDirTree* sourceDirTree, int column);
 
     void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
 

@@ -83,7 +83,7 @@ FilterNode* TagTreeNodeRadioGroup::filter() {
 }
 
 
-void TagTreeNodeRadioGroup::leftClicked(__attribute__((unused)) TagTree* tagTree, int column) {
+void TagTreeNodeRadioGroup::leftClicked(TagTree* tagTree, int column) {
 
     tracer->invoked(__func__);
 

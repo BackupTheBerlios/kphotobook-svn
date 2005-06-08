@@ -90,6 +90,14 @@ QString TagTreeNode::filterString() {
 
 
 void TagTreeNode::applyFilterString(QString filter) {
+    trace->invoked(__func__);
+
+    // this automatically sets the filter to EXCLUDE, if it is a secret tag and the user
+    // has the settings corresponding.
+    if (m_tagNode->secret() && Settings::tagTreeUnsetSecretFilter() ) {
+        m_filterState = TagTreeNode::FILTERSTATE_EXCLUDE;
+        return;
+    }
 
     if (filter == "exclude") {
         m_filterState = TagTreeNode::FILTERSTATE_EXCLUDE;
@@ -135,7 +143,7 @@ void TagTreeNode::setOpenRecursive(bool open) {
     }
 }
 
-void TagTreeNode::leftClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column)
+void TagTreeNode::leftClicked(__attribute__((unused)) TagTree* tagTree, int column)
 {
     int button = KMessageBox::Yes;
 
@@ -173,7 +181,10 @@ void TagTreeNode::leftClicked(__attribute__((unused)) TagTree* tagTree, __attrib
 }
 
 
-void TagTreeNode::rightClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column) {
+void TagTreeNode::rightClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column)
+{
+    tracer->sinvoked(__func__);
+
     int button = KMessageBox::Yes;
 
     switch (column) {

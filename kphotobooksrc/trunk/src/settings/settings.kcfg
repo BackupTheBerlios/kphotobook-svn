@@ -71,8 +71,12 @@
       <default>true</default>
     </entry>
     <entry name="TagTreeRememberFilter" type="Bool" key="RememberFilter">
-      <label>Defines if the filter of the TagTree is remembered (stored/restored).</label>
-      <default>true</default>
+	    <label>Defines if the filter of the TagTree is remembered (stored/restored).</label>
+	    <default>true</default>
+    </entry>
+    <entry name="TagTreeUnsetSecretFilter" type="Bool" key="UnsetSecretFilter">
+	    <label>Defines if the filter of tags, that are marked secret, should be off by default.</label>
+	    <default>true</default>
     </entry>
 
     <entry name="TagTreeLocked" type="Bool" key="Locked">
@@ -195,6 +199,54 @@
     <entry name="FileSystemLastExportedToDirectory" type="String" key="LastExportedToDirectory">
       <label>Contains the last directory images were exported to.</label>
     </entry>
+  </group>
+
+  <group name="ImageImporter">
+    <entry name="ImageImporterSourceFolder" type="String" key="SourceFolder">
+      <label>Contains the Sourcefolder setting of the ImageImporter.</label>
+    </entry>
+    <entry name="ImageImporterSourceFilenameRegexp" type="String" key="SourceFilenameRegexp">
+      <label>Contains the Sourcefilename regexp setting of the ImageImporter.</label>
+    </entry>
+    <entry name="ImageImporterSourceIncludeSubfolders" type="Bool" key="SourceIncludeSubfolders">
+        <label></label>
+        <default>true</default>
+    </entry>
+    <entry name="ImageImporterSourceDevice" type="String" key="SourceDevice">
+      <label>Contains the last sourcedevide of the ImageImporter.</label>
+    </entry>
+
+    <entry name="ImageImporterArchiveImages" type="Bool" key="ArchiveImages">
+        <label>Contains, if images should be Archived, too.</label>
+        <default>true</default>
+    </entry>
+    <entry name="ImageImporterArchiveBaseFolder" type="String" key="ArchiveBaseFolder">
+      <label>This is the Base folder, where archive images are moved to.</label>
+    </entry>
+    <entry name="ImageImporterArchiveSubfolders" type="String" key="ArchiveSubfolders">
+      <label>This is the way the subfolders are named in the Archive base folder.</label>
+    </entry>
+    <entry name="ImageImporterArchiveFilename" type="String" key="ArchiveFilename">
+      <label>This is how the files will be called in the archive Subfolders.</label>
+    </entry>
+    <entry name="ImageImporterArchiveLowercaseFilenames" type="Bool" key="ArchiveLowercaseFilenames">
+        <label>Do you want to lowercase all images in the Archive folder?</label>
+        <default>true</default>
+    </entry>
+    <entry name="ImageImporterDestBaseFolder" type="String" key="DestBaseFolder">
+      <label>This is the base folder of the importet images in the albums.</label>
+    </entry>
+    <entry name="ImageImporterDestSubfolders" type="String" key="DestSubfolders">
+      <label>This is how the subfolders in the dest are called.</label>
+    </entry>
+    <entry name="ImageImporterDestFilenames" type="String" key="DestFilename">
+      <label>This is how the files in the dest subfolders will be called.</label>
+    </entry>
+    <entry name="ImageImporterDestLowercaseFilenames" type="Bool" key="DestLowercaseFilenames">
+        <label>Should the files be all lowercase in the dest folder?</label>
+        <default>true</default>
+    </entry>
+
   </group>
 
 </kcfg>

@@ -275,6 +275,25 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+      Set Defines if the filter of tags, that are marked secret, should be off by default.
+    */
+    static
+    void setTagTreeUnsetSecretFilter( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "TagTreeUnsetSecretFilter" ) ))
+        self()->mTagTreeUnsetSecretFilter = v;
+    }
+
+    /**
+      Get Defines if the filter of tags, that are marked secret, should be off by default.
+    */
+    static
+    bool tagTreeUnsetSecretFilter()
+    {
+      return self()->mTagTreeUnsetSecretFilter;
+    }
+
+    /**
       Set Defines if the tagtree is locked or not.
     */
     static
@@ -730,6 +749,253 @@ class Settings : public KConfigSkeleton
       return self()->mFileSystemLastExportedToDirectory;
     }
 
+    /**
+      Set Contains the Sourcefolder setting of the ImageImporter.
+    */
+    static
+    void setImageImporterSourceFolder( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterSourceFolder" ) ))
+        self()->mImageImporterSourceFolder = v;
+    }
+
+    /**
+      Get Contains the Sourcefolder setting of the ImageImporter.
+    */
+    static
+    QString imageImporterSourceFolder()
+    {
+      return self()->mImageImporterSourceFolder;
+    }
+
+    /**
+      Set Contains the Sourcefilename regexp setting of the ImageImporter.
+    */
+    static
+    void setImageImporterSourceFilenameRegexp( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterSourceFilenameRegexp" ) ))
+        self()->mImageImporterSourceFilenameRegexp = v;
+    }
+
+    /**
+      Get Contains the Sourcefilename regexp setting of the ImageImporter.
+    */
+    static
+    QString imageImporterSourceFilenameRegexp()
+    {
+      return self()->mImageImporterSourceFilenameRegexp;
+    }
+
+    /**
+      Set SourceIncludeSubfolders
+    */
+    static
+    void setImageImporterSourceIncludeSubfolders( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterSourceIncludeSubfolders" ) ))
+        self()->mImageImporterSourceIncludeSubfolders = v;
+    }
+
+    /**
+      Get SourceIncludeSubfolders
+    */
+    static
+    bool imageImporterSourceIncludeSubfolders()
+    {
+      return self()->mImageImporterSourceIncludeSubfolders;
+    }
+
+    /**
+      Set Contains the last sourcedevide of the ImageImporter.
+    */
+    static
+    void setImageImporterSourceDevice( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterSourceDevice" ) ))
+        self()->mImageImporterSourceDevice = v;
+    }
+
+    /**
+      Get Contains the last sourcedevide of the ImageImporter.
+    */
+    static
+    QString imageImporterSourceDevice()
+    {
+      return self()->mImageImporterSourceDevice;
+    }
+
+    /**
+      Set Contains, if images should be Archived, too.
+    */
+    static
+    void setImageImporterArchiveImages( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterArchiveImages" ) ))
+        self()->mImageImporterArchiveImages = v;
+    }
+
+    /**
+      Get Contains, if images should be Archived, too.
+    */
+    static
+    bool imageImporterArchiveImages()
+    {
+      return self()->mImageImporterArchiveImages;
+    }
+
+    /**
+      Set This is the Base folder, where archive images are moved to.
+    */
+    static
+    void setImageImporterArchiveBaseFolder( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterArchiveBaseFolder" ) ))
+        self()->mImageImporterArchiveBaseFolder = v;
+    }
+
+    /**
+      Get This is the Base folder, where archive images are moved to.
+    */
+    static
+    QString imageImporterArchiveBaseFolder()
+    {
+      return self()->mImageImporterArchiveBaseFolder;
+    }
+
+    /**
+      Set This is the way the subfolders are named in the Archive base folder.
+    */
+    static
+    void setImageImporterArchiveSubfolders( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterArchiveSubfolders" ) ))
+        self()->mImageImporterArchiveSubfolders = v;
+    }
+
+    /**
+      Get This is the way the subfolders are named in the Archive base folder.
+    */
+    static
+    QString imageImporterArchiveSubfolders()
+    {
+      return self()->mImageImporterArchiveSubfolders;
+    }
+
+    /**
+      Set This is how the files will be called in the archive Subfolders.
+    */
+    static
+    void setImageImporterArchiveFilename( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterArchiveFilename" ) ))
+        self()->mImageImporterArchiveFilename = v;
+    }
+
+    /**
+      Get This is how the files will be called in the archive Subfolders.
+    */
+    static
+    QString imageImporterArchiveFilename()
+    {
+      return self()->mImageImporterArchiveFilename;
+    }
+
+    /**
+      Set Do you want to lowercase all images in the Archive folder?
+    */
+    static
+    void setImageImporterArchiveLowercaseFilenames( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterArchiveLowercaseFilenames" ) ))
+        self()->mImageImporterArchiveLowercaseFilenames = v;
+    }
+
+    /**
+      Get Do you want to lowercase all images in the Archive folder?
+    */
+    static
+    bool imageImporterArchiveLowercaseFilenames()
+    {
+      return self()->mImageImporterArchiveLowercaseFilenames;
+    }
+
+    /**
+      Set This is the base folder of the importet images in the albums.
+    */
+    static
+    void setImageImporterDestBaseFolder( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterDestBaseFolder" ) ))
+        self()->mImageImporterDestBaseFolder = v;
+    }
+
+    /**
+      Get This is the base folder of the importet images in the albums.
+    */
+    static
+    QString imageImporterDestBaseFolder()
+    {
+      return self()->mImageImporterDestBaseFolder;
+    }
+
+    /**
+      Set This is how the subfolders in the dest are called.
+    */
+    static
+    void setImageImporterDestSubfolders( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterDestSubfolders" ) ))
+        self()->mImageImporterDestSubfolders = v;
+    }
+
+    /**
+      Get This is how the subfolders in the dest are called.
+    */
+    static
+    QString imageImporterDestSubfolders()
+    {
+      return self()->mImageImporterDestSubfolders;
+    }
+
+    /**
+      Set This is how the files in the dest subfolders will be called.
+    */
+    static
+    void setImageImporterDestFilenames( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterDestFilenames" ) ))
+        self()->mImageImporterDestFilenames = v;
+    }
+
+    /**
+      Get This is how the files in the dest subfolders will be called.
+    */
+    static
+    QString imageImporterDestFilenames()
+    {
+      return self()->mImageImporterDestFilenames;
+    }
+
+    /**
+      Set Should the files be all lowercase in the dest folder?
+    */
+    static
+    void setImageImporterDestLowercaseFilenames( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterDestLowercaseFilenames" ) ))
+        self()->mImageImporterDestLowercaseFilenames = v;
+    }
+
+    /**
+      Get Should the files be all lowercase in the dest folder?
+    */
+    static
+    bool imageImporterDestLowercaseFilenames()
+    {
+      return self()->mImageImporterDestLowercaseFilenames;
+    }
+
     static
     void writeConfig()
     {
@@ -756,6 +1022,7 @@ class Settings : public KConfigSkeleton
     bool mTagTreeFilterRegexp;
     bool mTagTreeRememberTree;
     bool mTagTreeRememberFilter;
+    bool mTagTreeUnsetSecretFilter;
     bool mTagTreeLocked;
 
     // SourceDirTree
@@ -790,6 +1057,21 @@ class Settings : public KConfigSkeleton
     QString mFileSystemLastOpenedFile;
     QString mFileSystemLastAddedSourcedir;
     QString mFileSystemLastExportedToDirectory;
+
+    // ImageImporter
+    QString mImageImporterSourceFolder;
+    QString mImageImporterSourceFilenameRegexp;
+    bool mImageImporterSourceIncludeSubfolders;
+    QString mImageImporterSourceDevice;
+    bool mImageImporterArchiveImages;
+    QString mImageImporterArchiveBaseFolder;
+    QString mImageImporterArchiveSubfolders;
+    QString mImageImporterArchiveFilename;
+    bool mImageImporterArchiveLowercaseFilenames;
+    QString mImageImporterDestBaseFolder;
+    QString mImageImporterDestSubfolders;
+    QString mImageImporterDestFilenames;
+    bool mImageImporterDestLowercaseFilenames;
 
   private:
 };

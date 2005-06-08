@@ -122,7 +122,7 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
 }
 
 
-void TagTreeNodeBoolean::rightClicked(__attribute__((unused)) TagTree* tagTree, int column)
+void TagTreeNodeBoolean::rightClicked(TagTree* tagTree, int column)
 {
     switch (column) {
     case TagTree::COLUMN_TEXT :

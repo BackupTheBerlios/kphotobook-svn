@@ -42,11 +42,9 @@ Tracer* XmlParser::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlPa
 //
 // methods of content handler
 //
-bool XmlParser::startElement(
-    __attribute__((unused)) const QString& namespaceURI,
-    const QString& localName,
-    __attribute__((unused)) const QString& qName,
-    const QXmlAttributes& atts) {
+bool XmlParser::startElement( __attribute__((unused)) const QString& namespaceURI, const QString& localName,
+                              __attribute__((unused)) const QString& qName,  const QXmlAttributes& atts)
+{
 
     //
     // handle starttag 'kphotobook'
@@ -227,10 +225,8 @@ bool XmlParser::startElement(
     return true;
 }
 
-bool XmlParser::endElement(
-    __attribute__((unused)) const QString& namespaceURI,
-    const QString& localName,
-    __attribute__((unused)) const QString& qName) {
+bool XmlParser::endElement( __attribute__((unused)) const QString& namespaceURI,  const QString& localName,
+                            __attribute__((unused)) const QString& qName) {
 
     //
     // handle endtag 'kphotobook'

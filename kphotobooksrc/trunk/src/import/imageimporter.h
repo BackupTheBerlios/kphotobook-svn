@@ -38,49 +38,57 @@ public:
 
 
 private slots:
+    void slotSourceDeviceTextChanged(const QString& str);
+    void slotMountDevice();
+
+    void slotBtnSourceFolder();
     void slotBtnArchiveBaseFolder();
     void slotBtnDestBaseFolder();
     void slotImport();
     void slotQuit();
+    void slotSaveSettings();
+
+    void slotUpdateArchiveExample();
+    void slotUpdateDestExample();
 
 private:
     void initGUI();
     void initData();
 
+
     /////////////////////////////
 
 
 private:
-    QButtonGroup*  m_grpSource;
-    QPushButton*   m_btnSourceFolder;
-    QRadioButton*  m_radioFolder;
-    QRadioButton*  m_radioDevice;
-    QLineEdit*     m_txtSourceFolder;
-    QComboBox*     m_cmbSourceDevice;
-    QPushButton*   m_btnMountDevice;
-    QLineEdit*     m_txtSourceFilename;
-    QCheckBox*     m_chkSrcIncludeSubfolders;
-    QGroupBox*     m_groupArchive;
-    QLineEdit*     m_txtArchiveBaseFolder;
-    QLineEdit*     m_txtArchiveSubfolders;
-    QLineEdit*     m_txtArchiveFilename;
-    QCheckBox*     m_chkArchiveLowercase;
-    KSqueezedTextLabel* m_kSqueezedTextLabel1;
-    QGroupBox*     m_groupDest;
-    QLineEdit*     m_txtDestBasefolder;
-    QLineEdit*     m_txtDestSubfolders;
-    QLineEdit*     m_txtDestFilename;
-    QCheckBox*     m_chkDestLowercase;
-    QLabel*        m_lblDestExampleString;
+    QButtonGroup*       m_grpSource;
+    QPushButton*        m_btnSourceFolder;
+    QRadioButton*       m_radioFolder;
+    QRadioButton*       m_radioDevice;
+    QLineEdit*          m_txtSourceFolder;
+    QComboBox*          m_cmbSourceDevice;
+    QPushButton*        m_btnMountDevice;
+    QLineEdit*          m_txtSourceFilename;
+    QCheckBox*          m_chkSrcIncludeSubfolders;
+    QGroupBox*          m_groupArchive;
+    QLineEdit*          m_txtArchiveBaseFolder;
+    QLineEdit*          m_txtArchiveSubfolders;
+    QLineEdit*          m_txtArchiveFilename;
+    QCheckBox*          m_chkArchiveLowercase;
+    KSqueezedTextLabel* m_lblArchiveExampleString;
+    QGroupBox*          m_groupDest;
+    QLineEdit*          m_txtDestBasefolder;
+    QLineEdit*          m_txtDestSubfolders;
+    QLineEdit*          m_txtDestFilename;
+    QCheckBox*          m_chkDestLowercase;
+    KSqueezedTextLabel* m_lblDestExampleString;
+
+    bool m_bCurrentDeviceMounted;
 
 protected:
     QVBoxLayout*   m_ImageImporterLayout;
     QGridLayout*   m_grpSourceLayout;
     QGridLayout*   m_groupArchiveLayout;
     QGridLayout*   m_groupDestLayout;
-
-protected slots:
-    virtual void languageChange();
 
 };
 

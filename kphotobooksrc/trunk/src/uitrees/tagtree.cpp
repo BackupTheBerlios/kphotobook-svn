@@ -368,7 +368,7 @@ void TagTree::focusOutEvent(__attribute__((unused)) QFocusEvent *e) {
 //
 // private slots
 //
-void TagTree::slotListViewDoubleClicked(QListViewItem* item,__attribute__((unused)) const QPoint& point, int column) {
+void TagTree::slotListViewDoubleClicked(QListViewItem* item, __attribute__((unused)) const QPoint& point, int column) {
 
     if (column == TagTree::COLUMN_TEXT) {
         setOpen(item, !isOpen(item));
@@ -376,7 +376,7 @@ void TagTree::slotListViewDoubleClicked(QListViewItem* item,__attribute__((unuse
 }
 
 
-void TagTree::slotListViewClicked(int button, QListViewItem* item,__attribute__((unused)) const QPoint& point, int column) {
+void TagTree::slotListViewClicked(int button, QListViewItem* item, __attribute__((unused)) const QPoint& point, int column) {
 
     if (button == Qt::RightButton && item == 0) {
         // show contextMenu if right clicked on no item

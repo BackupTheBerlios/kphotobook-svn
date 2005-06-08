@@ -111,6 +111,9 @@
                     <property name="text">
                         <string>Draw &amp;nodes with matches bold</string>
                     </property>
+                    <property name="accel">
+                        <string>Alt+N</string>
+                    </property>
                 </widget>
                 <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="3">
                     <property name="name">
@@ -245,19 +248,22 @@
             <property name="title">
                 <string>Remember tree state</string>
             </property>
-            <vbox>
+            <grid>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QCheckBox">
+                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>kcfg_TagTreeRememberTree</cstring>
                     </property>
                     <property name="text">
                         <string>Remem&amp;ber open/closed nodes</string>
                     </property>
+                    <property name="accel">
+                        <string>Alt+B</string>
+                    </property>
                 </widget>
-                <widget class="QCheckBox">
+                <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>kcfg_TagTreeRememberFilter</cstring>
                     </property>
@@ -265,7 +271,35 @@
                         <string>Remember filter state</string>
                     </property>
                 </widget>
-            </vbox>
+                <spacer row="2" column="0">
+                    <property name="name">
+                        <cstring>spacer9_2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>23</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QCheckBox" row="2" column="1">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeUnsetSecretFilter</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="text">
+                        <string>Set filter state of secret tags to 'exclude' by default</string>
+                    </property>
+                </widget>
+            </grid>
         </widget>
         <spacer>
             <property name="name">
@@ -291,6 +325,12 @@
         <sender>kcfg_TagTreeBoldMatches</sender>
         <signal>toggled(bool)</signal>
         <receiver>kcfg_TagTreeBoldMatchesCollapsedOnly</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_TagTreeRememberFilter</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_TagTreeUnsetSecretFilter</receiver>
         <slot>setEnabled(bool)</slot>
     </connection>
 </connections>

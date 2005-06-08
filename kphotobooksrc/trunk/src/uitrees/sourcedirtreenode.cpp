@@ -142,15 +142,15 @@ void SourceDirTreeNode::invertInclusionRecursive() {
 QString SourceDirTreeNode::getFilterString() {
 
     QString filter;
-    
+
     if (!m_sourceDir->include()) {
         filter = "exclude";
     }
 
     return filter;
 }
-    
-    
+
+
 void SourceDirTreeNode::applyFilterString(QString filter) {
 
     m_sourceDir->setInclude(filter != "exclude");
@@ -177,7 +177,7 @@ void SourceDirTreeNode::leftClicked(__attribute__((unused)) SourceDirTree* sourc
 }
 
 
-void SourceDirTreeNode::rightClicked(__attribute__((unused)) SourceDirTree* sourceDirTree, __attribute__((unused)) int column) {
+void SourceDirTreeNode::rightClicked(__attribute__((unused)) SourceDirTree* sourceDirTree, int column) {
 
     switch (column) {
     case SourceDirTree::COLUMN_TEXT:

@@ -153,13 +153,13 @@ public:
      * This method is called by the tagtree when this TagTreeNode is clicked with the
      * left mouse button.
      */
-    virtual void leftClicked(__attribute__((unused)) TagTree* tagTree, int column);
+    virtual void leftClicked(TagTree* tagTree, int column);
 
     /**
      * This method is called by the tagtree when this TagTreeNode is clicked with the
      * right mouse button.
      */
-    virtual void rightClicked(__attribute__((unused)) TagTree* tagTree, int column);
+    virtual void rightClicked(TagTree* tagTree, int column);
 
     /**
      * draws the cells of the tagtreeitems defaultwise

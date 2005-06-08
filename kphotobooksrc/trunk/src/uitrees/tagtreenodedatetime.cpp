@@ -138,7 +138,7 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
 
 ///@todo This derived method may be deleted by time, but as we are in the middle of the tagTreeNode
 /// redesign process, I rather don't delete it yet.
-void TagTreeNodeDateTime::rightClicked(__attribute__((unused)) TagTree* tagTree, int column)
+void TagTreeNodeDateTime::rightClicked(TagTree* tagTree, int column)
 {
     TagTreeNode::rightClicked(tagTree, column);
 }
