@@ -53,10 +53,10 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
     this->setFocusPolicy(QWidget::WheelFocus);
 
     //init the timer used for preloading
-    m_workTimer = new QTimer(0);
+    m_workTimer = new QTimer(0L);
     connect(m_workTimer, SIGNAL(timeout()), this, SLOT(slotWorkTimerFired()));
 
-    m_timerSlideshow = new QTimer(0);
+    m_timerSlideshow = new QTimer(0L);
     connect(m_timerSlideshow, SIGNAL(timeout()), this, SLOT(slotSlideshowTimerFired()));
 
     //and initialize the images
@@ -148,7 +148,7 @@ void ImageViewer::updateImageList()
 void ImageViewer::show(File* selectedFile)
 {
     // if a non null image should be shown...
-    if (selectedFile != 0) {
+    if (selectedFile != 0L) {
 
         m_bgPixmap.resize(width(), height());
         m_bgPixmap.fill(Qt::black);
@@ -818,7 +818,7 @@ void XImage::setMaxDimensions(int maxWidth, int maxHeight)
  *     o scaling
  *
  * if forceFull is true, not only one of these steps is done, but all!
- * 
+ *
  * @returns true, if work is left to be done, ie the 3 steps are not all done
  */
 bool XImage::doWork(bool forceFull)
@@ -838,7 +838,10 @@ bool XImage::doWork(bool forceFull)
 
     //if the image is not yet loaded... do so!
     if (m_image.isNull()) {
-        loadImage();
+        // if we can not load the image, it doesn't make sence to go on
+        if (!loadImage()) {
+            return false;
+        }
 
         //if we just loaded the image, then there is work left
         if (!forceFull) {
