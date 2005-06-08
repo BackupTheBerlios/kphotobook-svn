@@ -1647,7 +1647,7 @@ void KPhotoBook::slotFileSelectionChanged() {
 
             // iterate over keys
             for ( QStringList::Iterator keysIt = keys.begin(); keysIt != keys.end(); ++keysIt ) {
-                tracer->sdebug(__func__) << "Handling metainfo key: " << *keysIt;
+                tracer->sdebug(__func__) << "Handling metainfo key: " << *keysIt << endl;
                 KFileMetaInfoItem item = group.item(*keysIt);
                 QString value = item.string();
 
