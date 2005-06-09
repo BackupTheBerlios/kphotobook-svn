@@ -1,0 +1,86 @@
+<!doctype public "-//w3c//dtd html 4.01 transitional//en"
+                "http://www.w3.org/tr/html4/loose.dtd">
+<html>
+<head>
+  <meta name="author" content="Christen">
+  <title>KPhotoBook</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <base target="mainframe">
+</head>
+
+<body>
+
+<table class="header">
+<tr>
+<td class="header_l"><img src="pics/develop_h.png"></td>
+<td class="header_m">Developing</td>
+<td class="header_r">KPhotoBook</td>
+</tr>
+</table>
+
+<table class="document">
+<tr>
+<td>
+
+<h1>Coding Conventions</h1>
+<p>This chapter contains a - not at all - complete list about the used coding conventions used in <em>KPhotoBook</em>:</p>
+
+<ul>
+<li>use spaces instead of tabs</li>
+<li>indent code with 4 spaces</li>
+<li>classes/functions: left braces (opening curly brackets) '{' are written on its own line:
+<pre>    public class MyClass
+    {
+      private:
+      ...
+    }</pre>
+</li>
+<li>"normal blocks" (<code>if, for, while, ...</code>): left braces (opening curly brackets) '{' are wirtten on the same line as the command
+<pre>    if (true) {
+      doit();
+    }</pre>
+</li>
+<li>one line statements must always be written within braces '{}'<br>
+<strong>right:</strong>
+<pre>    if (true) {
+      doit();
+    }</pre>
+<strong>wrong:</strong>
+<pre>    if (true)
+      doit();</pre>
+</li>
+<li>there is only one variable to be defined per line<br>
+<strong>right:</strong>
+<pre>    int x = 0;
+    int y = 0;</pre>
+<strong>wrong</strong>
+<pre>    int x,y = 0;
+</pre>
+</li>
+<li>The asterisk '*' for pointers belongs to the type and not to the variable:<br>
+<strong>right:</strong>
+<pre>    Class* myvar;</pre>
+<strong>wrong:</strong>
+<pre>    Class *myvar;</pre>
+
+</li>
+<li>do NOT allow trailing spaces</li>
+<li>includes are split in 4 blocks. These blocks are separated with an empty line. Includes within a block are sorted alphabetically</li>
+    <ol>
+    <li>Header for the current cpp-file</li>
+    <li>Headers from the <em>KphotoBook</em> project</li>
+    <li>KDE-headers</li>
+    <li>QT-headers</li>
+    <li>Standard/System headers</li>
+    </ol>
+<li>TODOs must be written as "<code>///@TODO message</code>", the message should never be left empty.</li>
+<li>FIXMEs must be written as "<code>//FIXME message</code>" the message should never be left empty.</li>
+
+
+</ul>
+
+
+</table>
+
+</body>
+</html>
