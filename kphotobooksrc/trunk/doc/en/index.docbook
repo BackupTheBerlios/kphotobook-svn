@@ -384,10 +384,19 @@ This handbook is intended to give you an overview of all the functions and ease 
     </sect2>
 
     <sect2>
-        <title>Open with external program</title>
-        <para>Double-clicking on a thumbnail will open the photo in an external graphic viewer. The preferred graphic viewer can be set in the configure dialog.</para>
+        <title>Open photo with a viewer program</title>
+        <para>Depending on your settings, <emphasis>&kmyapplication;</emphasis> opens the photo in the internal or an external viewer when doupleclicking on a preview thumbnail. Unlike the external viewers, the internal also provides a slideshow function.</para>
     </sect2>
 
+</sect1>
+
+<sect1 id="viewer">
+  <title>Internal Viewer</title>
+  <para>text</para>
+    <sect2>
+        <title>title</title>
+        <para>text</para>
+    </sect2>
 </sect1>
 
 <sect1 id="tags">
@@ -457,41 +466,36 @@ This handbook is intended to give you an overview of all the functions and ease 
 
   <sect2>
     <title>Tag Types</title>
-    <para>under construction</para>
+    <para>There are several types of tags which make the way you can use <emphasis>&kmyapplication;</emphasis> to organize your photos very flexible. Available tag types up to now are: title-tags, boolean-tags, string-tags, option-lists, date-tags. </para>
 
     <sect3>
         <title>Title Tags</title>
-        <para>under construction</para>
+        <para>Title tags are here to let your tags give a structure. Ideally the are used to wrap tags of the same topic together. For example you have several pets at home you could make a tag called "Pets". Under that title tag you might for example create boolean tags for each of your pets.</para>
     </sect3>
 
     <sect3>
         <title>Boolean Tags</title>
-        <para>under construction</para>
+        <para>Boolean Tags give a yes or no value to your photos. You can annotate as many boolean tags to your photos as you want.</para>
     </sect3>
 
     <sect3>
         <title>Tag Option Lists</title>
-        <para>under construction</para>
+        <para>An option list can contain several different options. Only one value of an optionlist can be annotated to a photo. This is also called a radio group.</para>
     </sect3>
 
     <sect3>
         <title>String Tags</title>
-        <para>under construction</para>
-    </sect3>
-
-    <sect3>
-        <title>Numeric Tags</title>
-        <para>under construction</para>
+        <para>With string tags you can annotate words or phrases to your photos. You can also search for these values.</para>
     </sect3>
 
     <sect3>
         <title>Using Tags in a logic way</title>
-        <para>under construction</para>
+        <para>There are many ways you can possibly use and organise your tags. Depending on your photo collection you will probably need many tags to properly index your collection. You are free, of course, to arrange your tags as you want. However, there are certain ways to arrange them in a way which will allow you to work even faster with KPhotoBook. You can arrange your tags hierarchical in a tag tree. A way to do that is for example to arrange all tags of the same type under one header. For that reason, we have created Main Tags. You cannot sort by these tags, their only purpose is to give you a tool to structure your tag tree. Instead of losing hundreds of words on how to give your tag tree a logical structure here comes an example:</para>
     </sect3>
 
     <sect3>
         <title>Tagging Images</title>
-        <para>under construction</para>
+        <para>In KPhotoBook it is very easy to annotate a tag to one or several photos at once. Just select all the photos you want to annotate a tag to and click on the box of the tag in the tag tree. There you go. Quickly as this you have give your photos your first tag.</para>
     </sect3>
 
   </sect2>
