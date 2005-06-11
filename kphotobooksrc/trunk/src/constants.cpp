@@ -80,9 +80,3 @@ const QString Constants::FILE_EXTENSION = QString("kpb");
 //
 const int Constants::SETTINGS_MIN_PREVIEW_SIZE = 32;
 const int Constants::SETTINGS_MAX_PREVIEW_SIZE = 160;
-
-
-//
-// constants for tree
-//
-const int Constants::TREE_CHECKBOX_MAXSIZE = 16;

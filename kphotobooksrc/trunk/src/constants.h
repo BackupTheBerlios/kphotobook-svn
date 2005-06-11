@@ -83,8 +83,6 @@ public:
     static const int SETTINGS_MIN_PREVIEW_SIZE;
     static const int SETTINGS_MAX_PREVIEW_SIZE;
 
-    // constants for tree
-    static const int TREE_CHECKBOX_MAXSIZE;
 };
 
 #endif

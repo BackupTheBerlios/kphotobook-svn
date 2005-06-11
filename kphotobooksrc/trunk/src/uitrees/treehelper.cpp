@@ -20,23 +20,26 @@
 
 #include "treehelper.h"
 
-#include "../constants.h"
-
 #include <kapp.h>
 
 #include <qstyle.h>
 #include <qcheckbox.h>
 #include <qradiobutton.h>
 
+//
+// constants for tree
+//
+const int TreeHelper::TREE_CHECKBOX_MAXSIZE = 14;
+
 
 void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bool checked, bool enabled)
 {
     // we force the checkbox to a maximu size of Constants::TREE_CHECKBOX_MAXSIZE
-    if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
-        rect.setTop(2 + (rect.height() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
-        rect.setLeft(rect.left() + (rect.width() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
-        rect.setHeight(Constants::TREE_CHECKBOX_MAXSIZE);
-        rect.setWidth(Constants::TREE_CHECKBOX_MAXSIZE);
+    if (rect.height() > TREE_CHECKBOX_MAXSIZE) {
+        rect.setTop(2 + (rect.height() - TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setLeft(rect.left() + (rect.width() - TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setHeight(TREE_CHECKBOX_MAXSIZE);
+        rect.setWidth(TREE_CHECKBOX_MAXSIZE);
     }
 
     static QCheckBox checkBox(0);
@@ -70,11 +73,11 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, bo
 void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled)
 {
     // we force the checkbox to a maximum size of Constants::TREE_CHECKBOX_MAXSIZE
-    if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
-        rect.setTop(2 + (rect.height() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
-        rect.setLeft(rect.left() + (rect.width() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
-        rect.setHeight(Constants::TREE_CHECKBOX_MAXSIZE);
-        rect.setWidth(Constants::TREE_CHECKBOX_MAXSIZE);
+    if (rect.height() > TREE_CHECKBOX_MAXSIZE) {
+        rect.setTop(2 + (rect.height() - TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setLeft(rect.left() + (rect.width() - TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setHeight(TREE_CHECKBOX_MAXSIZE);
+        rect.setWidth(TREE_CHECKBOX_MAXSIZE);
     }
 
     static QCheckBox checkBox(0);
@@ -110,15 +113,14 @@ void TreeHelper::drawCheckBox(QPainter* p, const QColorGroup& cg, QRect rect, in
 }
 
 
-
 void TreeHelper::drawRadioButton(QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled)
 {
     // we force the checkbox to a maximum size of Constants::TREE_CHECKBOX_MAXSIZE
-    if (rect.height() > Constants::TREE_CHECKBOX_MAXSIZE) {
-        rect.setTop(2 + (rect.height() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
-        rect.setLeft(rect.left() + (rect.width() - Constants::TREE_CHECKBOX_MAXSIZE) / 2);
-        rect.setHeight(Constants::TREE_CHECKBOX_MAXSIZE - 1);
-        rect.setWidth(Constants::TREE_CHECKBOX_MAXSIZE - 1);
+    if (rect.height() > TREE_CHECKBOX_MAXSIZE) {
+        rect.setTop(2 + (rect.height() - TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setLeft(rect.left() + (rect.width() - TREE_CHECKBOX_MAXSIZE) / 2);
+        rect.setHeight(TREE_CHECKBOX_MAXSIZE - 1);
+        rect.setWidth(TREE_CHECKBOX_MAXSIZE - 1);
     }
 
     static QRadioButton radioBtn(0);
