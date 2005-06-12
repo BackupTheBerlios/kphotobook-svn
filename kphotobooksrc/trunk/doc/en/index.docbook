@@ -16,6 +16,23 @@
   <!ENTITY project.page '<ulink url="http://developer.berlios.de/projects/kphotobook/">project page at berlios</ulink>'>
 ]>
 
+<!-- TODO
++ Adding Sub Tags
++ Directories -> Folders
++ Photos -> Images
++ Internal Viewer + Screeny
++ New Screenies for Adding Main Tags & Adding Sub Tags
++ Secret Tag
+- Date/Time Tag
+- Filtering using the Source Directory Tree
+- Filtering using the Tag Tree
+- Combining Source and Tag Filter
+- Using EXIF-data to filter
+- Configuring KPhotobook
+
+ -->
+
+
 <book lang="&language;">
 
 <bookinfo>
@@ -109,29 +126,29 @@ This handbook is intended to give you an overview of all the functions and ease 
 
 <sect1 id="why_kpb">
   <title>Why &kmyapplication;?</title>
-  <para>The idea for a photo managing program came up during September 2003. Having bought a digital camera a few months ago, the necessity for a program to manage all the taken photos became urgent. Without a program helping to organize hundreds or even thousands of photos is a very time consuming and not that easy task. We were looking for a program helping us to organize the photos in a smart way. It was important to us that such a program should not only help you storing your photos but also help you to refind them in a fast and easy way.</para>
+  <para>The idea for an image managing program came up during September 2003. Having bought a digital camera a few months ago, the necessity for a program to manage all the taken images became urgent. Without a program helping to organize hundreds or even thousands of images is a very time consuming and not that easy task. We were looking for a program helping us to organize the images in a smart way. It was important to us that such a program should not only help you storing your images but also help you to refind them in a fast and easy way.</para>
 
   <para>When the idea came up to start with such a project, there were no other <emphasis>usable</emphasis> programs available doing that task in a fast and easy way. Neither free nor commercial products satisfied us. A few weeks after our "take off" KimDaBa 1.0 was released. We looked into this program but decided then to go on with the development of <emphasis>&kmyapplication;</emphasis>. KimDaBa was just not exactly what we were looking for. In February 2004 a first alpha-version of Fotoon was released. Fotoon came closer to what idea is... but not exactly either. We decided - once again - to go on working on <emphasis>&kmyapplication;</emphasis> but to have a close eye on these other applications.</para>
 
-  <para>Yes, <emphasis>&kmyapplication;</emphasis> is another application for managing your photos. We know that there are - meanwhile - several programs to perform such tasks. Those applications promote themselves to make it easy handling thousands of photos. Having looked at some other applications, we found that it was not <emphasis>that</emphasis> easy and not nearly as straight forward as we think such an application should be.</para>
+  <para>Yes, <emphasis>&kmyapplication;</emphasis> is another application for managing your images. We know that there are - meanwhile - several programs to perform such tasks. Those applications promote themselves to make it easy handling thousands of images. Having looked at some other applications, we found that it was not <emphasis>that</emphasis> easy and not nearly as straight forward as we think such an application should be.</para>
 
-  <para>Digikam, another application for managing photos made a lot of progress while <emphasis>&kmyapplication;</emphasis> was in it's early development stages. As soon as people said they would like the tag function of Fotoon or <emphasis>&kmyapplication;</emphasis> Digikam implemented such a function as well. Well done, but not in the way we would like it. The Tag Tree of <emphasis>&kmyapplication;</emphasis> bring a much more powerful tool to manage your photos - give it a try!</para>
+  <para>Digikam, another application for managing images made a lot of progress while <emphasis>&kmyapplication;</emphasis> was in it's early development stages. As soon as people said they would like the tag function of Fotoon or <emphasis>&kmyapplication;</emphasis> Digikam implemented such a function as well. Well done, but not in the way we would like it. The Tag Tree of <emphasis>&kmyapplication;</emphasis> bring a much more powerful tool to manage your images - give it a try!</para>
 
 </sect1>
 
 <sect1 id="feature_list">
   <title>Basic Feature List</title>
   <itemizedlist>
-    <listitem><para>create a photo database with photos from several folders. These can be added single or recursively.</para></listitem>
-    <listitem><para>annotate tags to the photos. This can be done for one photo only or for several photos at once.</para></listitem>
+    <listitem><para>create an image database with images from several folders. These can be added single or recursively.</para></listitem>
+    <listitem><para>annotate tags to the images. This can be done for one image only or for several images at once.</para></listitem>
     <listitem><para>Use different kinds of tags: title, string, dates, numeric, option list and boolean. This will satisfy all your needs.</para></listitem>
-    <listitem><para>search and filter the photos using any of the given tags.</para></listitem>
+    <listitem><para>search and filter the images using any of the given tags.</para></listitem>
     <listitem><para>all pictures matching the chosen filter are displayed as thumbnails</para></listitem>
     <listitem><para>the pictures can be rotated (physically, EXIF or database only)</para></listitem>
     <listitem><para>show the EXIF informations of a selected file</para></listitem>
-    <listitem><para>show the photos matching the filter or the selection in a slide show</para></listitem>
+    <listitem><para>show the images matching the filter or the selection in a slide show</para></listitem>
     <listitem><para>open the files with a any desired program</para></listitem>
-    <listitem><para>export the photos matching the filter or the selection as symbolic links.</para></listitem>
+    <listitem><para>export the images matching the filter or the selection as symbolic links.</para></listitem>
     <listitem><para><emphasis>&kmyapplication;</emphasis>s look and feel is highly configurable.</para></listitem>
     <listitem><para>For a more complete feature and "to do" list, please visit the <emphasis>&kmyapplication;</emphasis> homepage.</para></listitem>
   </itemizedlist>
@@ -198,12 +215,12 @@ This handbook is intended to give you an overview of all the functions and ease 
 
 <sect1 id="strength">
   <title>Strength of <emphasis>&kmyapplication;</emphasis></title>
-  <para>The strength of <emphasis>&kmyapplication;</emphasis> lies in its highly configurable but still easy to use tag tree. You can use this tag tree to easily annotate tags to your photos but also to filter and search the photos. There are several types of tags which gives you all the freedom you need to organize your photos in a way <emphasis>you</emphasis> want it to. Certainly the photos can also be filtered by their source folder. All your filtering wishes can also be combined! In this chapter we will show you how to use <emphasis>&kmyapplication;</emphasis> and we will show you how to get the most out of the powerful tools. </para>
+  <para>The strength of <emphasis>&kmyapplication;</emphasis> lies in its highly configurable but still easy to use tag tree. You can use this tag tree to easily annotate tags to your images but also to filter and search the images. There are several types of tags which gives you all the freedom you need to organize your images in a way <emphasis>you</emphasis> want it to. Certainly the images can also be filtered by their source folder. All your filtering wishes can also be combined! In this chapter we will show you how to use <emphasis>&kmyapplication;</emphasis> and we will show you how to get the most out of the powerful tools. </para>
 </sect1>
 
 <sect1 id="database">
   <title>The <emphasis>&kmyapplication;</emphasis> database</title>
-  <para>A <emphasis>&kmyapplication;</emphasis> database is stored as one XML-file. This file contains all source folders, tags and files belonging to this database. Of course it is possible to have several databases storing different types of photos, if you wish.</para>
+  <para>A <emphasis>&kmyapplication;</emphasis> database is stored as one XML-file. This file contains all source folders, tags and files belonging to this database. Of course it is possible to have several databases storing different types of images, if you wish.</para>
   <para>When a database has changed (tags or source folders were edited) the file must be saved. That means that changes are not automatically persisted. Each time a file is saved the old file is backed-up.</para>
 </sect1>
 
@@ -212,12 +229,12 @@ This handbook is intended to give you an overview of all the functions and ease 
 
 
 <sect1 id="source_folders">
-  <title>Source Directories</title>
-    <para>The <emphasis>&kmyapplication;</emphasis> database contains all images of one or more source folders. Source folders can be added recursively or not. For <emphasis>&kmyapplication;</emphasis> it doesn't matter where on the hard drive your photos are stored. <emphasis>&kmyapplication;</emphasis> can handle as many source folders as you wish. They can even be added recursively or not.</para>
+  <title>Source Folders</title>
+    <para>The <emphasis>&kmyapplication;</emphasis> database contains all images of one or more source folders. Source folders can be added recursively or not. For <emphasis>&kmyapplication;</emphasis> it doesn't matter where on the hard drive your images are stored. <emphasis>&kmyapplication;</emphasis> can handle as many source folders as you wish. They can even be added recursively or not.</para>
 
     <sect2>
-      <title>The Source Directory Tree</title>
-      <para>The Source Directory Tree shows all the source folders which belong to the database. As known from Konqueror, folders with subfolders can be expanded and collapsed. There are some very handy operations which are accessible through the folder tree context menu:</para>
+      <title>The Source Folder Tree</title>
+      <para>The Source Folder Tree shows all the source folders which belong to the database. As known from Konqueror, folders with subfolders can be expanded and collapsed. There are some very handy operations which are accessible through the folder tree context menu:</para>
         <sect3>
         <title>Context Menu when Clicking <guimenu>Beside</guimenu> Folders:</title>
 
@@ -253,14 +270,14 @@ This handbook is intended to give you an overview of all the functions and ease 
 
           <varlistentry>
           <term><menuchoice>
-          <guimenuitem>Collapse all Source Directories</guimenuitem>
+          <guimenuitem>Collapse all Source Folders</guimenuitem>
           </menuchoice></term>
           <listitem><para><action>The folder tree will be collapsed. Only the top level folders are shown</action></para></listitem>
           </varlistentry>
 
           <varlistentry>
           <term><menuchoice>
-          <guimenuitem>Add Source Directory</guimenuitem>
+          <guimenuitem>Add Source Folder</guimenuitem>
           </menuchoice></term>
           <listitem><para><action>Prompts the dialog to add a source folder (recursively or not)</action></para></listitem>
           </varlistentry>
@@ -298,14 +315,14 @@ This handbook is intended to give you an overview of all the functions and ease 
 
           <varlistentry>
           <term><menuchoice>
-          <guimenuitem>Expand Source Directory</guimenuitem>
+          <guimenuitem>Expand Source Folder</guimenuitem>
           </menuchoice></term>
           <listitem><para><action>Expands the current folder</action></para></listitem>
           </varlistentry>
 
           <varlistentry>
           <term><menuchoice>
-          <guimenuitem>Collapse Source Directory</guimenuitem>
+          <guimenuitem>Collapse Source Folder</guimenuitem>
           </menuchoice></term>
           <listitem><para><action>Collapses the current folder</action></para></listitem>
           </varlistentry>
@@ -316,7 +333,7 @@ This handbook is intended to give you an overview of all the functions and ease 
 
     </sect2>
     <sect2>
-    <title>Adding Source Directories</title>
+    <title>Adding Source Folders</title>
     <para>The <emphasis>&kmyapplication;</emphasis> database contains all images of one ore more source folders. Source folders can be added recursively or not. Adding them recursively makes <emphasis>&kmyapplication;</emphasis> add the selected folder and all folders below it. When adding a folder recursively, hard- and soft-links are followed by default. To prevent endless loops <emphasis>&kmyapplication;</emphasis> tries to detect and suppress loops in the file system folder structure.</para>
       <itemizedlist>
       <listitem><para>non-recursive: only the files in the selected folder will be added to the database.</para></listitem>
@@ -326,12 +343,12 @@ This handbook is intended to give you an overview of all the functions and ease 
     </sect2>
 
     <sect2>
-    <title>Removing Source Directories</title>
-    <para>Removing source folders will only remove the folder and all its files from the <emphasis>&kmyapplication;</emphasis> database. No files will be deleted on your hard drive, however, you will lose all associations between the deleted photos and the tags associated with them.</para>
+    <title>Removing Source Folders</title>
+    <para>Removing source folders will only remove the folder and all its files from the <emphasis>&kmyapplication;</emphasis> database. No files will be deleted on your hard drive, however, you will lose all associations between the deleted images and the tags associated with them.</para>
     </sect2>
 
     <sect2>
-    <title>Rescan Source Directories</title>
+    <title>Rescan Source Folders</title>
     <para>Rescanning the source folder will check the source folders for new and deleted sub folders and files. New files and folders will automatically be added to the database. <emphasis>&kmyapplication;</emphasis> will ask for user input when folders and files are deleted.</para>
     </sect2>
 </sect1>
@@ -340,7 +357,7 @@ This handbook is intended to give you an overview of all the functions and ease 
 
 <sect1 id="thumb_win">
   <title>Thumbnail Window</title>
-  <para>The thumbnail window shows all the photos of your database... depending on your filter, of course. Filtering will be explained later on.</para>
+  <para>The thumbnail window shows all the images of your database... depending on your filter, of course. Filtering will be explained later on.</para>
     <sect2>
         <title>Thumbnail size</title>
         <para>The thumbnail size of the images can be changed. This can be done by the "View" menu, by the magnifiers or via the Settings --> Configure <emphasis>&kmyapplication;</emphasis>. The sizes are limited from a minimal size of 32 px to a maximal size of 160 px. In the configure dialog you can also set the font and font size of the filenames which are shown below the image previews.</para>
@@ -384,37 +401,49 @@ This handbook is intended to give you an overview of all the functions and ease 
     </sect2>
 
     <sect2>
-        <title>Open photo with a viewer program</title>
-        <para>Depending on your settings, <emphasis>&kmyapplication;</emphasis> opens the photo in the internal or an external viewer when doupleclicking on a preview thumbnail. Unlike the external viewers, the internal also provides a slideshow function.</para>
+        <title>Open images with a viewer program</title>
+        <para>Depending on your settings, <emphasis>&kmyapplication;</emphasis> opens the image in the internal or an external viewer when doupleclicking on a preview thumbnail. Unlike the external viewers, the internal also provides a slideshow function.</para>
     </sect2>
 
 </sect1>
 
 <sect1 id="viewer">
   <title>Internal Viewer</title>
-  <para>text</para>
-    <sect2>
-        <title>title</title>
-        <para>text</para>
-    </sect2>
+  <para><emphasis>&kmyapplication;</emphasis> comes with its own Internal Viewer. Of course you can also use any other viewer if you do not like it. Doubleclicking on an image in the thumbnail view will open that image in the Internal Image Viwer. You can therer scroll through all the pictures (use the left/right cursor buttons) which are matching the current filter.</para>
+        <screenshot>
+        <screeninfo>Internal Viewer</screeninfo>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="viewer.jpg" format="JPG" />
+            </imageobject>
+            <textobject>
+                <phrase>Internal Image Viewer</phrase>
+            </textobject>
+        </mediaobject>
+        </screenshot>
+<!--     <sect2>
+        <title></title>
+        <para></para>
+    </sect2> -->
 </sect1>
 
 <sect1 id="tags">
   <title>Tags</title>
-      <para>Tags are the main tool to make the search functions of <emphasis>&kmyapplication;</emphasis> so powerful. They are a kind of label which can be given to the photos. You can add as many tags to a photo as you want to. They can be arranged in a tree (Tag Tree). There are also several types of tags which are explained later on.</para>
+      <para>Tags are the main tool to make the search functions of <emphasis>&kmyapplication;</emphasis> so powerful. They are a kind of label which can be given to the images. You can add as many tags to animageo as you want to. They can be arranged in a tree (Tag Tree). There are also several types of tags which are explained later on.</para>
   <sect2>
     <title>Tag Tree</title>
-    <para>Depending on your photo collection you probably need several tags to describe the content of all your photos. If you have many different kinds of photos you could easily lose yourself in all the tags you need. Therefore <emphasis>&kmyapplication;</emphasis> organizes the tags in a hierarchical structure - the Tag Tree. In the Tag Tree you can add new tags, deleted and edit them. You can also give every tag an icon which makes it easier to recognize it and work even faster. Through the Tag Tree you can attach tags to your photos but it can also figure as your filter. This all sounds a bit confusing but it is not. Read on...</para>
+    <para>Depending on your image collection you probably need several tags to describe the content of all your images. If you have many different kinds of images you could easily lose yourself in all the tags you need. Therefore <emphasis>&kmyapplication;</emphasis> organizes the tags in a hierarchical structure - the Tag Tree. In the Tag Tree you can add new tags, deleted and edit them. You can also give every tag an icon which makes it easier to recognize it and work even faster. Through the Tag Tree you can attach tags to your images but it can also figure as your filter. This all sounds a bit confusing but it is not. Read on...</para>
   </sect2>
 
   <sect2>
     <title>Adding, Deleting and Editing Tags</title>
-    <para>The functions for adding, deleting and editing <emphasis>Tags</emphasis> can be reached by right clicking on the <emphasis>Tag Tree</emphasis>. Clicking on the background you can create <emphasis>Main Tags</emphasis>, clicking on a Tag you can create <emphasis>Sub Tags</emphasis>. <emphasis>Main Tags</emphasis> are there to let you give your tree a structure. You cannot associate a <emphasis>Main Tags</emphasis> with a photo nor can you filter for it. You can use any type of Tag as a <emphasis>Main Tags</emphasis>.</para>
+    <para>The functions for adding, deleting and editing Tags can be reached by right clicking on the Tag Tree. Clicking on the background you can create Main Tags, clicking on a Tag you can create Sub Tags. Main Tags are there to let you give your tree a structure. You cannot associate a Main Tags with an image nor can you filter for it. You can use any type of Tag as a Main Tags.</para>
 
     <sect3>
         <title>Adding Main Tags</title>
         <para>A Main Tag can be add through the menu "Manage" or via the context menu in the tag tree window. Make sure you do not right click on a already existing Tag there.</para>
         <para>As you can seen on the screenshot below, you can Give your Main Tag a Title, a comment and an Icon. If you do chose an icon, the text will be displayed anyway. Choosing no icon, no icon at all will be displayed. The comment will be shown as tooltip when hovering over the tag.</para>
+        <para>You can also mark your tags as "Secret". That means, that <emphasis>&kmyapplication;</emphasis> will ask again, before you filter for those images. This way you can make sure not to show your very private images to your friends...</para>
 
         <!--<important>Do not click on an already existing Tag to crate Main Tags!</important>-->
 
@@ -434,7 +463,7 @@ This handbook is intended to give you an overview of all the functions and ease 
 
     <sect3>
         <title>Adding Sub Tags</title>
-        <para>Adding </para>
+        <para>Adding Sub Tags is as easy as adding Main Tags. The Only difference is that you create Sub Tags on a Main Tag. You have the same choices when creating this kind of tag. The created tag will then be schown underneath its main tag in the tag tree.</para>
 
         <screenshot>
             <screeninfo>Adding Sub Tag</screeninfo>
@@ -454,7 +483,7 @@ This handbook is intended to give you an overview of all the functions and ease 
 
     <sect3>
         <title>Deleting Tags</title>
-        <para>Tags can be deleted via the Tag context menu. Click with the right mouse button on the Tag you want to delete and chose the entry "Delete Tag". The Tag and the associations between the Tag and the photos will be deleted. If you delete a Tag which contains Sub Tags, the Sub Tags and their associations to the photos will also be deleted.</para>
+        <para>Tags can be deleted via the Tag context menu. Click with the right mouse button on the Tag you want to delete and chose the entry "Delete Tag". The Tag and the associations between the Tag and the images will be deleted. If you delete a Tag which contains Sub Tags, the Sub Tags and their associations to the images will also be deleted.</para>
     </sect3>
 
     <sect3>
@@ -466,7 +495,7 @@ This handbook is intended to give you an overview of all the functions and ease 
 
   <sect2>
     <title>Tag Types</title>
-    <para>There are several types of tags which make the way you can use <emphasis>&kmyapplication;</emphasis> to organize your photos very flexible. Available tag types up to now are: title-tags, boolean-tags, string-tags, option-lists, date-tags. </para>
+    <para>There are several types of tags which make the way you can use <emphasis>&kmyapplication;</emphasis> to organize your images very flexible. Available tag types up to now are: title-tags, boolean-tags, string-tags, option-lists, date-tags. </para>
 
     <sect3>
         <title>Title Tags</title>
@@ -475,47 +504,38 @@ This handbook is intended to give you an overview of all the functions and ease 
 
     <sect3>
         <title>Boolean Tags</title>
-        <para>Boolean Tags give a yes or no value to your photos. You can annotate as many boolean tags to your photos as you want.</para>
+        <para>Boolean Tags give a yes or no value to your images. You can annotate as many boolean tags to your images as you want.</para>
     </sect3>
 
     <sect3>
         <title>Tag Option Lists</title>
-        <para>An option list can contain several different options. Only one value of an optionlist can be annotated to a photo. This is also called a radio group.</para>
+        <para>An option list can contain several different options. Only one value of an optionlist can be annotated to an image. This is also called a radio group.</para>
     </sect3>
 
     <sect3>
         <title>String Tags</title>
-        <para>With string tags you can annotate words or phrases to your photos. You can also search for these values.</para>
+        <para>With string tags you can annotate words or phrases to your images. You can also search for these values.</para>
     </sect3>
 
     <sect3>
         <title>Using Tags in a logic way</title>
-        <para>There are many ways you can possibly use and organise your tags. Depending on your photo collection you will probably need many tags to properly index your collection. You are free, of course, to arrange your tags as you want. However, there are certain ways to arrange them in a way which will allow you to work even faster with KPhotoBook. You can arrange your tags hierarchical in a tag tree. A way to do that is for example to arrange all tags of the same type under one header. For that reason, we have created Main Tags. You cannot sort by these tags, their only purpose is to give you a tool to structure your tag tree. Instead of losing hundreds of words on how to give your tag tree a logical structure here comes an example:</para>
+        <para>There are many ways you can possibly use and organise your tags. Depending on your image collection you will probably need many tags to properly index your collection. You are free, of course, to arrange your tags as you want. However, there are certain ways to arrange them in a way which will allow you to work even faster with KPhotoBook. You can arrange your tags hierarchical in a tag tree. A way to do that is for example to arrange all tags of the same type under one header. For that reason, we have created Main Tags. You cannot sort by these tags, their only purpose is to give you a tool to structure your tag tree. Instead of losing hundreds of words on how to give your tag tree a logical structure here comes an example:</para>
     </sect3>
 
     <sect3>
         <title>Tagging Images</title>
-        <para>In KPhotoBook it is very easy to annotate a tag to one or several photos at once. Just select all the photos you want to annotate a tag to and click on the box of the tag in the tag tree. There you go. Quickly as this you have give your photos your first tag.</para>
+        <para>In KPhotoBook it is very easy to annotate a tag to one or several images at once. Just select all the images you want to annotate a tag to and click on the box of the tag in the tag tree. There you go. Quickly as this you have give your images your first tag.</para>
     </sect3>
 
-  </sect2>
-</sect1>
-
-<sect1 id="comment">
-  <title>Image Comments</title>
-      <para>under construction</para>
-  <sect2>
-    <title>Adding, Editing and Removing Comments</title>
-    <para>under construction</para>
   </sect2>
 </sect1>
 
 
 <sect1 id="filtering">
-  <title>Filtering the Photo Database</title>
-  <para>&kmyapplication; provides an easy yet very powerful way to find your pictures. Given all pictures are tagged correctly as described above, &kmyapplication; can quickly find the pictures you are looking for. This tool is not only very powerful and fast but also easy and intuitive to use. This tool is based upon the Tag and Source Directory Tree. One can filter the pictures by the source they are saved in or by the tags they were given. You can search for pictures having a certain tag and also combine that with a certain source folder.</para>
+  <title>Filtering the Image Database</title>
+  <para>&kmyapplication; provides an easy yet very powerful way to find your pictures. Given all pictures are tagged correctly as described above, &kmyapplication; can quickly find the pictures you are looking for. This tool is not only very powerful and fast but also easy and intuitive to use. This tool is based upon the Tag and Source Folder Tree. One can filter the pictures by the source they are saved in or by the tags they were given. You can search for pictures having a certain tag and also combine that with a certain source folder.</para>
     <sect2>
-      <title>Filtering using the Source Directory Tree</title>
+      <title>Filtering using the Source Folder Tree</title>
       <para>under construction</para>
     </sect2>
 
@@ -575,16 +595,16 @@ This handbook is intended to give you an overview of all the functions and ease 
     </sect2>
 
     <sect2>
-      <title>Source Directory Tree</title>
+      <title>Source Folder Tree</title>
       <para>under construction</para>
       <screenshot>
-      <screeninfo>Configure Dialog - Source Directory Tree</screeninfo>
+      <screeninfo>Configure Dialog - Source Folder Tree</screeninfo>
       <mediaobject>
           <imageobject>
               <imagedata fileref="configure_SourceDirTree.png" format="PNG" />
           </imageobject>
           <textobject>
-              <phrase>Configure Dialog - Source Directory Tree</phrase>
+              <phrase>Configure Dialog - Source Folder Tree</phrase>
           </textobject>
       </mediaobject>
       </screenshot>
@@ -848,8 +868,8 @@ This handbook is intended to give you an overview of all the functions and ease 
 <varlistentry>
 <term><menuchoice>
 <guimenu>View</guimenu>
-<guimenuitem>Source Directory</guimenuitem>
-<guimenuitem>Expand All Source Directories</guimenuitem>
+<guimenuitem>Source Folder</guimenuitem>
+<guimenuitem>Expand All Source Folders</guimenuitem>
 </menuchoice></term>
 <listitem><para><action>Expands the whole source folder tree with all its sub-trees so that the whole tree is visible.</action></para></listitem>
 </varlistentry>
@@ -857,8 +877,8 @@ This handbook is intended to give you an overview of all the functions and ease 
 <varlistentry>
 <term><menuchoice>
 <guimenu>View</guimenu>
-<guimenuitem>Source Directory</guimenuitem>
-<guimenuitem>Collapse All Source Directories</guimenuitem>
+<guimenuitem>Source Folder</guimenuitem>
+<guimenuitem>Collapse All Source Folders</guimenuitem>
 </menuchoice></term>
 <listitem><para><action>Collapses the whole source folder tree with all its sub-trees so that only the main folders are visible.</action></para></listitem>
 </varlistentry>
@@ -866,7 +886,7 @@ This handbook is intended to give you an overview of all the functions and ease 
 <varlistentry>
 <term><menuchoice>
 <guimenu>View</guimenu>
-<guimenuitem>Source Directory</guimenuitem>
+<guimenuitem>Source Folder</guimenuitem>
 <guimenuitem>Include All Src Dirs in Filter</guimenuitem>
 </menuchoice></term>
 <listitem><para><action>All folders are included in the filter.</action></para></listitem>
@@ -875,7 +895,7 @@ This handbook is intended to give you an overview of all the functions and ease 
 <varlistentry>
 <term><menuchoice>
 <guimenu>View</guimenu>
-<guimenuitem>Source Directory</guimenuitem>
+<guimenuitem>Source Folder</guimenuitem>
 <guimenuitem>Exclude All Src Dirs in Filter</guimenuitem>
 </menuchoice></term>
 <listitem><para><action>All folders are excluded from the filter.</action></para></listitem>
@@ -884,10 +904,10 @@ This handbook is intended to give you an overview of all the functions and ease 
 <varlistentry>
 <term><menuchoice>
 <guimenu>View</guimenu>
-<guimenuitem>Source Directory</guimenuitem>
+<guimenuitem>Source Folder</guimenuitem>
 <guimenuitem>invert Src Dir Filter</guimenuitem>
 </menuchoice></term>
-<listitem><para><action>Inverts the Source Directories in the filter. Source folders which were in the filter are excluded now and vice versa.</action></para></listitem>
+<listitem><para><action>Inverts the Source Folders in the filter. Source folders which were in the filter are excluded now and vice versa.</action></para></listitem>
 </varlistentry>
 
 <varlistentry>
@@ -922,7 +942,7 @@ This handbook is intended to give you an overview of all the functions and ease 
 <varlistentry>
 <term><menuchoice>
 <guimenu>Manage</guimenu>
-<guimenuitem>Add Source Directory</guimenuitem>
+<guimenuitem>Add Source Folder</guimenuitem>
 </menuchoice></term>
 <listitem><para><action>Adds a new source folder to the database. This can happen to a single folder or recursively.</action></para></listitem>
 </varlistentry>
@@ -1055,7 +1075,7 @@ This handbook is intended to give you an overview of all the functions and ease 
 <guimenuitem>Tool Views</guimenuitem>
 <guimenuitem>Show Sourcedirtree</guimenuitem>
 </menuchoice></term>
-<listitem><para><action>Toggles the Source Directory Tree</action></para></listitem>
+<listitem><para><action>Toggles the Source Folder Tree</action></para></listitem>
 </varlistentry>
 
 <varlistentry>
