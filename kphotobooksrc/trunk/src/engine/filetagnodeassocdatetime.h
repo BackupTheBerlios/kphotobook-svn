@@ -43,6 +43,7 @@ private:
 
 public:
     FileTagNodeAssocDateTime(File* file, TagNodeDateTime* tagNodeDateTime, QDateTime value);
+    FileTagNodeAssocDateTime(File* file, TagNodeDateTime* tagNodeDateTime, QString value);
 
     ~FileTagNodeAssocDateTime() {
         // we don't delete anything!

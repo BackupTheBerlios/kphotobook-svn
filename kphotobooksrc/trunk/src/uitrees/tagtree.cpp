@@ -66,11 +66,15 @@ TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     addColumn(i18n("Filter"));
 
     // we set the alignment to center to force redrawing the wohle cell always
-    setColumnAlignment (1, Qt::AlignCenter);
-    setColumnAlignment (2, Qt::AlignCenter);
+    setColumnAlignment (COLUMN_VALUE, Qt::AlignCenter);
+    setColumnAlignment (COLUMN_FILTER, Qt::AlignCenter);
+
+    // do never automatically change width of columns
+    setColumnWidthMode(COLUMN_VALUE, QListView::Manual);
+    setColumnWidthMode(COLUMN_FILTER, QListView::Manual);
 
     // we want that the first column gets as big as possible
-    header()->setStretchEnabled( true, 0);
+    header()->setStretchEnabled(true, COLUMN_TEXT);
 
     setSelectionMode(QListView::NoSelection);
 
@@ -405,9 +409,6 @@ void TagTree::slotItemRenamed(QListViewItem* item, int column, const QString& te
 
     if (typeid(*item) == typeid(TagTreeNodeString)) {
         TagTreeNodeString* tagTreeNode = dynamic_cast<TagTreeNodeString*>(item);
-        tagTreeNode->handleRenaming(column, text);
-    } else if (typeid(*item) == typeid(TagTreeNodeDateTime)) {
-        TagTreeNodeDateTime* tagTreeNode = dynamic_cast<TagTreeNodeDateTime*>(item);
         tagTreeNode->handleRenaming(column, text);
     } else {
         tracer->swarning(__func__) << "unknown item received: " << item->text(0) << endl;

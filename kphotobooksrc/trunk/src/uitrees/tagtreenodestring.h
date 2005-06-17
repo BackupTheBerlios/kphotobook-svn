@@ -24,7 +24,10 @@
 #include "tagtreenode.h"
 #include "../tracer/tracer.h"
 
+#include <kfileitem.h>
+
 class TagNodeString;
+
 
 /**
  * Concrete tagtreenode for displaying a string tagnode.
@@ -87,6 +90,16 @@ class TagTreeNodeString : public TagTreeNode
         void handleRenaming(int column, const QString& text);
     
         virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
+
+    private:
+        /**
+         * Tests if all given files have the same value to this tagnode.
+         * Returns null if none of the files has an assoc to this tagnode.
+         * Returns a null QString if the values differ.
+         * Returns the correct QString if all files have the same value set.
+         */
+        QString* getCommonValue(const KFileItemList* selectedFiles);
+        
     private:
         QString m_filterValue;
 };

@@ -145,10 +145,8 @@ void TagTreeNodeRadio::rightClicked(TagTree* tagTree, int column) {
 }
 
 
-void TagTreeNodeRadio::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
-
-    tracer->invoked(__func__);
-
+void TagTreeNodeRadio::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
+{
     switch (column) {
     case TagTree::COLUMN_TEXT :
         TagTreeNode::paintCell(p, cg, column, width, alignment);

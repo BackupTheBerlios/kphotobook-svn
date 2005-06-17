@@ -34,6 +34,14 @@ FileTagNodeAssocDateTime::FileTagNodeAssocDateTime(File* file, TagNodeDateTime* 
 }
 
 
+FileTagNodeAssocDateTime::FileTagNodeAssocDateTime(File* file, TagNodeDateTime* tagNodeDateTime, QString value)
+    : FileTagNodeAssoc(file, tagNodeDateTime)
+    , m_value(QDateTime())
+{
+    m_value = QDateTime::fromString(value, Qt::ISODate);
+}
+
+
 TagNodeDateTime* FileTagNodeAssocDateTime::tagNodeDateTime()
 {
     return dynamic_cast<TagNodeDateTime*>(m_tagNode);

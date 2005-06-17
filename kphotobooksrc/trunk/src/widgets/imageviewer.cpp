@@ -38,7 +38,7 @@
 
 
 
-Tracer* ImageViewer::tracer = Tracer::getInstance("kde.kphotobook.dialogs", "ImageViewer");
+Tracer* ImageViewer::tracer = Tracer::getInstance("kde.kphotobook.widgets", "ImageViewer");
 
 
 

@@ -23,7 +23,11 @@
 
 #include "tagtreenode.h"
 
+#include <kfileitem.h>
+#include <klocale.h>
+
 class TagNodeDateTime;
+
 
 /**
  * Concrete tagtreenode for displaying a datetime tagnode.
@@ -32,55 +36,64 @@ class TagNodeDateTime;
  */
 class TagTreeNodeDateTime : public TagTreeNode
 {
-public:
-    TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-    TagTreeNodeDateTime(TagTreeNode* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+    private:
+        static Tracer* tracer;
 
-    virtual ~TagTreeNodeDateTime();
+    public:
+        TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+        TagTreeNodeDateTime(TagTreeNode* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
 
-    void setFilterValue(QString filterValue)
-    {
-        m_filterValue = filterValue;
-    }
+        virtual ~TagTreeNodeDateTime();
 
-    /**
-     * Returns an FilterNode used to describe this filter.
-     */
-    virtual FilterNode* filter();
+        void setFilterValue(QString filterValue)
+        {
+            m_filterValue = filterValue;
+        }
 
-    /**
-     * Sets the filter to find images without this tag set.
-     */
-    virtual void deselectFilter();
+        /**
+        * Returns an FilterNode used to describe this filter.
+        */
+        virtual FilterNode* filter();
 
-    /**
-     * Resets the filter.
-     */
-    virtual void resetFilter();
+        /**
+        * Sets the filter to find images without this tag set.
+        */
+        virtual void deselectFilter();
 
-    /**
-     * Returns the currently set filter as string representation.
-     * This value is used to store in the database.
-     */
-    virtual QString getFilterString();
-    
-    /**
-     * Applies the filter returned by getFilter().
-     */
-    virtual void applyFilterString(QString filter);
+        /**
+        * Resets the filter.
+        */
+        virtual void resetFilter();
 
-    virtual void leftClicked(TagTree* tagTree, int column);
-    virtual void rightClicked(TagTree* tagTree, int column);
+        /**
+        * Returns the currently set filter as string representation.
+        * This value is used to store in the database.
+        */
+        virtual QString getFilterString();
 
-    /**
-     * This method is called by the tagtree after the value or filter
-     * was changed by the user.
-     */
-    void handleRenaming(int column, const QString& text);
+        /**
+        * Applies the filter returned by getFilter().
+        */
+        virtual void applyFilterString(QString filter);
 
-    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
-private:
-    QString m_filterValue;
+        virtual void leftClicked(TagTree* tagTree, int column);
+        virtual void rightClicked(TagTree* tagTree, int column);
+
+        virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
+
+    private:
+        /**
+         * Tests if all given files have the same value to this tagnode.
+         * Returns null if none of the files has an assoc to this tagnode.
+         * Returns an invalid QDateTime if the values differ.
+         * Returns the correct QDateTime if all files have the same value set.
+         */
+        QDateTime* getCommonValue(const KFileItemList* selectedFiles);
+
+    private:
+        KLocale* locale;
+
+        QString m_filterValue;
 };
 
 #endif

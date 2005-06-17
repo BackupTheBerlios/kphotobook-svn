@@ -268,10 +268,8 @@ void TagTreeNodeRadioGroup::updateFilterState()
 }
 
 
-void TagTreeNodeRadioGroup::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
-
-    tracer->invoked(__func__);
-
+void TagTreeNodeRadioGroup::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
+{
     switch (column) {
     case TagTree::COLUMN_TEXT :
     case TagTree::COLUMN_VALUE:

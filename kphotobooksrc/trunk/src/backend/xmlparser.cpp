@@ -22,15 +22,17 @@
 
 #include "../engine/engine.h"
 #include "../engine/file.h"
-#include "../engine/sourcedir.h"
-#include "../engine/tagnode.h"
-#include "../engine/tagnodetitle.h"
-#include "../engine/tagnodeboolean.h"
-#include "../engine/tagnodestring.h"
-#include "../engine/tagnoderadio.h"
 #include "../engine/filetagnodeassocboolean.h"
-#include "../engine/filetagnodeassocstring.h"
+#include "../engine/filetagnodeassocdatetime.h"
 #include "../engine/filetagnodeassocradio.h"
+#include "../engine/filetagnodeassocstring.h"
+#include "../engine/tagnode.h"
+#include "../engine/tagnodeboolean.h"
+#include "../engine/tagnodedatetime.h"
+#include "../engine/tagnoderadio.h"
+#include "../engine/tagnodestring.h"
+#include "../engine/tagnodetitle.h"
+#include "../engine/sourcedir.h"
 
 #include <qpixmap.h>
 #include <qfileinfo.h>
@@ -45,7 +47,6 @@ Tracer* XmlParser::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlPa
 bool XmlParser::startElement( __attribute__((unused)) const QString& namespaceURI, const QString& localName,
                               __attribute__((unused)) const QString& qName,  const QXmlAttributes& atts)
 {
-
     //
     // handle starttag 'kphotobook'
     //
@@ -789,12 +790,17 @@ bool XmlParser::handleTagAssoc(const QXmlAttributes& atts) {
     // link the current file to the found tagNode
     if (typeid(*tagNode) == typeid(TagNodeBoolean)) {
         new FileTagNodeAssocBoolean(m_currentFile, dynamic_cast<TagNodeBoolean*>(tagNode), value);
-    }
+    } else
     if (typeid(*tagNode) == typeid(TagNodeString)) {
         new FileTagNodeAssocString(m_currentFile, dynamic_cast<TagNodeString*>(tagNode), value);
-    }
+    } else
     if (typeid(*tagNode) == typeid(TagNodeRadio)) {
         new FileTagNodeAssocRadio(m_currentFile, dynamic_cast<TagNodeRadio*>(tagNode), value);
+    } else
+    if (typeid(*tagNode) == typeid(TagNodeDateTime)) {
+        new FileTagNodeAssocDateTime(m_currentFile, dynamic_cast<TagNodeDateTime*>(tagNode), value);
+    } else {
+        tracer->warning(__func__, "Unknown tagNode type found!");
     }
 
     return true;

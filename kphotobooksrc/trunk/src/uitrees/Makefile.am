@@ -18,5 +18,7 @@ libuitrees_la_SOURCES = \
 	tagtreenodetitle.h tagtreenodetitle.cpp \
 	treehelper.h treehelper.cpp
 
-libuitrees_la_LIBADD = $(top_builddir)/src/engine/libengine.la
+libuitrees_la_LIBADD = \
+	$(top_builddir)/src/engine/libengine.la \
+	$(top_builddir)/src/dialogs/libdialogs.la
 

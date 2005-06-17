@@ -28,7 +28,7 @@
 
 using namespace std;
 
-Tracer* TimeRuler::tracer = Tracer::getInstance("kde.kphotobook.dialogs", "TimeRuler");
+Tracer* TimeRuler::tracer = Tracer::getInstance("kde.kphotobook.widgets", "TimeRuler");
 
 TimeRuler::TimeRuler(QWidget* parent)
 : QWidget(parent)

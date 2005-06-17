@@ -20,21 +20,27 @@
 
 #include "tagtreenodedatetime.h"
 
-#include "../engine/tagnodedatetime.h"
-#include "../engine/filternodetagdatetime.h"
+#include "../dialogs/dialogdatetimechooser.h"
+#include "../engine/file.h"
 #include "../engine/filetagnodeassocdatetime.h"
-#include "tagtree.h"
+#include "../engine/filternodetagdatetime.h"
+#include "../engine/tagnodedatetime.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
-#include "../engine/file.h"
+#include "tagtree.h"
 #include "treehelper.h"
 
 #include <kdatepicker.h>
 #include <kdatetimewidget.h>
-#include <kfileitem.h>
+#include <kglobal.h>
+
+
+Tracer* TagTreeNodeDateTime::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNodeDateTime");
+
 
 TagTreeNodeDateTime::TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
+    , locale(KGlobal::locale())
     , m_filterValue(QString::null)
 {
     // enable editing of value and filter
@@ -104,34 +110,68 @@ void TagTreeNodeDateTime::applyFilterString(QString filter)
 
 void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, int column)
 {
+    tracer->invoked(__func__);
+
+    TagNodeDateTime* tagNode = dynamic_cast<TagNodeDateTime*>(m_tagNode);
+
     switch (column) {
-    case TagTree::COLUMN_TEXT :
-        break;
-
-    case TagTree::COLUMN_VALUE : {
-
-        // do nothing when tagging is locked
-        if (Settings::tagTreeLocked()) {
-            return;
+        case TagTree::COLUMN_TEXT : {
+            break;
         }
+    
+        case TagTree::COLUMN_VALUE : {
+    
+            // do nothing when tagging is locked
+            if (Settings::tagTreeLocked()) {
+                return;
+            }
+    
+            // get all selected files
+            const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
+    
+            if (selectedFiles->count()) {
 
-        // get all selected files
-        const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
-
-        if (selectedFiles->count()) {
-            // let the user enter a new value
-//            KDateTimeWidget* x = new KDateTimeWidget(m_photobook->view(), "KDateTimeWidget");
-//            KDatePicker* x = new KDatePicker(m_photobook->view(), "KDateTimeWidget");
-//            x->show();
-
-            startRename(TagTree::COLUMN_VALUE);
+                QDateTime* commonValue = getCommonValue(selectedFiles);
+                
+                // let the user enter a new value
+                DialogDateTimeChooser* dateTimeChooser = new DialogDateTimeChooser(0, "DialogDateTimeChooser", commonValue ? *commonValue : QDateTime());
+                if (dateTimeChooser->exec() == QDialog::QDialog::Accepted) {
+    
+                    if (dateTimeChooser->isDateTimeValid()) {
+                        QDateTime value = dateTimeChooser->dateTime();
+                        
+                        // get all selected files
+                        const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
+        
+                        if (selectedFiles->count()) {
+                            
+                            // loop over all selected files and change their state
+                            QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
+                            it.toFirst();
+                            for (; it.current(); ++it) {
+                                File* selectedFile = dynamic_cast<File*>(it.current());
+        
+                                tagNode->setTagged(selectedFile, value);
+                            }
+        
+                            m_photobook->dirtyfy();
+        
+                            // force redrawing of this listviewitem
+                            this->repaint();
+                        }
+                    }
+                }
+                delete dateTimeChooser;
+                delete commonValue;
+            }
+            break;
         }
-        break;
-    }
-
-    case TagTree::COLUMN_FILTER :
-        startRename(TagTree::COLUMN_FILTER);
-        break;
+    
+        case TagTree::COLUMN_FILTER : {
+    
+            ///@todo implement leftclicked on filter
+            break;
+        }
     }
 }
 
@@ -144,133 +184,102 @@ void TagTreeNodeDateTime::rightClicked(TagTree* tagTree, int column)
 }
 
 
-void TagTreeNodeDateTime::handleRenaming(int column, const QString& text)
+void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
 {
-    QDateTime value = QDateTime::fromString(text, Qt::ISODate);
-    if (!value.isValid()) {
-
-        ///@todo what todo if the enetered date is invalid???
-        return;
-    }
-
-    TagNodeDateTime* tagNode = dynamic_cast<TagNodeDateTime*>(m_tagNode);
-
     switch (column) {
-    case TagTree::COLUMN_TEXT :
-        break;
+        case TagTree::COLUMN_TEXT : {
 
-    case TagTree::COLUMN_VALUE : {
-
-        // get all selected files
-        const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
-
-        if (selectedFiles->count()) {
-            int taggedFilesCount = 0;
-            int untaggedFilesCount = 0;
-
-            // loop over all selected files and determine their state
-            QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
-            for (; it.current(); ++it) {
-                File* selectedFile = dynamic_cast<File*>(it.current());
-
-                if (tagNode->tagged(selectedFile, text)) {
-                    taggedFilesCount++;
-                } else {
-                    untaggedFilesCount++;
-                }
-
-                // we can abort the loop if we found a tagged and untagged file
-                if (taggedFilesCount && untaggedFilesCount) {
-                    break;
-                }
-            }
-
-            // if not all files are tagged, we tag all files
-            bool tagged = true;
-            // all files are tagged
-            if (taggedFilesCount && !untaggedFilesCount) {
-                tagged = false;
-            }
-
-            // loop over all selected files and change their state
-            it.toFirst();
-            for (; it.current(); ++it) {
-                File* selectedFile = dynamic_cast<File*>(it.current());
-
-                tagNode->setTagged(selectedFile, value);
-            }
-
-            m_photobook->dirtyfy();
-
-            // force redrawing of this listviewitem
-            this->repaint();
+            TagTreeNode::paintCell(p, cg, column, width, alignment);
+            break;
         }
-        break;
-    }
-    case TagTree::COLUMN_FILTER :
-        // filter has changed --> update the text in the node and auto refresh view
-        setFilterValue(text);
 
-        m_photobook->autoRefreshView();
-        break;
+        case TagTree::COLUMN_VALUE : {
+    
+            // get all selected files
+            const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
+            
+            if (selectedFiles->count()) {
+
+                QDateTime* commonValue = getCommonValue(selectedFiles);
+
+                if (commonValue) {
+    
+                    if (commonValue->isValid()) {
+                        setText(TagTree::COLUMN_VALUE, locale->formatDateTime(*commonValue, true, true));
+                        KListViewItem::paintCell(p, cg, column, width, alignment);
+                    } else {
+                        // the selected files have different values --> show the third state of a checkbox
+                    
+                        // paint the cell with the alternating background color
+                        p->fillRect(0, 0, width, this->height(), backgroundColor(2));
+        
+                        // draw the checkbox in the center of the cell in the size of the font
+                        int size = p->fontInfo().pixelSize()+2;
+                        QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
+        
+                        TreeHelper::drawCheckBox(p, cg, rect, 0, true);
+                    }
+                } else {
+                    // none of the selected file has a value
+                    setText(TagTree::COLUMN_VALUE, "");
+                    KListViewItem::paintCell(p, cg, column, width, alignment);
+                }
+                delete commonValue;
+            }
+    
+            break;
+        }
+        
+        case TagTree::COLUMN_FILTER : {
+
+            TagTreeNode::paintCell(p, cg, column, width, alignment);
+            break;
+        }
     }
 }
 
 
-void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
+QDateTime* TagTreeNodeDateTime::getCommonValue(const KFileItemList* selectedFiles)
 {
+    tracer->invoked(__func__);
+    
     TagNodeDateTime* tagNode = dynamic_cast<TagNodeDateTime*>(m_tagNode);
 
-    switch (column) {
-    case TagTree::COLUMN_TEXT :
-    case TagTree::COLUMN_FILTER :
+    QDateTime* commonValue = 0;
 
-        TagTreeNode::paintCell(p, cg, column, width, alignment);
-        break;
+    QPtrListIterator<KFileItem> it(*selectedFiles);
+    for (; it.current(); ++it) {
+        File* selectedFile = dynamic_cast<File*>(it.current());
 
-    case TagTree::COLUMN_VALUE : {
+        FileTagNodeAssocDateTime* assoc = dynamic_cast<FileTagNodeAssocDateTime*>(tagNode->getAssocToFile(selectedFile));
 
-        // get all selected files
-        const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
+        if (assoc && assoc->value().isValid()) {
+            // file with a valid assoc found
 
-        if (selectedFiles->count()) {
-
-            QString text = QString::null;
-
-            QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
-            for (; it.current(); ++it) {
-                File* selectedFile = dynamic_cast<File*>(it.current());
-
-                FileTagNodeAssocDateTime* assoc = dynamic_cast<FileTagNodeAssocDateTime*>(tagNode->getAssocToFile(selectedFile));
-                if (assoc) {
-                    // ok we got an assoc remember it
-
-                    if (!text.isNull() && assoc->valueAsString() != text) {
-                        // abort if not all selected images have the same tagvalue!
-                        text = "---";
-                        break;
-                    }
-                    text = assoc->valueAsString();
-                } else {
-                    // no assoc found -> remove the text
-
-                    if (!text.isEmpty()) {
-                        // abort if not all selected images have the same tagvalue!
-                        text = "---";
-                        break;
-                    }
-                    text = "";
-                }
+            // the value of the first assoc we just remember and continue
+            if (!commonValue) {
+                commonValue = new QDateTime(assoc->value());
+                continue;
             }
-
-            setText(TagTree::COLUMN_VALUE, text);
+            
+            // ok we got an assoc remember it
+            if (commonValue->isValid() && assoc->value() != *commonValue) {
+                // abort if not all selected images have the same tagvalue!
+                delete commonValue;
+                commonValue = new QDateTime();
+                break;
+            }
         } else {
-            // no file is selected -> remove the text
-            setText(TagTree::COLUMN_VALUE, "");
+            // file with no assoc found
+            if (commonValue) {
+                // abort if not all selected images have the same tagvalue!
+                delete commonValue;
+                commonValue = new QDateTime();
+                break;
+            }
         }
+    }
 
-        KListViewItem::paintCell(p, cg, column, width, alignment);
-        break;
-    }
-    }
+    tracer->sdebug(__func__) << "commnon value is: " << (commonValue ? locale->formatDateTime(*commonValue, true, true) : "0") << endl;
+    return commonValue;
 }

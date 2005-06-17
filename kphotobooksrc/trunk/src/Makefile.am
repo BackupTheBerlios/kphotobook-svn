@@ -49,5 +49,4 @@ rc_DATA = kphotobookui.rc tips
 #kde_kcfgdir = $(kde_datadir)/kphotobook
 #kde_kcfg_DATA = settings.kcfg
 
-SUBDIRS = icons images backend dialogs engine export settings uitrees tracer \
-		import widgets
+SUBDIRS = icons images backend widgets dialogs engine export settings uitrees tracer import 
