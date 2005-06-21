@@ -74,8 +74,8 @@ public:
 
 
 private slots:
-    void slotNameChanged(const QString& text);
-    void slotIconTextChanged(const QString& text);
+    void slotValidate();
+
     void slotIconButtonClicked();
 
 private:
@@ -98,7 +98,6 @@ private:
     QPushButton* m_iconButton;
     QCheckBox* m_chkSecret;
 
-    void validate();
 };
 
 #endif

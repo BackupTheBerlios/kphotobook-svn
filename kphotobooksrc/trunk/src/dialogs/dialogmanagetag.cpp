@@ -160,7 +160,7 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
 
     m_nameLineEdit = new KLineEdit(newTagGroup, "nameLineEdit");
     m_nameLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QObject::connect(m_nameLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotNameChanged(const QString&)));
+    QObject::connect(m_nameLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotValidate()));
     newTagGroupLayout->addMultiCellWidget(m_nameLineEdit, 1, 1, 1, 2);
 
     // comment
@@ -178,7 +178,7 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
     m_iconLineEdit = new KLineEdit(newTagGroup, "iconLineEdit");
     m_iconLineEdit->setMinimumWidth(300);
     m_iconLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QObject::connect(m_iconLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotIconTextChanged(const QString&)));
+    QObject::connect(m_iconLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotValidate()));
     newTagGroupLayout->addWidget(m_iconLineEdit, 3, 1);
 
     m_iconButton = new QPushButton(i18n("Icon"), newTagGroup, "iconButton");
@@ -206,7 +206,7 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
     }
 
     // disable ok button
-    validate();
+    slotValidate();
 
     // set the focus
     m_nameLineEdit->setFocus();
@@ -261,18 +261,6 @@ void DialogManageTag::fillTypeCombo(TagTreeNode* parentNode)
 }
 
 
-void DialogManageTag::slotNameChanged(__attribute__((unused)) const QString& text) {
-
-    validate();
-}
-
-
-void DialogManageTag::slotIconTextChanged(__attribute__((unused)) const QString& text) {
-
-    validate();
-}
-
-
 void DialogManageTag::slotIconButtonClicked() {
 
     KIconDialog* iconDialog = new KIconDialog(this, "iconDialog");
@@ -287,11 +275,11 @@ void DialogManageTag::slotIconButtonClicked() {
         m_iconLineEdit->setText(iconName);
     }
 
-    validate();
+    slotValidate();
 }
 
 
-void DialogManageTag::validate() {
+void DialogManageTag::slotValidate() {
 
     QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet(m_iconLineEdit->text(), KIcon::Small, Settings::tagTreeIconSize(), true);
 
