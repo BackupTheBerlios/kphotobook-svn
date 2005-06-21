@@ -92,10 +92,10 @@ TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
                      this, SLOT(slotItemRenamed(QListViewItem*, int, const QString&)));
 
     ///@todo choenig: I'd like to implement such thing so the data is accepted on loosing focus in the input
-    ///@todo fields. But simply adding the DefaultAction is not enough, since there comes is a problem
-    ///@todo when clicking on another image: the new image is selected, and afterwards, the data is saved
-    ///@todo (accepted) which leads to the point, that the newly selected Item is maked with the setting.
-    //setDefaultRenameAction(QListView::Accept);
+    /// fields. But simply adding the DefaultAction is not enough, since there comes is a problem
+    /// when clicking on another image: the new image is selected, and afterwards, the data is saved
+    /// (accepted) which leads to the point, that the newly selected Item is maked with the setting.
+//     setDefaultRenameAction(QListView::Accept);
 }
 
 
@@ -442,7 +442,8 @@ void TreeToolTip::maybeTip( const QPoint &point )
 {
     QListViewItem *item = m_view->itemAt( point );
     if ( item ) {
-        QString text = static_cast<TagTreeNode*>( item )->toolTip();
+        int column = m_view->header()->sectionAt(point.x());
+        QString text = static_cast<TagTreeNode*>( item )->toolTip(column);
         if ( !text.isEmpty() ) {
             tip ( m_view->itemRect( item ), text );
         }
