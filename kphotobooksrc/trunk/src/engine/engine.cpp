@@ -433,8 +433,6 @@ void Engine::rescanSourceDirs(QPtrList<SourceDir>* sourceDirs) {
     for (sourceDir = sourceDirs->first(); sourceDir; sourceDir = sourceDirs->next()) {
         tracer->sdebug(__func__) << "rescanning sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath() << endl;
 
-        sourceDir->setFound(false);
-
         if (sourceDir->dir()->exists()) {
 
             sourceDir->setFound(true);
@@ -445,6 +443,8 @@ void Engine::rescanSourceDirs(QPtrList<SourceDir>* sourceDirs) {
                 rescanSourceDirs(sourceDir->children());
             }
         } else {
+            sourceDir->setFound(false);
+
             tracer->sdebug(__func__) << " sourcedir: " << sourceDir->id() << ": '" << sourceDir->dir()->absPath() << "' not found" << endl;
         }
 
