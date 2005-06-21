@@ -25,6 +25,7 @@
 #include <qpainter.h>
 
 #include <list>
+#include <math.h>
 
 using namespace std;
 
@@ -52,10 +53,14 @@ TimeRuler::TimeRuler(QWidget* parent)
 
     initUI();
 
-    resize(450,m_height);
+    resize(350,m_height);
 
     setMouseTracking(true);
-    m_xVis = 0;
+
+    m_scrollTimer = new QTimer(this);
+    connect(m_scrollTimer, SIGNAL(timeout()), this, SLOT(slotScrollTimerFired()));
+
+    setCentered(m_lstDates.maxYear(), 12);
 }
 
 
@@ -67,8 +72,7 @@ TimeRuler::~TimeRuler() {
 
 void TimeRuler::setSelected(int year, int month, bool signalIt)
 {
-    if (year >= m_lstDates.minYear() && year <= m_lstDates.maxYear()
-        && month > 0 && month <= 12)
+    if (isContained(year, month))
     {
         m_selectedYear = year;
         m_selectedMonth = month;
@@ -79,6 +83,20 @@ void TimeRuler::setSelected(int year, int month, bool signalIt)
     }
 }
 
+
+void TimeRuler::setCentered(int year, int month)
+{
+    if (isContained(year, month)) {
+        smoothShift(dateToBarRect(year, month, true).x() - (width()/2));
+    }
+}
+
+
+bool TimeRuler::isContained(int year, int month)
+{
+    return (year >= m_lstDates.minYear() && year <= m_lstDates.maxYear()
+            && month > 0 && month <= 12);
+}
 
 
 void TimeRuler::initData()
@@ -289,7 +307,8 @@ void TimeRuler::mouseReleaseEvent(QMouseEvent* e) {
     if (m_mousePressPosition.x() + delta > p->x() &&
             m_mousePressPosition.x() - delta < p->x() &&
             m_mousePressPosition.y() + delta > p->y() &&
-            m_mousePressPosition.y() - delta < p->y()) {
+            m_mousePressPosition.y() - delta < p->y())
+    {
         //store the previous selection
         int prevY = m_selectedYear;
         int prevM = m_selectedMonth;
@@ -303,7 +322,7 @@ void TimeRuler::mouseReleaseEvent(QMouseEvent* e) {
         }
 
         //now repaint the current selection
-                repaint(dateToBarRect(m_selectedYear, m_selectedMonth, true));
+        repaint(dateToBarRect(m_selectedYear, m_selectedMonth, true));
 
         emit selectionChanged(m_selectedYear, m_selectedMonth);
     }
@@ -350,24 +369,45 @@ QRect TimeRuler::dateToBarRect(int year, int month, bool translateX, int height 
 }
 
 
-void TimeRuler::shift(int x) {
+void TimeRuler::smoothShift(int x)
+{
+    m_scrollLeft = x;
+    m_scrollTimer->start(25);
+}
+
+
+bool TimeRuler::shift(int x) {
+    bool retval = true;
     if (x > 0) {
         if (m_xVis + width() + x < m_pixmap.width()) {
             m_xVis += x;
         } else {
+            retval = false;
             m_xVis = m_pixmap.width() - width() ;
         }
     } else {
         if (m_xVis > -x) {
             m_xVis += x;
         } else {
+            retval = false;
             m_xVis = 0;
         }
     }
     update();
+    return retval;
 }
 
 
+
+void TimeRuler::slotScrollTimerFired()
+{
+    int diff = m_scrollLeft/7;
+    m_scrollLeft -= diff;
+
+    if (!shift(diff) || diff == 0) {
+        m_scrollTimer->stop();
+    }
+}
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
@@ -395,7 +435,7 @@ void DateBinder::addDate(QDate d) {
 
 
 int DateBinder::count (int year, int month, int day) {
-    if (year <= 0 || month <= 0) {
+    if (year <= 0) { // || month <= 0) {
         return 0;
     }
 

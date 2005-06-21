@@ -29,6 +29,8 @@
 #include <vector>
 #include <list>
 
+#include <qtimer.h>
+
 using namespace std;
 
 
@@ -89,7 +91,15 @@ public:
      */
     void setSelected(int year, int month, bool signalIt = false);
 
+    /**
+     * if year/month isContained, it is centerd in the widget
+     */
+    void setCentered(int year, int month);
 
+    /**
+     * @returns true, if year/month is available in this widget
+     */
+    bool isContained(int year, int month);
 signals:
     void selectionChanged(int year, int month);
 
@@ -102,6 +112,9 @@ protected:
     virtual void mouseReleaseEvent ( QMouseEvent * e );
     virtual void wheelEvent ( QWheelEvent * e );
 
+
+private slots:
+    void slotScrollTimerFired();
 
 private:
     /**
@@ -128,10 +141,12 @@ private:
      */
     QRect dateToBarRect(int year, int month, bool translateX, int height = -1);
 
+
+    void smoothShift(int x);
     /**
      * shifts the TimeRuler by x pixels to the right, if x>0 and left, if x<0
      */
-    void shift(int x);
+    bool shift(int x);
 
     /**
      * draws a single beam
@@ -171,6 +186,11 @@ private:
 
     /// the basic pixmap the timeruler is made of
     QPixmap m_pixmap;
+
+    ///timer used for smoothScrolling
+    QTimer* m_scrollTimer;
+    /// scroll amount, that is left in smoothScrolling
+    int m_scrollLeft;
 };
 
 
