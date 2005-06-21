@@ -170,10 +170,7 @@ public:
     /**
      * returns the tooltip to be shown in the tree of this node
      */
-    virtual QString toolTip() {
-        return *(m_tagNode->comment());
-    }
-
+    virtual QString toolTip(int column);
     /**
      * updates the internal tagMatch state.
      * That means, all currently selected images are parsed and it is checked, how they match

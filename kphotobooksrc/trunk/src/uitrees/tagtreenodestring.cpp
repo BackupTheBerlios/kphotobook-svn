@@ -98,7 +98,7 @@ void TagTreeNodeString::applyFilterString(QString filter)
 void TagTreeNodeString::leftClicked(__attribute__((unused)) TagTree* tagTree, int column)
 {
     switch (column) {
-        case TagTree::COLUMN_TEXT : { 
+        case TagTree::COLUMN_TEXT : {
             break;
         }
 
@@ -107,17 +107,17 @@ void TagTreeNodeString::leftClicked(__attribute__((unused)) TagTree* tagTree, in
             if (Settings::tagTreeLocked()) {
                 return;
             }
-    
+
             // get all selected files
             const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
-    
+
             if (selectedFiles->count()) {
                 // let the user enter a new value
                 startRename(TagTree::COLUMN_VALUE);
             }
             break;
         }
-    
+
         case TagTree::COLUMN_FILTER : {
             startRename(TagTree::COLUMN_FILTER);
             break;
@@ -141,21 +141,21 @@ void TagTreeNodeString::handleRenaming(int column, const QString& text)
         case TagTree::COLUMN_TEXT : {
             break;
         }
-    
+
         case TagTree::COLUMN_VALUE : {
             QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
-    
+
             // loop over all selected files and change their state
             it.toFirst();
             for (; it.current(); ++it) {
                 File* selectedFile = dynamic_cast<File*>(it.current());
-    
+
                 tagNode->setTagged(selectedFile, text);
             }
-    
+
             //update my internal state...
             m_tagCurrentMatch = text.isEmpty() ? TagTreeNode::UNTAGGED : TagTreeNode::TAGGED;
-    
+
             //and then update all of my parents
             TagTreeNode* node = this;
             while (node) {
@@ -163,15 +163,15 @@ void TagTreeNodeString::handleRenaming(int column, const QString& text)
                 node->repaint();
                 node = dynamic_cast<TagTreeNode*>(node->parent());
             }
-    
+
             m_photobook->dirtyfy();
             break;
         }
-        
+
         case TagTree::COLUMN_FILTER : {
             // filter has changed --> update the text in the node and auto refresh view
             setFilterValue(text);
-    
+
             m_photobook->autoRefreshView();
             break;
         }
@@ -188,7 +188,7 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
             TagTreeNode::paintCell(p, cg, column, width, alignment);
             break;
         }
-    
+
         case TagTree::COLUMN_VALUE : {
             bool mixed = false;
             QString text = "";
@@ -196,21 +196,21 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
                 mixed = true;
             } else {
 
-                ///@ todo what about MIXTAGGED??? and call getCommonValue
-                
+                ///@todo what about MIXTAGGED??? and call getCommonValue
+
                 // get all selected files
                 const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
-    
+
                 if (selectedFiles->count()) {
-    
+
                     QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
                     for (; it.current(); ++it) {
                         File* selectedFile = dynamic_cast<File*>(it.current());
-    
+
                         FileTagNodeAssocString* assoc = dynamic_cast<FileTagNodeAssocString*>(tagNode->getAssocToFile(selectedFile));
                         if (assoc) {
                             // ok we got an assoc remember it
-    
+
                             if (!text.isEmpty() && assoc->valueAsString() != text) {
                                 // abort if not all selected images have the same tagvalue!
                                 mixed = true;
@@ -229,48 +229,48 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
                     }
                 }
             }
-    
+
             // if mixed is true, we display the third state of the checkbox
             if (mixed) {
                 // paint the cell with the alternating background color
                 p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-    
+
                 // draw the checkbox in the center of the cell in the size of the font
                 int size = p->fontInfo().pixelSize()+2;
                 QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
-    
+
                 TreeHelper::drawCheckBox(p, cg, rect, 0, true);
             } else {
                 setText(TagTree::COLUMN_VALUE, text);
-    
+
                 KListViewItem::paintCell(p, cg, column, width, alignment);
             }
             break;
         }
-            
+
         case TagTree::COLUMN_FILTER : {
             // if filtering an empty string (the filter is ignored), we display the third state of the checkbox
             if (m_filterValue.isEmpty()) {
                 // paint the cell with the alternating background color
                 p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-    
+
                 // draw the checkbox in the center of the cell in the size of the font
                 int size = p->fontInfo().pixelSize()+2;
                 QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
-    
+
                 TreeHelper::drawCheckBox(p, cg, rect, 0, true);
-    
+
             // if filtering an empty string (the value must be an empty string), we display an empty checkbox
             } else if (m_filterValue == "()") {
                 // paint the cell with the alternating background color
                 p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-    
+
                 // draw the checkbox in the center of the cell in the size of the font
                 int size = p->fontInfo().pixelSize()+2;
                 QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
-    
+
                 TreeHelper::drawCheckBox(p, cg, rect, -1, true);
-    
+
             } else {
                 TagTreeNode::paintCell(p, cg, column, width, alignment);
             }
@@ -283,7 +283,7 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
 QString* TagTreeNodeString::getCommonValue(const KFileItemList* selectedFiles)
 {
     tracer->invoked(__func__);
-    
+
     TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
 
     QString* commonValue = 0;
@@ -302,7 +302,7 @@ QString* TagTreeNodeString::getCommonValue(const KFileItemList* selectedFiles)
                 commonValue = new QString(assoc->value());
                 continue;
             }
-            
+
             // ok we got an assoc remember it
             if (!commonValue->isEmpty() && assoc->value() != *commonValue) {
                 // abort if not all selected images have the same tagvalue!
@@ -324,3 +324,20 @@ QString* TagTreeNodeString::getCommonValue(const KFileItemList* selectedFiles)
     tracer->sdebug(__func__) << "commnon value is: " << (commonValue ? *commonValue : "0") << endl;
     return commonValue;
 }
+
+
+QString TagTreeNodeString::toolTip(int column)
+{
+    switch (column) {
+    case TagTree::COLUMN_TEXT:
+    case TagTree::COLUMN_FILTER:
+        return TagTreeNode::toolTip(column);
+        break;
+    case TagTree::COLUMN_VALUE:
+        return text(TagTree::COLUMN_VALUE);
+        break;
+    }
+    return "";
+}
+
+

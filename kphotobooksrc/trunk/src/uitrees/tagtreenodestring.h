@@ -38,34 +38,34 @@ class TagTreeNodeString : public TagTreeNode
 {
     private:
         static Tracer* tracer;
-    
+
     public:
         TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-    
+
         TagTreeNodeString(TagTreeNode* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-    
+
         virtual ~TagTreeNodeString();
-    
+
         void setFilterValue(QString filterValue) {
-    
+
             m_filterValue = filterValue;
         }
-    
+
         /**
         * Returns an FilterNode used to describe this filter.
         */
         virtual FilterNode* filter();
-    
+
         /**
         * Sets the filter to find images without this tag set.
         */
         virtual void deselectFilter();
-    
+
         /**
         * Resets the filter.
         */
         virtual void resetFilter();
-    
+
         /**
         * Returns the currently set filter as string representation.
         * This value is used to store in the database.
@@ -73,23 +73,25 @@ class TagTreeNodeString : public TagTreeNode
         virtual QString filterString() {
             return m_filterValue;
         }
-    
-    
+
+
         /**
         * Applies the filter returned by getFilter().
         */
         virtual void applyFilterString(QString filter);
-    
+
         virtual void leftClicked(TagTree* tagTree, int column);
         virtual void rightClicked(TagTree* tagTree, int column);
-    
+
         /**
         * This method is called by the tagtree after the value or filter
         * was changed by the user.
         */
         void handleRenaming(int column, const QString& text);
-    
+
         virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
+
+        virtual QString toolTip(int column);
 
     private:
         /**
@@ -99,7 +101,7 @@ class TagTreeNodeString : public TagTreeNode
          * Returns the correct QString if all files have the same value set.
          */
         QString* getCommonValue(const KFileItemList* selectedFiles);
-        
+
     private:
         QString m_filterValue;
 };

@@ -252,6 +252,19 @@ void TagTreeNode::paintCell(QPainter* p, const QColorGroup& cg, int column, int 
 }
 
 
+QString TagTreeNode::toolTip(int column)
+{
+    switch (column) {
+    case TagTree::COLUMN_TEXT:
+    case TagTree::COLUMN_VALUE:
+    case TagTree::COLUMN_FILTER:
+        return *(m_tagNode->comment());
+        break;
+    }
+    return "";
+}
+
+
 TagTreeNode::MatchType TagTreeNode::findTagMatch()
 {
     TagTreeNode::MatchType state = TagTreeNode::UNTAGGED;
