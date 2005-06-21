@@ -39,55 +39,34 @@ public:
     DateBinder();
     ~DateBinder();
 
+    /**
+     * adds the QDate d to this list of dates
+     */
     void addDate(QDate d);
 
+    /**
+     * @returns the number of images which mach the given
+     * year, year/month, year/month/day combo
+     */
     int count (int year = -1, int month = -1, int day = -1);
 
+    /**
+     * @returns the minimal year
+     */
     int minYear();
+    /**
+     * @returns the maximal year in this list
+     */
     int maxYear();
+    /**
+     * @returns the number of years covered by this list
+     * (that is maxYear() - minYear() + 1
+     */
     int numYears();
 
 private:
     list<QDate> m_lstData;
 };
-
-
-
-/*
-
-class YearMonth {
-public:
-    YearMonth(int year, int month) {
-        m_year = year;
-        m_month = month;
-    };
-
-    YearMonth(int sum) {
-        if (sum >= 0) {
-            m_year  = sum / 12;
-            m_month = sum % 12;
-        } else {
-            m_year  = -1;
-            m_month = -1;
-        }
-    }
-
-    int year()  { return m_year;  };
-    int month() { return m_month; };
-
-    int sum()   { return m_year * 12 + m_month; };
-
-    bool isValid() {
-        return (m_year > 0 && m_month > 0);
-    }
-
-private:
-    int m_year;
-    int m_month;
-
-};*/
-
-
 
 
 
@@ -101,37 +80,96 @@ private:
 
 
 public:
-    TimeRuler(QWidget* parent);
+    TimeRuler(QWidget* parent = 0);
     virtual ~TimeRuler();
+
+    /**
+     * sets the selected date to year/month.
+     * if signalIt is true, a selectionChanged signal is emitted
+     */
+    void setSelected(int year, int month, bool signalIt = false);
+
+
+signals:
+    void selectionChanged(int year, int month);
 
 
 protected:
     virtual void resizeEvent ( QResizeEvent * );
     virtual void paintEvent ( QPaintEvent * );
     virtual void mouseMoveEvent ( QMouseEvent * e );
+    virtual void mousePressEvent ( QMouseEvent * e );
+    virtual void mouseReleaseEvent ( QMouseEvent * e );
     virtual void wheelEvent ( QWheelEvent * e );
 
+
 private:
+    /**
+     * initializes the userinterface
+     */
     void initUI();
+
+    /**
+     * initializes the data to be shown in this widget
+     */
     void initData();
 
+    /**
+     * sets year/month to the date referenced at the position pos
+     */
     void mousePosToOffset(QPoint pos, int* year, int* month);
-    QRect dateToBoundingRect(int year, int month, int size = -1);
 
+    /**
+     * @returns the rectangle to draw the image count bar.
+     * @param translateX if true, the rectangle is translated to the current
+     * screen coordinates depending on m_xVis
+     * @param height this is the height of the returned rectangle. if < 0, a rectangle from
+     * y_0=0 to y_1=m_yBase is returned. this is usefull for redrawing calculations
+     */
+    QRect dateToBarRect(int year, int month, bool translateX, int height = -1);
+
+    /**
+     * shifts the TimeRuler by x pixels to the right, if x>0 and left, if x<0
+     */
     void shift(int x);
 
+    /**
+     * draws a single beam
+     * @param p to this painter
+     * @param percent this is the size of the beam in percent
+     * @param year the year to paint
+     * @param month the month do draw
+     * @param fill if true, the beam will be filled with color fillColor
+     * @param fillColor the color to fill the beam if desired
+     */
     void drawBeam(QPainter* p, int percent, int year, int month, bool fill = false, QColor fillColor = Qt::black);
 
-    int m_mWidth;
+    /// the width of a single month
+    int m_widthMonth;
+    /// the height of this widget
     int m_height;
+    /// the baseline of this widget. Bars are drawn above, text below.
     int m_yBase;
 
+    /// this is the amount, the TimeRuler pixmap is offset
     int m_xVis;
+    /// the year, the mouse is currently over
     int m_mouseOverYear;
+    /// the month, the mouse is currently over
     int m_mouseOverMonth;
 
+    /// the year, that is currently selected
+    int m_selectedYear;
+    /// the month, that is currently selected
+    int m_selectedMonth;
+
+    /// the location, the mousepress has happened at. tis is used to distinguish a click from a move
+    QPoint m_mousePressPosition;
+
+    /// the list of dates available in this album
     DateBinder  m_lstDates;
 
+    /// the basic pixmap the timeruler is made of
     QPixmap m_pixmap;
 };
 
