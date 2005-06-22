@@ -468,6 +468,9 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
     id = popup->insertItem(i18n("Show Image Infos"), this, SLOT(slotToggleShowInfoOverlay()));
     popup->setItemChecked(id, Settings::toolsViewerShowFileInfos());
 
+    popup->insertSeparator();
+    popup->insertItem(i18n("Quit"), parent(), SLOT(close()));
+
     popup->exec(QCursor::pos());
 
     delete popup;
