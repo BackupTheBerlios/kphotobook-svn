@@ -34,8 +34,6 @@ Tracer* TimeRuler::tracer = Tracer::getInstance("kde.kphotobook.widgets", "TimeR
 TimeRuler::TimeRuler(QWidget* parent)
 : QWidget(parent)
 {
-    initData();
-
     //the basic width of a month
     m_widthMonth = 15;
     // the total height of this widgets
@@ -51,9 +49,15 @@ TimeRuler::TimeRuler(QWidget* parent)
     m_selectedYear = -1;
     m_selectedMonth = -1;
 
+    initData();
+
     initUI();
 
     resize(350,m_height);
+
+    setFixedHeight(m_height);
+
+    setMaximumWidth(m_pixmap.width());
 
     setMouseTracking(true);
 
@@ -61,6 +65,7 @@ TimeRuler::TimeRuler(QWidget* parent)
     connect(m_scrollTimer, SIGNAL(timeout()), this, SLOT(slotScrollTimerFired()));
 
     setCentered(m_lstDates.maxYear(), 12);
+
 }
 
 
@@ -221,12 +226,20 @@ void TimeRuler::drawBeam(QPainter* p, int percent, int year, int month, bool fil
 }
 
 
-void TimeRuler::resizeEvent ( QResizeEvent * e) {
-    int delta = e->oldSize().width() - e->size().width();
+void TimeRuler::resizeEvent ( QResizeEvent * e)
+{
+    int delta = e->size().width() - e->oldSize().width();
 
-    if (delta < 0 && m_xVis >= 0
-            || delta > 0 && m_xVis <= m_pixmap.width() - width() ) {
-        m_xVis += delta/2;
+    if (delta > 0) {
+        //enlarge
+        if (m_xVis >= delta/2  &&  m_xVis + width() < m_pixmap.width()+delta/2)
+            shift(-delta/2);
+        else if (m_xVis + width() >= m_pixmap.width())
+            shift(-delta);
+
+    } else {
+        //shrink
+        shift(-delta/2);
     }
 }
 
