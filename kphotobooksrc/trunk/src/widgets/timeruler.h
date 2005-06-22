@@ -49,8 +49,13 @@ public:
     /**
      * @returns the number of images which mach the given
      * year, year/month, year/month/day combo
+     * @param contd if true, the iterator will not be reset to the beginning. This
+     * is usefull for continued counting of dates within a loop or so. Be careful, as
+     * the data is sorted from low to high, dates could be missed, if they're lower then
+     * the dates counted before. calling count(-1) only sets the iterator to the beginning
+     * and does nothing else
      */
-    int count (int year = -1, int month = -1, int day = -1);
+    int count (int year, int month = -1, int day = -1, bool cntd = false);
 
     /**
      * @returns the minimal year

@@ -142,6 +142,10 @@ void TimeRuler::initUI() {
 
     int over = -2;
     int x = 0;
+
+   //reset the counting mechanism...
+    m_lstDates.count(-1);
+
     for (int y = m_lstDates.minYear(); y <= m_lstDates.maxYear(); ++ y) {
         for (int m = 1; m <= 12 ; ++m) {
 
@@ -173,7 +177,7 @@ void TimeRuler::initUI() {
                 p.drawLine(x, m_yBase+over, x, m_yBase+8);
             }
             ///@todo here the max should be checked for percentage calculation
-            drawBeam(&p, m_lstDates.count(y,m), y, m);
+            drawBeam(&p, m_lstDates.count(y,m, -1, true), y, m);
         }
     }
     //draw the final year bar thats missing from the loop
@@ -434,13 +438,21 @@ void DateBinder::addDate(QDate d) {
 }
 
 
-int DateBinder::count (int year, int month, int day) {
-    if (year <= 0) { // || month <= 0) {
-        return 0;
+int DateBinder::count (int year, int month, int day, bool cntd)
+{
+    int count = 0;
+    static list<QDate>::iterator it = m_lstData.begin();
+
+    //we only initialize the iterator, when not cntd. This means, we don't
+    // search the list from the beginning again, but from the point, we left it before.
+    if (!cntd) {
+        it = m_lstData.begin();
     }
 
-    int count = 0;
-    list<QDate>::iterator it = m_lstData.begin();
+    //if no year is given, we don't have to look for anything. But we reset the *it* for the next run.
+    if (year <= 0) {
+        return 0;
+    }
 
     //first find the first matching item;
     if (year > 0) {
