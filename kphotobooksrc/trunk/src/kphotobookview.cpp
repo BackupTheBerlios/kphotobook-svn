@@ -113,7 +113,7 @@ void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
     }
 
     //these steps are only necessary, if the internal viewer is used
-    if (Settings::toolsUseInternalImageViewer) {
+    if (Settings::toolsUseInternalImageViewer()) {
         //force a redraw before the imageView is updated
         m_fileView->updateView(true);
         // and then update the viewer
