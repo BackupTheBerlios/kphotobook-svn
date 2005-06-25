@@ -98,6 +98,9 @@ public:
     TimeRuler(QWidget* parent = 0);
     virtual ~TimeRuler();
 
+public slots:
+    void slotSetSelected(QDate date, bool center = true);
+
     /**
      * sets the selected date to year/month.
      * if signalIt is true, a selectionChanged signal is emitted

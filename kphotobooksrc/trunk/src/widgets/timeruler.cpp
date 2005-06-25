@@ -74,6 +74,14 @@ TimeRuler::~TimeRuler() {
     ;
 }
 
+void TimeRuler::slotSetSelected(QDate date, bool center)
+{
+    setSelected(date.year(), date.month(), false);
+    if (center) {
+        setCentered(date.year(), date.month());
+    }
+}
+
 
 void TimeRuler::setSelected(int year, int month, bool signalIt)
 {
