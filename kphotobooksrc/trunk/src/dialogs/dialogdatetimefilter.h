@@ -25,6 +25,7 @@
 #include "../widgets/datetimewidget.h"
 
 #include <kdialogbase.h>
+#include <ktabwidget.h>
 
 #include <qcheckbox.h>
 #include <qdatetime.h>
@@ -74,6 +75,8 @@ class DialogDateTimeFilter : public KDialogBase
         void slotNoDateSetToggled(bool checked);
     
     private:
+        KTabWidget* tabWidget;
+                
         DateTimeWidget* fromDateTime;
         DateTimeWidget* toDateTime;
         QCheckBox* noDateSet;

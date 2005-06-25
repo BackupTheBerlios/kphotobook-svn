@@ -24,7 +24,6 @@
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
-#include <ktabwidget.h>
 
 #include <qgroupbox.h>
 #include <qiconset.h>
@@ -51,9 +50,9 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QD
     QWidget* mainPanel = new QWidget(this, "dirPanel");
     (new QVBoxLayout(mainPanel, 0, 5, "mainPanelLayout"))->setAutoAdd(true);
 
-    KTabWidget* tab = new KTabWidget(mainPanel, "tabWidget");
-    tab->addTab(buildRangePanel(currentFrom, currentTo), i18n("Range"));
-    tab->addTab(buildRegExpPanel(), i18n("RegExp"));
+    tabWidget = new KTabWidget(mainPanel, "tabWidget");
+    tabWidget->addTab(buildRangePanel(currentFrom, currentTo), i18n("Range"));
+    tabWidget->addTab(buildRegExpPanel(), i18n("RegExp"));
 
     // no date set - checkbox
     noDateSet = new QCheckBox(i18n("No date set"), mainPanel);
@@ -117,8 +116,7 @@ void DialogDateTimeFilter::slotValidate()
 
 void DialogDateTimeFilter::slotNoDateSetToggled(bool checked)
 {
-    fromDateTime->setEnabled(!checked);
-    toDateTime->setEnabled(!checked);
+    tabWidget->setEnabled(!checked);
 
     if (checked) {
         enableButtonOK(true);
