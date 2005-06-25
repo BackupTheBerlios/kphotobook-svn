@@ -118,6 +118,7 @@ QWidget* DialogDateTimeFilter::buildSinglePanel()
     TimeRuler* tr = new TimeRuler(singlePanel);
     connect(tr, SIGNAL(selectionChanged(int, int)), this, SLOT(slotDateSelectionChanged(int, int)));
     m_dateTable = new KDatePicker(singlePanel);
+    connect(m_dateTable, SIGNAL(dateChanged(QDate )), tr, SLOT(slotSetSelected(QDate)));
 
     return singlePanel;
 }
