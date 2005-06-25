@@ -30,13 +30,14 @@
 #include <qpainter.h>
 #include <qapplication.h>
 #include <qclipboard.h>
-
+#include <qsimplerichtext.h>
 #include <qcursor.h>
 #include <qdatetime.h>
 
 #include <klocale.h>
-
-
+#include <kaction.h>
+#include <kstdaccel.h>
+#include <kstdaction.h>
 
 Tracer* ImageViewer::tracer = Tracer::getInstance("kde.kphotobook.widgets", "ImageViewer");
 
@@ -69,6 +70,11 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
 
     //this disables deletion of pixels, we make the bg drawing ourself
     this->setBackgroundMode(NoBackground);
+
+    //set the text color of this widget to full opacity
+    QPalette p = palette();
+    p.setColor(QColorGroup::Text, 0xFF);
+    setPalette(p);
 
     // retrieve screenGeometry of the screen the cursor is on
     QDesktopWidget* desktop = new QDesktopWidget();
@@ -426,13 +432,11 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
     caption->setAlignment( Qt::AlignCenter );
     popup->insertItem( caption );
 
-    ///@todo use kde actions/icons here, but I don't know, how to do that!
-    popup->insertItem(i18n("Previous Image"), this, SLOT(slotShowPrevImage()));
-    popup->insertItem(i18n("Next Image"), this, SLOT(slotShowNextImage()));
 
+    KStdAction::back(this, SLOT(slotShowPrevImage()), 0)->plug(popup);
+    KStdAction::forward(this, SLOT(slotShowNextImage()),0)->plug(popup);
     popup->insertSeparator();
-    int id = popup->insertItem(i18n("Toggle Fullscreen"), parent(), SLOT(slotToggleFullscreen()));
-    popup->setItemChecked(id, ((QWidget*)parent())->isFullScreen());
+    KStdAction::fullScreen(parent(), SLOT(slotToggleFullscreen()), 0, this)->plug(popup);
 
     QPopupMenu* subSlideshow = new QPopupMenu(popup);
     c = QString("<font color=black><b> %1 </b></font>").arg(i18n("Slideshow"));
@@ -440,7 +444,7 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
     caption->setAlignment( Qt::AlignCenter );
 
     subSlideshow->insertItem( caption );
-    id = subSlideshow->insertItem("Stop", 0);
+    int id = subSlideshow->insertItem("Stop", 0);
     subSlideshow->setItemEnabled(id, m_timerSlideshow->isActive());
 
     subSlideshow->insertItem(" 5 sec", 5);
@@ -469,12 +473,12 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
     popup->setItemChecked(id, Settings::toolsViewerShowFileInfos());
 
     popup->insertSeparator();
-    popup->insertItem(i18n("Quit"), parent(), SLOT(close()));
+
+    KStdAction::quit(parent(), SLOT(close()), 0)->plug(popup);
 
     popup->exec(QCursor::pos());
 
     delete popup;
-
 }
 
 
@@ -547,7 +551,7 @@ void ImageViewer::generateImageCounterOverlay()
         f.setPixelSize( side / 6 );
     }
     pixmapPainter.setFont( f );
-    pixmapPainter.setPen( 0xFF );
+    pixmapPainter.setPen( colorGroup().text() );
      // use a little offset to prettify output
     pixmapPainter.drawText( iRect.x()+2, iRect.y()+2, ic, ic * 7/12, Qt::AlignHCenter | Qt::AlignBottom, QString::number( cur ) );
 
@@ -597,31 +601,39 @@ void ImageViewer::generateInfoOverlay()
         return;
     }
 
-    ///@todo userdefinable fontsizes
-    int fontSize = 22;
 
-    QFont f;
-    f.setPixelSize(fontSize);
-    f.setBold(true);
 
-    QFontMetrics fm(f);
+    QString date = QDateTime::currentDateTime().toString("yyyy.MM.dd - hh:mm:ss");
 
-    QString str = QString(i18n("File %1")).arg(m_lstImages.current()->fileInfo()->fileName());
+    QString row = QString("<tr><font size=+1><td><b>%1:</b></td><td>%2</td></font></tr>");
 
-    QRect rect = fm.boundingRect(str);
+    QString table = "<table>";
+    table += QString("<tr><td colspan=+2><font face=sans size=+3>%1</font></td></tr>").arg(date);
+    table += row.arg("Filename").arg(m_lstImages.current()->fileInfo()->fileName());
+    table += row.arg("Iso").arg("100");
+    table += "</table>";
 
-    QPixmap pm(rect.size() + QSize(10,14));
+
+
+
+    QSimpleRichText srt(table, font());
+    srt.setWidth(width());
+
+    QSize size(srt.widthUsed(), srt.height());
+
+    // the basic pixmap
+    QPixmap pm(size);
     pm.fill(Qt::black);
 
     QPainter pmp(&pm);
 
+    //draw the frame
     pmp.setBrush(0x55);
     pmp.setPen(0x88);
     pmp.drawRoundRect(0,0, pm.width(), pm.height(), (8 * 200) / pm.width(), (8 * 200) / pm.height());
 
-    pmp.setPen(0xFF);
-    pmp.setFont(f);
-    pmp.drawText(3, 3 + f.pixelSize(), str);
+    //the draw the text
+    srt.draw(&pmp, 0, 0, pm.rect(), colorGroup());
 
     pmp.end();
 
@@ -758,6 +770,8 @@ XImage::XImage(int maxWidth, int maxHeight)
     m_scaled = QPixmap();
 
     m_smoothScale = false;
+
+    m_alloc_context = 0L;
 
     free();
 
