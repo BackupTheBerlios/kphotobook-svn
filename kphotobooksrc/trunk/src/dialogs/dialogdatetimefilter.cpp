@@ -20,6 +20,8 @@
 
 #include "dialogdatetimefilter.h"
 
+#include "../widgets/timeruler.h"
+
 #include <kfiledialog.h>
 #include <kglobal.h>
 #include <kiconloader.h>
@@ -43,7 +45,7 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QD
     , noDateSet(0)
 {
     tracer->invoked(__func__);
-    
+
     this->setButtonText(KDialogBase::Default, i18n("Clear"));
     this->setButtonTip(KDialogBase::Default, i18n("Clears the entered date"));
 
@@ -51,17 +53,18 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QD
     (new QVBoxLayout(mainPanel, 0, 5, "mainPanelLayout"))->setAutoAdd(true);
 
     tabWidget = new KTabWidget(mainPanel, "tabWidget");
+    tabWidget->addTab(buildSinglePanel(), i18n("Single"));
     tabWidget->addTab(buildRangePanel(currentFrom, currentTo), i18n("Range"));
     tabWidget->addTab(buildRegExpPanel(), i18n("RegExp"));
 
     // no date set - checkbox
     noDateSet = new QCheckBox(i18n("No date set"), mainPanel);
     connect (noDateSet, SIGNAL(toggled(bool)), this, SLOT(slotNoDateSetToggled(bool)));
-    
+
     // spacer
     QWidget* spacer = new QWidget(mainPanel, "spacer");
     spacer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    
+
     this->setMainWidget(mainPanel);
 }
 
@@ -102,10 +105,22 @@ QWidget* DialogDateTimeFilter::buildRegExpPanel()
     regExpPanelLayout->setAutoAdd(true);
 
     ///@todo implement
-    
+
     return regExpPanel;
 }
 
+QWidget* DialogDateTimeFilter::buildSinglePanel()
+{
+    QWidget* singlePanel = new QWidget(this, "singlePanel");
+    QVBoxLayout* singlePanelLayout = new QVBoxLayout(singlePanel, 5, 5, "singlePanelLayout");
+    singlePanelLayout->setAutoAdd(true);
+
+    TimeRuler* tr = new TimeRuler(singlePanel);
+    connect(tr, SIGNAL(selectionChanged(int, int)), this, SLOT(slotDateSelectionChanged(int, int)));
+    m_dateTable = new KDatePicker(singlePanel);
+
+    return singlePanel;
+}
 
 
 void DialogDateTimeFilter::slotValidate()
@@ -125,5 +140,10 @@ void DialogDateTimeFilter::slotNoDateSetToggled(bool checked)
     }
 }
 
+
+void DialogDateTimeFilter::slotDateSelectionChanged(int year, int month)
+{
+    m_dateTable->setDate(QDate(year, month, 1));
+}
 
 #include "dialogdatetimefilter.moc"

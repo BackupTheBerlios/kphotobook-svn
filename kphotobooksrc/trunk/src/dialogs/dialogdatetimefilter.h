@@ -26,6 +26,7 @@
 
 #include <kdialogbase.h>
 #include <ktabwidget.h>
+#include <kdatepicker.h>
 
 #include <qcheckbox.h>
 #include <qdatetime.h>
@@ -39,10 +40,10 @@
 class DialogDateTimeFilter : public KDialogBase
 {
     Q_OBJECT
-    
+
     private:
         static Tracer* tracer;
-    
+
     public:
         DialogDateTimeFilter(QWidget* parent = 0, const char* name = 0, QDateTime* currentFrom = 0, QDateTime* currentTo = 0);
         ~DialogDateTimeFilter();
@@ -62,6 +63,7 @@ class DialogDateTimeFilter : public KDialogBase
     private:
         QWidget* buildRangePanel(QDateTime* currentFrom, QDateTime* currentTo);
         QWidget* buildRegExpPanel();
+        QWidget* buildSinglePanel();
 
     private slots:
         /**
@@ -73,13 +75,20 @@ class DialogDateTimeFilter : public KDialogBase
          * Is called everytime the 'no date set'-checkbox is clicked.
          */
         void slotNoDateSetToggled(bool checked);
-    
+
+        /**
+         * is called, when the selection of the timeruler is changed
+         */
+        void slotDateSelectionChanged(int, int);
+
     private:
         KTabWidget* tabWidget;
-                
+
         DateTimeWidget* fromDateTime;
         DateTimeWidget* toDateTime;
         QCheckBox* noDateSet;
+
+        KDatePicker* m_dateTable;
 };
 
 #endif
