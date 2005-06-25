@@ -20,9 +20,12 @@
 
 #include "timeruler.h"
 
-#include <kapplication.h>
+#include "../settings/settings.h"
 
 #include <qpainter.h>
+#include <qstyle.h>
+
+#include <kapplication.h>
 
 #include <list>
 #include <math.h>
@@ -53,19 +56,16 @@ TimeRuler::TimeRuler(QWidget* parent)
 
     initUI();
 
-    resize(350,m_height);
+    setMinimumWidth( 200 );
 
     setFixedHeight(m_height);
-
-    setMaximumWidth(m_pixmap.width());
-
-    setMouseTracking(true);
 
     m_scrollTimer = new QTimer(this);
     connect(m_scrollTimer, SIGNAL(timeout()), this, SLOT(slotScrollTimerFired()));
 
-    setCentered(m_lstDates.maxYear(), 12);
+    setCentered(m_lstDates.lastYear(), 12);
 
+    setMouseTracking(true);
 }
 
 
@@ -99,7 +99,7 @@ void TimeRuler::setCentered(int year, int month)
 
 bool TimeRuler::isContained(int year, int month)
 {
-    return (year >= m_lstDates.minYear() && year <= m_lstDates.maxYear()
+    return (year >= m_lstDates.firstYear() && year <= m_lstDates.lastYear()
             && month > 0 && month <= 12);
 }
 
@@ -107,25 +107,53 @@ bool TimeRuler::isContained(int year, int month)
 void TimeRuler::initData()
 {
     int i;
-    for (i = 0; i < 20; ++i) {
+    for (i = 0; i < 60; ++i) {
         m_lstDates.addDate(QDate(2001,1,1));
     }
-    for (i = 0; i < 25; ++i) {
+    for (i = 0; i < 60; ++i) {
+        m_lstDates.addDate(QDate(2001,2,1));
+    }
+    for (i = 0; i < 30; ++i) {
         m_lstDates.addDate(QDate(2003,4,4));
     }
     for (i = 0; i < 35; ++i) {
         m_lstDates.addDate(QDate(2003,3,4));
     }
+
+    for (i = 0; i < 60; ++i) {
+        m_lstDates.addDate(QDate(2001,1,1));
+    }
+/*    for (i = 0; i < 55; ++i) {
+        m_lstDates.addDate(QDate(2001,2,1));
+    }*/
+    for (i = 0; i < 50; ++i) {
+        m_lstDates.addDate(QDate(2001,2,2));
+    }
 }
 
 
 void TimeRuler::initUI() {
-    int width = (m_lstDates.numYears() * 12 + 1 ) * m_widthMonth + 20;
+    int width = m_widthMonth + (m_lstDates.numYears() * 12 ) * m_widthMonth + m_widthMonth;
 
     m_pixmap = QPixmap(width, m_height);
     m_pixmap.fill(backgroundColor());
 
     QPainter p (&m_pixmap);
+
+    p.save();
+
+    p.setPen(Qt::gray);
+    p.setBrush(Qt::white);
+    QStyle& style = KApplication::kApplication()->style();
+
+    //draw a frame
+    QColorGroup cg = colorGroup();
+    cg.setColor(QColorGroup::Background, Qt::white);
+
+    style.drawPrimitive(QStyle::PE_ButtonBevel, &p,
+                        QRect(m_widthMonth, 3, width - 2 * m_widthMonth, m_yBase - 3), cg);
+
+    p.restore();
 
     //first create the month counter on a temporaroy pixmap
     QPixmap tp(12 * m_widthMonth, 20);
@@ -151,10 +179,10 @@ void TimeRuler::initUI() {
    //reset the counting mechanism...
     m_lstDates.count(-1);
 
-    for (int y = m_lstDates.minYear(); y <= m_lstDates.maxYear(); ++ y) {
+    for (int y = m_lstDates.firstYear(); y <= m_lstDates.lastYear(); ++ y) {
         for (int m = 1; m <= 12 ; ++m) {
 
-            x = m_widthMonth + ((y - m_lstDates.minYear())*12 + m -1 ) * m_widthMonth;
+            x = m_widthMonth + ((y - m_lstDates.firstYear())*12 + m -1 ) * m_widthMonth;
 
             if (m == 1) {
                 bitBlt(&m_pixmap, x, m_yBase + 3, &tp, 0, 0, tp.width(), tp.height());
@@ -181,8 +209,7 @@ void TimeRuler::initUI() {
                 p.setPen(QPen(Qt::black, 1));
                 p.drawLine(x, m_yBase+over, x, m_yBase+8);
             }
-            ///@todo here the max should be checked for percentage calculation
-            drawBeam(&p, m_lstDates.count(y,m, -1, true), y, m);
+            drawBeam(&p, m_lstDates.count(y,m, -1, true) * 100 / m_lstDates.maxMonth(), y, m);
         }
     }
     //draw the final year bar thats missing from the loop
@@ -209,7 +236,8 @@ void TimeRuler::drawBeam(QPainter* p, int percent, int year, int month, bool fil
         return;
     }
 
-    int h = (m_yBase-2) * percent / 100;
+    //the '6' comes from a frame hight offset of 4 + a bit more (2)
+    int h = (m_yBase-6) * percent / 100;
     if (h == 0) {
         h = 1;
     }
@@ -248,6 +276,8 @@ void TimeRuler::paintEvent(QPaintEvent* e) {
     QPainter painter(this);
     painter.setClipRect(e->rect());
 
+//     kdDebug() << "paintEvent()" << endl;
+
     painter.drawPixmap(0, 0, m_pixmap, m_xVis, 0, width(), height());
 
     if (m_mouseOverYear > 0 || m_selectedYear > 0) {
@@ -256,17 +286,20 @@ void TimeRuler::paintEvent(QPaintEvent* e) {
         if (m_selectedYear == m_mouseOverYear
             && m_selectedMonth == m_mouseOverMonth)
         {
-            drawBeam(&painter, m_lstDates.count(m_selectedYear, m_selectedMonth),
-                     m_selectedYear, m_selectedMonth, true, Qt::darkBlue);
+            drawBeam(&painter,
+                     m_lstDates.count(m_selectedYear, m_selectedMonth) * 100/ m_lstDates.maxMonth(),
+                     m_selectedYear, m_selectedMonth, true, Qt::gray);
         } else {
 
             if (m_selectedYear > 0) {
-                drawBeam(&painter, m_lstDates.count(m_selectedYear, m_selectedMonth),
-                         m_selectedYear, m_selectedMonth, true, Qt::blue);
+                drawBeam(&painter,
+                         m_lstDates.count(m_selectedYear, m_selectedMonth) * 100/ m_lstDates.maxMonth(),
+                         m_selectedYear, m_selectedMonth, true, QColor(Settings::toolsViewerOverlayColor()));
             }
 
             if (m_mouseOverYear > 0) {
-                drawBeam(&painter, m_lstDates.count(m_mouseOverYear, m_mouseOverMonth),
+                drawBeam(&painter,
+                         m_lstDates.count(m_mouseOverYear, m_mouseOverMonth) * 100/ m_lstDates.maxMonth(),
                          m_mouseOverYear, m_mouseOverMonth, true, Qt::gray);
             }
         }
@@ -290,7 +323,6 @@ void TimeRuler::mouseMoveEvent ( QMouseEvent * e ) {
         QRect r = dateToBarRect(m_mouseOverYear, m_mouseOverMonth, true);
 
         m_mouseOverYear = -1;
-
         repaint(r);
 
     } else {
@@ -301,11 +333,12 @@ void TimeRuler::mouseMoveEvent ( QMouseEvent * e ) {
 
         mousePosToOffset(e->pos(), &m_mouseOverYear, &m_mouseOverMonth);
 
+        //remove the prev. paint only, when it is not the current
+        if (prevY > 0 && !(prevY == m_mouseOverYear && prevM == m_mouseOverMonth)) {
+            update(dateToBarRect(prevY, prevM, true));
+        }
         if (m_mouseOverYear > 0) {
             //remove the previous paint
-            if (prevY > 0 ) {//&& prevY != m_mouseOverYear && prevM != m_mouseOverMonth) {
-                update(dateToBarRect(prevY, prevM, true));
-            }
             repaint(dateToBarRect(m_mouseOverYear, m_mouseOverMonth, true));
         }
     }
@@ -338,10 +371,12 @@ void TimeRuler::mouseReleaseEvent(QMouseEvent* e) {
             update(dateToBarRect(prevY, prevM, true));
         }
 
-        //now repaint the current selection
-        repaint(dateToBarRect(m_selectedYear, m_selectedMonth, true));
+        if (m_selectedYear > 0) {
+            //now repaint the current selection
+            repaint(dateToBarRect(m_selectedYear, m_selectedMonth, true));
 
-        emit selectionChanged(m_selectedYear, m_selectedMonth);
+            emit selectionChanged(m_selectedYear, m_selectedMonth);
+        }
     }
 
     m_mousePressPosition = QPoint(0,0);
@@ -361,8 +396,12 @@ void TimeRuler::mousePosToOffset(QPoint pos, int* year, int* month) {
 
     int m = (pos.x() + m_xVis) / m_widthMonth - 1;
 
-    *year = m / 12 + m_lstDates.minYear();
     *month = m % 12 + 1;
+    if (*month > 0) {
+        *year = m / 12 + m_lstDates.firstYear();
+    } else {
+        *year = -1;
+    }
 }
 
 
@@ -373,7 +412,7 @@ QRect TimeRuler::dateToBarRect(int year, int month, bool translateX, int height 
         height = m_yBase;
     }
 
-    QRect retval(((year - m_lstDates.minYear()) * 12 + month ) * m_widthMonth + 3,
+    QRect retval(((year - m_lstDates.firstYear()) * 12 + month ) * m_widthMonth + 3,
                  m_yBase - height - 1,
                  m_widthMonth - 5,
                  height);
@@ -433,7 +472,11 @@ void TimeRuler::slotScrollTimerFired()
 /////////////////////////////////////////////////////////////////////////////////
 
 
-DateBinder::DateBinder() {}
+DateBinder::DateBinder() {
+    m_maxYear  = -1;
+    m_maxMonth = -1;
+    m_maxDay   = -1;
+}
 
 DateBinder::~DateBinder() {}
 
@@ -445,9 +488,14 @@ void DateBinder::addDate(QDate d) {
             break;
         }
     }
+    // this means, we came to the end and did not add the item yet
     if (it == m_lstData.end()) {
         m_lstData.push_back(d);
     }
+
+    m_maxYear  = -1;
+    m_maxMonth = -1;
+    m_maxDay   = -1;
 }
 
 
@@ -511,7 +559,7 @@ int DateBinder::count (int year, int month, int day, bool cntd)
 }
 
 
-int DateBinder::minYear() {
+int DateBinder::firstYear() {
     if (m_lstData.size()) {
         return m_lstData.front().year();
     }
@@ -519,7 +567,7 @@ int DateBinder::minYear() {
 }
 
 
-int DateBinder::maxYear() {
+int DateBinder::lastYear() {
     if (m_lstData.size()) {
         return m_lstData.back().year();
     }
@@ -527,12 +575,94 @@ int DateBinder::maxYear() {
 }
 
 int DateBinder::numYears() {
-    return maxYear() - minYear() + 1;
+    return lastYear() - firstYear() + 1;
 }
 
 
 
+int DateBinder::maxYear() {
+    if (m_maxYear <= 0) {
+        //calculate the max;
+        list<QDate>::iterator it = m_lstData.begin();
+        int cur = 0;
+        m_maxYear = 0;
+        QDate curdate = *it;
+        for (; it != m_lstData.end(); ++it) {
 
+            if (curdate.year() == it->year()) {
+                    ++cur;
+                } else {
+
+                    if (cur > m_maxYear) {
+                        m_maxYear = cur;
+                    }
+                    cur     = 1;
+                    curdate = (*it);
+                }
+        }
+
+        if (cur > m_maxYear) {
+            m_maxYear = cur;
+        }
+    }
+    return m_maxYear ;
+}
+
+
+int DateBinder::maxMonth() {
+    if (m_maxMonth <= 0) {
+        //calculate the max;
+        list<QDate>::iterator it = m_lstData.begin();
+        int cur = 0;
+        m_maxMonth = 0;
+        QDate curdate = *it;
+        for (; it != m_lstData.end(); ++it) {
+
+            if (curdate.year() == it->year()
+                && curdate.month() == it->month()) {
+                ++cur;
+            } else {
+                if (cur > m_maxMonth) {
+                    m_maxMonth = cur;
+                }
+                cur     = 1;
+                curdate = (*it);
+            }
+        }
+
+        if (cur > m_maxMonth) {
+            m_maxMonth = cur;
+        }
+    }
+    return m_maxMonth;
+}
+
+int DateBinder::maxDay() {
+    if (m_maxDay <= 0) {
+        //calculate the max;
+        list<QDate>::iterator it = m_lstData.begin();
+        int cur = 0;
+        m_maxDay = 0;
+        QDate curdate = *it;
+        for (; it != m_lstData.end(); ++it) {
+
+            if (curdate == *it) {
+                ++cur;
+            } else {
+                if (cur > m_maxDay) {
+                    m_maxDay = cur;
+                }
+                cur     = 1;
+                curdate = (*it);
+            }
+        }
+
+        if (cur > m_maxDay) {
+            m_maxDay = cur;
+        }
+    }
+    return m_maxDay;
+}
 
 
 

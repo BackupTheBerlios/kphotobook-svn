@@ -60,19 +60,27 @@ public:
     /**
      * @returns the minimal year
      */
-    int minYear();
+    int firstYear();
     /**
      * @returns the maximal year in this list
      */
-    int maxYear();
+    int lastYear();
     /**
      * @returns the number of years covered by this list
-     * (that is maxYear() - minYear() + 1
+     * (that is lastYear() - firstYear() + 1
      */
     int numYears();
 
+    int maxYear();
+    int maxMonth();
+    int maxDay();
+
 private:
     list<QDate> m_lstData;
+
+    int m_maxYear;
+    int m_maxMonth;
+    int m_maxDay;
 };
 
 
@@ -116,7 +124,6 @@ protected:
     virtual void mousePressEvent ( QMouseEvent * e );
     virtual void mouseReleaseEvent ( QMouseEvent * e );
     virtual void wheelEvent ( QWheelEvent * e );
-
 
 private slots:
     void slotScrollTimerFired();
