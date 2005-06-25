@@ -21,6 +21,7 @@
 #include "tagtreenodedatetime.h"
 
 #include "../dialogs/dialogdatetimechooser.h"
+#include "../dialogs/dialogdatetimefilter.h"
 #include "../engine/file.h"
 #include "../engine/filetagnodeassocdatetime.h"
 #include "../engine/filternodetagdatetime.h"
@@ -43,9 +44,6 @@ TagTreeNodeDateTime::TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNo
     , locale(KGlobal::locale())
     , m_filterValue(QString::null)
 {
-    // enable editing of value and filter
-    setRenameEnabled(TagTree::COLUMN_VALUE, true);
-    setRenameEnabled(TagTree::COLUMN_FILTER, true);
 }
 
 
@@ -53,9 +51,6 @@ TagTreeNodeDateTime::TagTreeNodeDateTime(TagTreeNode* parent, TagNodeDateTime* t
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , m_filterValue(QString::null)
 {
-    // enable editing of value and filter
-    setRenameEnabled(TagTree::COLUMN_VALUE, true);
-    setRenameEnabled(TagTree::COLUMN_FILTER, true);
 }
 
 
@@ -170,6 +165,10 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
         case TagTree::COLUMN_FILTER : {
     
             ///@todo implement leftclicked on filter
+                // let the user enter a new value
+            DialogDateTimeFilter* dateTimeFilter = new DialogDateTimeFilter(0, "DialogDateTimeFilter", 0, 0);
+            if (dateTimeFilter->exec() == QDialog::QDialog::Accepted) {
+            }
             break;
         }
     }
@@ -280,6 +279,6 @@ QDateTime* TagTreeNodeDateTime::getCommonValue(const KFileItemList* selectedFile
         }
     }
 
-    tracer->sdebug(__func__) << "commnon value is: " << (commonValue ? locale->formatDateTime(*commonValue, true, true) : "0") << endl;
+    tracer->sdebug(__func__) << "common value is: " << (commonValue ? locale->formatDateTime(*commonValue, true, true) : "0") << endl;
     return commonValue;
 }

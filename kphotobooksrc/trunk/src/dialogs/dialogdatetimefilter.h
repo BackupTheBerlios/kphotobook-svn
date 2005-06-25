@@ -18,86 +18,65 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DIALOGMANAGETAG_H
-#define DIALOGMANAGETAG_H
+#ifndef DIALOGDATETIMEFILTER_H
+#define DIALOGDATETIMEFILTER_H
 
-#include "../kphotobook.h"
+#include "../tracer/tracer.h"
+#include "../widgets/datetimewidget.h"
 
-#include <kcombobox.h>
 #include <kdialogbase.h>
-#include <klineedit.h>
 
 #include <qcheckbox.h>
-#include <qpushbutton.h>
-#include <qstring.h>
-#include <qvaluelist.h>
+#include <qdatetime.h>
 
-class TagTreeNode;
 
 /**
- * The dialog to create a now tag.
+ * Dialog for setting the datetime filter.
  *
- * CVS-ID $Id: dialogcreatetag.h 284 2005-03-31 20:03:08Z choenig $
+ * CVS-ID $Id: dialogaddsourcedir.h 274 2005-03-25 08:52:15Z choenig $
  */
-class DialogManageTag : public KDialogBase {
+class DialogDateTimeFilter : public KDialogBase
+{
+    Q_OBJECT
+    
+    private:
+        static Tracer* tracer;
+    
+    public:
+        DialogDateTimeFilter(QWidget* parent = 0, const char* name = 0, QDateTime* currentFrom = 0, QDateTime* currentTo = 0);
+        ~DialogDateTimeFilter();
 
-Q_OBJECT
+        /**
+         * Returns the choosen from datetime.
+         * If null is returned and {@link isDateTimeFromValid} returns true, no from date is choosen.
+         */
+        QDateTime dateTimeFrom() {
+            return fromDateTime->dateTime();
+        }
 
-public:
-    enum Mode {
-        MODE_CREATE_TAG,
-        MODE_EDIT_TAG
-    };
+        bool isDateTimeFromValid() {
+            return toDateTime->isDateTimeValid();
+        }
 
-public:
-    DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parentNode, TagTreeNode* tagTreeNode, KPhotoBook* photobook, const char *name);
+    private:
+        QWidget* buildRangePanel(QDateTime* currentFrom, QDateTime* currentTo);
+        QWidget* buildRegExpPanel();
 
-    ~DialogManageTag();
+    private slots:
+        /**
+         * Validates the entered data and enables/disables the ok button.
+         */
+        void slotValidate();
 
-    TagNode::Type tagType();
-
-    QString tagName() {
-        return m_nameLineEdit->text();
-    }
-
-    QString tagComment() {
-        return m_commentLineEdit->text();
-    }
-
-    QString tagIcon() {
-        return m_iconLineEdit->text();
-    }
-
-    bool tagSecret() {
-        return m_chkSecret->isChecked();
-    }
-
-
-private slots:
-    void slotValidate();
-
-    void slotIconButtonClicked();
-
-private:
-
-    void fillTypeCombo(TagTreeNode* parentNode);
-
-    Mode m_mode;
-
-    TagTreeNode* m_parentNode;
-    TagTreeNode* m_tagTreeNode;
-
-    KPhotoBook* m_photobook;
-
-    KComboBox* m_typeComboBox;
-    QValueList<TagNode::Type>* m_typeComboBoxEntries;
-
-    KLineEdit* m_nameLineEdit;
-    KLineEdit* m_commentLineEdit;
-    KLineEdit* m_iconLineEdit;
-    QPushButton* m_iconButton;
-    QCheckBox* m_chkSecret;
-
+        /**
+         * Is called everytime the 'no date set'-checkbox is clicked.
+         */
+        void slotNoDateSetToggled(bool checked);
+    
+    private:
+        DateTimeWidget* fromDateTime;
+        DateTimeWidget* toDateTime;
+        QCheckBox* noDateSet;
 };
 
 #endif

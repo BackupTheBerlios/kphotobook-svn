@@ -36,7 +36,7 @@ Tracer* DialogDateTimeChooser::tracer = Tracer::getInstance("kde.kphotobook.widg
 
 
 DialogDateTimeChooser::DialogDateTimeChooser(QWidget* parent, const char* name, QDateTime dateTime)
-    : KDialogBase(parent, name, true, i18n("Date chooser"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true)
+    : KDialogBase(parent, name, true, i18n("Datetime chooser"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true)
     , dateTimeWidget(0)
 {
     tracer->invoked(__func__);
