@@ -1,18 +1,19 @@
-<!doctype public "-//w3c//dtd html 4.01 transitional//en"
-                "http://www.w3.org/tr/html4/loose.dtd">
-<html>
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
 <head>
-  <meta name="author" content="Christen">
-  <title>KPhotoBook</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <base target="mainframe">
+    <meta name="author" content="Christen" />
+    <title>KPhotoBook</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <base target="mainframe" />
 </head>
 
 <body>
-
 <table class="header">
 <tr>
-<td class="header_l"><img src="pics/develop_h.png"></td>
+<td class="header_l"><img alt="develop-icon" src="pics/develop_h.png" /></td>
 <td class="header_m">Developing</td>
 <td class="header_r">KPhotoBook</td>
 </tr>
@@ -40,7 +41,7 @@
       doit();
     }</pre>
 </li>
-<li>one line statements must always be written within braces '{}'<br>
+<li>one line statements must always be written within braces '{}'<br />
 <strong>right:</strong>
 <pre>    if (true) {
       doit();
@@ -49,7 +50,7 @@
 <pre>    if (true)
       doit();</pre>
 </li>
-<li>there is only one variable to be defined per line<br>
+<li>there is only one variable to be defined per line<br />
 <strong>right:</strong>
 <pre>    int x = 0;
     int y = 0;</pre>
@@ -57,7 +58,7 @@
 <pre>    int x,y = 0;
 </pre>
 </li>
-<li>The asterisk '*' for pointers belongs to the type and not to the variable:<br>
+<li>The asterisk '*' for pointers belongs to the type and not to the variable:<br />
 <strong>right:</strong>
 <pre>    Class* myvar;</pre>
 <strong>wrong:</strong>
@@ -66,19 +67,24 @@
 </li>
 <li>do NOT allow trailing spaces</li>
 <li>includes are split in 4 blocks. These blocks are separated with an empty line. Includes within a block are sorted alphabetically</li>
-    <ol>
-    <li>Header for the current cpp-file</li>
-    <li>Headers from the <em>KphotoBook</em> project</li>
-    <li>KDE-headers</li>
-    <li>QT-headers</li>
-    <li>Standard/System headers</li>
-    </ol>
+    <li>
+        <ol>
+        <li>Header for the current cpp-file</li>
+        <li>Headers from the <em>KphotoBook</em> project</li>
+        <li>KDE-headers</li>
+        <li>QT-headers</li>
+        <li>Standard/System headers</li>
+        </ol>
+    </li>
 <li>TODOs must be written as "<code>///@TODO message</code>", the message should never be left empty.</li>
 <li>FIXMEs must be written as "<code>//FIXME message</code>" the message should never be left empty.</li>
 
 
 </ul>
 
+
+</td>
+</tr>
 
 </table>
 

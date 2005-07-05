@@ -1,19 +1,23 @@
-<!doctype public "-//w3c//dtd html 4.01 transitional//en"
-                "http://www.w3.org/tr/html4/loose.dtd">
-<html>
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
 <head>
-  <meta name="author" content="Christen">
-  <title>KPhotoBook</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <base target="mainframe">
+    <meta name="author" content="Christen" />
+    <title>KPhotoBook</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <base target="mainframe" />
 </head>
 
 <body>
 
 <table class="header">
-<td class="header_l"><img src="pics/download_h.png"></td>
+<tr>
+<td class="header_l"><img alt="download-icon" src="pics/download_h.png" /></td>
 <td class="header_m">Download</td>
 <td class="header_r">KPhotoBook</td>
+</tr>
 </table>
 
 
@@ -75,8 +79,9 @@ An ebuild request was submitted to gentoo bugzilla: <a target="_top" href="http:
 Hopefully, it will soon be in the official portage tree.
 </p>
 <p>
-For now, you can <a href="http://bugs.gentoo.org/attachment.cgi?id=34077&action=view">download the ebuild v0.0.6</a>.<br/>
+For now, you can <a href="http://bugs.gentoo.org/attachment.cgi?id=34077&amp;action=view">download the ebuild v0.0.6</a>.<br/>
 There are two ways to get it going:
+</p>
 <ol>
 <li>
 copy the ebuild into your portage tree (you will loose the ebuild after an rsync)
@@ -91,12 +96,10 @@ Either way, you need to generate a package manifest and digest file by
 changing to the kphotobook-ebuild-directory and running <code>ebuild
 kphotobook-VERSION.ebuild digest</code>.<br/>
 Then the usual <code>emerge kphotobook</code> will do the job.
-</p>
 
 </td>
 </tr>
 </table>
 
-</body>
 </body>
 </html>
