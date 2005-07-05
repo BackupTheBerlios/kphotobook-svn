@@ -2,19 +2,11 @@ body {
 color:            #000000;
 background-color: #dedede;
 font-size:        10pt;
-margin-top:       2;
-margin-bottom:    2;
-margin-left:      2;
-margin-right:     2;
-font-family:      Verdana,Arial;
-
-scrollbar-arrow-color:      #dddddd; /* Farbe für Verschiebepfeile */
-scrollbar-3dlight-color:    #000000; /* Farbe für 3D-Effekte */
-scrollbar-track-color:      #7381D5; /* Farbe für freibleibenden Verschiebeweg */
-scrollbar-face-color:       #bdceff; /* Farbe für Oberfläche */
-scrollbar-highlight-color:  #dddddd; /* Farbe für oberen und linken Rand */
-scrollbar-shadow-color:     #aaaaaa; /* Farbe für unteren und rechten Rand */
-scrollbar-darkshadow-color: #000000; /* Farbe für Schatten */
+margin-top:       2pt;
+margin-bottom:    2pt;
+margin-left:      2pt;
+margin-right:     2pt;
+font-family:      Verdana,Arial,sans-serif;
 }
 
 a 		{ font-size: 10pt; text-decoration: none;}
@@ -114,10 +106,10 @@ width:         100%;
 }
 
 a.logolink 		{ font-size: 9pt; text-decoration: none;}
-a.logolink:link		{ font-size: 9pt;color: white; font-weight: none;}
-a.logolink:visited	{ font-size: 9pt;color: white; font-weight: none;}
-a.logolink:active	{ font-size: 9pt;color: white; font-weight: none;}
-a.logolink:hover	{ font-size: 9pt;color: black; font-weight: none;}
+a.logolink:link		{ font-size: 9pt;color: white; font-weight: normal;}
+a.logolink:visited	{ font-size: 9pt;color: white; font-weight: normal;}
+a.logolink:active	{ font-size: 9pt;color: white; font-weight: normal;}
+a.logolink:hover	{ font-size: 9pt;color: black; font-weight: normal;}
 
 
 /*Menu#####################################################*/
