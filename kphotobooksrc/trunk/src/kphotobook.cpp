@@ -2043,42 +2043,50 @@ void KPhotoBook::applyLockUnlockTaggingSettings() {
 }
 
 
-void KPhotoBook::storeTreeState() {
-
+void KPhotoBook::storeTreeState()
+{
     KConfig* config = KGlobal::config();
-    QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
+    
+    QString group = QString("TagTreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
-
     if (Settings::tagTreeRememberTree()) {
         QStringList* openNodes = m_tagTree->getOpenNodes();
-        config->writeEntry("TagTree:OpenNodes", *openNodes);
+        config->writeEntry("OpenNodes", *openNodes);
         delete openNodes;
     }
-
+    m_tagTree->saveLayout(config, group);
+    
+    group = QString("SourceDirTreeState:%1").arg(*(m_engine->uid()));
+    config->setGroup(group);
     if (Settings::sourceDirTreeRememberTree()) {
         QStringList* openNodes = m_sourcedirTree->getOpenNodes();
-        config->writeEntry("SourceDirTree:OpenNodes", *openNodes);
+        config->writeEntry("OpenNodes", *openNodes);
         delete openNodes;
     }
+    m_sourcedirTree->saveLayout(config, group);
 
     // force writing
     config->sync();
 }
 
 
-void KPhotoBook::loadTreeState() {
-
+void KPhotoBook::loadTreeState()
+{
     KConfig* config = KGlobal::config();
-    QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
+    
+    QString group = QString("TagTreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
-
+    m_tagTree->restoreLayout(config, group);
     if (Settings::tagTreeRememberTree()) {
-        QStringList openNodes = config->readListEntry("TagTree:OpenNodes");
+        QStringList openNodes = config->readListEntry("OpenNodes");
         m_tagTree->openNodes(&openNodes);
     }
 
+    group = QString("SourceDirTreeState:%1").arg(*(m_engine->uid()));
+    config->setGroup(group);
+    m_sourcedirTree->restoreLayout(config, group);
     if (Settings::sourceDirTreeRememberTree()) {
-        QStringList openNodes = config->readListEntry("SourceDirTree:OpenNodes");
+        QStringList openNodes = config->readListEntry("OpenNodes");
         m_sourcedirTree->openNodes(&openNodes);
     }
 }
@@ -2086,30 +2094,32 @@ void KPhotoBook::loadTreeState() {
 /**
  * Stores the filters set on the trees.
  */
-void KPhotoBook::storeFilter() {
-
+void KPhotoBook::storeFilter()
+{
     KConfig* config = KGlobal::config();
-    QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
+    
+    QString group = QString("TagTreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
-
     if (Settings::tagTreeRememberFilter()) {
         QIntDict<QString>* filterDict = m_tagTree->getFilter();
 
         QStringList* filterList = intDict2stringList(filterDict);
 
-        config->writeEntry("TagTree:Filter", *filterList);
+        config->writeEntry("Filter", *filterList);
 
         filterDict->setAutoDelete(true);
         delete filterDict;
         delete filterList;
     }
 
+    group = QString("SourceDirTreeState:%1").arg(*(m_engine->uid()));
+    config->setGroup(group);
     if (Settings::sourceDirTreeRememberFilter()) {
         QIntDict<QString>* filterDict = m_sourcedirTree->getFilter();
 
         QStringList* filterList = intDict2stringList(filterDict);
 
-        config->writeEntry("SourceDirTree:Filter", *filterList);
+        config->writeEntry("Filter", *filterList);
 
         filterDict->setAutoDelete(true);
         delete filterDict;
@@ -2124,14 +2134,14 @@ void KPhotoBook::storeFilter() {
 /**
  * Loads the filters and sets them on the trees.
  */
-void KPhotoBook::loadFilter() {
-
+void KPhotoBook::loadFilter()
+{
     KConfig* config = KGlobal::config();
-    QString group = QString("TreeState:%1").arg(*(m_engine->uid()));
+    
+    QString group = QString("TagTreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
-
     if (Settings::tagTreeRememberFilter()) {
-        QStringList filterList = config->readListEntry("TagTree:Filter");
+        QStringList filterList = config->readListEntry("Filter");
 
         QIntDict<QString>* filterDict = stringList2intDict(filterList);
 
@@ -2141,8 +2151,10 @@ void KPhotoBook::loadFilter() {
         delete filterDict;
     }
 
+    group = QString("SourceDirTreeState:%1").arg(*(m_engine->uid()));
+    config->setGroup(group);
     if (Settings::sourceDirTreeRememberFilter()) {
-        QStringList filterList = config->readListEntry("SourceDirTree:Filter");
+        QStringList filterList = config->readListEntry("Filter");
 
         QIntDict<QString>* filterDict = stringList2intDict(filterList);
 
