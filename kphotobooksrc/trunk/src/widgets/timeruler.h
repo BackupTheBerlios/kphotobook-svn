@@ -116,9 +116,9 @@ public slots:
      * @returns true, if year/month is available in this widget
      */
     bool isContained(int year, int month);
+
 signals:
     void selectionChanged(int year, int month);
-
 
 protected:
     virtual void resizeEvent ( QResizeEvent * );

@@ -37,6 +37,9 @@ class FilterNodeTagDateTime : public FilterNode
 Q_OBJECT
 
 public:
+    FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime);
+    FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime);
+
     FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QString pattern);
     FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QString pattern);
 
@@ -59,6 +62,8 @@ public:
 private:
     TagNodeDateTime* m_tagNodeDateTime;
     QString m_pattern;
+    QDateTime* m_fromDateTime;
+    QDateTime* m_toDateTime;
 };
 
 #endif

@@ -21,10 +21,32 @@
 #include "filternodetagdatetime.h"
 
 
+FilterNodeTagDateTime::FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime)
+    : FilterNode(parent)
+    , m_tagNodeDateTime(tagNodeDateTime)
+    , m_pattern(QString::null)
+    , m_fromDateTime(fromDateTime)
+    , m_toDateTime(toDateTime)
+{
+}
+
+
+FilterNodeTagDateTime::FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime)
+    : FilterNode(0)
+    , m_tagNodeDateTime(tagNodeDateTime)
+    , m_pattern(QString::null)
+    , m_fromDateTime(fromDateTime)
+    , m_toDateTime(toDateTime)
+{
+}
+
+
 FilterNodeTagDateTime::FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QString pattern)
     : FilterNode(parent)
     , m_tagNodeDateTime(tagNodeDateTime)
     , m_pattern(pattern)
+    , m_fromDateTime(0)
+    , m_toDateTime(0)
 {
 }
 
@@ -33,24 +55,41 @@ FilterNodeTagDateTime::FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, Q
     : FilterNode(0)
     , m_tagNodeDateTime(tagNodeDateTime)
     , m_pattern(pattern)
+    , m_fromDateTime(0)
+    , m_toDateTime(0)
 {
 }
 
 
 FilterNodeTagDateTime::~FilterNodeTagDateTime()
 {
+    delete m_fromDateTime;
+    delete m_toDateTime;
 }
 
 
 bool FilterNodeTagDateTime::evaluate(File* file) throw(FilterException*)
 {
-    return m_tagNodeDateTime->tagged(file, m_pattern);
+    if (m_pattern.isNull()) {
+        return m_tagNodeDateTime->tagged(file, m_fromDateTime, m_toDateTime);
+    } else {
+        return m_tagNodeDateTime->tagged(file, m_pattern);
+    }
 }
 
 
 void FilterNodeTagDateTime::dump(QString indention)
 {
-    dumper->sdebug("dump") << indention << *m_tagNodeDateTime->toString() << " = " << m_pattern << endl;
+    if (m_pattern.isNull()) {
+        if (m_fromDateTime) {
+            dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " >= " << m_fromDateTime->toString() << endl;
+        }
+        if (m_toDateTime) {
+            dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " <= " << m_toDateTime->toString() << endl;
+        }
+    } else {
+        dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " = " << m_pattern << endl;
+    }
 }
 
 

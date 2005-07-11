@@ -23,6 +23,8 @@
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocdatetime.h"
 
+#include <kglobal.h>
+
 #include <qregexp.h>
 
 Tracer* TagNodeDateTime::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeDateTime");
@@ -47,50 +49,64 @@ void TagNodeDateTime::setTagged(File* file, QDateTime value)
 }
 
 
+bool TagNodeDateTime::tagged(File* file, QDateTime* fromDateTime, QDateTime* toDateTime)
+{
+    tracer->invoked(__func__);
+
+    FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
+    if (fileTagNodeAssoc == 0) {
+        // no tag is linked to this file
+        return false;
+    }
+
+    FileTagNodeAssocDateTime* assoc = dynamic_cast<FileTagNodeAssocDateTime*>(fileTagNodeAssoc);
+
+    bool isTagged = true;
+    if (fromDateTime && fromDateTime->isValid()) {
+        isTagged = isTagged && (*fromDateTime <= assoc->value());
+    }
+    if (toDateTime && toDateTime->isValid()) {
+        isTagged = isTagged && (*toDateTime >= assoc->value());
+    }
+    
+    return isTagged;
+}
+
+
 bool TagNodeDateTime::tagged(File* file, QString pattern)
 {
-    ///@todo implement method 'tagged(...)'
-    /*
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
-
     if (fileTagNodeAssoc == 0) {
         // if no tag is linked to this file, the only matching pattern is '()' for matching an empty string
         return pattern == "()";
     }
 
-    FileTagNodeAssocString* fileTagNodeAssocString = dynamic_cast<FileTagNodeAssocString*>(fileTagNodeAssoc);
-    QString value = fileTagNodeAssocString->value();
+    FileTagNodeAssocDateTime* assoc = dynamic_cast<FileTagNodeAssocDateTime*>(fileTagNodeAssoc);
+    QString value = KGlobal::locale()->formatDateTime(assoc->value(), true, true);
 
     tracer->sinvoked(__func__) << "with pattern: '" << pattern << "', value: '" << value << "'" << endl;
 
     QRegExp regExp(pattern);
     if (regExp.exactMatch(value)) {
-    tracer->sdebug(__func__) <<  "MATCHES!!!" << endl;
+        tracer->sdebug(__func__) <<  "MATCHES!!!" << endl;
         return true;
     }
 
     tracer->sdebug(__func__) << "NO match!!!" << endl;
-    */
     return false;
 }
 
 
 bool TagNodeDateTime::tagged(File* file)
 {
-    ///@todo implement method 'tagged(...)'
-    /*
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
-
     if (fileTagNodeAssoc == 0) {
-        // if no tag is linked to this file, the only matching pattern is '()' for matching an empty string
+        // no tag is linked to this file
         return false;
-    } else {
-        FileTagNodeAssocString* fileTagNodeAssocString = dynamic_cast<FileTagNodeAssocString*>(fileTagNodeAssoc);
-
-        QString s = fileTagNodeAssocString->value();
-        return !s.isEmpty();
     }
-    */
+    
+    FileTagNodeAssocDateTime* assoc = dynamic_cast<FileTagNodeAssocDateTime*>(fileTagNodeAssoc);
+    return assoc->value().isValid();
 }
 
 

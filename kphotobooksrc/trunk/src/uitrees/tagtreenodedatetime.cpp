@@ -43,6 +43,7 @@ TagTreeNodeDateTime::TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNo
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , locale(KGlobal::locale())
     , m_filterValue(QString::null)
+    , m_filterNode(0)
 {
 }
 
@@ -50,23 +51,21 @@ TagTreeNodeDateTime::TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNo
 TagTreeNodeDateTime::TagTreeNodeDateTime(TagTreeNode* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
     : TagTreeNode(parent, photobook, tagNode, contextMenu)
     , m_filterValue(QString::null)
+    , m_filterNode(0)
 {
 }
 
 
 TagTreeNodeDateTime::~TagTreeNodeDateTime()
 {
+    delete m_filterNode;
 }
 
 
 FilterNode* TagTreeNodeDateTime::filter()
 {
-    if (m_filterValue.isEmpty()) {
-        return 0;
-    }
-
-    TagNodeDateTime* tagNode = dynamic_cast<TagNodeDateTime*>(m_tagNode);
-    return new FilterNodeTagDateTime(tagNode, m_filterValue);
+    ///@todo determine the filternode from the stored text. current implementation cannot restore the datetime filter after restart...
+    return m_filterNode;
 }
 
 
@@ -74,6 +73,8 @@ void TagTreeNodeDateTime::deselectFilter()
 {
     m_filterValue = QString("()");
     setText(TagTree::COLUMN_FILTER, m_filterValue);
+    delete m_filterNode;
+    m_filterNode = new FilterNodeTagDateTime(dynamic_cast<TagNodeDateTime*>(m_tagNode), m_filterValue);
 
     // force redrawing of this listviewitem
     this->repaint();
@@ -92,12 +93,14 @@ void TagTreeNodeDateTime::resetFilter()
 
 QString TagTreeNodeDateTime::getFilterString()
 {
+    tracer->invoked(__func__);
     return m_filterValue;
 }
 
 
 void TagTreeNodeDateTime::applyFilterString(QString filter)
 {
+    tracer->sinvoked(__func__) << "filter: " << filter << endl;
     m_filterValue = filter;
     setText(TagTree::COLUMN_FILTER, filter);
 }
@@ -131,9 +134,10 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
                 // let the user enter a new value
                 DialogDateTimeChooser* dateTimeChooser = new DialogDateTimeChooser(0, "DialogDateTimeChooser", commonValue ? *commonValue : QDateTime());
                 if (dateTimeChooser->exec() == QDialog::QDialog::Accepted) {
-    
-                    if (dateTimeChooser->isDateTimeValid()) {
-                        QDateTime value = dateTimeChooser->dateTime();
+
+                    bool noDateTimeSet = dateTimeChooser->noDateTimeSet();
+                    QDateTime value = dateTimeChooser->dateTime();                    
+                    if (noDateTimeSet || value.isValid()) {
                         
                         // get all selected files
                         const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
@@ -145,8 +149,17 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
                             it.toFirst();
                             for (; it.current(); ++it) {
                                 File* selectedFile = dynamic_cast<File*>(it.current());
-        
-                                tagNode->setTagged(selectedFile, value);
+
+                                if (noDateTimeSet) {
+                                    // remove the assoc to this file
+                                    FileTagNodeAssoc* assoc = tagNode->getAssocToFile(selectedFile);
+                                    if (assoc) {
+                                        tagNode->removeAssoc(assoc);
+                                    }
+                                } else {
+                                    // set the (new) value
+                                    tagNode->setTagged(selectedFile, value);
+                                }
                             }
         
                             m_photobook->dirtyfy();
@@ -164,11 +177,13 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
     
         case TagTree::COLUMN_FILTER : {
     
-            ///@todo implement leftclicked on filter
-                // let the user enter a new value
-            DialogDateTimeFilter* dateTimeFilter = new DialogDateTimeFilter(0, "DialogDateTimeFilter", 0, 0);
-            if (dateTimeFilter->exec() == QDialog::QDialog::Accepted) {
+            // let the user enter a new value
+            DialogDateTimeFilter* dateTimeFilter = createDialogDateTimeFilter(text(TagTree::COLUMN_FILTER));
+            if (dateTimeFilter->exec() == QDialog::Accepted) {
+                applyFilter(dateTimeFilter);
             }
+            
+            m_photobook->autoRefreshView();
             break;
         }
     }
@@ -204,7 +219,7 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
                 if (commonValue) {
     
                     if (commonValue->isValid()) {
-                        setText(TagTree::COLUMN_VALUE, locale->formatDateTime(*commonValue, true, true));
+                        setText(TagTree::COLUMN_VALUE, formatDateTime(*commonValue));
                         KListViewItem::paintCell(p, cg, column, width, alignment);
                     } else {
                         // the selected files have different values --> show the third state of a checkbox
@@ -282,3 +297,150 @@ QDateTime* TagTreeNodeDateTime::getCommonValue(const KFileItemList* selectedFile
     tracer->sdebug(__func__) << "common value is: " << (commonValue ? locale->formatDateTime(*commonValue, true, true) : "0") << endl;
     return commonValue;
 }
+
+
+QString TagTreeNodeDateTime::formatDateTime(const QDateTime& dateTime)
+{
+    if (dateTime.time().isValid()) {
+        return locale->formatDateTime(dateTime, true, true);
+    } else {
+        return locale->formatDate(dateTime.date(), true);
+    }
+}
+
+        
+QDateTime* TagTreeNodeDateTime::readDateTime(const QString& dateTimeStr)
+{
+    tracer->sdebug(__func__) << "dateTime to convert: " << dateTimeStr << endl;
+
+    int pos = dateTimeStr.findRev(" ");
+    QString dateStr = dateTimeStr.mid(0, pos);
+    QString timeStr = dateTimeStr.mid(pos+1);
+    
+    tracer->sdebug(__func__) << "date to convert: " << dateStr << endl;
+    tracer->sdebug(__func__) << "time to convert: " << timeStr << endl;
+
+    
+    bool* ok;
+    QDate date = locale->readDate(dateStr, ok);
+    if (!*ok) {
+        tracer->serror(__func__) << "Date part of datetime (" << dateTimeStr << ") is invalid: " << dateStr << "! Using current date." << endl;
+        date = QDate::currentDate();
+    }
+
+    QTime time = locale->readTime(timeStr, ok);
+    if (!*ok) {
+        tracer->serror(__func__) << "Time part of datetime (" << dateTimeStr << ") is invalid: " << timeStr << "! Not setting time time." << endl;
+        return new QDateTime(date);
+    }
+    
+    return new QDateTime(date, time);
+}
+
+
+void TagTreeNodeDateTime::applyFilter(DialogDateTimeFilter* dateTimeFilter)
+{
+    TagNodeDateTime* tagNode = dynamic_cast<TagNodeDateTime*>(m_tagNode);
+
+    switch (dateTimeFilter->getState()) {
+        case DialogDateTimeFilter::INVALID:
+            case DialogDateTimeFilter::NO_FILTER_SET: {
+                m_filterValue = QString::null;
+                delete m_filterNode;
+                m_filterNode = 0;
+
+                break;
+            }
+            case DialogDateTimeFilter::FROM_DATE_SET: {
+                m_filterValue = QString(">= %1").arg(formatDateTime(dateTimeFilter->getDateTimeFrom()));
+                delete m_filterNode;
+                m_filterNode = new FilterNodeTagDateTime(tagNode, new QDateTime(dateTimeFilter->getDateTimeFrom()), 0);
+                        
+                break;
+            }
+            case DialogDateTimeFilter::TO_DATE_SET: {
+                m_filterValue = QString("<= %1").arg(formatDateTime(dateTimeFilter->getDateTimeTo()));
+                delete m_filterNode;
+                m_filterNode = new FilterNodeTagDateTime(tagNode, 0, new QDateTime(dateTimeFilter->getDateTimeTo()));
+
+                break;
+            }
+            case DialogDateTimeFilter::FROM_TO_DATE_SET: {
+                m_filterValue = QString("%1 - %2").arg(formatDateTime(dateTimeFilter->getDateTimeFrom())).arg(formatDateTime(dateTimeFilter->getDateTimeTo()));
+                delete m_filterNode;
+                m_filterNode = new FilterNodeTagDateTime(tagNode, new QDateTime(dateTimeFilter->getDateTimeFrom()), new QDateTime(dateTimeFilter->getDateTimeTo()));
+
+                break;
+            }
+            case DialogDateTimeFilter::PATTERN_DATE_SET: {
+                m_filterValue = QString(dateTimeFilter->getPattern());
+                delete m_filterNode;
+                m_filterNode = new FilterNodeTagDateTime(tagNode, m_filterValue);
+                        
+                break;
+            }
+            case DialogDateTimeFilter::SINGLE_DATE_SET: {
+                m_filterValue = QString("= %1").arg(formatDateTime(dateTimeFilter->getDateTimeFrom()));
+                delete m_filterNode;
+                m_filterNode = new FilterNodeTagDateTime(tagNode, new QDateTime(dateTimeFilter->getDateTimeFrom()), new QDateTime(dateTimeFilter->getDateTimeTo()));
+
+                break;
+            }
+            case DialogDateTimeFilter::NO_DATE_SET: {
+                m_filterValue = QString("()");
+                delete m_filterNode;
+                m_filterNode = new FilterNodeTagDateTime(tagNode, m_filterValue);
+                        
+                break;
+            }
+    }
+    setText(TagTree::COLUMN_FILTER, m_filterValue);
+
+    // force redrawing of this listviewitem
+    this->repaint();
+}
+
+        
+DialogDateTimeFilter* TagTreeNodeDateTime::createDialogDateTimeFilter(QString filter)
+{
+    filter = filter.stripWhiteSpace();
+    if (filter.isEmpty()) {
+        // no filter is set
+        return new DialogDateTimeFilter(0, "DialogDateTimeFilter");
+    }
+    if (filter.startsWith(">= ")) {
+        // from date is set
+        QDateTime* fromDateTime = readDateTime(filter.mid(2).stripWhiteSpace());
+        return new DialogDateTimeFilter(0, "DialogDateTimeFilter", fromDateTime, 0);
+        delete fromDateTime;
+    }
+    if (filter.startsWith("<= ")) {
+        // to date is set
+        QDateTime* toDateTime = readDateTime(filter.mid(2).stripWhiteSpace());
+        return new DialogDateTimeFilter(0, "DialogDateTimeFilter", 0, toDateTime);
+        delete toDateTime;
+    } if (filter.contains(" - ")) {
+        // from and to date are set
+
+        int pos = filter.find(" - ");
+        QDateTime* fromDateTime = readDateTime(filter.mid(0, pos).stripWhiteSpace());
+        QDateTime* toDateTime = readDateTime(filter.mid(pos+3).stripWhiteSpace());
+        return new DialogDateTimeFilter(0, "DialogDateTimeFilter", fromDateTime, toDateTime);
+        delete fromDateTime;
+        delete toDateTime;
+    }
+    if (filter.startsWith("= ")) {
+        // singledate is set
+        QDateTime* singleDateTime = readDateTime(filter.mid(2).stripWhiteSpace());
+        return new DialogDateTimeFilter(0, "DialogDateTimeFilter", singleDateTime);
+        delete singleDateTime;
+    }
+    if (filter == "()") {
+        // 'no date' filter is set
+        return new DialogDateTimeFilter(0, "DialogDateTimeFilter", true);
+    }
+    
+    // 'regexp' filter is set
+    return new DialogDateTimeFilter(0, "DialogDateTimeFilter", filter);
+}
+

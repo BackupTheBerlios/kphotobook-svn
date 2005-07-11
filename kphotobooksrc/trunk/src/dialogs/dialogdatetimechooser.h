@@ -53,13 +53,12 @@ class DialogDateTimeChooser : public KDialogBase
             return dateTimeWidget->dateTime();
         }
 
-        bool isDateTimeValid() {
-            return dateTimeWidget->isDateTimeValid();
+        bool noDateTimeSet() {
+            return dateTimeWidget->noDateSet();
         }
     
     private:
-        DateTimeWidget* dateTimeWidget;
-        
+        DateTimeWidget* dateTimeWidget;  
 };
 
 #endif

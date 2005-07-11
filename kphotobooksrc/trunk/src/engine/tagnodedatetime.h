@@ -46,6 +46,7 @@ public:
     }
 
     void setTagged(File* file, QDateTime value);
+    bool tagged(File* file, QDateTime* fromDateTime, QDateTime* toDateTime);
     bool tagged(File* file, QString pattern);
     bool tagged(File* file);
 };

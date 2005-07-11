@@ -44,80 +44,83 @@ class DateTimeWidget : public QWidget
         virtual ~DateTimeWidget();
 
         /**
-         * Returns the currently choosen date. If the date is invalid or not set, a null date is returned.
+         * Sets the given date. The date is set only if the specified date is valid.
+         * The time is left empty.
+         */
+        void setDate(QDate date);
+        
+        /**
+         * Sets the given datetime. The datetime is set only if the specified datetime is valid.
+         */
+        void setDateTime(QDateTime dateTime);
+        
+        /**
+         * Returns the currently choosen date. If the date is invalid or not set, an undefined date is returned.
          */
         QDate date()
         {
-            return choosenDate;
+            return m_choosenDate ? QDate(*m_choosenDate) : QDate();
         }
         /**
-         * Returns true if the choosenDate is valid. The QDate returned by {@link date()} can be null if no date is set.
+         * Returns true if no date is set. The QDate returned by @link date() is undefined if no date is set.
          */
-        bool isDateValid()
+        bool noDateSet()
         {
-            return choosenDateValid;
+            return !m_choosenDate;
         }
         
         /**
-         * Returns the currently choosen time. If the time is invalid or not set, a null time is returned.
+         * Returns the currently choosen time. If the time is invalid or not set, an undefined time.
          */
         QTime time()
         {
-            return choosenTime;
+            return m_choosenTime ? QTime(*m_choosenTime) : QTime();
         }
         /**
-         * Returns true if the choosenTime is valid. The QTime returned by {@link time()} can be null if no time is set.
+         * Returns true if no time is set. The QTime returned by @link time() is undefined if no time is set.
          */
-        bool isTimeValid()
+        bool noTimeSet()
         {
-            return choosenTimeValid;
+            return !m_choosenTime;
         }
         
         /**
-         * Returns the currently choosen date and time. If the date or the time is invalid a null datetime is returned.
+         * Returns the currently choosen date and time. If the date or the time is invalid an invalid datetime is returned.
          */
         QDateTime dateTime()
         {
             if (isDateTimeValid()) {
-                if (!choosenDate.isNull() && !choosenTime.isNull()) {
-                    return QDateTime(choosenDate, choosenTime);
+                if (m_choosenDate && m_choosenTime) {
+                    return QDateTime(*m_choosenDate, *m_choosenTime);
                 }
-                if (!choosenDate.isNull()) {
-                    return QDateTime(choosenDate);
+                if (m_choosenDate) {
+                    return QDateTime(*m_choosenDate);
                 }
             }
             
             return QDateTime();
         }
+
         /**
-         * Returns true if the resulting QDateTime would be valid:
-         *   - both date and time must be valid
-         *   - if time is not null date mustn't be null
-         *   - time may be null if date is set
-         *   - both date and time may be null
+         * Returns true if the resulting QDateTime would be valid.
+         * - Both date and time must be valid.
+         * - if the time is set, the date must also be set.
          */
         bool isDateTimeValid()
         {
-            if (!choosenDateValid || !choosenTimeValid) {
-                return false;
-            }
-            if (!choosenTime.isNull() && choosenDate.isNull()) {
-                return false;
-            }
-            return true;
+            return (m_choosenDateIsValid && m_choosenTimeIsValid) && !(!m_choosenDate && m_choosenTime);
         }
 
     signals:
-        /**
-         * Is always emitted when the date or time has changed and both values are valid.
-         */
-        void dateTimeChanged(const QDateTime&);
         /**
          * Is always emitted, when the date or time has changed. The bool value is true only if both date and time are valid.
          */
         void dateTimeValid(bool);
     
     public slots:
+        /**
+         * Removes the set date and time.
+         */
         void slotClear();
         
     private:
@@ -147,15 +150,30 @@ class DateTimeWidget : public QWidget
         void slotTimeChanged(const QString&);
     
     private:
-        KLocale* locale;
+        KLocale* m_locale;
         
-        KLineEdit* dateLine;
-        KLineEdit* timeLine;
+        KLineEdit* m_dateLine;
+        KLineEdit* m_timeLine;
 
-        QDate choosenDate;
-        bool choosenDateValid;
-        QTime choosenTime;
-        bool choosenTimeValid;
+        /**
+         * Contains the actually entered date. If no date is entered this field is 0.
+         */
+        QDate* m_choosenDate;
+        /**
+         * Contains the info if the set date is valid. A date is valid if it is not set
+         * or if it is set it must be a valid date.
+         */
+        bool m_choosenDateIsValid;
+        
+        /**
+         * Contains the actually entered time. If no time is entered this field is 0.
+         */
+        QTime* m_choosenTime;
+        /**
+         * Contains the info if the set time is valid. A time is valid if it is not set
+         * or if it is set it must be a valid time.
+         */
+        bool m_choosenTimeIsValid;
 };
 
 
