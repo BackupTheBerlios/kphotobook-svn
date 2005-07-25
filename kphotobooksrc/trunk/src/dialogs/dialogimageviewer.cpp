@@ -72,7 +72,7 @@ void DialogImageViewer::updateImages()
 
 
 
-void DialogImageViewer::mouseDoubleClickEvent ( __attribute__((unused)) QMouseEvent * e )
+void DialogImageViewer::mouseDoubleClickEvent ( QMouseEvent* /* e */ )
 {
     slotToggleFullscreen();
 }

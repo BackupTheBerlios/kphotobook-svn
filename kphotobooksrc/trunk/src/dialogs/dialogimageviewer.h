@@ -26,7 +26,8 @@
 #include "../engine/file.h"
 
 #include <kdialog.h>
-#include <kfileiconview.h>
+
+class KFileIconView;
 
 class DialogImageViewer : public KDialog
 {
@@ -34,11 +35,11 @@ Q_OBJECT
 
 public:
     DialogImageViewer(QWidget* parent, KFileIconView* fileView);
-    ~DialogImageViewer();
+    virtual ~DialogImageViewer();
 
     void updateImages();
 
-    void        mouseDoubleClickEvent ( QMouseEvent * e );
+    void mouseDoubleClickEvent ( QMouseEvent* );
 
     virtual void show (File* selectedImage);
 
@@ -48,7 +49,7 @@ public slots:
     void    slotToggleFullscreen();
 
 protected:
-    virtual void resizeEvent ( QResizeEvent * e);
+    virtual void resizeEvent ( QResizeEvent* );
 
 
 
