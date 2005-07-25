@@ -34,6 +34,7 @@ class File;
 class SourceDir;
 class TagNode;
 class FileTagNodeAssoc;
+class QTextStream;
 
 /**
  * This class is writing the xml-file containing all needed data of the engine.
