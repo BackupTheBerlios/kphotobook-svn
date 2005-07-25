@@ -24,6 +24,9 @@
 #include <kdatepicker.h>
 #include <kglobal.h>
 #include <ktoolbarbutton.h>
+#include <klocale.h>
+#include <klineedit.h>
+
 
 #include <qlayout.h>
 #include <qlabel.h>
@@ -32,7 +35,7 @@
 Tracer* DateTimeWidget::tracer = Tracer::getInstance("kde.kphotobook.widgets", "DateTimeWidget");
 
 
-DateTimeWidget::DateTimeWidget(QWidget* parent, QDateTime dateTime)
+DateTimeWidget::DateTimeWidget(QWidget* parent, const QDateTime& dateTime)
         : QWidget(parent)
         , m_locale(KGlobal::locale())
         , m_dateLine(0)
@@ -53,7 +56,7 @@ DateTimeWidget::~DateTimeWidget()
 }
 
 
-void DateTimeWidget::setDate(QDate date)
+void DateTimeWidget::setDate(const QDate& date)
 {
     tracer->invoked(__func__);
     if (date.isValid()) {
@@ -62,7 +65,7 @@ void DateTimeWidget::setDate(QDate date)
 }
 
 
-void DateTimeWidget::setDateTime(QDateTime dateTime)
+void DateTimeWidget::setDateTime(const QDateTime& dateTime)
 {
     tracer->invoked(__func__);
     if (dateTime.isValid()) {
@@ -72,9 +75,9 @@ void DateTimeWidget::setDateTime(QDateTime dateTime)
         m_timeLine->setText(m_locale->formatTime(dateTime.time(), true));
     }
 }
-        
 
-void DateTimeWidget::initUI(QDateTime dateTime)
+
+void DateTimeWidget::initUI(const QDateTime& dateTime)
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 5, "mainLayout");
     mainLayout->setAutoAdd(true);
@@ -142,31 +145,34 @@ void DateTimeWidget::slotClear()
 }
 
 
-QString DateTimeWidget::getDateMask(QString dateFormat)
+QString DateTimeWidget::getDateMask(const QString& dateFormat)
 {
-    dateFormat.replace("%d", "99");
-    dateFormat.replace("%m", "99");
-    dateFormat.replace("%Y", "9999");
-    dateFormat.append(";_");
+    QString s = dateFormat;
+    s.replace("%d", "99");
+    s.replace("%m", "99");
+    s.replace("%Y", "9999");
+    s.append(";_");
 
-    return dateFormat;
+    return s;
 }
 
 
-QString DateTimeWidget::getTimeMask(QString timeFormat)
+QString DateTimeWidget::getTimeMask(const QString& timeFormat)
 {
-    timeFormat.replace("%H", "99");
-    timeFormat.replace("%M", "99");
-    timeFormat.replace("%S", "99");
-    timeFormat.append(";_");
+    QString s = timeFormat;
+    s.replace("%H", "99");
+    s.replace("%M", "99");
+    s.replace("%S", "99");
+    s.append(";_");
 
-    return timeFormat;
+    return s;
 }
 
 
-bool DateTimeWidget::isValueEmpty(QString mask, QString value)
+bool DateTimeWidget::isValueEmpty(const QString& mask, const QString& value)
 {
-    return mask.replace("9", "") == (value + ";_");
+    QString s = mask;
+    return s.replace("9", "") == (value + ";_");
 }
 
 
@@ -185,7 +191,7 @@ void DateTimeWidget::slotPickDate()
 }
 
 
-void DateTimeWidget::slotPickerDateChanged(QDate date)
+void DateTimeWidget::slotPickerDateChanged(const QDate& date)
 {
     delete m_choosenDate;
     m_choosenDate = new QDate(date);

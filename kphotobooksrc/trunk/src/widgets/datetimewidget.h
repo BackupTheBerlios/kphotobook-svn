@@ -23,14 +23,14 @@
 
 #include "../tracer/tracer.h"
 
-#include <klineedit.h>
-#include <klocale.h>
 
-#include <qcolor.h>
+// #include <qcolor.h>
 #include <qdatetime.h>
 #include <qstring.h>
 #include <qwidget.h>
 
+class KLineEdit;
+class KLocale;
 
 class DateTimeWidget : public QWidget
 {
@@ -38,22 +38,22 @@ class DateTimeWidget : public QWidget
 
     private:
         static Tracer* tracer;
-    
+
     public:
-        DateTimeWidget(QWidget* parent, QDateTime dateTime = QDateTime());
+        DateTimeWidget(QWidget* parent, const QDateTime& dateTime = QDateTime());
         virtual ~DateTimeWidget();
 
         /**
          * Sets the given date. The date is set only if the specified date is valid.
          * The time is left empty.
          */
-        void setDate(QDate date);
-        
+        void setDate(const QDate& date);
+
         /**
          * Sets the given datetime. The datetime is set only if the specified datetime is valid.
          */
-        void setDateTime(QDateTime dateTime);
-        
+        void setDateTime(const QDateTime& dateTime);
+
         /**
          * Returns the currently choosen date. If the date is invalid or not set, an undefined date is returned.
          */
@@ -68,7 +68,7 @@ class DateTimeWidget : public QWidget
         {
             return !m_choosenDate;
         }
-        
+
         /**
          * Returns the currently choosen time. If the time is invalid or not set, an undefined time.
          */
@@ -83,7 +83,7 @@ class DateTimeWidget : public QWidget
         {
             return !m_choosenTime;
         }
-        
+
         /**
          * Returns the currently choosen date and time. If the date or the time is invalid an invalid datetime is returned.
          */
@@ -97,7 +97,7 @@ class DateTimeWidget : public QWidget
                     return QDateTime(*m_choosenDate);
                 }
             }
-            
+
             return QDateTime();
         }
 
@@ -116,42 +116,42 @@ class DateTimeWidget : public QWidget
          * Is always emitted, when the date or time has changed. The bool value is true only if both date and time are valid.
          */
         void dateTimeValid(bool);
-    
+
     public slots:
         /**
          * Removes the set date and time.
          */
         void slotClear();
-        
+
     private:
-        void initUI(QDateTime dateTime);
+        void initUI(const QDateTime& dateTime);
         /**
          * Returns the inputMask for the given dateFormat.
          * (replaces '%d' and '%m' with '99' and '%Y' with '9999').
          */
-        QString getDateMask(QString dateFormat);
+        QString getDateMask(const QString& dateFormat);
         /**
          * Returns the inputMask for the given timeFormat.
          * (replaces '%H', '%M' and '%S' with '99').
          */
-        QString getTimeMask(QString timeFormat);
+        QString getTimeMask(const QString& timeFormat);
         /**
          * Returns true if the given date is empty. This is true for example
          * if the mask is '99.99.9999;_' and the string is '..'.
          */
-        bool isValueEmpty(QString mask, QString value);
+        bool isValueEmpty(const QString& mask, const QString& value);
 
     private slots:
         void slotPickDate();
-        void slotPickerDateChanged(QDate);
+        void slotPickerDateChanged(const QDate&);
         void slotPickerOk();
-        
+
         void slotDateChanged(const QString&);
         void slotTimeChanged(const QString&);
-    
+
     private:
         KLocale* m_locale;
-        
+
         KLineEdit* m_dateLine;
         KLineEdit* m_timeLine;
 
@@ -164,7 +164,7 @@ class DateTimeWidget : public QWidget
          * or if it is set it must be a valid date.
          */
         bool m_choosenDateIsValid;
-        
+
         /**
          * Contains the actually entered time. If no time is entered this field is 0.
          */
