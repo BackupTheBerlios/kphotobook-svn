@@ -291,7 +291,6 @@ private slots:
     void slotRestoreToolViews();
     void slotShowToolViewTagTree();
     void slotShowToolViewSourceDirTree();
-    void slotShowToolViewMetaInfoTree();
 
     void slotExportMatchingFiles();
     void slotExportSelectedFiles();
@@ -306,7 +305,6 @@ private:
 
     void setupToolWindowTagTree();
     void setupToolWindowSourceDirTree();
-    void setupToolWindowMetaInfoTree();
 
     void updateState();
     void updateStatusBar();
@@ -401,11 +399,9 @@ private:
 
     TagTree* m_tagTree;
     SourceDirTree* m_sourcedirTree;
-    KListView* m_metaInfoTree;
 
     KMdiToolViewAccessor* m_tagTreeToolView;
     KMdiToolViewAccessor* m_sourceDirTreeToolView;
-    KMdiToolViewAccessor* m_metaInfoTreeToolView;
 
     Engine* m_engine;
 

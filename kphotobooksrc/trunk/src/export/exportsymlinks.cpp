@@ -252,7 +252,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink) {
           int result = renameDlg->exec();
           renameDlg->hide();
           
-          // analyze the choosen action
+          // analyze the chosen action
           switch (result) {
             case KIO::R_CANCEL : {
               m_cancelling = true;

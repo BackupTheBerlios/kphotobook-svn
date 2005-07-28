@@ -91,6 +91,11 @@ void TagTreeNodeRadio::leftClicked(TagTree* tagTree, int column) {
             return;
         }
 
+        // editing of the value is not allowed if tagnode is readonly
+        if (m_tagNode->readonly()) {
+            return;
+        }
+
         // otherwise tell my parent (which is my radiogroup managing item) that i have been selected
         TagTreeNodeRadioGroup* grp = dynamic_cast<TagTreeNodeRadioGroup*>(parent());
         if (grp) {

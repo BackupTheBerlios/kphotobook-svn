@@ -55,46 +55,46 @@ class DateTimeWidget : public QWidget
         void setDateTime(const QDateTime& dateTime);
 
         /**
-         * Returns the currently choosen date. If the date is invalid or not set, an undefined date is returned.
+         * Returns the currently chosen date. If the date is invalid or not set, an undefined date is returned.
          */
         QDate date()
         {
-            return m_choosenDate ? QDate(*m_choosenDate) : QDate();
+            return m_chosenDate ? QDate(*m_chosenDate) : QDate();
         }
         /**
          * Returns true if no date is set. The QDate returned by @link date() is undefined if no date is set.
          */
         bool noDateSet()
         {
-            return !m_choosenDate;
+            return !m_chosenDate;
         }
 
         /**
-         * Returns the currently choosen time. If the time is invalid or not set, an undefined time.
+         * Returns the currently chosen time. If the time is invalid or not set, an undefined time.
          */
         QTime time()
         {
-            return m_choosenTime ? QTime(*m_choosenTime) : QTime();
+            return m_chosenTime ? QTime(*m_chosenTime) : QTime();
         }
         /**
          * Returns true if no time is set. The QTime returned by @link time() is undefined if no time is set.
          */
         bool noTimeSet()
         {
-            return !m_choosenTime;
+            return !m_chosenTime;
         }
 
         /**
-         * Returns the currently choosen date and time. If the date or the time is invalid an invalid datetime is returned.
+         * Returns the currently chosen date and time. If the date or the time is invalid an invalid datetime is returned.
          */
         QDateTime dateTime()
         {
             if (isDateTimeValid()) {
-                if (m_choosenDate && m_choosenTime) {
-                    return QDateTime(*m_choosenDate, *m_choosenTime);
+                if (m_chosenDate && m_chosenTime) {
+                    return QDateTime(*m_chosenDate, *m_chosenTime);
                 }
-                if (m_choosenDate) {
-                    return QDateTime(*m_choosenDate);
+                if (m_chosenDate) {
+                    return QDateTime(*m_chosenDate);
                 }
             }
 
@@ -108,7 +108,7 @@ class DateTimeWidget : public QWidget
          */
         bool isDateTimeValid()
         {
-            return (m_choosenDateIsValid && m_choosenTimeIsValid) && !(!m_choosenDate && m_choosenTime);
+            return (m_chosenDateIsValid && m_chosenTimeIsValid) && !(!m_chosenDate && m_chosenTime);
         }
 
     signals:
@@ -158,22 +158,22 @@ class DateTimeWidget : public QWidget
         /**
          * Contains the actually entered date. If no date is entered this field is 0.
          */
-        QDate* m_choosenDate;
+        QDate* m_chosenDate;
         /**
          * Contains the info if the set date is valid. A date is valid if it is not set
          * or if it is set it must be a valid date.
          */
-        bool m_choosenDateIsValid;
+        bool m_chosenDateIsValid;
 
         /**
          * Contains the actually entered time. If no time is entered this field is 0.
          */
-        QTime* m_choosenTime;
+        QTime* m_chosenTime;
         /**
          * Contains the info if the set time is valid. A time is valid if it is not set
          * or if it is set it must be a valid time.
          */
-        bool m_choosenTimeIsValid;
+        bool m_chosenTimeIsValid;
 };
 
 

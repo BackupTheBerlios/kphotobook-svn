@@ -44,7 +44,6 @@
             <text>&amp;Tool Views</text>
             <Action name="showToolViewTagTree" />
             <Action name="showToolViewSourceDirTree" />
-            <Action name="showToolViewMetaInfoTree" />
         </Menu>
         <Separator/>
         <Action name="autoRefreshView" />

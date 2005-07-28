@@ -106,13 +106,13 @@ class DialogDateTimeFilter : public KDialogBase
         }
         
         /**
-         * Returns the choosen from datetime.
+         * Returns the chosen from datetime.
          * If the state (@see getState() and @see STATE) does not say the fromdate is set, it is not defined what is returned.
          */
         QDateTime getDateTimeFrom();
         
         /**
-         * Returns the choosen to datetime.
+         * Returns the chosen to datetime.
          * If the state (@see getState() and @see STATE) does not say the todate is set, it is not defined what is returned.
          */
         QDateTime getDateTimeTo();

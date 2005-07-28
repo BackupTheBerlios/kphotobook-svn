@@ -25,13 +25,13 @@
 
 #include "../backend/xmlparser.h"
 #include "../backend/xmlwriter.h"
-#include "../engine/sourcedir.h"
-#include "../engine/tagnode.h"
-#include "../engine/tagnodetitle.h"
-#include "../engine/tagnodeboolean.h"
-#include "../engine/filetagnodeassoc.h"
-#include "../engine/filetagnodeassocboolean.h"
-#include "../engine/file.h"
+#include "sourcedir.h"
+#include "tagnode.h"
+#include "tagnodetitle.h"
+#include "tagnodeboolean.h"
+#include "filetagnodeassoc.h"
+#include "filetagnodeassocboolean.h"
+#include "file.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
@@ -46,39 +46,79 @@
 #include <qregexp.h>
 #include <qdatetime.h>
 
+
 Tracer* Engine::tracer = Tracer::getInstance("kde.kphotobook.engine", "Engine");
 
-Engine::Engine()
-    : m_dirty(false)
-    , m_fileinfo(0)
-    , m_uid(0)
-    , m_nextSourceDirId(1)
-    , m_nextTagNodeId(1) {
 
+    bool m_dirty;
+    QFileInfo* m_fileinfo;
+    QString* m_uid;
+
+    FileSystemScanner* m_fileSystemScanner;
+
+    unsigned int m_nextSourceDirId;
+    QIntDict<SourceDir>* m_sourceDirDict;
+    QPtrList<SourceDir>* m_sourceDirs;
+
+    unsigned int m_nextTagNodeId;
+    QIntDict<TagNode>* m_tagNodeDict;
+    QPtrList<TagNode>* m_tagForest;
+    TagNodeTitle* m_exifTitleTag;
+
+    QDict<File>* m_fileDict;
+    QPtrList<File>* m_fileList;
+    QPtrList<File>* m_fileList2display;
+
+
+
+
+Engine::Engine() :
+    m_dirty(false),
+    m_fileinfo(0),
+    m_uid(0),
+    
+    m_fileSystemScanner(new FileSystemScanner(this)),
+    
+    m_nextSourceDirId(1),
+    m_sourceDirDict(new QIntDict<SourceDir>()),
+    m_sourceDirs(new QPtrList<SourceDir>()),
+    
+    m_nextTagNodeId(1),
+    m_tagNodeDict(new QIntDict<TagNode>()),
+    m_tagForest(new QPtrList<TagNode>()),
+    m_exifTitleTag(0),
+            
+    m_fileDict(new QDict<File>()),
+    m_fileList(new QPtrList<File>()),
+    m_fileList2display(new QPtrList<File>())
+{
     tracer->sinvoked(__func__) << "empty engine" << endl;
-
-    // initialize the variables
-    m_sourceDirs = new QPtrList<SourceDir>();
-    m_sourceDirDict = new QIntDict<SourceDir>();
-    m_loopDetectionHelper = 0;
-
-    m_tagForest = new QPtrList<TagNode>();
-    m_tagNodeDict = new QIntDict<TagNode>();
-
-    // initialize the list of all files
-    m_fileDict = new QDict<File>();
-    m_fileList = new QPtrList<File>();
-    m_fileList2display = new QPtrList<File>();
+    
+    // create the EXIF tagnode
+    createExifTagNode();
 }
 
 
-Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
-    : m_dirty(false)
-    , m_fileinfo(new QFileInfo(fileinfo))
-    , m_uid(0)
-    , m_nextSourceDirId(1)
-    , m_nextTagNodeId(1) {
-
+Engine::Engine(QFileInfo& fileinfo) throw(EngineException*) :
+    m_dirty(false),
+    m_fileinfo(new QFileInfo(fileinfo)),
+    m_uid(0),
+    
+    m_fileSystemScanner(new FileSystemScanner(this)),
+    
+    m_nextSourceDirId(1),
+    m_sourceDirDict(new QIntDict<SourceDir>()),
+    m_sourceDirs(new QPtrList<SourceDir>()),
+    
+    m_nextTagNodeId(1),
+    m_tagNodeDict(new QIntDict<TagNode>()),
+    m_tagForest(new QPtrList<TagNode>()),
+    m_exifTitleTag(0),
+            
+    m_fileDict(new QDict<File>()),
+    m_fileList(new QPtrList<File>()),
+    m_fileList2display(new QPtrList<File>())
+{
     tracer->sinvoked(__func__) << "with file '" << m_fileinfo->absFilePath() << "'" << endl;
 
     // if file does not exist, we have nothing to do
@@ -101,18 +141,6 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
         tracer->serror(__func__) << msg << ": " << file.errorString() << endl;
         throw new EngineException(msg, file.errorString());
     }
-
-    // initialize the variables
-    m_sourceDirs = new QPtrList<SourceDir>();
-    m_sourceDirDict = new QIntDict<SourceDir>();
-    m_loopDetectionHelper = 0;
-
-    m_tagForest = new QPtrList<TagNode>();
-    m_tagNodeDict = new QIntDict<TagNode>();
-
-    m_fileDict = new QDict<File>();
-    m_fileList = new QPtrList<File>();
-    m_fileList2display = new QPtrList<File>();
 
     // prepare input source
     QXmlInputSource xmlInputSource(file);
@@ -151,9 +179,14 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
         m_uid = generateUid();
     }
 
+    // create the EXIF tagnode if it was not contained in the database (for compatibility reason with version 0.0.6)
+    if (m_exifTitleTag == 0) {
+        createExifTagNode();
+    }
+
     // read the files in all sourcedirectories
     if (Settings::generalRescanWhileStartup()) {
-        rescanSourceDirs(m_sourceDirs);
+        m_fileSystemScanner->rescan();
     }
 
     // trace a little
@@ -161,110 +194,18 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*)
 }
 
 
-Engine::~Engine() {
-
+Engine::~Engine()
+{
     cleanUp();
 }
 
-void Engine::cleanUp() {
 
-    delete m_fileinfo;
-    delete m_uid;
-
-    //
-    // sourcedir members
-    //
-    delete m_sourceDirDict;
-    delete m_sourceDirs;
-    delete m_loopDetectionHelper;
-
-    //
-    // tagnode members
-    //
-    delete m_tagNodeDict;
-    delete m_tagForest;
-
-    //
-    // file members
-    //
-    delete m_fileList;
-    delete m_fileDict;
-    delete m_fileList2display;
-}
-
-
-void Engine::rescanSourceDirs() {
-
-    tracer->sinvoked(__func__) << "scanning..." << endl;
-
-    rescanSourceDirs(m_sourceDirs);
-}
-
-
-SourceDir* Engine::addSourceDir(QDir* newSourceDir, bool recursive) throw(EngineException*) {
-
-    // test if sourcedir is addable
-    testIfSourceDirIsAddable(newSourceDir, recursive);
-
-    tracer->sdebug(__func__) << "adding sourcedir: " << newSourceDir->absPath() << ", recursive: " << recursive << "..." << endl;
-
-    m_dirty = true;
-
-    SourceDir* sourceDir = new SourceDir(m_nextSourceDirId++, newSourceDir, recursive);
-    sourceDir->setFound(true);
-    m_sourceDirs->append(sourceDir);
-    m_sourceDirDict->insert(sourceDir->id(), sourceDir);
-
-    // add all files in the sourcedir
-    rescanSourceDir(sourceDir);
-
-    // add all directories below the newSourceDir
-    if (recursive) {
-        delete m_loopDetectionHelper;
-        m_loopDetectionHelper = new QPtrList<QString>;
-        m_loopDetectionHelper->setAutoDelete(true);
-        m_loopDetectionHelper->append(new QString(sourceDir->dir()->canonicalPath()));
-
-        addSourceDirs(sourceDir);
-    }
-
-    return sourceDir;
-}
-
-
-void Engine::removeSourceDir(SourceDir* sourceDir) {
-
-    tracer->sdebug(__func__) << "removing sourcedir: " << sourceDir->dir()->absPath() << "..." << endl;
-
-    m_dirty = true;
-
-    // call this method recursively for each child
-    if (sourceDir->children() && sourceDir->children()->count()) {
-        // remove the subdirectories
-
-        // we have to work with a copy of the children list because the destructor of
-        // the sourceDir is changing the sourcedir-tree
-        QPtrList<SourceDir> temp(*sourceDir->children());
-
-        SourceDir* child;
-        for ( child = temp.first(); child; child = temp.next() ) {
-            removeSourceDir(child);
-        }
-    }
-
-    // remove the specified sourcedir
-    m_sourceDirs->remove(sourceDir);
-    m_sourceDirDict->remove(sourceDir->id());
-    delete sourceDir;
-}
-
-
-TagNode* Engine::createTag(TagNode* parent, TagNode::Type type, const QString& text, const QString& comment, const QString& iconName) {
-
-    tracer->sinvoked(__func__) << "with type: " << type  << ", text: " << text
-            << ", comment: " << comment << ", icon: " << iconName << endl;
+TagNode* Engine::createTag(TagNode* parent, TagNode::Type type, const QString& text, const QString& comment, const QString& iconName)
+{
+    tracer->sinvoked(__func__) << "with type: " << type  << ", text: " << text << ", comment: " << comment << ", icon: " << iconName << endl;
 
     TagNode* tagNode = TagNode::createInstance(type, m_nextTagNodeId++, text, comment, iconName, parent);
+    tagNode->setSecret(false);
 
     // put the tagNode into the tree
     if (!parent) {
@@ -279,8 +220,9 @@ TagNode* Engine::createTag(TagNode* parent, TagNode::Type type, const QString& t
     return tagNode;
 }
 
-void Engine::editTag(TagNode* tag, const QString& text, const QString& comment, const QString& iconName) {
 
+void Engine::editTag(TagNode* tag, const QString& text, const QString& comment, const QString& iconName)
+{
     tag->setText(text);
     tag->setComment(comment);
     tag->setIconName(iconName);
@@ -289,8 +231,8 @@ void Engine::editTag(TagNode* tag, const QString& text, const QString& comment, 
 }
 
 
-void Engine::removeTag(TagNode* tag) {
-
+void Engine::removeTag(TagNode* tag)
+{
     tracer->sinvoked(__func__) << "with tagnode: " << tag->text() << "..." << endl;
 
     m_dirty = true;
@@ -319,7 +261,12 @@ void Engine::removeTag(TagNode* tag) {
 }
 
 
-bool Engine::isTagTextValid(TagNode* parent, QString& text) {
+bool Engine::isTagTextValid(TagNode* parent, QString& text, bool ignoreExifTag)
+{
+    // a maintag must not be named 'EXIF' (if ignoreExifTag is false)
+    if (!ignoreExifTag && parent == 0 && text.upper() == "EXIF") {
+        return false;
+    }
 
     QPtrList<TagNode>* siblings = m_tagForest;
 
@@ -342,8 +289,8 @@ bool Engine::isTagTextValid(TagNode* parent, QString& text) {
 }
 
 
-QPtrList<File>* Engine::files(FilterNode* filterRootNode) {
-
+QPtrList<File>* Engine::files(FilterNode* filterRootNode)
+{
     tracer->sinvoked(__func__) << "with filter:" << endl;
     if (filterRootNode) {
         filterRootNode->dump("");
@@ -376,8 +323,8 @@ QPtrList<File>* Engine::files(FilterNode* filterRootNode) {
 }
 
 
-void Engine::save() throw(PersistingException*) {
-
+void Engine::save() throw(PersistingException*)
+{
     tracer->invoked(__func__);
 
     if (m_dirty) {
@@ -411,8 +358,8 @@ void Engine::save() throw(PersistingException*) {
 }
 
 
-void Engine::saveAs(QFileInfo& newFile) throw(PersistingException*) {
-
+void Engine::saveAs(QFileInfo& newFile) throw(PersistingException*)
+{
     m_fileinfo = new QFileInfo(newFile);
     m_uid = generateUid();
 
@@ -427,260 +374,44 @@ void Engine::saveAs(QFileInfo& newFile) throw(PersistingException*) {
 //
 // private methods
 //
-void Engine::rescanSourceDirs(QPtrList<SourceDir>* sourceDirs) {
+void Engine::cleanUp()
+{
+    delete m_fileinfo;
+    delete m_uid;
+    delete m_fileSystemScanner;
 
-    SourceDir* sourceDir = 0;
-    for (sourceDir = sourceDirs->first(); sourceDir; sourceDir = sourceDirs->next()) {
-        tracer->sdebug(__func__) << "rescanning sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath() << endl;
+    //
+    // sourcedir members
+    //
+    delete m_sourceDirDict;
+    delete m_sourceDirs;
 
-        if (sourceDir->dir()->exists()) {
+    //
+    // tagnode members
+    //
+    delete m_tagNodeDict;
+    delete m_tagForest;
 
-            sourceDir->setFound(true);
-
-            rescanSourceDir(sourceDir);
-
-            if (sourceDir->children() && sourceDir->children()->count() > 0) {
-                rescanSourceDirs(sourceDir->children());
-            }
-        } else {
-            sourceDir->setFound(false);
-
-            tracer->sdebug(__func__) << " sourcedir: " << sourceDir->id() << ": '" << sourceDir->dir()->absPath() << "' not found" << endl;
-        }
-
-        // scan the filesystem for new sourcedirs
-        if (sourceDir->recursive()) {
-            delete m_loopDetectionHelper;
-            m_loopDetectionHelper = new QPtrList<QString>;
-            m_loopDetectionHelper->setAutoDelete(true);
-            m_loopDetectionHelper->append(new QString(sourceDir->dir()->canonicalPath()));
-
-            addSourceDirs(sourceDir);
-        }
-    }
+    //
+    // file members
+    //
+    delete m_fileList;
+    delete m_fileDict;
+    delete m_fileList2display;
 }
 
 
-void Engine::rescanSourceDir(SourceDir* sourceDir) {
-
-    tracer->sdebug(__func__) << "adding files in sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath() << endl;
-
-    ///@todo setFound(false) on all files in the sourcedir!
-
-    if (sourceDir->dir()->exists()) {
-        // get a list with all files in the current sourcedir
-        const QFileInfoList* filelist = sourceDir->dir()->entryInfoList(QDir::Files);
-
-        if (filelist) {
-            QFileInfoListIterator iterator( *filelist );
-            QFileInfo* fileInfo;
-            while ((fileInfo = iterator.current()) != 0) {
-
-                // only add jpeg files
-                if (mustHandleFile(fileInfo->fileName())) {
-
-                    File* file = m_fileDict->find(fileInfo->absFilePath());
-                    if (!file) {
-                        // the file is seen for the first time --> create it
-                        tracer->sdebug(__func__) << "found new file to add: '" << fileInfo->absFilePath() << "'" << endl;
-                        file = new File(this, sourceDir, new QFileInfo(*fileInfo));
-                        m_dirty = true;
-
-                        sourceDir->appendFile(file);
-                        m_fileList->append(file);
-                        m_fileDict->insert(file->fileInfo()->absFilePath(), file);
-                    }
-                }
-                ++iterator;
-            }
-        }
-    } else {
-        tracer->swarning(__func__) << "sourcedir: " << sourceDir->id() << ": " << sourceDir->dir()->absPath()
-            << " does no longer exist --> ignoring it!!!" << endl;
-    }
-}
-
-
-void Engine::testIfSourceDirIsAddable(QDir* newDir, bool recursive) throw(EngineException*) {
-
-    tracer->sinvoked(__func__)  << newDir->absPath()
-        << ", recursive: " << recursive << "..." << endl;
-
-    // test if the chosen sourcedir is already added
-    SourceDir* sourceDir;
-    for ( sourceDir = sourceDirs()->first(); sourceDir; sourceDir = sourceDirs()->next() ) {
-
-        if (*(sourceDir->dir()) == *newDir) {
-            QString detailMsg = QString(i18n("The directory you have choosen is already added to KPhotoBook.\n"
-                                             "Directory: %1")).arg(sourceDir->dir()->absPath());
-            throw new EngineException(
-                i18n("You cannot add the same directory more than once to KPhotoBook."),
-                detailMsg
-            );
-        }
-
-        QString sourceDirPath = sourceDir->dir()->absPath();
-        QString newDirPath = newDir->absPath();
-
-        if (sourceDir->recursive()) {
-            // test if the new dir is a subdirectory of the current sourcedir
-            if (newDirPath.startsWith(sourceDirPath)) {
-                QString detailMsg = QString(i18n("The directory you have chosen is a subdirectory of a recursive added sourcedirectory.\n"
-                                                 "Sourcedirectory: %1\nDirectory: %2")).arg(sourceDirPath).arg(newDirPath);
-                throw new EngineException(
-                    i18n("You cannot add a directory which is a subdirectory of an already recursively added sourcedirectory because"
-                         "the chosen directory is already added implicitely."),
-                    detailMsg
-                );
-            }
-        }
-
-        if (recursive) {
-            // test if the current sourcedir is a subdirectory of the new dir
-            if (sourceDirPath.startsWith(newDirPath)) {
-                QString detailMsg = QString(i18n("The directory you have chosen to add recursively is the parentdirectory of at least "
-                                                 "one added sourcedirectory.\nSourcedirectory: %1\nDirectory: %2")).arg(sourceDirPath).arg(newDirPath);
-                throw new EngineException(
-                    i18n("You cannot add the parentdirectory of an already added sourcedirectory recursively."),
-                    detailMsg
-                );
-            }
-        }
-    }
-}
-
-
-void Engine::addSourceDirs(SourceDir* parent) {
-
-    tracer->sinvoked(__func__) << "with SourceDir: " << parent->dir()->absPath() << endl;
-
-    // get all directories in the current directory
-    const QFileInfoList* subdirlist = parent->dir()->entryInfoList(QDir::Dirs);
-
-    if (subdirlist) {
-        QFileInfoListIterator iterator(*subdirlist);
-        QFileInfo* fileInfo;
-        while ((fileInfo = iterator.current()) != 0) {
-
-            // ignore ./.. and directories beginning with .
-            // and ignore directories called 'ThumbNails'
-            if (!fileInfo->fileName().startsWith(".")
-                && mustHandleDirectory(fileInfo->fileName())
-                ) {
-
-                QDir subfolder(fileInfo->absFilePath());
-
-                tracer->sdebug(__func__) << "handling subfolder: " << subfolder.absPath() << endl;
-
-                bool loopDetected = false;
-
-                // we have to test if this directory is part of a loop or is the superdirectory of an already added dir
-                QString* alreadyAddedDir;
-                for (alreadyAddedDir = m_loopDetectionHelper->first(); alreadyAddedDir; alreadyAddedDir = m_loopDetectionHelper->next()) {
-
-                    if (*alreadyAddedDir == subfolder.canonicalPath()) {
-                        loopDetected = true;
-                        tracer->swarning(__func__) << "loop detected, not adding directory again: '" << fileInfo->absFilePath() << "' is pointing to '" << *alreadyAddedDir << "'" << endl;
-                        break;
-                    }
-                    if ((*alreadyAddedDir).startsWith(subfolder.canonicalPath(), true)) {
-                        loopDetected = true;
-                        tracer->swarning(__func__) << "loop detected, not adding directory because it is a super directory (" << subfolder.canonicalPath() << ") of an already added directory: '" << *alreadyAddedDir << "'" << endl;
-                        break;
-                    }
-                }
-
-                if (!loopDetected) {
-                    SourceDir* existingSourceDir = 0;
-
-                    // we have to test if the directory is already processed to prevent endless loops
-                    QIntDictIterator<SourceDir> it(*m_sourceDirDict);
-                    while (!existingSourceDir && it.current()) {
-
-                        SourceDir* current = it.current();
-
-                        if (current->dir()->canonicalPath() == subfolder.canonicalPath()) {
-                            existingSourceDir = current;
-                            tracer->sdebug(__func__) << "directory is already added: " << current->dir()->canonicalPath() << endl;
-                        }
-
-                        ++it;
-                    }
-
-                    if (existingSourceDir) {
-
-                        // add the directory to the list of handled directories for detcting loops
-                        m_loopDetectionHelper->append(new QString(existingSourceDir->dir()->canonicalPath()));
-
-                        // add all files in the current sourcedir
-                        rescanSourceDir(existingSourceDir);
-
-                        // make recursive call
-                        addSourceDirs(existingSourceDir);
-                    } else {
-                        tracer->sdebug(__func__) << "found new sourcedir to add " << fileInfo->absFilePath() << endl;
-
-                        // create the new SourceDir
-                        SourceDir* child = new SourceDir(m_nextSourceDirId++, new QDir(fileInfo->absFilePath()), false);
-                        child->setFound(true);
-
-                        // add the current directory to the tree
-                        child->setParent(parent);
-
-                        // put the sourcedir into the sourcedir dictionary (id to sourcedir map)
-                        m_sourceDirDict->insert(child->id(), child);
-
-                        // add the directory to the list of handled directories for detcting loops
-                        m_loopDetectionHelper->append(new QString(child->dir()->canonicalPath()));
-
-                        // add all files in the current sourcedir
-                        rescanSourceDir(child);
-
-                        // make recursive call
-                        addSourceDirs(child);
-                    }
-                }
-            }
-            ++iterator;
-        }
-    }
-}
-
-
-bool Engine::mustHandleDirectory(QString directoryName) {
-
-    QStringList subdirsToIgnore = Settings::fileFilterSubdirsToIgnore();
-
-    for (QStringList::Iterator it = subdirsToIgnore.begin(); it != subdirsToIgnore.end(); ++it) {
-        QRegExp regExp(*it);
-        regExp.setWildcard(true);
-        if (regExp.exactMatch(directoryName)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-
-bool Engine::mustHandleFile(QString filename) {
-
-    QStringList filetypesToHandle = Settings::fileFilterFileToHandle();
-
-    for ( QStringList::Iterator it = filetypesToHandle.begin(); it != filetypesToHandle.end(); ++it ) {
-        QRegExp regExp(*it);
-        regExp.setWildcard(true);
-        if (regExp.exactMatch(filename)) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-
-QString* Engine::generateUid() {
-
+QString* Engine::generateUid()
+{
     QString uid = QString("%1").arg(QDateTime::currentDateTime().toTime_t());
     return new QString(uid);
 }
+
+
+void Engine::createExifTagNode()
+{
+    TagNode* exifTagNode = createTag(0, TagNode::TYPE_TITLE, i18n("EXIF"), i18n("All EXIF data read from the image."), "exif");
+    m_exifTitleTag = dynamic_cast<TagNodeTitle*>(exifTagNode);
+    m_exifTitleTag->setReadonly(true);
+}
+

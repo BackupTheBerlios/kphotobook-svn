@@ -6,3 +6,11 @@ AC_CHECK_KDEMAXPATHLEN
 
 # enable exceptions
 CXXFLAGS="$CXXFLAGS $USE_EXCEPTIONS"
+
+
+# test for libexif
+PKG_CHECK_MODULES(EXIF, libexif >= 0.6.12,
+    AC_MSG_NOTICE(yes),
+    AC_MSG_ERROR([libexif not found! libexif >= 0.6.12 is needed!
+libexif is available from http://www.sourceforge.net/projects/libexif]))
+

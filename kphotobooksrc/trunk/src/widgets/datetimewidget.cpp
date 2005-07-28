@@ -40,10 +40,10 @@ DateTimeWidget::DateTimeWidget(QWidget* parent, const QDateTime& dateTime)
         , m_locale(KGlobal::locale())
         , m_dateLine(0)
         , m_timeLine(0)
-        , m_choosenDate(0)
-        , m_choosenDateIsValid(true)
-        , m_choosenTime(0)
-        , m_choosenTimeIsValid(true)
+        , m_chosenDate(0)
+        , m_chosenDateIsValid(true)
+        , m_chosenTime(0)
+        , m_chosenTimeIsValid(true)
 {
     initUI(dateTime);
 }
@@ -51,8 +51,8 @@ DateTimeWidget::DateTimeWidget(QWidget* parent, const QDateTime& dateTime)
 
 DateTimeWidget::~DateTimeWidget()
 {
-    delete m_choosenDate;
-    delete m_choosenTime;
+    delete m_chosenDate;
+    delete m_chosenTime;
 }
 
 
@@ -182,7 +182,7 @@ void DateTimeWidget::slotPickDate()
     dialog->setEscapeButton(KDialogBase::Cancel);
     connect(dialog, SIGNAL(okClicked()), this, SLOT(slotPickerOk()));
 
-    KDatePicker* datePicker = new KDatePicker(dialog, (m_choosenDate && !m_choosenDate->isNull()) ? *m_choosenDate : QDate::currentDate(), "datePicker", 0);
+    KDatePicker* datePicker = new KDatePicker(dialog, (m_chosenDate && !m_chosenDate->isNull()) ? *m_chosenDate : QDate::currentDate(), "datePicker", 0);
     connect(datePicker, SIGNAL(dateSelected(QDate)), this, SLOT(slotPickerDateChanged(QDate)));
     connect(datePicker, SIGNAL(dateEntered(QDate)), this, SLOT(slotPickerDateChanged(QDate)));
 
@@ -193,15 +193,15 @@ void DateTimeWidget::slotPickDate()
 
 void DateTimeWidget::slotPickerDateChanged(const QDate& date)
 {
-    delete m_choosenDate;
-    m_choosenDate = new QDate(date);
-    m_choosenDateIsValid = true;
+    delete m_chosenDate;
+    m_chosenDate = new QDate(date);
+    m_chosenDateIsValid = true;
 }
 
 
 void DateTimeWidget::slotPickerOk()
 {
-    m_dateLine->setText(m_locale->formatDate(*m_choosenDate, true));
+    m_dateLine->setText(m_locale->formatDate(*m_chosenDate, true));
 }
 
 
@@ -218,9 +218,9 @@ void DateTimeWidget::slotDateChanged(const QString& date)
         if (isValueEmpty(m_dateLine->inputMask(), date)
             || ok) {
             tracer->sdebug(__func__) << "accepted." << endl;
-            delete m_choosenDate;
-            m_choosenDate = ok ? new QDate(newDate) : 0;
-            m_choosenDateIsValid = true;
+            delete m_chosenDate;
+            m_chosenDate = ok ? new QDate(newDate) : 0;
+            m_chosenDateIsValid = true;
             m_dateLine->setBackgroundColor(QColor(255, 255, 255));
 
             emit(dateTimeValid(isDateTimeValid()));
@@ -231,7 +231,7 @@ void DateTimeWidget::slotDateChanged(const QString& date)
 
     tracer->sdebug(__func__) << "NOT accepted." << endl;
     // the date is invalid
-    m_choosenDateIsValid = false;
+    m_chosenDateIsValid = false;
     m_dateLine->setBackgroundColor(QColor(255, 100, 100));
 
     emit(dateTimeValid(false));
@@ -251,9 +251,9 @@ void DateTimeWidget::slotTimeChanged(const QString& time)
         if (isValueEmpty(m_timeLine->inputMask(), time)
             || ok) {
             tracer->sdebug(__func__) << "accepted." << endl;
-            delete m_choosenTime;
-            m_choosenTime = ok ? new QTime(newTime) : 0;
-            m_choosenTimeIsValid = true;
+            delete m_chosenTime;
+            m_chosenTime = ok ? new QTime(newTime) : 0;
+            m_chosenTimeIsValid = true;
             m_timeLine->setBackgroundColor(QColor(255, 255, 255));
 
             emit(dateTimeValid(isDateTimeValid()));
@@ -264,7 +264,7 @@ void DateTimeWidget::slotTimeChanged(const QString& time)
 
     tracer->sdebug(__func__) << "NOT accepted." << endl;
     // the time is invalid
-    m_choosenTimeIsValid = false;
+    m_chosenTimeIsValid = false;
     m_timeLine->setBackgroundColor(QColor(255, 100, 100));
 
     emit(dateTimeValid(false));

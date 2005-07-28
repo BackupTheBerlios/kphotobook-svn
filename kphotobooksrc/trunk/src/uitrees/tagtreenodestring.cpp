@@ -103,8 +103,14 @@ void TagTreeNodeString::leftClicked(__attribute__((unused)) TagTree* tagTree, in
         }
 
         case TagTree::COLUMN_VALUE : {
+            
             // do nothing when tagging is locked
             if (Settings::tagTreeLocked()) {
+                return;
+            }
+
+            // editing of the value is not allowed if tagnode is readonly
+            if (m_tagNode->readonly()) {
                 return;
             }
 

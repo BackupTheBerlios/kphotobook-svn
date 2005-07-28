@@ -8,6 +8,7 @@ noinst_LTLIBRARIES = libengine.la
 libengine_la_SOURCES = \
 	engine.h engine.cpp \
 	file.h file.cpp \
+	filesystemscanner.h filesystemscanner.cpp \
 	filetagnodeassoc.h filetagnodeassoc.cpp \
 	filetagnodeassocboolean.h filetagnodeassocboolean.cpp \
 	filetagnodeassocdatetime.h filetagnodeassocdatetime.cpp \
@@ -30,4 +31,4 @@ libengine_la_SOURCES = \
 	tagnodestring.h tagnodestring.cpp \
 	tagnodetitle.h tagnodetitle.cpp
 
-libengine_la_LIBADD = $(top_builddir)/src/backend/libbackend.la
+libengine_la_LIBADD = $(top_builddir)/src/backend/libbackend.la -lexif

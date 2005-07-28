@@ -124,6 +124,11 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
                 return;
             }
     
+            // editing of the value is not allowed if tagnode is readonly
+            if (m_tagNode->readonly()) {
+                return;
+            }
+
             // get all selected files
             const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
     
@@ -319,7 +324,6 @@ QDateTime* TagTreeNodeDateTime::readDateTime(const QString& dateTimeStr)
     
     tracer->sdebug(__func__) << "date to convert: " << dateStr << endl;
     tracer->sdebug(__func__) << "time to convert: " << timeStr << endl;
-
     
     bool* ok;
     QDate date = locale->readDate(dateStr, ok);

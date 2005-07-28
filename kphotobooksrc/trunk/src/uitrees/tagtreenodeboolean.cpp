@@ -85,6 +85,11 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
             return;
         }
 
+        // editing of the value is not allowed if tagnode is readonly
+        if (m_tagNode->readonly()) {
+            return;
+        }
+
         // if not all are currently tagged, tag them, otherwise untag them
         bool newState = (m_tagCurrentMatch != TagTreeNode::TAGGED);
 

@@ -26,20 +26,22 @@
 #include "../engine/filetagnodeassocdatetime.h"
 #include "../engine/filetagnodeassocradio.h"
 #include "../engine/filetagnodeassocstring.h"
+#include "../engine/sourcedir.h"
 #include "../engine/tagnode.h"
 #include "../engine/tagnodeboolean.h"
 #include "../engine/tagnodedatetime.h"
 #include "../engine/tagnoderadio.h"
 #include "../engine/tagnodestring.h"
 #include "../engine/tagnodetitle.h"
-#include "../engine/sourcedir.h"
 
-#include <qpixmap.h>
 #include <qfileinfo.h>
+#include <qpixmap.h>
 
 #include <typeinfo>
 
+
 Tracer* XmlParser::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlParser");
+
 
 //
 // methods of content handler
@@ -226,9 +228,10 @@ bool XmlParser::startElement( __attribute__((unused)) const QString& namespaceUR
     return true;
 }
 
-bool XmlParser::endElement( __attribute__((unused)) const QString& namespaceURI,  const QString& localName,
-                            __attribute__((unused)) const QString& qName) {
 
+bool XmlParser::endElement( __attribute__((unused)) const QString& namespaceURI,  const QString& localName,
+                            __attribute__((unused)) const QString& qName)
+{
     //
     // handle endtag 'kphotobook'
     //
@@ -348,8 +351,9 @@ bool XmlParser::endElement( __attribute__((unused)) const QString& namespaceURI,
     return true;
 }
 
-bool XmlParser::characters(__attribute__((unused)) const QString& ch) {
 
+bool XmlParser::characters(__attribute__((unused)) const QString& ch)
+{
     // we never have characters inside a container
     return true;
 }
@@ -358,20 +362,22 @@ bool XmlParser::characters(__attribute__((unused)) const QString& ch) {
 //
 // methods of error handler
 //
-bool XmlParser::warning(const QXmlParseException& exception) {
-
+bool XmlParser::warning(const QXmlParseException& exception)
+{
     fatalError(exception);
     return true;
 }
 
-bool XmlParser::error(const QXmlParseException& exception) {
 
+bool XmlParser::error(const QXmlParseException& exception)
+{
     fatalError(exception);
     return true;
 }
 
-bool XmlParser::fatalError(const QXmlParseException& exception) {
 
+bool XmlParser::fatalError(const QXmlParseException& exception)
+{
     QString message = QString("Parsing error occured @ line: %1, column:%2").arg(exception.lineNumber()).arg(exception.columnNumber());
 
     if (m_exception) {
@@ -389,8 +395,10 @@ bool XmlParser::fatalError(const QXmlParseException& exception) {
 //
 // private methods
 //
-bool XmlParser::handleSourceDir(const QXmlAttributes& atts) {
-
+bool XmlParser::handleSourceDir(const QXmlAttributes& atts)
+{
+    tracer->sinvoked(__func__) << "with attributes: " << toString(atts) << endl;
+    
     // <sourcedir
     //   id="0"              (mandatory)
     //   dir="/fff/rt"       (mandatory)
@@ -466,12 +474,9 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts) {
         // test if the parsed directory is addable if it is toplevel sourcedir
         if (!m_sourceDirstack.current()) {
             try {
-                m_engine->testIfSourceDirIsAddable(dir, recursive);
+                m_engine->fileSystemScanner()->testIfFolderIsAddable(dir, recursive);
             } catch(EngineException* ex) {
-                m_exception = new EngineException(
-                    ex->message(),
-                    ex->detailMessage()
-                );
+                m_exception = new EngineException(ex->message(), ex->detailMessage());
                 delete ex;
                 return false;
             }
@@ -504,6 +509,7 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts) {
         m_engine->m_sourceDirs->append(sourceDir);
     }
 
+
     // put the sourcedir into the sourcedir dictionary (id to sourcedir map)
     m_engine->m_sourceDirDict->insert(sourceDir->id(), sourceDir);
 
@@ -518,7 +524,10 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts) {
     return true;
 }
 
-bool XmlParser::handleTag(const QXmlAttributes& atts) {
+
+bool XmlParser::handleTag(const QXmlAttributes& atts)
+{
+    tracer->sinvoked(__func__) << "with attributes: " << toString(atts) << endl;
 
     // <tagnode
     //   id="0"              (mandatory)
@@ -577,7 +586,6 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
         }
     }
 
-
     //and then do the consistency check:
     // mandatory id given?
     if (id < 0) {
@@ -611,14 +619,12 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
         tracer->sdebug(__func__) << "Optional attribute 'icon' of tagnode with the name '" << name
             << "' is empty." << endl;
     }
-
-        // icon is optional`
+    
+    // secret is optional`
     if (!secret) {
         tracer->sdebug(__func__) << "Optional attribute 'secret' of tagnode with the name '" << name
             << "' is empty." << endl;
     }
-
-
 
     // check that the id of the tagNode is not already used
     TagNode* conflictingTagNode = m_engine->m_tagNodeDict->find(id);
@@ -631,9 +637,9 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
     // get the enclosing tagnode from the stack
     TagNode* parentTagNode = m_tagNodeStack.current();
 
-    if (!m_engine->isTagTextValid(parentTagNode, name)) {
-        QString msg = QString("The name (%1) of the tagnode with id '%2' conflicts with the tagnode '%3'.").arg(name).arg(id).arg(conflictingTagNode->id());
-        m_exception = new EngineException( msg,"");
+    if (!m_engine->isTagTextValid(parentTagNode, name, true)) {
+        QString msg = QString("The name (%1) of the tagnode with id '%2' is invalid.").arg(name).arg(id);
+        m_exception = new EngineException(msg, "");
         return false;
     }
 
@@ -644,6 +650,11 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
     if (!parentTagNode) {
         // the current tagNode seems to be a toplevel tagNode --> add the tagNode to the engine
         m_engine->m_tagForest->append(tagNode);
+
+        if (tagNodeTypeId == TagNode::TYPE_TITLE && name.upper() == "EXIF") {
+            // this is the EXIF tagnode
+            m_engine->m_exifTitleTag = dynamic_cast<TagNodeTitle*>(tagNode);
+        }
     }
 
     // put the tagNode into the tagNode dictionary (id to tagNode map)
@@ -660,7 +671,10 @@ bool XmlParser::handleTag(const QXmlAttributes& atts) {
     return true;
 }
 
-bool XmlParser::handleFile(const QXmlAttributes& atts) {
+
+bool XmlParser::handleFile(const QXmlAttributes& atts)
+{
+    tracer->sinvoked(__func__) << "with attributes: " << toString(atts) << endl;
 
     // <file
     //   name="2003-06-04-10:01:45.jpg"    (mandatory)
@@ -722,6 +736,7 @@ bool XmlParser::handleFile(const QXmlAttributes& atts) {
 
     return true;
 }
+
 
 bool XmlParser::handleTagAssoc(const QXmlAttributes& atts) {
 
@@ -805,3 +820,20 @@ bool XmlParser::handleTagAssoc(const QXmlAttributes& atts) {
 
     return true;
 }
+
+
+QString XmlParser::toString(const QXmlAttributes& atts)
+{
+    QString buf = QString();
+    for (int i = 0; i < atts.length(); i++) {
+        if (i > 0) {
+            buf.append(", ");
+        }
+        buf.append(atts.localName(i));
+        buf.append("=");
+        buf.append(atts.value(i));
+    }
+
+    return buf;
+}
+

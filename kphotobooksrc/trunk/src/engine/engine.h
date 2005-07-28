@@ -21,18 +21,19 @@
 #ifndef _ENGINE_H_
 #define _ENGINE_H_
 
+#include "filesystemscanner.h"
+#include "filternode.h"
+#include "tagnode.h"
+#include "tagnodetitle.h"
 #include "../tracer/tracer.h"
 #include "../exception.h"
-#include "tagnode.h"
-#include "filternode.h"
 
-#include <qfileinfo.h>
-#include <qdir.h>
-#include <qstring.h>
-
-#include <qptrlist.h>
-#include <qintdict.h>
 #include <qdict.h>
+#include <qdir.h>
+#include <qfileinfo.h>
+#include <qintdict.h>
+#include <qptrlist.h>
+#include <qstring.h>
 
 class SourceDir;
 class File;
@@ -43,68 +44,72 @@ class TagNode;
  *
  * CVS-ID $Id$
  */
-class Engine {
-
+class Engine
+{
 private:
     static Tracer* tracer;
 
 public:
-    friend class XmlParser;  // class XmlParser cann access everything on this class
-    friend class XmlWriter;  // class XmlWriter cann access everything on this class
-    friend class File;       // class File cann access everything on this class
+    friend class File;              // class File cann access everything on this class
+    friend class FileSystemScanner; // class FileSystemScanner cann access everything on this class
+    friend class XmlParser;         // class XmlParser cann access everything on this class
+    friend class XmlWriter;         // class XmlWriter cann access everything on this class
 
     Engine();
     Engine(QFileInfo& fileinfo) throw(EngineException*);
 
     ~Engine();
 
-    void dirtyfy() {
+    /**
+     * Returns the FileSystemScanner for this engine.
+     */
+    FileSystemScanner* fileSystemScanner()
+    {
+        return m_fileSystemScanner;
+    }
+
+    void dirtyfy()
+    {
         m_dirty = true;
     }
-    bool dirty() {
+    bool dirty()
+    {
         return m_dirty;
     }
 
-    bool alreadySavedOnce() {
+    /**
+     * Returns true if the current database has been saved already at least once.
+     */
+    bool alreadySavedOnce()
+    {
         return m_uid != 0;
     }
 
-    const QFileInfo* fileinfo() {
+    const QFileInfo* fileinfo()
+    {
         return m_fileinfo;
     }
 
-    const QString* uid() {
+    const QString* uid()
+    {
         return m_uid;
     }
-
-    void rescanSourceDirs();
 
     /**
      * Returns the total number of files managed by the engine.
      */
-    int totalNumberOfFiles() {
+    int totalNumberOfFiles()
+    {
         return m_fileList->count();
     }
 
     /**
      * Returns the number of files selected by the last specified filter.
      */
-    int filteredNumberOfFiles() {
+    int filteredNumberOfFiles()
+    {
         return m_fileList2display->count();
     }
-
-    /**
-     * Adds the specified sourcedir and all images in it to the engine.
-     * If recursive is true, all directories below the sourcedir are added too.
-     * If the sourcedir cannot be added, an EngineException is thrown.
-     */
-    SourceDir* addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*);
-
-    /**
-     * Removes the specified sourceDir and deletes all Files and associations
-     * below this sourceDir.
-     */
-    void removeSourceDir(SourceDir* sourceDir);
 
     /**
      * Returns all currently added source directories handled by this engine.
@@ -138,11 +143,21 @@ public:
 
     /**
      * Tests if the specified tagtext is valid. There must not exist a sibling
-     * with the same name.
+     * with the same name. And a maintag must not be named 'EXIF'.
      * If the parent is null, it is considered to be a maintag.
+     *
+     * @param ignoreExifTag If true it is not tested if the specified tag is named 'EXIF'.
      */
-    bool isTagTextValid(TagNode* parent, QString& text);
+    bool isTagTextValid(TagNode* parent, QString& text, bool ignoreExifTag = false);
 
+    /**
+     * Returns the tagnode representing the EXIF title.
+     */
+    TagNodeTitle* getExifTagNodeTitle()
+    {
+        return m_exifTitleTag;
+    }    
+    
     /**
      * Returns all files matching the specified filter.
      */
@@ -168,6 +183,11 @@ private:
      */
     QString* m_uid;
 
+    /**
+     * The filesystemscanner for this engine.
+     */
+    FileSystemScanner* m_fileSystemScanner;
+
     //
     // sourcedir members
     //
@@ -187,12 +207,6 @@ private:
      */
     QPtrList<SourceDir>* m_sourceDirs;
 
-    /**
-     * This list is used for (pre)detecting loops while adding directories recursively.
-     * The list is cleared always before the sourcedirectories are rescanned.
-     */
-    QPtrList<QString>* m_loopDetectionHelper;
-
     //
     // tagnode members
     //
@@ -211,6 +225,11 @@ private:
      * A list containing all toplevel tagNodes.
      */
     QPtrList<TagNode>* m_tagForest;
+
+    /**
+     * Pointer to the exif title tag.
+     */
+    TagNodeTitle* m_exifTitleTag;
 
     //
     // file members
@@ -232,23 +251,6 @@ private:
     QPtrList<File>* m_fileList2display;
 
 private:
-    void rescanSourceDirs(QPtrList<SourceDir>* sourceDirs);
-    void rescanSourceDir(SourceDir* sourceDir);
-    void addSourceDirs(SourceDir* parent);
-    void testIfSourceDirIsAddable(QDir* sourceDir, bool recursive) throw(EngineException*);
-
-    /**
-     * Returns true if the directoryname does not match any of the directory
-     * name stored in the configuration.
-     */
-    bool mustHandleDirectory(QString directoryName);
-
-    /**
-     * Returns true if the filename matches one of the file-suffixes
-     * stored in the configuration.
-     */
-    bool mustHandleFile(QString filename);
-
     /**
      * Deletes all memory allocated by this object.
      */
@@ -259,6 +261,8 @@ private:
      * We simply return the seconds since 1970.
      */
     QString* generateUid();
+
+    void createExifTagNode();
 };
 
 #endif

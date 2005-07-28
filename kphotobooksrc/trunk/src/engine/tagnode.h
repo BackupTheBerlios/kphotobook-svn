@@ -66,8 +66,8 @@ public:
     /**
     * Returns the unequivocal string describing the type of the specified tagnode.
     */
-    static QString tagNodeType( TagNode::Type typeId ) {
-
+    static QString tagNodeType( TagNode::Type typeId )
+    {
         switch ( typeId ) {
         case TagNode::TYPE_TITLE:
             return "title";
@@ -89,8 +89,8 @@ public:
     /**
      * Returns the translated text describing the type of the specified tagnode.
      */
-    static QString tagNodeTypeName(TagNode::Type typeId){
-
+    static QString tagNodeTypeName(TagNode::Type typeId)
+    {
         switch(typeId) {
         case TagNode::TYPE_TITLE:
             return i18n("tagNodeTypeName", "title");
@@ -113,8 +113,8 @@ public:
      * Returns the type-id of the tagnode type with the specified type.
      * If the specified type is invalid, TYPE_INVALID is returned.
      */
-    static TagNode::Type tagNodeTypeId(const QString& type) {
-
+    static TagNode::Type tagNodeTypeId(const QString& type)
+    {
         if (type == "title") {
             return TagNode::TYPE_TITLE;
         } else if (type == "boolean") {
@@ -132,7 +132,8 @@ public:
         return TagNode::TYPE_INVALID;
     }
 
-    virtual bool tagged(__attribute__((unused))File* file) {
+    virtual bool tagged(__attribute__((unused))File* file)
+    {
         return false;
     }
 
@@ -143,64 +144,91 @@ public:
     virtual ~TagNode();
 
     void setParent(TagNode* parent);
-    TagNode* parent() {
+    TagNode* parent()
+    {
         return m_parent;
     }
 
-    QPtrList<TagNode>* children() {
+    QPtrList<TagNode>* children()
+    {
         return m_children;
     }
+    /**
+     * Returns the child with the given text as text or 0l if no such child was found.
+     */
+    TagNode* child(QString text);
 
     /**
      * Returns the unequivocal typeid representing the concrete type of this tagnode.
      */
-    TagNode::Type typeId() {
+    TagNode::Type typeId()
+    {
         return m_typeId;
     }
 
     /**
      * Returns the unequivocal string describing the concrete type of this tagnode.
      */
-    QString type() {
+    QString type()
+    {
         return tagNodeType(m_typeId);
     }
 
     /**
      * Returns the translated text describing the concrete type of this tagnode.
      */
-    QString typeName() {
+    QString typeName()
+    {
         return tagNodeTypeName(m_typeId);
     }
 
-    unsigned int id() {
+    unsigned int id()
+    {
         return m_id;
     }
 
-    void setText(const QString& text) {
+    void setReadonly(bool readonly)
+    {
+        m_readonly = readonly;
+    }
+
+    bool readonly()
+    {
+        return m_readonly;
+    }
+
+    void setText(const QString& text)
+    {
         delete m_text;
         m_text = new QString(text);
     }
-    QString* text() {
+    QString* text()
+    {
         return m_text;
     }
 
-    void setComment(const QString& comment) {
+    void setComment(const QString& comment)
+    {
         delete m_comment;
         m_comment = new QString(comment);
     }
-    QString* comment() {
+    QString* comment()
+    {
         return m_comment;
     }
 
-    void setSecret(bool s) {
+    void setSecret(bool s)
+    {
         m_bIsSecret = s;
     }
-    bool secret() {
+    bool secret()
+    {
         return m_bIsSecret;
     }
 
     void setIconName(const QString& iconName);
-    QString* iconName() {
+    QString* iconName()
+    {
         return m_iconName;
     }
 
@@ -229,11 +257,13 @@ public:
     /**
      * Returns all associations this tagnode has to files.
      */
-    QPtrList<FileTagNodeAssoc>* assocs() {
+    QPtrList<FileTagNodeAssoc>* assocs()
+    {
         return m_assocs;
     }
 
-    QString toString() {
+    QString toString()
+    {
         return QString("id: %1, name: >%2<").arg(m_id).arg(*m_text);
     }
 
@@ -250,6 +280,13 @@ protected:
      * The unique id of this tagnode.
      */
     unsigned int m_id;
+
+    /**
+     * This field is true if the tag is readonly. The value of a readonly tag
+     * cannot be changed. This is used mainly for EXIF-tags.
+     * The default is false.
+     */
+    bool m_readonly;
 
     /**
      * The text to display for this tagnode.

@@ -82,7 +82,6 @@
 #include <kcombobox.h>
 #include <ktoolbar.h>
 #include <klistview.h>
-#include <kfilemetainfo.h>
 #include <kedittoolbar.h>
 #include <kmditoolviewaccessor.h>
 #include <kurlrequesterdlg.h>
@@ -110,7 +109,6 @@ KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode)
     , m_view(0)
     , m_tagTree(0)
     , m_sourcedirTree(0)
-    , m_metaInfoTree(0)
     , m_engine(new Engine())
 
     , m_inTagtreeTemporaryUnlocking(false)
@@ -173,10 +171,12 @@ KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode)
     // create toolwindows
     setupToolWindowTagTree();
     setupToolWindowSourceDirTree();
-    setupToolWindowMetaInfoTree();
 
     // init some other things: statusbar,..
     init();
+
+    // add the tagNodes to the tagtree (an EMPTY engine also can haave tags!)
+    m_tagTree->addTagNodes(tagForest());
 
     // apply the saved mainwindow settings, if any, and ask the mainwindow
     // to automatically save settings if changed: window size, toolbar
@@ -699,14 +699,6 @@ void KPhotoBook::setupActions() {
         actionCollection(), "showToolViewSourceDirTree"
     );
     actionCollection()->action("showToolViewSourceDirTree")->setWhatsThis(i18n("Display the Sourcedirectory toolview."));
-
-    new KAction(
-        i18n("Show EXIF"), 0,
-        0,
-        this, SLOT(slotShowToolViewMetaInfoTree()),
-        actionCollection(), "showToolViewMetaInfoTree"
-    );
-    actionCollection()->action("showToolViewMetaInfoTree")->setWhatsThis(i18n("Display the EXIF toolview."));
 }
 
 
@@ -1197,7 +1189,7 @@ void KPhotoBook::slotAddSourcedir() {
             // sourcedir added successfully
             newDirIsOk = true;
         } catch(EngineException* ex) {
-            tracer->serror(__func__) << "adding choosen sourcedir failed, dir: " << dialog->directory()->absPath() << ", recursive: " << dialog->recursive() << endl;
+            tracer->serror(__func__) << "adding chosen sourcedir failed, dir: " << dialog->directory()->absPath() << ", recursive: " << dialog->recursive() << endl;
 
             KMessageBox::detailedError(dialog, ex->message(), ex->detailMessage(), i18n("Adding sourcedir failed"));
 
@@ -1403,7 +1395,7 @@ void KPhotoBook::slotRescanFilesystem() {
 
     tracer->invoked(__func__);
 
-    m_engine->rescanSourceDirs();
+    m_engine->fileSystemScanner()->rescan();
 
     // add the sourcedirectories to the tagtree
     m_sourcedirTree->clear();
@@ -1621,40 +1613,6 @@ void KPhotoBook::slotFileSelectionChanged() {
 
     // update the tagtree
     m_tagTree->doRepaintAll();
-
-    // remove everything from the metainfo tree
-    m_metaInfoTree->clear();
-
-    // show EXIF info if only one image is seleced
-    if (m_view->fileView()->selectedItems()->count() == 1) {
-        tracer->debug(__func__, "One file is selected --> getting meta infos");
-
-        QPtrListIterator<KFileItem> tempIt(*m_view->fileView()->selectedItems());
-        KFileItem* selectedFile = tempIt.current();
-
-        KFileMetaInfo metaInfo = selectedFile->metaInfo();
-
-        // iterate over groups
-        QStringList groups = metaInfo.groups();
-        KListViewItem* currentGroup = 0;
-        for ( QStringList::Iterator groupIt = groups.begin(); groupIt != groups.end(); ++groupIt ) {
-            tracer->sdebug(__func__) << "Handling metainfo group: " << *groupIt << endl;
-            currentGroup = new KListViewItem(m_metaInfoTree, *groupIt);
-            currentGroup->setOpen(true);
-            KFileMetaInfoGroup group = metaInfo.group(*groupIt);
-
-            QStringList keys = group.keys();
-
-            // iterate over keys
-            for ( QStringList::Iterator keysIt = keys.begin(); keysIt != keys.end(); ++keysIt ) {
-                tracer->sdebug(__func__) << "Handling metainfo key: " << *keysIt << endl;
-                KFileMetaInfoItem item = group.item(*keysIt);
-                QString value = item.string();
-
-                new KListViewItem(currentGroup, *keysIt, value);
-            }
-        }
-    }
 }
 
 
@@ -1709,16 +1667,12 @@ void KPhotoBook::slotRestoreToolViews() {
 
     m_tagTreeToolView->place(KDockWidget::DockLeft, getMainDockWidget(), 20);
     m_sourceDirTreeToolView->place(KDockWidget::DockCenter, m_tagTree, 20);
-    m_metaInfoTreeToolView->place(KDockWidget::DockCenter, m_tagTree, 20);
 }
 
 void KPhotoBook::slotShowToolViewTagTree() {
 
     if (!m_sourcedirTree->isHidden()) {
         m_tagTreeToolView->place(KDockWidget::DockCenter, m_sourcedirTree, 20);
-
-    } else if (!m_metaInfoTree->isHidden()) {
-        m_tagTreeToolView->place(KDockWidget::DockCenter, m_metaInfoTree, 20);
 
     } else {
         m_tagTreeToolView->place(KDockWidget::DockLeft, getMainDockWidget(), 20);
@@ -1732,31 +1686,12 @@ void KPhotoBook::slotShowToolViewSourceDirTree() {
     if (!m_tagTree->isHidden()) {
         m_sourceDirTreeToolView->place(KDockWidget::DockCenter, m_tagTree, 20);
 
-    } else if (!m_metaInfoTree->isHidden()) {
-        m_sourceDirTreeToolView->place(KDockWidget::DockCenter, m_metaInfoTree, 20);
-
     } else {
         m_sourceDirTreeToolView->place(KDockWidget::DockLeft, getMainDockWidget(), 20);
     }
 
     m_sourceDirTreeToolView->show();
 }
-
-void KPhotoBook::slotShowToolViewMetaInfoTree() {
-
-    if (!m_tagTree->isHidden()) {
-        m_metaInfoTreeToolView->place(KDockWidget::DockCenter, m_tagTree, 20);
-
-    } else if (!m_sourcedirTree->isHidden()) {
-        m_metaInfoTreeToolView->place(KDockWidget::DockCenter, m_sourcedirTree, 20);
-
-    } else {
-        m_metaInfoTreeToolView->place(KDockWidget::DockLeft, getMainDockWidget(), 20);
-    }
-
-    m_metaInfoTreeToolView->show();
-}
-
 
 void KPhotoBook::slotExportMatchingFiles() {
 
@@ -1910,36 +1845,6 @@ void KPhotoBook::setupToolWindowSourceDirTree() {
 }
 
 
-void KPhotoBook::setupToolWindowMetaInfoTree() {
-
-    m_metaInfoTree = new KListView(this, "metaInfoTree");
-
-    // create columns
-    m_metaInfoTree->addColumn(i18n("Key"));
-    m_metaInfoTree->addColumn(i18n("Value"));
-
-    m_metaInfoTree->setSelectionMode(QListView::NoSelection);
-
-    // we want that the value column gets as big as possible
-    m_metaInfoTree->header()->setStretchEnabled(true, 1);
-
-    // the root node must be closeable
-    m_metaInfoTree->setRootIsDecorated(true);
-
-    // set the icon
-    QString iconName = "favorites";
-    QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(iconName, KIcon::Small, 16, true);
-    if (iconSet.isNull()) {
-        tracer->swarning(__func__) << "Could not load iconset with iconname: '" << iconName<< "'" << endl;
-    } else {
-        m_metaInfoTree->setIcon(iconSet.pixmap());
-    }
-
-    // eventually do add the tool window
-    m_metaInfoTreeToolView = addToolWindow(m_metaInfoTree, KDockWidget::DockCenter, m_tagTree, 20, i18n("EXIF Information"), i18n("EXIF"));
-}
-
-
 void KPhotoBook::updateState() {
 
     // enable save if engine is dirty
@@ -1962,7 +1867,7 @@ void KPhotoBook::updateStatusBar() {
     statusBar()->changeItem(filterMsg, 3);
 
     // I know, this is really not the right place to do this...
-    // but it is the simples way
+    // but it is the simplest way
     // enable the 'export matching files' only if at least 1 file is displayed
     m_exportMatchingFiles->setEnabled(m_engine->filteredNumberOfFiles() > 0);
 }
@@ -1970,7 +1875,7 @@ void KPhotoBook::updateStatusBar() {
 
 SourceDir* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*) {
 
-    SourceDir* newSourceDir = m_engine->addSourceDir(sourceDir, recursive);
+    SourceDir* newSourceDir = m_engine->fileSystemScanner()->addSourceFolder(sourceDir, recursive);
 
     updateState();
     return newSourceDir;
@@ -1979,7 +1884,7 @@ SourceDir* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(Engin
 
 void KPhotoBook::removeSourceDir(SourceDir* sourceDir) {
 
-    m_engine->removeSourceDir(sourceDir);
+    m_engine->fileSystemScanner()->removeSourceFolder(sourceDir);
 
     updateState();
 }
@@ -2232,14 +2137,14 @@ QString KPhotoBook::selectExportingDirectory(QString startDirectory) {
       return QString::null;
     }
 
-    // test if the choosen directory exists and is really a directory
+    // test if the chosen directory exists and is really a directory
     KFileItem fileItem(KFileItem::Unknown, KFileItem::Unknown, choosedDir);
     if (fileItem.isDir()) {
       delete dialog;
       return choosedDir;
     }
 
-    // if we got here the choosen directory is invalid
+    // if we got here the chosen directory is invalid
     KMessageBox::sorry(this, i18n("You must select an existing directory."), i18n("Export"));
   }
 }

@@ -50,6 +50,8 @@ TagNodeDateTime* FileTagNodeAssocDateTime::tagNodeDateTime()
 
 void FileTagNodeAssocDateTime::update(FileTagNodeAssoc* assoc)
 {
+    tracer->sinvoked(__func__) << "updating assoc with value: " << m_value << endl;
+    
     if (typeid(*assoc) == typeid(FileTagNodeAssocDateTime)) {
         FileTagNodeAssocDateTime* concreteAssoc = dynamic_cast<FileTagNodeAssocDateTime*>(assoc);
         m_value = concreteAssoc->value();

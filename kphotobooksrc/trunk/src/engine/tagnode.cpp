@@ -40,8 +40,8 @@
 
 Tracer* TagNode::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNode");
 
-TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent) {
-
+TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
+{
     TagNode* newTagNode = 0;
 
     // create the new tagnode
@@ -76,19 +76,19 @@ TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QS
 }
 
 
-TagNode::TagNode(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
-    : QObject(0, text.ascii())
-    , m_typeId(TagNode::TYPE_INVALID)
-    , m_id(id)
-    , m_text(new QString(text))
-    , m_comment(new QString(comment))
-    , m_iconName(0)
-    , m_parent(0)
-    , m_children(0)
-    , m_assocs(new QPtrList<FileTagNodeAssoc>()) {
-
-        tracer->sinvoked(__func__) << "with id: " << id << ", text: " << text
-            << ", comment: " << comment << "icon: " << iconName << endl;
+TagNode::TagNode(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent) :
+    QObject(0, text.ascii()),
+    m_typeId(TagNode::TYPE_INVALID),
+    m_id(id),
+    m_readonly(false),
+    m_text(new QString(text)),
+    m_comment(new QString(comment)),
+    m_iconName(0),
+    m_parent(0),
+    m_children(0),
+    m_assocs(new QPtrList<FileTagNodeAssoc>())
+{
+    tracer->sinvoked(__func__) << "with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
 
     setIconName(iconName);
     if (parent) {
@@ -97,8 +97,8 @@ TagNode::TagNode(unsigned int id, const QString& text, const QString& comment, c
 }
 
 
-TagNode::~TagNode() {
-
+TagNode::~TagNode()
+{
     // remove this sourcedir from the children list of the parent
     if (m_parent) {
         m_parent->m_children->remove(this);
@@ -129,8 +129,8 @@ TagNode::~TagNode() {
 }
 
 
-void TagNode::setParent(TagNode* parent) {
-
+void TagNode::setParent(TagNode* parent)
+{
     if (!parent) {
         tracer->sdebug(__func__) << "no parent specified, doing noting" << endl;
         return;
@@ -153,15 +153,30 @@ void TagNode::setParent(TagNode* parent) {
 }
 
 
-void TagNode::setIconName(const QString& iconName) {
+TagNode* TagNode::child(QString text)
+{
+    if (m_children) {
+        TagNode* child = 0;
+        for (child = m_children->first(); child; child = m_children->next() ) {
+            if ((*(child->text())) == text) {
+                return child;
+            }
+        }
+    }
 
+    return 0;
+}
+
+
+void TagNode::setIconName(const QString& iconName)
+{
     delete m_iconName;
     m_iconName = new QString(iconName);
 }
 
 
-void TagNode::appendAssoc(FileTagNodeAssoc* assoc) {
-
+void TagNode::appendAssoc(FileTagNodeAssoc* assoc)
+{
     // test if an association to the same file already exists
     bool assocFound = false;
 
@@ -192,14 +207,14 @@ void TagNode::appendAssoc(FileTagNodeAssoc* assoc) {
 }
 
 
-void TagNode::removeAssoc(FileTagNodeAssoc* assoc) {
-
+void TagNode::removeAssoc(FileTagNodeAssoc* assoc)
+{
     m_assocs->remove(assoc);
 }
 
 
-FileTagNodeAssoc* TagNode::getAssocToFile(File* file) {
-
+FileTagNodeAssoc* TagNode::getAssocToFile(File* file)
+{
     FileTagNodeAssoc* currentAssoc;
     for ( currentAssoc = m_assocs->first(); currentAssoc; currentAssoc = m_assocs->next() ) {
 
@@ -212,8 +227,8 @@ FileTagNodeAssoc* TagNode::getAssocToFile(File* file) {
 }
 
 
-bool TagNode::isLinkedToFile(File* file) {
-
+bool TagNode::isLinkedToFile(File* file)
+{
     bool isLinked = false;
 
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);

@@ -110,7 +110,7 @@ int main( int argc, char** argv ) {
         "kphotobook", I18N_NOOP( "KPhotoBook" ), version, description,
         KAboutData::License_GPL, "(C) 2003, 2004, 2005 Michael Christen",
         0,       // free text, can contain new lines
-        "http://kphotobook.berlios.det",
+        "http://kphotobook.berlios.de",
         "starcube@users.berlios.de"
     );
     about.addAuthor( "Michael Christen", I18N_NOOP( "The master chief developer." ), "starcube@users.berlios.de" );

@@ -41,8 +41,8 @@ class TagNode;
  *
  * CVS-ID $Id$
  */
-class XmlParser : public QXmlDefaultHandler, public XmlConstants {
-
+class XmlParser : public QXmlDefaultHandler, public XmlConstants
+{
 private:
     static Tracer* tracer;
 
@@ -71,7 +71,8 @@ public:
         , m_exception(0) {
     }
 
-    ~XmlParser() {
+    ~XmlParser()
+    {
         delete m_tagNodesOfCurrentFile;
         // we do not delete the exception 'm_exception'
         // this exception will be thrown later and must be deleted be the catcher of the exception!
@@ -87,7 +88,8 @@ public:
     bool error(const QXmlParseException& exception);
     bool fatalError(const QXmlParseException& exception);
 
-    EngineException* exception() {
+    EngineException* exception()
+    {
         return m_exception;
     }
 
@@ -121,6 +123,8 @@ private:
     bool handleTag(const QXmlAttributes& atts);
     bool handleFile(const QXmlAttributes& atts);
     bool handleTagAssoc(const QXmlAttributes& atts);
+
+    QString toString(const QXmlAttributes& atts);
 };
 
 #endif // _KXMLPARSER_H_

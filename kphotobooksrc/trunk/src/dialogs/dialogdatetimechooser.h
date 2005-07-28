@@ -46,8 +46,8 @@ class DialogDateTimeChooser : public KDialogBase
         ~DialogDateTimeChooser();
 
         /**
-         * Returns the choosen datetime.
-         * If null is returned and {@link isDateTimeValid} returns true, no date is choosen.
+         * Returns the chosen datetime.
+         * If null is returned and {@link isDateTimeValid} returns true, no date is chosen.
          */
         QDateTime dateTime() {
             return dateTimeWidget->dateTime();
