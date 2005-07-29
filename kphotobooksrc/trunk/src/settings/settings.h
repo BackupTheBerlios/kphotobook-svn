@@ -807,6 +807,25 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+      Set SourceRemoveAfterTransfer
+    */
+    static
+    void setImageImporterSourceRemoveAfterTransfer( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterSourceRemoveAfterTransfer" ) ))
+        self()->mImageImporterSourceRemoveAfterTransfer = v;
+    }
+
+    /**
+      Get SourceRemoveAfterTransfer
+    */
+    static
+    bool imageImporterSourceRemoveAfterTransfer()
+    {
+      return self()->mImageImporterSourceRemoveAfterTransfer;
+    }
+
+    /**
       Set Contains the last sourcedevide of the ImageImporter.
     */
     static
@@ -1062,6 +1081,7 @@ class Settings : public KConfigSkeleton
     QString mImageImporterSourceFolder;
     QString mImageImporterSourceFilenameRegexp;
     bool mImageImporterSourceIncludeSubfolders;
+    bool mImageImporterSourceRemoveAfterTransfer;
     QString mImageImporterSourceDevice;
     bool mImageImporterArchiveImages;
     QString mImageImporterArchiveBaseFolder;

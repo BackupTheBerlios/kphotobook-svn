@@ -225,6 +225,9 @@ Settings::Settings(  )
   KConfigSkeleton::ItemBool  *itemImageImporterSourceIncludeSubfolders;
   itemImageImporterSourceIncludeSubfolders = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "SourceIncludeSubfolders" ), mImageImporterSourceIncludeSubfolders, true );
   addItem( itemImageImporterSourceIncludeSubfolders, QString::fromLatin1( "ImageImporterSourceIncludeSubfolders" ) );
+  KConfigSkeleton::ItemBool  *itemImageImporterSourceRemoveAfterTransfer;
+  itemImageImporterSourceRemoveAfterTransfer = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "SourceRemoveAfterTransfer" ), mImageImporterSourceRemoveAfterTransfer, true );
+  addItem( itemImageImporterSourceRemoveAfterTransfer, QString::fromLatin1( "ImageImporterSourceRemoveAfterTransfer" ) );
   KConfigSkeleton::ItemString  *itemImageImporterSourceDevice;
   itemImageImporterSourceDevice = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "SourceDevice" ), mImageImporterSourceDevice );
   addItem( itemImageImporterSourceDevice, QString::fromLatin1( "ImageImporterSourceDevice" ) );

@@ -212,6 +212,10 @@
         <label></label>
         <default>true</default>
     </entry>
+    <entry name="ImageImporterSourceRemoveAfterTransfer" type="Bool" key="SourceRemoveAfterTransfer">
+        <label></label>
+        <default>true</default>
+    </entry>
     <entry name="ImageImporterSourceDevice" type="String" key="SourceDevice">
       <label>Contains the last sourcedevide of the ImageImporter.</label>
     </entry>
