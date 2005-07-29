@@ -25,26 +25,18 @@
 
 #include <typeinfo>
 
+
 Tracer* FileTagNodeAssocString::tracer = Tracer::getInstance("kde.kphotobook.engine", "FileTagNodeAssocString");
 
-FileTagNodeAssocString::FileTagNodeAssocString(File* file, TagNodeString* tagNodeString, QString value)
-    : FileTagNodeAssoc(file, tagNodeString)
-    , m_value(value) {
+
+FileTagNodeAssocString::FileTagNodeAssocString(File* file, TagNodeString* tagNodeString, QString value) :
+    FileTagNodeAssoc(file, tagNodeString),
+    m_value(value)
+{
 }
 
 
-TagNodeString* FileTagNodeAssocString::tagNodeString() {
+TagNodeString* FileTagNodeAssocString::tagNodeString()
+{
     return dynamic_cast<TagNodeString*>(m_tagNode);
 }
-
-
-void FileTagNodeAssocString::update(FileTagNodeAssoc* assoc) {
-
-    if (typeid(*assoc) == typeid(FileTagNodeAssocString)) {
-        FileTagNodeAssocString* concreteAssoc = dynamic_cast<FileTagNodeAssocString*>(assoc);
-        m_value = concreteAssoc->value();
-    } else {
-        tracer->error(__func__, "The specified association is not of the type 'FileTagNodeAssocString'.");
-    }
-}
-

@@ -21,10 +21,9 @@
 #ifndef FILETAGNODEASSOCBOOLEAN_H
 #define FILETAGNODEASSOCBOOLEAN_H
 
-#include "../tracer/tracer.h"
-
 #include "filetagnodeassoc.h"
 #include "../constants.h"
+#include "../tracer/tracer.h"
 
 #include <qstring.h>
 
@@ -37,64 +36,67 @@ class TagNodeBoolean;
  *
  * CVS-ID $Id$
  */
-class FileTagNodeAssocBoolean : public FileTagNodeAssoc {
-
-private:
-    static Tracer* tracer;
-
-public:
-    FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value = false);
-
-    FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value);
-
-    ~FileTagNodeAssocBoolean() {
-        // we don't delete anything!
-    }
-
-    /**
-     * Returns the tagNode associated with this association.
-     */
-    TagNodeBoolean* tagNodeBoolean();
-
-    void setValue(bool value) {
-        m_value = value;
-    }
-
-    bool value() {
-        return m_value;
-    }
-
-    /**
-     * A boolean association must be dumped only, if the assoc is true.
-     */
-    virtual bool mustDump() {
-        return m_value;
-    }
-
-    virtual QString valueAsString() {
-        return (m_value ? Constants::STRING_VALUE_TRUE : Constants::STRING_VALUE_FALSE);
-    }
-
-    /**
-     * Updates the value of this node with the value of the specified association.
-     */
-    void update(FileTagNodeAssoc* assoc);
-
-    bool equals(QString* value) {
-        return (valueAsString() == *value);
-    }
-    bool greaterThan(QString* value) {
-        return (valueAsString() != *value);
-    }
-    bool lesserThan(QString* value) {
-        return (valueAsString() != *value);
-    }
-
-private:
-    /**
-     * The value of this association.
-     */
-    bool m_value;
+class FileTagNodeAssocBoolean : public FileTagNodeAssoc
+{
+    private:
+        static Tracer* tracer;
+    
+    public:
+        FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value = false);
+    
+        FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value);
+    
+        ~FileTagNodeAssocBoolean()
+        {
+            // we don't delete anything!
+        }
+    
+        /**
+        * Returns the tagNode associated with this association.
+        */
+        TagNodeBoolean* tagNodeBoolean();
+    
+        void setValue(bool value)
+        {
+            m_value = value;
+        }
+    
+        bool value()
+        {
+            return m_value;
+        }
+    
+        /**
+        * A boolean association must be dumped only, if the assoc is true.
+        */
+        virtual bool mustDump()
+        {
+            return m_value;
+        }
+    
+        virtual QString valueAsString()
+        {
+            return (m_value ? Constants::STRING_VALUE_TRUE : Constants::STRING_VALUE_FALSE);
+        }
+    
+        bool equals(QString* value)
+        {
+            return (valueAsString() == *value);
+        }
+        bool greaterThan(QString* value)
+        {
+            return (valueAsString() != *value);
+        }
+        bool lesserThan(QString* value)
+        {
+            return (valueAsString() != *value);
+        }
+    
+    private:
+        /**
+        * The value of this association.
+        */
+        bool m_value;
 };
 
 #endif

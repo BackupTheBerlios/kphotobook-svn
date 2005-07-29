@@ -25,32 +25,25 @@
 
 #include <typeinfo>
 
+
 Tracer* FileTagNodeAssocRadio::tracer = Tracer::getInstance("kde.kphotobook.engine", "FileTagNodeAssocRadio");
 
-FileTagNodeAssocRadio::FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, bool value)
-    : FileTagNodeAssoc(file, tagNode)
-    , m_value(value) {
+
+FileTagNodeAssocRadio::FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, bool value) :
+    FileTagNodeAssoc(file, tagNode),
+    m_value(value)
+{
 }
 
 
-FileTagNodeAssocRadio::FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, QString value)
-    : FileTagNodeAssoc(file, tagNode)
-    , m_value(value == Constants::STRING_VALUE_TRUE) {
+FileTagNodeAssocRadio::FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, QString value) :
+    FileTagNodeAssoc(file, tagNode),
+    m_value(value == Constants::STRING_VALUE_TRUE)
+{
 }
 
 
-TagNodeRadio* FileTagNodeAssocRadio::tagNode() {
+TagNodeRadio* FileTagNodeAssocRadio::tagNode()
+{
     return dynamic_cast<TagNodeRadio*>(m_tagNode);
 }
-
-
-void FileTagNodeAssocRadio::update(FileTagNodeAssoc* assoc) {
-
-    if (typeid(*assoc) == typeid(FileTagNodeAssocRadio)) {
-        FileTagNodeAssocRadio* concreteAssoc = dynamic_cast<FileTagNodeAssocRadio*>(assoc);
-        m_value = concreteAssoc->value();
-    } else {
-        tracer->error(__func__, "The specified association is not of the type 'FileTagNodeAssocRadio'.");
-    }
-}
-

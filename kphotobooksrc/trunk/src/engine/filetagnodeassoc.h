@@ -32,58 +32,61 @@ class TagNode;
  *
  * CVS-ID $Id$
  */
-class FileTagNodeAssoc {
-
-public:
-    FileTagNodeAssoc(File* file, TagNode* tagNode);
-
-    /**
-     * Removes this assoc from the list in the tagnode and the file.
-     */
-    virtual ~FileTagNodeAssoc();
-
-    void setFile(File* file) {
-        m_file = file;
-    }
-
-    File* file() {
-        return m_file;
-    }
-
-    void setTagNode(TagNode* tagNode) {
-        m_tagNode = tagNode;
-    }
-
-    TagNode* tagNode() {
-        return m_tagNode;
-    }
-
-    virtual void update(FileTagNodeAssoc* assoc) = 0;
-
-    /**
-     * Determines if this association must be dumped to the database.
-     * The defaulkt implementation returns true;
-     */
-    virtual bool mustDump() {
-        return true;
-    }
-
-    virtual QString valueAsString() = 0;
-
-    virtual bool equals(QString* value) = 0;
-    virtual bool greaterThan(QString* value) = 0;
-    virtual bool lesserThan(QString* value) = 0;
-
-protected:
-    /**
-      * The file this association belongs to.
-      */
-    File* m_file;
-
-    /**
-     * The tagNode this association belongs to.
-     */
-    TagNode* m_tagNode;
+class FileTagNodeAssoc
+{
+    public:
+        FileTagNodeAssoc(File* file, TagNode* tagNode);
+    
+        /**
+        * Removes this assoc from the list in the tagnode and the file.
+        */
+        virtual ~FileTagNodeAssoc();
+    
+        void setFile(File* file)
+        {
+            m_file = file;
+        }
+    
+        File* file()
+        {
+            return m_file;
+        }
+    
+        void setTagNode(TagNode* tagNode)
+        {
+            m_tagNode = tagNode;
+        }
+    
+        TagNode* tagNode()
+        {
+            return m_tagNode;
+        }
+    
+        /**
+        * Determines if this association must be dumped to the database.
+        * The default implementation returns true;
+        */
+        virtual bool mustDump()
+        {
+            return true;
+        }
+    
+        virtual QString valueAsString() = 0;
+    
+        virtual bool equals(QString* value) = 0;
+        virtual bool greaterThan(QString* value) = 0;
+        virtual bool lesserThan(QString* value) = 0;
+    
+    protected:
+        /**
+        * The file this association belongs to.
+        */
+        File* m_file;
+    
+        /**
+        * The tagNode this association belongs to.
+        */
+        TagNode* m_tagNode;
 };
 
 #endif

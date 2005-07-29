@@ -413,13 +413,6 @@ void FileSystemScanner::readEXIF(File* file)
                             exifTagNodeEntryDateTime->setReadonly(true);
                         }
                         if (dateTime.isValid()) {
-                            /*
-                            FileTagNodeAssoc* assoc = exifTagNodeEntryDateTime->getAssocToFile(file);
-                            if (assoc) {
-                                // remove existing assoc
-                                exifTagNodeEntryDateTime->removeAssoc(assoc);
-                            }
-                            */
                             // create new assoc
                             new FileTagNodeAssocDateTime(file, exifTagNodeEntryDateTime, dateTime);
                         }
@@ -431,18 +424,11 @@ void FileSystemScanner::readEXIF(File* file)
                     {
                         TagNodeString* exifTagNodeEntryString = dynamic_cast<TagNodeString*>(exifTagNodeEntry);
                         if (exifTagNodeEntryString == 0) {
-                        // tagnode for this EXIF entry does not exist --> create it
+                            // tagnode for this EXIF entry does not exist --> create it
                             QString icon = QString("exif-%1").arg(name);
                             exifTagNodeEntryString = dynamic_cast<TagNodeString*>(m_engine->createTag(exifTagNodeTitle, TagNode::TYPE_STRING, title, description, icon));
                             exifTagNodeEntryString->setReadonly(true);
                         }
-                        /*
-                        FileTagNodeAssoc* assoc = exifTagNodeEntryString->getAssocToFile(file);
-                        if (assoc) {
-                            // remove existing assoc
-                            exifTagNodeEntryDateTime->removeAssoc(assoc);
-                        }
-                        */
                         // create new assoc
                         new FileTagNodeAssocString(file, exifTagNodeEntryString, data);
                     }

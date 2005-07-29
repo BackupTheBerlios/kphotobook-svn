@@ -25,21 +25,24 @@
 #include "tagnode.h"
 #include "filetagnodeassoc.h"
 
+
 Tracer* File::tracer = Tracer::getInstance("kde.kphotobook.engine", "File");
 
-File::File(Engine* engine, SourceDir* sourceDir, QFileInfo* fileInfo, int rotate)
-    : KFileItem(KFileItem::Unknown, KFileItem::Unknown, QString("file:%1").arg(fileInfo->absFilePath()))
-    , m_engine(engine)
-    , m_sourceDir(sourceDir)
-    , m_fileInfo(fileInfo)
-    , m_rotate(rotate)
-    , m_found(false)
-    , m_assocs(new QPtrList<FileTagNodeAssoc>()) {
+
+File::File(Engine* engine, SourceDir* sourceDir, QFileInfo* fileInfo, int rotate) :
+    KFileItem(KFileItem::Unknown, KFileItem::Unknown, QString("file:%1").arg(fileInfo->absFilePath())),
+    m_engine(engine),
+    m_sourceDir(sourceDir),
+    m_fileInfo(fileInfo),
+    m_rotate(rotate),
+    m_found(false),
+    m_assocs(new QPtrList<FileTagNodeAssoc>())
+{
 }
 
 
-File::~File() {
-
+File::~File()
+{
     m_engine->m_fileList->remove(this);
     m_engine->m_fileDict->remove(this->fileInfo()->absFilePath());
 
@@ -58,47 +61,26 @@ File::~File() {
 }
 
 
-void File::appendAssoc(FileTagNodeAssoc* assoc) {
+void File::appendAssoc(FileTagNodeAssoc* assoc)
+{
+    // force this file as the file of the association
+    assoc->setFile(this);
 
-    // test if an association to the same tagnode already exists
-    bool assocFound = false;
-
-    FileTagNodeAssoc* currentAssoc;
-    for ( currentAssoc = m_assocs->first(); currentAssoc; currentAssoc = m_assocs->next() ) {
-
-        // test if the tagNode of the specified association is already referenced from this file
-        if (currentAssoc->tagNode() == assoc->tagNode()) {
-            tracer->swarning(__func__) << "Association between file '" << assoc->file()->fileInfo()->absFilePath() << "' and tagnode '" << assoc->tagNode()->text() << "' already exists." << endl;
-
-            // update the existing association to reflect value of the specified one
-            currentAssoc->update(assoc);
-
-            assocFound = true;
-            break;
-        }
-    }
-
-    // add the specified association only if it is not yet added
-    if (!assocFound) {
-        // set this file as file of the associations
-        assoc->setFile(this);
-
-        // add the association to the list of associations
-        m_assocs->append(assoc);
-    }
+    // add the association to the list of association
+    m_assocs->append(assoc);
 }
 
 
-void File::removeAssoc(FileTagNodeAssoc* assoc) {
-
+void File::removeAssoc(FileTagNodeAssoc* assoc)
+{
     m_assocs->remove(assoc);
 }
 
 
-FileTagNodeAssoc* File::getAssoc(TagNode* tagNode) {
-
+FileTagNodeAssoc* File::getAssoc(TagNode* tagNode)
+{
     FileTagNodeAssoc* currentAssoc;
-    for ( currentAssoc = m_assocs->first(); currentAssoc; currentAssoc = m_assocs->next() ) {
+    for (currentAssoc = m_assocs->first(); currentAssoc; currentAssoc = m_assocs->next()) {
 
         if (currentAssoc->tagNode() == tagNode) {
             return currentAssoc;

@@ -24,17 +24,21 @@
 #include "tagnode.h"
 
 
-FileTagNodeAssoc::FileTagNodeAssoc(File* file, TagNode* tagNode)
-    : m_file(file)
-    , m_tagNode(tagNode) {
+FileTagNodeAssoc::FileTagNodeAssoc(File* file, TagNode* tagNode) :
+    m_file(file),
+    m_tagNode(tagNode)
+{
+    // remove an already existing assoc between the given file and tagnode
+    FileTagNodeAssoc* existingAssoc = file->getAssoc(tagNode);
+    delete existingAssoc;
 
     m_tagNode->appendAssoc(this);
     m_file->appendAssoc(this);
 }
 
 
-FileTagNodeAssoc::~FileTagNodeAssoc() {
-
+FileTagNodeAssoc::~FileTagNodeAssoc()
+{
     m_tagNode->removeAssoc(this);
     m_file->removeAssoc(this);
 }

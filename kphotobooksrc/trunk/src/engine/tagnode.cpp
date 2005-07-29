@@ -20,16 +20,15 @@
 
 #include "tagnode.h"
 
-#include "tagnodetitle.h"
-#include "tagnodeboolean.h"
-#include "tagnodestring.h"
-#include "tagnoderadiogroup.h"
-#include "tagnoderadio.h"
-#include "tagnodedatetime.h"
-
 #include "file.h"
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocboolean.h"
+#include "tagnodeboolean.h"
+#include "tagnodedatetime.h"
+#include "tagnoderadiogroup.h"
+#include "tagnoderadio.h"
+#include "tagnodestring.h"
+#include "tagnodetitle.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
@@ -38,7 +37,9 @@
 
 #include <typeinfo>
 
+
 Tracer* TagNode::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNode");
+
 
 TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
 {
@@ -132,7 +133,7 @@ TagNode::~TagNode()
 void TagNode::setParent(TagNode* parent)
 {
     if (!parent) {
-        tracer->sdebug(__func__) << "no parent specified, doing noting" << endl;
+        tracer->sdebug(__func__) << "no parent specified, doing nothing" << endl;
         return;
     }
 
@@ -177,33 +178,11 @@ void TagNode::setIconName(const QString& iconName)
 
 void TagNode::appendAssoc(FileTagNodeAssoc* assoc)
 {
-    // test if an association to the same file already exists
-    bool assocFound = false;
+    // force this tagNode as tagNode of the association
+    assoc->setTagNode(this);
 
-    FileTagNodeAssoc* currentAssoc;
-    for ( currentAssoc = m_assocs->first(); currentAssoc; currentAssoc = m_assocs->next() ) {
-
-        // test if the file of the specified association is already referenced from this tagNode
-        if (currentAssoc->file() == assoc->file()) {
-            tracer->sdebug(__func__) << "Association between file '" << assoc->file()->fileInfo()->absFilePath()
-                << "' and tagnode '" << *assoc->tagNode()->text() << "' already exists." << endl;
-
-            // update the existing association to reflect value of the specified one
-            currentAssoc->update(assoc);
-
-            assocFound = true;
-            break;
-        }
-    }
-
-    // add the specified association only if it is not yet added
-    if (!assocFound) {
-        // set this tagNode as tagNode of the associations
-        assoc->setTagNode(this);
-
-        // add the association to the list of associations
-        m_assocs->append(assoc);
-    }
+    // add the association to the list of association
+    m_assocs->append(assoc);
 }
 
 
@@ -229,29 +208,29 @@ FileTagNodeAssoc* TagNode::getAssocToFile(File* file)
 
 bool TagNode::isLinkedToFile(File* file)
 {
-    bool isLinked = false;
-
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
     if (fileTagNodeAssoc != 0) {
         // a file is considered to be linked with this tag if there is an association between
         // but if the tag is of type boolean, the assoc must have the value 'true'
         if (typeid(*fileTagNodeAssoc) == typeid(FileTagNodeAssocBoolean)) {
             FileTagNodeAssocBoolean* fileTagNodeAssocBoolean = dynamic_cast<FileTagNodeAssocBoolean*>(fileTagNodeAssoc);
-            isLinked = fileTagNodeAssocBoolean->value();
+            if (fileTagNodeAssocBoolean->value()) {
+                return true;
+            }
         } else {
-            isLinked = true;
+            return true;
         }
     }
 
-    if (!isLinked && m_children) {
+    if (m_children) {
         // loop over all children
         TagNode* child;
-        for (child = m_children->first(); child && !isLinked; child = m_children->next()) {
-            isLinked = child->isLinkedToFile(file);
+        for (child = m_children->first(); child; child = m_children->next()) {
+            if (child->isLinkedToFile(file)) {
+                return true;
+            }
         }
     }
 
-    return isLinked;
+    return false;
 }
-
-

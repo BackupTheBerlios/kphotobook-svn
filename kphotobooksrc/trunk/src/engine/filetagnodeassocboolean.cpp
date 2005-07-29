@@ -25,32 +25,25 @@
 
 #include <typeinfo>
 
+
 Tracer* FileTagNodeAssocBoolean::tracer = Tracer::getInstance("kde.kphotobook.engine", "FileTagNodeAssocBoolean");
 
-FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value)
-    : FileTagNodeAssoc(file, tagNodeBoolean)
-    , m_value(value) {
+
+FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value) :
+    FileTagNodeAssoc(file, tagNodeBoolean),
+    m_value(value)
+{
 }
 
 
-FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value)
-    : FileTagNodeAssoc(file, tagNodeBoolean)
-    , m_value(value == Constants::STRING_VALUE_TRUE) {
+FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value) :
+    FileTagNodeAssoc(file, tagNodeBoolean),
+    m_value(value == Constants::STRING_VALUE_TRUE)
+{
 }
 
 
-TagNodeBoolean* FileTagNodeAssocBoolean::tagNodeBoolean() {
+TagNodeBoolean* FileTagNodeAssocBoolean::tagNodeBoolean()
+{
     return dynamic_cast<TagNodeBoolean*>(m_tagNode);
 }
-
-
-void FileTagNodeAssocBoolean::update(FileTagNodeAssoc* assoc) {
-
-    if (typeid(*assoc) == typeid(FileTagNodeAssocBoolean)) {
-        FileTagNodeAssocBoolean* concreteAssoc = dynamic_cast<FileTagNodeAssocBoolean*>(assoc);
-        m_value = concreteAssoc->value();
-    } else {
-        tracer->error(__func__, "The specified association is not of the type 'FileTagNodeAssocBoolean'.");
-    }
-}
-

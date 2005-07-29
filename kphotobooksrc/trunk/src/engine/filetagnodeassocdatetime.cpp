@@ -25,7 +25,9 @@
 
 #include <typeinfo>
 
+
 Tracer* FileTagNodeAssocDateTime::tracer = Tracer::getInstance("kde.kphotobook.engine", "FileTagNodeAssocDateTime");
+
 
 FileTagNodeAssocDateTime::FileTagNodeAssocDateTime(File* file, TagNodeDateTime* tagNodeDateTime, QDateTime value)
     : FileTagNodeAssoc(file, tagNodeDateTime)
@@ -46,17 +48,3 @@ TagNodeDateTime* FileTagNodeAssocDateTime::tagNodeDateTime()
 {
     return dynamic_cast<TagNodeDateTime*>(m_tagNode);
 }
-
-
-void FileTagNodeAssocDateTime::update(FileTagNodeAssoc* assoc)
-{
-    tracer->sinvoked(__func__) << "updating assoc with value: " << m_value << endl;
-    
-    if (typeid(*assoc) == typeid(FileTagNodeAssocDateTime)) {
-        FileTagNodeAssocDateTime* concreteAssoc = dynamic_cast<FileTagNodeAssocDateTime*>(assoc);
-        m_value = concreteAssoc->value();
-    } else {
-        tracer->error(__func__, "The specified association is not of the type 'FileTagNodeAssocDateTime'.");
-    }
-}
-

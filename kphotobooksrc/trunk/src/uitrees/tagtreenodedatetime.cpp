@@ -39,19 +39,20 @@
 Tracer* TagTreeNodeDateTime::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNodeDateTime");
 
 
-TagTreeNodeDateTime::TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, photobook, tagNode, contextMenu)
-    , locale(KGlobal::locale())
-    , m_filterValue(QString::null)
-    , m_filterNode(0)
+TagTreeNodeDateTime::TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu) :
+    TagTreeNode(parent, photobook, tagNode, contextMenu),
+    m_locale(KGlobal::locale()),
+    m_filterValue(QString::null),
+    m_filterNode(0)
 {
 }
 
 
-TagTreeNodeDateTime::TagTreeNodeDateTime(TagTreeNode* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, photobook, tagNode, contextMenu)
-    , m_filterValue(QString::null)
-    , m_filterNode(0)
+TagTreeNodeDateTime::TagTreeNodeDateTime(TagTreeNode* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu) :
+    TagTreeNode(parent, photobook, tagNode, contextMenu),
+    m_locale(KGlobal::locale()),
+    m_filterValue(QString::null),
+    m_filterNode(0)
 {
 }
 
@@ -225,7 +226,7 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
     
                     if (commonValue->isValid()) {
                         setText(TagTree::COLUMN_VALUE, formatDateTime(*commonValue));
-                        KListViewItem::paintCell(p, cg, column, width, alignment);
+                        KListViewItem::paintCell(p, cg, column, width, Qt::AlignLeft);
                     } else {
                         // the selected files have different values --> show the third state of a checkbox
                     
@@ -241,9 +242,13 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
                 } else {
                     // none of the selected file has a value
                     setText(TagTree::COLUMN_VALUE, "");
-                    KListViewItem::paintCell(p, cg, column, width, alignment);
+                    KListViewItem::paintCell(p, cg, column, width, Qt::AlignCenter);
                 }
                 delete commonValue;
+            } else {
+                // no file is selected
+                setText(TagTree::COLUMN_VALUE, "");
+                KListViewItem::paintCell(p, cg, column, width, Qt::AlignCenter);
             }
     
             break;
@@ -251,7 +256,7 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
         
         case TagTree::COLUMN_FILTER : {
 
-            TagTreeNode::paintCell(p, cg, column, width, alignment);
+            TagTreeNode::paintCell(p, cg, column, width, Qt::AlignLeft);
             break;
         }
     }
@@ -299,7 +304,7 @@ QDateTime* TagTreeNodeDateTime::getCommonValue(const KFileItemList* selectedFile
         }
     }
 
-    tracer->sdebug(__func__) << "common value is: " << (commonValue ? locale->formatDateTime(*commonValue, true, true) : "0") << endl;
+    tracer->sdebug(__func__) << "common value is: " << (commonValue ? m_locale->formatDateTime(*commonValue, true, true) : "0") << endl;
     return commonValue;
 }
 
@@ -307,9 +312,9 @@ QDateTime* TagTreeNodeDateTime::getCommonValue(const KFileItemList* selectedFile
 QString TagTreeNodeDateTime::formatDateTime(const QDateTime& dateTime)
 {
     if (dateTime.time().isValid()) {
-        return locale->formatDateTime(dateTime, true, true);
+        return m_locale->formatDateTime(dateTime, true, true);
     } else {
-        return locale->formatDate(dateTime.date(), true);
+        return m_locale->formatDate(dateTime.date(), true);
     }
 }
 
@@ -326,13 +331,13 @@ QDateTime* TagTreeNodeDateTime::readDateTime(const QString& dateTimeStr)
     tracer->sdebug(__func__) << "time to convert: " << timeStr << endl;
     
     bool* ok;
-    QDate date = locale->readDate(dateStr, ok);
+    QDate date = m_locale->readDate(dateStr, ok);
     if (!*ok) {
         tracer->serror(__func__) << "Date part of datetime (" << dateTimeStr << ") is invalid: " << dateStr << "! Using current date." << endl;
         date = QDate::currentDate();
     }
 
-    QTime time = locale->readTime(timeStr, ok);
+    QTime time = m_locale->readTime(timeStr, ok);
     if (!*ok) {
         tracer->serror(__func__) << "Time part of datetime (" << dateTimeStr << ") is invalid: " << timeStr << "! Not setting time time." << endl;
         return new QDateTime(date);

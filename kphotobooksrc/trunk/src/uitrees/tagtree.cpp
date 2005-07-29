@@ -53,8 +53,8 @@
 Tracer* TagTree::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTree");
 
 
-TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
-    : KListView( parent, name )
+TagTree::TagTree(QWidget* parent, KPhotoBook* photobook, const char* name)
+    : KListView(parent, name)
     , m_photobook(photobook)
     , m_toolTip(this) {
 
@@ -65,9 +65,9 @@ TagTree::TagTree( QWidget* parent, KPhotoBook* photobook, const char* name )
     addColumn(i18n("Value"));
     addColumn(i18n("Filter"));
 
-    // we set the alignment to center to force redrawing the wohle cell always
-    setColumnAlignment (COLUMN_VALUE, Qt::AlignCenter);
-    setColumnAlignment (COLUMN_FILTER, Qt::AlignCenter);
+    // we set the alignment to center to force redrawing the whole cell always
+    setColumnAlignment(COLUMN_VALUE, Qt::AlignCenter);
+    setColumnAlignment(COLUMN_FILTER, Qt::AlignCenter);
 
     // do never automatically change width of columns
     setColumnWidthMode(COLUMN_VALUE, QListView::Manual);

@@ -21,9 +21,8 @@
 #ifndef FILETAGNODEASSOCDATETIME_H
 #define FILETAGNODEASSOCDATETIME_H
 
-#include "../tracer/tracer.h"
-
 #include "filetagnodeassoc.h"
+#include "../tracer/tracer.h"
 
 #include <qdatetime.h>
 
@@ -45,7 +44,8 @@ public:
     FileTagNodeAssocDateTime(File* file, TagNodeDateTime* tagNodeDateTime, QDateTime value);
     FileTagNodeAssocDateTime(File* file, TagNodeDateTime* tagNodeDateTime, QString value);
 
-    ~FileTagNodeAssocDateTime() {
+    ~FileTagNodeAssocDateTime()
+    {
         // we don't delete anything!
     }
 
@@ -76,11 +76,6 @@ public:
     {
         return m_value.toString(Qt::ISODate);
     }
-
-    /**
-     * Updates the value of this node with the value of the specified association.
-     */
-    void update(FileTagNodeAssoc* assoc);
 
     bool equals(QString* value)
     {

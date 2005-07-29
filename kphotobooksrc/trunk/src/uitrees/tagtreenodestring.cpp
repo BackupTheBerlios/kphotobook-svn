@@ -38,7 +38,9 @@ TagTreeNodeString::TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KP
     , m_filterValue(QString::null)
 {
     // enable editing of value and filter
-    setRenameEnabled(TagTree::COLUMN_VALUE, true);
+    if (!tagNode->readonly()) {
+        setRenameEnabled(TagTree::COLUMN_VALUE, true);
+    }
     setRenameEnabled(TagTree::COLUMN_FILTER, true);
 }
 
@@ -48,7 +50,9 @@ TagTreeNodeString::TagTreeNodeString(TagTreeNode* parent, TagNodeString* tagNode
     , m_filterValue(QString::null)
 {
     // enable editing of value and filter
-    setRenameEnabled(TagTree::COLUMN_VALUE, true);
+    if (!tagNode->readonly()) {
+        setRenameEnabled(TagTree::COLUMN_VALUE, true);
+    }
     setRenameEnabled(TagTree::COLUMN_FILTER, true);
 }
 
@@ -249,7 +253,7 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
             } else {
                 setText(TagTree::COLUMN_VALUE, text);
 
-                KListViewItem::paintCell(p, cg, column, width, alignment);
+                KListViewItem::paintCell(p, cg, column, width, Qt::AlignLeft);
             }
             break;
         }
@@ -278,7 +282,7 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
                 TreeHelper::drawCheckBox(p, cg, rect, -1, true);
 
             } else {
-                TagTreeNode::paintCell(p, cg, column, width, alignment);
+                TagTreeNode::paintCell(p, cg, column, width, Qt::AlignLeft);
             }
             break;
         }

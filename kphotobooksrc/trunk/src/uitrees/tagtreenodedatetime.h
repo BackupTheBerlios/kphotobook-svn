@@ -112,7 +112,7 @@ class TagTreeNodeDateTime : public TagTreeNode
         DialogDateTimeFilter* createDialogDateTimeFilter(QString filter);
 
     private:
-        KLocale* locale;
+        KLocale* m_locale;
 
         QString m_filterValue;
         FilterNode* m_filterNode;

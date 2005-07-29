@@ -21,9 +21,8 @@
 #ifndef FILETAGNODEASSOCSTRING_H
 #define FILETAGNODEASSOCSTRING_H
 
-#include "../tracer/tracer.h"
-
 #include "filetagnodeassoc.h"
+#include "../tracer/tracer.h"
 
 #include <qstring.h>
 
@@ -36,62 +35,65 @@ class TagNodeString;
  *
  * CVS-ID $Id: filetagnodeassocboolean.h 274 2005-03-25 08:52:15Z choenig $
  */
-class FileTagNodeAssocString : public FileTagNodeAssoc {
-
-private:
-    static Tracer* tracer;
-
-public:
-    FileTagNodeAssocString(File* file, TagNodeString* tagNodeString, QString value);
-
-    ~FileTagNodeAssocString() {
-        // we don't delete anything!
-    }
-
-    /**
-     * Returns the tagNode associated with this association.
-     */
-    TagNodeString* tagNodeString();
-
-    void setValue(QString value) {
-        m_value = value;
-    }
-
-    QString value() {
-        return m_value;
-    }
-
-    /**
-     * A string association must be dumped only, if the value is not empty.
-     */
-    virtual bool mustDump() {
-        return !m_value.isEmpty();
-    }
-
-    virtual QString valueAsString() {
-        return m_value;
-    }
-
-    /**
-     * Updates the value of this node with the value of the specified association.
-     */
-    void update(FileTagNodeAssoc* assoc);
-
-    bool equals(QString* value) {
-        return (valueAsString() == *value);
-    }
-    bool greaterThan(QString* value) {
-        return (valueAsString() != *value);
-    }
-    bool lesserThan(QString* value) {
-        return (valueAsString() != *value);
-    }
-
-private:
-    /**
-     * The value of this association.
-     */
-    QString m_value;
+class FileTagNodeAssocString : public FileTagNodeAssoc
+{
+    private:
+        static Tracer* tracer;
+    
+    public:
+        FileTagNodeAssocString(File* file, TagNodeString* tagNodeString, QString value);
+    
+        ~FileTagNodeAssocString()
+        {
+            // we don't delete anything!
+        }
+    
+        /**
+        * Returns the tagNode associated with this association.
+        */
+        TagNodeString* tagNodeString();
+    
+        void setValue(QString value)
+        {
+            m_value = value;
+        }
+    
+        QString value()
+        {
+            return m_value;
+        }
+    
+        /**
+        * A string association must be dumped only, if the value is not empty.
+        */
+        virtual bool mustDump()
+        {
+            return !m_value.isEmpty();
+        }
+    
+        virtual QString valueAsString()
+        {
+            return m_value;
+        }
+    
+        bool equals(QString* value)
+        {
+            return (valueAsString() == *value);
+        }
+        bool greaterThan(QString* value)
+        {
+            return (valueAsString() != *value);
+        }
+        bool lesserThan(QString* value)
+        {
+            return (valueAsString() != *value);
+        }
+    
+    private:
+        /**
+        * The value of this association.
+        */
+        QString m_value;
 };
 
 #endif
