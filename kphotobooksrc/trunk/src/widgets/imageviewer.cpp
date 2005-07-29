@@ -22,6 +22,7 @@
 
 #include "../tracer/tracer.h"
 #include "../settings/settings.h"
+#include "../dialogs/dialogimageviewer.h"
 
 #include <qmenubar.h>
 #include <qfiledialog.h>
@@ -34,10 +35,12 @@
 #include <qcursor.h>
 #include <qdatetime.h>
 
+
 #include <klocale.h>
 #include <kaction.h>
 #include <kstdaccel.h>
 #include <kstdaction.h>
+#include <kfileiconview.h>
 
 Tracer* ImageViewer::tracer = Tracer::getInstance("kde.kphotobook.widgets", "ImageViewer");
 
@@ -409,9 +412,10 @@ void ImageViewer::keyPressEvent ( QKeyEvent * e )
         break;
 
    ///@todo make enter toggle fullscreen
-//     case Qt::Key_Enter:
-//         ((QWidget*)parent())->toggleFullScreen();
-//         break;
+    case Qt::Key_Return:
+    case Qt::Key_Enter:
+        emit signalEnterPressed();
+        break;
 
     default:
         e->ignore();

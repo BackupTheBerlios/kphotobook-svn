@@ -17,9 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef IMAGEVIEWER_H_
-#define IMAGEVIEWER_H_
+#pragma once
 
 #include "../tracer/tracer.h"
 #include "ptrringbuffer.h"
@@ -27,15 +25,14 @@
 
 #include <qwidget.h>
 #include <qimage.h>
-#include <qptrlist.h>
-#include <qtimer.h>
-#include <kfileiconview.h>
 
 
 class QLabel;
+class QTimer;
 class QMenuBar;
 class QPopupMenu;
 class File;
+class KFileIconView;
 
 
 class XImage
@@ -45,7 +42,7 @@ private:
 
 public:
     XImage(int maxWidth = -1, int maxHeight = -1);
-    ~XImage();
+    virtual ~XImage();
 
     void     setFile(File* file);
     File*    file() { return m_file; };
@@ -62,7 +59,7 @@ public:
     bool     workLeft();
 
     bool     doWork(bool forceFull = false);
-    void     scale(int desiredWidth, int desiredHeight, bool forceDoWork = false) ;
+    void     scale(int desiredWidth, int desiredHeight, bool forceDoWork = false);
 
 
 private:
@@ -101,12 +98,15 @@ private:
 
 public:
     ImageViewer( QWidget *parent, KFileIconView* fileView, const char *name=0);
-    ~ImageViewer();
+    virtual ~ImageViewer();
 
     void  updateImageList();
     void  show(File* selectedFile);
 
     void  free();
+
+signals:
+    void signalEnterPressed();
 
 protected:
     void  paintEvent( QPaintEvent  * e);
@@ -158,9 +158,4 @@ private:
 
     QPixmap m_bgPixmap;
 };
-
-
-
-
-#endif
 
