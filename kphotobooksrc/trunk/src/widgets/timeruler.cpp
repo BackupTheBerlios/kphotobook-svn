@@ -24,6 +24,7 @@
 
 #include <qpainter.h>
 #include <qstyle.h>
+#include <qtimer.h>
 
 #include <kapplication.h>
 
@@ -74,7 +75,7 @@ TimeRuler::~TimeRuler() {
     ;
 }
 
-void TimeRuler::slotSetSelected(QDate date, bool center)
+void TimeRuler::slotSetSelected(const QDate& date, bool center)
 {
     setSelected(date.year(), date.month(), false);
     if (center) {
@@ -396,7 +397,7 @@ void TimeRuler::wheelEvent ( QWheelEvent * e ) {
 }
 
 
-void TimeRuler::mousePosToOffset(QPoint pos, int* year, int* month) {
+void TimeRuler::mousePosToOffset(const QPoint& pos, int* year, int* month) {
     if (pos.y() > m_yBase) {
         *year = -1;
         return;
@@ -488,7 +489,8 @@ DateBinder::DateBinder() {
 
 DateBinder::~DateBinder() {}
 
-void DateBinder::addDate(QDate d) {
+
+void DateBinder::addDate(const QDate& d) {
     list<QDate>::iterator it;
     for (it= m_lstData.begin(); it != m_lstData.end(); ++it) {
         if ((*it) > d) {

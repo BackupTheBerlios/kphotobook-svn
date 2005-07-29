@@ -23,13 +23,13 @@
 
 #include "../tracer/tracer.h"
 
-#include <qpixmap.h>
 #include <qwidget.h>
+#include <qpixmap.h>
 
 #include <vector>
 #include <list>
 
-#include <qtimer.h>
+class QTimer;
 
 using namespace std;
 
@@ -44,7 +44,7 @@ public:
     /**
      * adds the QDate d to this list of dates
      */
-    void addDate(QDate d);
+    void addDate(const QDate& d);
 
     /**
      * @returns the number of images which mach the given
@@ -99,7 +99,7 @@ public:
     virtual ~TimeRuler();
 
 public slots:
-    void slotSetSelected(QDate date, bool center = true);
+    void slotSetSelected(const QDate& date, bool center = true);
 
     /**
      * sets the selected date to year/month.
@@ -145,7 +145,7 @@ private:
     /**
      * sets year/month to the date referenced at the position pos
      */
-    void mousePosToOffset(QPoint pos, int* year, int* month);
+    void mousePosToOffset(const QPoint& pos, int* year, int* month);
 
     /**
      * @returns the rectangle to draw the image count bar.
