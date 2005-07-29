@@ -394,7 +394,7 @@ void FileSystemScanner::readEXIF(File* file)
                 QString data = QString(charData);
                 
                 QString description = QString(exif_tag_get_description(entry->tag));
-                tracer->sdebug(__func__) << "    - " << title << " / " << name << " = " << data << " (" << description << ")" << endl;
+//                tracer->sdebug(__func__) << "    - " << title << " / " << name << " = " << data << " (" << description << ")" << endl;
 
                 // get the exif tagnode title and the tagnode representing this tag from the engine
                 TagNode* exifTagNodeTitle = m_engine->getExifTagNodeTitle();
@@ -408,8 +408,7 @@ void FileSystemScanner::readEXIF(File* file)
                         TagNodeDateTime* exifTagNodeEntryDateTime = dynamic_cast<TagNodeDateTime*>(exifTagNodeEntry);
                         if (exifTagNodeEntryDateTime == 0) {
                             // tagnode for this EXIF entry does not exist --> create it
-                            QString icon = QString("exif-%1").arg(name);
-                            exifTagNodeEntryDateTime = dynamic_cast<TagNodeDateTime*>(m_engine->createTag(exifTagNodeTitle, TagNode::TYPE_DATETIME, title, description, icon));
+                            exifTagNodeEntryDateTime = dynamic_cast<TagNodeDateTime*>(m_engine->createTag(exifTagNodeTitle, TagNode::TYPE_DATETIME, title, description, QString::null));
                             exifTagNodeEntryDateTime->setReadonly(true);
                         }
                         if (dateTime.isValid()) {
@@ -425,8 +424,7 @@ void FileSystemScanner::readEXIF(File* file)
                         TagNodeString* exifTagNodeEntryString = dynamic_cast<TagNodeString*>(exifTagNodeEntry);
                         if (exifTagNodeEntryString == 0) {
                             // tagnode for this EXIF entry does not exist --> create it
-                            QString icon = QString("exif-%1").arg(name);
-                            exifTagNodeEntryString = dynamic_cast<TagNodeString*>(m_engine->createTag(exifTagNodeTitle, TagNode::TYPE_STRING, title, description, icon));
+                            exifTagNodeEntryString = dynamic_cast<TagNodeString*>(m_engine->createTag(exifTagNodeTitle, TagNode::TYPE_STRING, title, description, QString::null));
                             exifTagNodeEntryString->setReadonly(true);
                         }
                         // create new assoc
@@ -444,8 +442,6 @@ void FileSystemScanner::readEXIF(File* file)
 
 QDateTime FileSystemScanner::readExifDateTime(const QString& data)
 {
-    tracer->sinvoked(__func__) << "reading EXIF date: " << data << endl;
-
     // EXIF date format is: YYYY:MM:DD hh:mm:ss
     bool ok;
     QString subString = data.mid(0, 4);
@@ -492,8 +488,6 @@ QDateTime FileSystemScanner::readExifDateTime(const QString& data)
     }
 
     QDateTime dateTime = QDateTime(QDate(year, month, day), QTime(hour, minute, second));
-    
-    tracer->sdebug(__func__) << "successfully converted to: " << dateTime << endl;
     
     return dateTime;
 }
