@@ -31,6 +31,7 @@ DialogImageViewer::DialogImageViewer(QWidget* parent, KFileIconView* fileView)
     this->resize(640,481);
 
     m_imageViewer = new ImageViewer(this, fileView);
+    connect(m_imageViewer, SIGNAL(signalEnterPressed()), SLOT(slotToggleFullscreen()));
 }
 
 
@@ -86,7 +87,6 @@ void DialogImageViewer::slotToggleFullscreen()
     } else {
         setWindowState(windowState() | Qt::WindowFullScreen);
     }
-    setActiveWindow();
 }
 
 
