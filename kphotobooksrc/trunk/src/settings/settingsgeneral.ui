@@ -93,7 +93,7 @@
                         <cstring>kcfg_GeneralRescanWhileStartup</cstring>
                     </property>
                     <property name="text">
-                        <string>Rescan directories on startup</string>
+                        <string>Resc&amp;an directories on startup</string>
                     </property>
                 </widget>
             </hbox>
@@ -105,24 +105,24 @@
             <property name="title">
                 <string>Actions while exiting</string>
             </property>
-            <widget class="QCheckBox">
+            <vbox>
                 <property name="name">
-                    <cstring>kcfg_GeneralCheckUntaggedOnExit</cstring>
+                    <cstring>unnamed</cstring>
                 </property>
-                <property name="geometry">
-                    <rect>
-                        <x>10</x>
-                        <y>20</y>
-                        <width>560</width>
-                        <height>20</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>Check for untagged Images</string>
-                </property>
-            </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_GeneralCheckUntaggedOnExit</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Check for &amp;untagged Images</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+U</string>
+                    </property>
+                </widget>
+            </vbox>
         </widget>
-	<spacer>
+        <spacer>
             <property name="name">
                 <cstring>spacer2</cstring>
             </property>
@@ -142,4 +142,7 @@
     </vbox>
 </widget>
 <layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>kcombobox.h</includehint>
+</includehints>
 </UI>
