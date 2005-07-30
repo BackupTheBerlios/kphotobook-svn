@@ -17,7 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#pragma once
+
+#ifndef _IMAGEVIEWER_H_
+#define _IMAGEVIEWER_H_
 
 #include "../tracer/tracer.h"
 #include "ptrringbuffer.h"
@@ -159,3 +161,4 @@ private:
     QPixmap m_bgPixmap;
 };
 
+#endif
