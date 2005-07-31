@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>600</width>
-            <height>480</height>
+            <height>507</height>
         </rect>
     </property>
     <property name="caption">
@@ -18,6 +18,9 @@
     <vbox>
         <property name="name">
             <cstring>unnamed</cstring>
+        </property>
+        <property name="margin">
+            <number>0</number>
         </property>
         <widget class="QGroupBox">
             <property name="name">
@@ -48,6 +51,10 @@
                     <property name="text">
                         <string>Font</string>
                     </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Font&lt;/b&gt;
+&lt;p&gt;Select the font for the Tag Tree font.&lt;/p&gt;</string>
+                    </property>
                 </widget>
                 <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
                     <property name="name">
@@ -60,6 +67,11 @@
                 <widget class="KIntSpinBox" row="0" column="2">
                     <property name="name">
                         <cstring>kcfg_TagTreeIconSize</cstring>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Icoin size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the tag-icons in the Tag Tree. The value can be between 16 and 48.&lt;/p&gt;</string>
                     </property>
                 </widget>
                 <spacer row="0" column="3">
@@ -84,7 +96,12 @@
                         <cstring>kcfg_TagTreeShowIcons</cstring>
                     </property>
                     <property name="text">
-                        <string>Show icons in the TagTree</string>
+                        <string>Show icons in the 'Tag Tree'</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Show icons in the Tag Tree&lt;/b&gt;
+
+&lt;p&gt;If enabled the chosen icons for each tag will be shown left beside the tag text. If disabled, even if an icon is chosen for a tag, it will not be shown.&lt;/p&gt;</string>
                     </property>
                 </widget>
                 <spacer row="4" column="0">
@@ -114,6 +131,11 @@
                     <property name="accel">
                         <string>Alt+N</string>
                     </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Draw nodes with matches bold&lt;/b&gt;
+
+&lt;p&gt;If thumbnails in the thumbnail viewer are selected, the tags associated to those images are &lt;b&gt;drawn bold&lt;/b&gt;.&lt;/p&gt;</string>
+                    </property>
                 </widget>
                 <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="3">
                     <property name="name">
@@ -127,6 +149,11 @@
                     </property>
                     <property name="accel">
                         <string>Alt+Y</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Only draw collapsed nodes bold&lt;/b&gt;
+
+&lt;p&gt;Associated tags are only drawn bold, if the tag is collapsed and a sub tag is associated to an image.&lt;/p&gt;</string>
                     </property>
                 </widget>
             </grid>
@@ -153,6 +180,11 @@
                 <widget class="KIntSpinBox">
                     <property name="name">
                         <cstring>kcfg_TagTreeToolBarIconSize</cstring>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Icon size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the toolbar icons of the tag tree. The size can be between 16 and 32.&lt;/p&gt;</string>
                     </property>
                 </widget>
                 <spacer>
@@ -236,7 +268,9 @@
                         <string>Alt+X</string>
                     </property>
                     <property name="whatsThis" stdset="0">
-                        <string>Defines if the filter of string tags uaes regular expressions or wildcards.</string>
+                        <string>&lt;b&gt;Use Regular Expression&lt;/b&gt;
+
+&lt;p&gt;Defines if the filter of string tags uses regular expressions or wildcards.&lt;/p&gt;</string>
                     </property>
                 </widget>
             </hbox>
@@ -268,7 +302,7 @@
                         <cstring>kcfg_TagTreeRememberFilter</cstring>
                     </property>
                     <property name="text">
-                        <string>Remember filter state</string>
+                        <string>&amp;Remember filter state</string>
                     </property>
                 </widget>
                 <spacer row="2" column="0">
