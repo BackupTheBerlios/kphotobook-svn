@@ -22,23 +22,25 @@
 
 #include "file.h"
 
+
 Tracer* SourceDir::tracer = Tracer::getInstance("kde.kphotobook.engine", "SourceDir");
 
-SourceDir::SourceDir(unsigned int id, QDir* dir, bool recursive)
-    : m_deleteInProgress(false)
-    , m_id(id)
-    , m_dir(dir)
-    , m_recursive(recursive)
-    , m_found(false)
-    , m_parent(0)
-    , m_children(0)
-    , m_files(new QPtrList<File>())
-    , m_include(true) {
+
+SourceDir::SourceDir(unsigned int id, QDir* dir, bool recursive) :
+    m_deleteInProgress(false),
+    m_id(id),
+    m_dir(dir),
+    m_recursive(recursive),
+    m_found(false),
+    m_parent(0),
+    m_children(0),
+    m_files(new QPtrList<File>()),
+    m_include(true) {
 }
 
 
-SourceDir::~SourceDir() {
-
+SourceDir::~SourceDir()
+{
     tracer->sinvoked(__func__) << "For sourcedir '" << m_dir->absPath() << "'." << endl;
 
     m_deleteInProgress = true;
@@ -66,8 +68,8 @@ SourceDir::~SourceDir() {
 }
 
 
-void SourceDir::setParent(SourceDir* parent) {
-
+void SourceDir::setParent(SourceDir* parent)
+{
     if (m_parent) {
         tracer->swarning(__func__) << "SourceDir '" << this->toString() << "' already has a parent directory: '" << parent->toString() << "'." << endl;
         return;

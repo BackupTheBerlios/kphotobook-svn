@@ -21,42 +21,42 @@
 #include "filternodetagdatetime.h"
 
 
-FilterNodeTagDateTime::FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime)
-    : FilterNode(parent)
-    , m_tagNodeDateTime(tagNodeDateTime)
-    , m_pattern(QString::null)
-    , m_fromDateTime(fromDateTime)
-    , m_toDateTime(toDateTime)
+FilterNodeTagDateTime::FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime) :
+    FilterNode(parent),
+    m_tagNodeDateTime(tagNodeDateTime),
+    m_pattern(QString::null),
+    m_fromDateTime(fromDateTime),
+    m_toDateTime(toDateTime)
 {
 }
 
 
-FilterNodeTagDateTime::FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime)
-    : FilterNode(0)
-    , m_tagNodeDateTime(tagNodeDateTime)
-    , m_pattern(QString::null)
-    , m_fromDateTime(fromDateTime)
-    , m_toDateTime(toDateTime)
+FilterNodeTagDateTime::FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime) :
+    FilterNode(0),
+    m_tagNodeDateTime(tagNodeDateTime),
+    m_pattern(QString::null),
+    m_fromDateTime(fromDateTime),
+    m_toDateTime(toDateTime)
 {
 }
 
 
-FilterNodeTagDateTime::FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QString pattern)
-    : FilterNode(parent)
-    , m_tagNodeDateTime(tagNodeDateTime)
-    , m_pattern(pattern)
-    , m_fromDateTime(0)
-    , m_toDateTime(0)
+FilterNodeTagDateTime::FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QString pattern) :
+    FilterNode(parent),
+    m_tagNodeDateTime(tagNodeDateTime),
+    m_pattern(pattern),
+    m_fromDateTime(0),
+    m_toDateTime(0)
 {
 }
 
 
-FilterNodeTagDateTime::FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QString pattern)
-    : FilterNode(0)
-    , m_tagNodeDateTime(tagNodeDateTime)
-    , m_pattern(pattern)
-    , m_fromDateTime(0)
-    , m_toDateTime(0)
+FilterNodeTagDateTime::FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QString pattern) :
+    FilterNode(0),
+    m_tagNodeDateTime(tagNodeDateTime),
+    m_pattern(pattern),
+    m_fromDateTime(0),
+    m_toDateTime(0)
 {
 }
 

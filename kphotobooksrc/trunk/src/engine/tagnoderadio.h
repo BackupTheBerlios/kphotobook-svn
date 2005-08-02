@@ -25,28 +25,29 @@
 
 #include "tagnode.h"
 
-#include <qstring.h>
 #include <qfile.h>
+#include <qstring.h>
+
 
 /**
  * Concrete tagnode implementation representing a radio tag.
  *
  * CVS-ID $Id: tagnodeboolean.h 284 2005-03-31 20:03:08Z choenig $
  */
-class TagNodeRadio : public TagNode {
-
-private:
-    static Tracer* tracer;
-
-
-public:
-    TagNodeRadio(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
-
-    ~TagNodeRadio() {
-    }
-
-    void setTagged(File* file, bool tagged);
-    bool tagged(File* file);
+class TagNodeRadio : public TagNode
+{
+    private:
+        static Tracer* tracer;
+    
+    public:
+        TagNodeRadio(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
+    
+        ~TagNodeRadio()
+        {
+        }
+    
+        void setTagged(File* file, bool tagged);
+        bool tagged(File* file);
 };
 
 #endif

@@ -20,33 +20,33 @@
 
 #include "tagtreenode.h"
 
-#include "../kphotobook.h"
-#include "../settings/settings.h"
-#include "treehelper.h"
-
 #include "tagtree.h"
+#include "treehelper.h"
 #include "../engine/tagnode.h"
-
+#include "../kphotobook.h"
 #include "../kphotobookview.h"
+#include "../settings/settings.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <kmessagebox.h>
 
-#include <qstyle.h>
 #include <qcheckbox.h>
-#include <qlistview.h>
 #include <qcursor.h>
+#include <qlistview.h>
+#include <qstyle.h>
+
 
 Tracer* TagTreeNode::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNode");
 
-TagTreeNode::TagTreeNode(TagTree* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu)
-    : KListViewItem(parent)
-    , m_photobook(photobook)
-    , m_tagNode(tagNode)
-    , m_contextMenu(contextMenu)
-    , m_filterState(TagTreeNode::FILTERSTATE_IGNORE) {
 
+TagTreeNode::TagTreeNode(TagTree* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu) :
+    KListViewItem(parent),
+    m_photobook(photobook),
+    m_tagNode(tagNode),
+    m_contextMenu(contextMenu),
+    m_filterState(TagTreeNode::FILTERSTATE_IGNORE)
+{
     this->setText(TagTree::COLUMN_VALUE, "");
     this->setText(TagTree::COLUMN_FILTER, "");
 
@@ -54,13 +54,13 @@ TagTreeNode::TagTreeNode(TagTree* parent, KPhotoBook* photobook, TagNode* tagNod
 }
 
 
-TagTreeNode::TagTreeNode(TagTreeNode* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu)
-    : KListViewItem(parent)
-    , m_photobook(photobook)
-    , m_tagNode(tagNode)
-    , m_contextMenu(contextMenu)
-    , m_filterState(TagTreeNode::FILTERSTATE_IGNORE) {
-
+TagTreeNode::TagTreeNode(TagTreeNode* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu) :
+    KListViewItem(parent),
+    m_photobook(photobook),
+    m_tagNode(tagNode),
+    m_contextMenu(contextMenu),
+    m_filterState(TagTreeNode::FILTERSTATE_IGNORE)
+{
     this->setText(TagTree::COLUMN_VALUE, "");
     this->setText(TagTree::COLUMN_FILTER, "");
 
@@ -68,9 +68,8 @@ TagTreeNode::TagTreeNode(TagTreeNode* parent, KPhotoBook* photobook, TagNode* ta
 }
 
 
-
-QString TagTreeNode::filterString() {
-
+QString TagTreeNode::filterString()
+{
     QString filter;
 
     switch (m_filterState) {
@@ -89,7 +88,8 @@ QString TagTreeNode::filterString() {
 }
 
 
-void TagTreeNode::applyFilterString(QString filter) {
+void TagTreeNode::applyFilterString(QString filter)
+{
     tracer->invoked(__func__);
 
     // this automatically sets the filter to EXCLUDE, if it is a secret tag and the user
@@ -109,8 +109,8 @@ void TagTreeNode::applyFilterString(QString filter) {
 }
 
 
-void TagTreeNode::refresh() {
-
+void TagTreeNode::refresh()
+{
     if (Settings::tagTreeShowIcons()) {
         QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(*m_tagNode->iconName(), KIcon::Small, Settings::tagTreeIconSize(), true);
         if (iconSet.isNull()) {
@@ -132,7 +132,8 @@ void TagTreeNode::refresh() {
 }
 
 
-void TagTreeNode::setOpenRecursive(bool open) {
+void TagTreeNode::setOpenRecursive(bool open)
+{
     setOpen(open);
 
     // do recursive call on every child
@@ -220,12 +221,6 @@ void TagTreeNode::rightClicked(__attribute__((unused)) TagTree* tagTree, __attri
 }
 
 
-
-
-
-
-
-
 void TagTreeNode::paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment)
 {
     switch (column) {
@@ -309,10 +304,8 @@ TagTreeNode::MatchType TagTreeNode::findTagMatch()
 }
 
 
-
-
-bool TagTreeNode::recursiveFindTagged() {
-
+bool TagTreeNode::recursiveFindTagged()
+{
     // do WE have a positive match?...
     if (m_tagCurrentMatch == TagTreeNode::TAGGED | m_tagCurrentMatch == TagTreeNode::MIXTAGGED) {
         return true;

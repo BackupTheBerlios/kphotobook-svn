@@ -20,39 +20,38 @@
 
 #include "dialogmanagetag.h"
 
-#include "../settings/settings.h"
-#include "../uitrees/tagtreenode.h"
 #include "../engine/tagnode.h"
 #include "../engine/tagnodetitle.h"
 #include "../engine/tagnodeboolean.h"
+#include "../settings/settings.h"
+#include "../uitrees/tagtreenode.h"
 
-#include <klocale.h>
-#include <kicondialog.h>
 #include <kglobal.h>
+#include <kicondialog.h>
 #include <kiconloader.h>
+#include <klocale.h>
 
+#include <qfile.h>
 #include <qgroupbox.h>
+#include <qlabel.h>
 #include <qlayout.h>
 #include <qsizepolicy.h>
-#include <qlabel.h>
-#include <qfile.h>
 
 
-DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parentNode, TagTreeNode* tagTreeNode, KPhotoBook* photobook, const char *name)
-    : KDialogBase(parent, name, true, "", KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, false )
-    , m_mode(mode)
-    , m_parentNode(parentNode)
-    , m_tagTreeNode(tagTreeNode)
-    , m_photobook(photobook)
-    , m_typeComboBox(0)
-    , m_typeComboBoxEntries(0)
-    , m_nameLineEdit(0)
-    , m_commentLineEdit(0)
-    , m_iconLineEdit(0)
-    , m_iconButton(0)
-    , m_chkSecret(0)
+DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parentNode, TagTreeNode* tagTreeNode, KPhotoBook* photobook, const char *name) :
+    KDialogBase(parent, name, true, "", KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, false ),
+    m_mode(mode),
+    m_parentNode(parentNode),
+    m_tagTreeNode(tagTreeNode),
+    m_photobook(photobook),
+    m_typeComboBox(0),
+    m_typeComboBoxEntries(0),
+    m_nameLineEdit(0),
+    m_commentLineEdit(0),
+    m_iconLineEdit(0),
+    m_iconButton(0),
+    m_chkSecret(0)
 {
-
     if (mode == MODE_CREATE_TAG) {
         if (parentNode) {
             this->setCaption(i18n("Create tag"));
@@ -213,13 +212,14 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
 }
 
 
-DialogManageTag::~DialogManageTag() {
+DialogManageTag::~DialogManageTag()
+{
     delete m_typeComboBoxEntries;
 }
 
 
-TagNode::Type DialogManageTag::tagType() {
-
+TagNode::Type DialogManageTag::tagType()
+{
     return (*m_typeComboBoxEntries)[m_typeComboBox->currentItem()];
 }
 
@@ -261,8 +261,8 @@ void DialogManageTag::fillTypeCombo(TagTreeNode* parentNode)
 }
 
 
-void DialogManageTag::slotIconButtonClicked() {
-
+void DialogManageTag::slotIconButtonClicked()
+{
     KIconDialog* iconDialog = new KIconDialog(this, "iconDialog");
     iconDialog->setup(
         KIcon::Small,
@@ -279,8 +279,8 @@ void DialogManageTag::slotIconButtonClicked() {
 }
 
 
-void DialogManageTag::slotValidate() {
-
+void DialogManageTag::slotValidate()
+{
     QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet(m_iconLineEdit->text(), KIcon::Small, Settings::tagTreeIconSize(), true);
 
     if (!folderIconSet.isNull()) {

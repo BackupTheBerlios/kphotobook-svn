@@ -31,6 +31,7 @@ class Engine;
 class File;
 class SourceDir;
 
+
 /**
  * The FileSystemScanner scans all SourceFolders for files to be handled by kphotobook.
  * Found files are added to the engine and its EXIF data is stored in the database too.

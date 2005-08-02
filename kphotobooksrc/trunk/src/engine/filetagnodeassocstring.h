@@ -29,6 +29,7 @@
 class File;
 class TagNodeString;
 
+
 /**
  * Concrete class representing the association between a file and a TagNodeString.
  * This associations contains a reference to the tagnode and the value of the association.

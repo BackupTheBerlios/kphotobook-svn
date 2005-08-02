@@ -26,6 +26,7 @@
 class File;
 class TagNode;
 
+
 /**
  * Abstract superclass of all associations between a file and a node.
  * This abstract class contains the reference to the associated file and the tagNode.

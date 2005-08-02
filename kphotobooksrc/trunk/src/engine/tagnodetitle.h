@@ -27,22 +27,23 @@
 
 #include <qstring.h>
 
+
 /**
  * Concrete tagnode implementation representing a text only.
  *
  * CVS-ID $Id$
  */
-class TagNodeTitle : public TagNode {
-
-private:
-    static Tracer* tracer;
-
-
-public:
-    TagNodeTitle(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
-
-    ~TagNodeTitle() {
-    }
+class TagNodeTitle : public TagNode
+{
+    private:
+        static Tracer* tracer;
+    
+    public:
+        TagNodeTitle(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
+    
+        ~TagNodeTitle()
+        {
+        }
 };
 
 #endif

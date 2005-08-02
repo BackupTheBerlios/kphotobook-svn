@@ -21,20 +21,21 @@
 #ifndef _XMLPARSER_H_
 #define _XMLPARSER_H_
 
+
+#include "xmlconstants.h"
+#include "../exception.h"
 #include "../tracer/tracer.h"
 
-#include "../exception.h"
-#include "xmlconstants.h"
-
-#include <qxml.h>
-#include <qptrstack.h>
 #include <qintdict.h>
+#include <qptrstack.h>
 #include <qstring.h>
+#include <qxml.h>
 
 class Engine;
 class File;
 class SourceDir;
 class TagNode;
+
 
 /**
  * The handler for parsing the KphotoBook xml file.
@@ -43,88 +44,88 @@ class TagNode;
  */
 class XmlParser : public QXmlDefaultHandler, public XmlConstants
 {
-private:
-    static Tracer* tracer;
-
-public:
-    enum SECTION {
-        SECTION_UNDEFINED_START = 1,
-        SECTION_KPHOTOBOOK,
-        SECTION_SOURCEDIRS,
-        SECTION_SOURCEDIRS_DONE,
-        SECTION_TAGS,
-        SECTION_TAGS_DONE,
-        SECTION_FILES,
-        SECTION_FILES_DONE,
-        SECTION_UNDEFINED_END
-    };
-
-public:
-    XmlParser(Engine* engine)
-        : QXmlDefaultHandler()
-        , XmlConstants()
-        , m_engine(engine)
-        , m_section(SECTION_UNDEFINED_START)
-        , m_currentSourceDir(0)
-        , m_currentFile(0)
-        , m_tagNodesOfCurrentFile(0)
-        , m_exception(0) {
-    }
-
-    ~XmlParser()
-    {
-        delete m_tagNodesOfCurrentFile;
-        // we do not delete the exception 'm_exception'
-        // this exception will be thrown later and must be deleted be the catcher of the exception!
-    }
-
-    // content handler methods
-    bool startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& atts);
-    bool endElement(const QString& namespaceURI, const QString& localName, const QString& qName);
-    bool characters(const QString& ch);
-
-    // error handler methods
-    bool warning(const QXmlParseException& exception);
-    bool error(const QXmlParseException& exception);
-    bool fatalError(const QXmlParseException& exception);
-
-    EngineException* exception()
-    {
-        return m_exception;
-    }
-
-private:
-    Engine* m_engine;
-
-    /**
-     * Contains the section we are currently parsing.
-     */
-    SECTION m_section;
-
-    // stack containing the enclosing sourcedir tags
-    QPtrStack<SourceDir> m_sourceDirstack;
-
-    // stack containing the enclosing tags
-    QPtrStack<TagNode> m_tagNodeStack;
-
-    // the sourcedir of the currently handled files or 0
-    SourceDir* m_currentSourceDir;
-
-    // the file currently handled or 0
-    File* m_currentFile;
-
-    // the list with all tagnodes the current file is associated with or 0
-    QIntDict<TagNode>* m_tagNodesOfCurrentFile;
-
-    // contains the exception if there was one
-    EngineException* m_exception;
-
-    bool handleSourceDir(const QXmlAttributes& atts);
-    bool handleTag(const QXmlAttributes& atts);
-    bool handleFile(const QXmlAttributes& atts);
-    bool handleTagAssoc(const QXmlAttributes& atts);
-
-    QString toString(const QXmlAttributes& atts);
+    private:
+        static Tracer* tracer;
+    
+    public:
+        enum SECTION {
+            SECTION_UNDEFINED_START = 1,
+            SECTION_KPHOTOBOOK,
+            SECTION_SOURCEDIRS,
+            SECTION_SOURCEDIRS_DONE,
+            SECTION_TAGS,
+            SECTION_TAGS_DONE,
+            SECTION_FILES,
+            SECTION_FILES_DONE,
+            SECTION_UNDEFINED_END
+        };
+    
+    public:
+        XmlParser(Engine* engine) :
+            QXmlDefaultHandler(),
+            XmlConstants(),
+            m_engine(engine),
+            m_section(SECTION_UNDEFINED_START),
+            m_currentSourceDir(0),
+            m_currentFile(0),
+            m_tagNodesOfCurrentFile(0),
+            m_exception(0) {
+        }
+    
+        ~XmlParser()
+        {
+            delete m_tagNodesOfCurrentFile;
+            // we do not delete the exception 'm_exception'
+            // this exception will be thrown later and must be deleted be the catcher of the exception!
+        }
+    
+        // content handler methods
+        bool startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& atts);
+        bool endElement(const QString& namespaceURI, const QString& localName, const QString& qName);
+        bool characters(const QString& ch);
+    
+        // error handler methods
+        bool warning(const QXmlParseException& exception);
+        bool error(const QXmlParseException& exception);
+        bool fatalError(const QXmlParseException& exception);
+    
+        EngineException* exception()
+        {
+            return m_exception;
+        }
+    
+    private:
+        Engine* m_engine;
+    
+        /**
+        * Contains the section we are currently parsing.
+        */
+        SECTION m_section;
+    
+        // stack containing the enclosing sourcedir tags
+        QPtrStack<SourceDir> m_sourceDirstack;
+    
+        // stack containing the enclosing tags
+        QPtrStack<TagNode> m_tagNodeStack;
+    
+        // the sourcedir of the currently handled files or 0
+        SourceDir* m_currentSourceDir;
+    
+        // the file currently handled or 0
+        File* m_currentFile;
+    
+        // the list with all tagnodes the current file is associated with or 0
+        QIntDict<TagNode>* m_tagNodesOfCurrentFile;
+    
+        // contains the exception if there was one
+        EngineException* m_exception;
+    
+        bool handleSourceDir(const QXmlAttributes& atts);
+        bool handleTag(const QXmlAttributes& atts);
+        bool handleFile(const QXmlAttributes& atts);
+        bool handleTagAssoc(const QXmlAttributes& atts);
+    
+        QString toString(const QXmlAttributes& atts);
 };
 
 #endif // _KXMLPARSER_H_

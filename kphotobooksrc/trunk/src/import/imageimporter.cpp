@@ -12,30 +12,31 @@
 #include "../settings/settings.h"
 #include "../tracer/tracer.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
+#include <kdirselectdialog.h>
+#include <kio/job.h>
+#include <klocale.h>
+#include <kmountpoint.h>
+
 #include <qbuttongroup.h>
-#include <qradiobutton.h>
-#include <qlineedit.h>
+#include <qcheckbox.h>
 #include <qcombobox.h>
-#include <qlabel.h>
 #include <qframe.h>
 #include <qgroupbox.h>
-#include <qcheckbox.h>
-#include <ksqueezedtextlabel.h>
+#include <qlabel.h>
 #include <qlayout.h>
+#include <qlineedit.h>
+#include <qpushbutton.h>
+#include <qradiobutton.h>
+#include <qregexp.h>
+#include <ksqueezedtextlabel.h>
 #include <qtooltip.h>
+#include <qvariant.h>
 #include <qwhatsthis.h>
 
-#include <klocale.h>
-#include <kdirselectdialog.h>
-
-#include <stdio.h>
 #include <mntent.h>
+#include <stdio.h>
 
-#include <kmountpoint.h>
-#include <qregexp.h>
-#include "kio/job.h"
+
 /*
  *  Constructs a ImageImporter as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
@@ -43,8 +44,8 @@
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-ImageImporter::ImageImporter( QWidget* parent, const char* name, bool modal, WFlags fl )
-        : KDialog( parent, name, modal, fl )
+ImageImporter::ImageImporter(QWidget* parent, const char* name, bool modal, WFlags fl) :
+    KDialog( parent, name, modal, fl )
 {
     setCaption(i18n("Image Importer"));
 
@@ -54,10 +55,11 @@ ImageImporter::ImageImporter( QWidget* parent, const char* name, bool modal, WFl
     initData();
 }
 
-ImageImporter::~ImageImporter() {
+
+ImageImporter::~ImageImporter()
+{
     // no need to delete child widgets, Qt does it all for us
 }
-
 
 
 void ImageImporter::initGUI()
@@ -243,6 +245,7 @@ void ImageImporter::initGUI()
 
 }
 
+
 void ImageImporter::initData()
 {
     const KMountPoint::List lst = KMountPoint::possibleMountPoints(KMountPoint::NeedMountOptions);
@@ -312,7 +315,6 @@ void ImageImporter::slotMountDevice()
 }
 
 
-
 void ImageImporter::slotBtnSourceFolder()
 {
     KURL d = KDirSelectDialog::selectDirectory(Settings::imageImporterSourceFolder(), false, this);
@@ -334,6 +336,7 @@ void ImageImporter::slotBtnArchiveBaseFolder()
     Settings::setImageImporterArchiveBaseFolder(d.path());
 }
 
+
 void ImageImporter::slotBtnDestBaseFolder()
 {
     KURL d = KDirSelectDialog::selectDirectory(Settings::imageImporterDestBaseFolder(), false, this);
@@ -344,18 +347,19 @@ void ImageImporter::slotBtnDestBaseFolder()
     Settings::setImageImporterDestBaseFolder(d.path());
 }
 
+
 void ImageImporter::slotImport()
 {
     slotSaveSettings();
     ///todo do import here :-)
 }
 
+
 void ImageImporter::slotQuit()
 {
     slotSaveSettings();
     accept();
 }
-
 
 
 void ImageImporter::slotSaveSettings()
@@ -422,9 +426,9 @@ void ImageImporter::slotUpdateDestExample()
 }
 
 
-QString helpText() {
-
-QString help = "Allowed are:\n"
+QString helpText()
+{
+    QString help = "Allowed are:\n"
          "$year  "
          "$month "
          "$day   "

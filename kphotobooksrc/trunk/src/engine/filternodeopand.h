@@ -21,43 +21,42 @@
 #ifndef FILTERNODEOPAND_H
 #define FILTERNODEOPAND_H
 
-#include "../tracer/tracer.h"
-#include "filternode.h"
 #include "file.h"
+#include "filternode.h"
+#include "../tracer/tracer.h"
 
 #include <qobject.h>
+
 
 /**
  *
  * CVS-ID $Id: tagnode.h 307 2005-04-17 12:47:26Z starcube $
  */
-class FilterNodeOpAnd : public FilterNode {
-
-Q_OBJECT
-
-private:
-    static Tracer* tracer;
-
-public:
-    FilterNodeOpAnd(FilterNode* parent = 0);
-
-    ~FilterNodeOpAnd();
-
-    /**
-     * Evaluates if this subtree or leafnode matches the given file.
-     */
-    virtual bool evaluate(File* file) throw(FilterException*);
-
-    /**
-     * Prints the value of this Filternode and calls this method with a increased
-     * indention on each child.
-     * The method is intended for debugging the filter.
-     *
-     * @indention the indention to put before the text.
-     */
-    virtual void dump(QString indention = QString(""));
-
-private:
+class FilterNodeOpAnd : public FilterNode
+{
+    Q_OBJECT
+    
+    private:
+        static Tracer* tracer;
+    
+    public:
+        FilterNodeOpAnd(FilterNode* parent = 0);
+    
+        ~FilterNodeOpAnd();
+    
+        /**
+        * Evaluates if this subtree or leafnode matches the given file.
+        */
+        virtual bool evaluate(File* file) throw(FilterException*);
+    
+        /**
+        * Prints the value of this Filternode and calls this method with a increased
+        * indention on each child.
+        * The method is intended for debugging the filter.
+        *
+        * @indention the indention to put before the text.
+        */
+        virtual void dump(QString indention = QString(""));
 };
 
 #endif

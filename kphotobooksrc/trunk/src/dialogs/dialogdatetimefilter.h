@@ -25,9 +25,9 @@
 #include "../widgets/datetimewidget.h"
 #include "../widgets/timeruler.h"
 
+#include <kdatepicker.h>
 #include <kdialogbase.h>
 #include <ktabwidget.h>
-#include <kdatepicker.h>
 
 #include <qcheckbox.h>
 #include <qdatetime.h>

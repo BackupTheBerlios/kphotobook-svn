@@ -23,17 +23,19 @@
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocradio.h"
 
+
 Tracer* TagNodeRadio::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeRadio");
 
-TagNodeRadio::TagNodeRadio(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
-    : TagNode(id, text, comment, iconName, parent) {
 
+TagNodeRadio::TagNodeRadio(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent) :
+    TagNode(id, text, comment, iconName, parent)
+{
     tracer->sinvoked(__func__) << "with id: " << id << ", text: " << text << ", icon: " << iconName << endl;
 }
 
 
-void TagNodeRadio::setTagged(File* file, bool tagged) {
-
+void TagNodeRadio::setTagged(File* file, bool tagged)
+{
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
     if (fileTagNodeAssoc) {
         FileTagNodeAssocRadio* fileTagNodeAssocRadio = dynamic_cast<FileTagNodeAssocRadio*>(fileTagNodeAssoc);
@@ -44,8 +46,8 @@ void TagNodeRadio::setTagged(File* file, bool tagged) {
 }
 
 
-bool TagNodeRadio::tagged(File* file) {
-
+bool TagNodeRadio::tagged(File* file)
+{
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
     if (fileTagNodeAssoc == 0) {
         return false;

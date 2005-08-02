@@ -22,40 +22,38 @@
 #ifndef DIALOGIMAGEVIEWER_H
 #define DIALOGIMAGEVIEWER_H
 
-#include "../widgets/imageviewer.h"
 #include "../engine/file.h"
+#include "../widgets/imageviewer.h"
 
 #include <kdialog.h>
 
 class KFileIconView;
 
+
 class DialogImageViewer : public KDialog
 {
-Q_OBJECT
-
-public:
-    DialogImageViewer(QWidget* parent, KFileIconView* fileView);
-    virtual ~DialogImageViewer();
-
-    void updateImages();
-
-    void mouseDoubleClickEvent ( QMouseEvent* );
-
-    virtual void show (File* selectedImage);
-
-    virtual bool close ( bool alsoDelete );
-
-public slots:
-    void    slotToggleFullscreen();
-
-protected:
-    virtual void resizeEvent ( QResizeEvent* );
-
-
-
-private:
-    ImageViewer* m_imageViewer;
-
+    Q_OBJECT
+    
+    public:
+        DialogImageViewer(QWidget* parent, KFileIconView* fileView);
+        virtual ~DialogImageViewer();
+    
+        void updateImages();
+    
+        void mouseDoubleClickEvent ( QMouseEvent* );
+    
+        virtual void show (File* selectedImage);
+    
+        virtual bool close ( bool alsoDelete );
+    
+    public slots:
+        void    slotToggleFullscreen();
+    
+    protected:
+        virtual void resizeEvent ( QResizeEvent* );
+        
+    private:
+        ImageViewer* m_imageViewer;
 };
 
 #endif

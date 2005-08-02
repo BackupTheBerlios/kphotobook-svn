@@ -34,24 +34,29 @@
 
 #include <kfileitem.h>
 
+
 Tracer* TagTreeNodeRadioGroup::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNodeRadioGroup");
 
-TagTreeNodeRadioGroup::TagTreeNodeRadioGroup(TagTree* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, photobook, tagNode, contextMenu) {
+
+TagTreeNodeRadioGroup::TagTreeNodeRadioGroup(TagTree* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu) :
+    TagTreeNode(parent, photobook, tagNode, contextMenu)
+{
 }
 
 
-TagTreeNodeRadioGroup::TagTreeNodeRadioGroup(TagTreeNode* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, photobook, tagNode, contextMenu) {
+TagTreeNodeRadioGroup::TagTreeNodeRadioGroup(TagTreeNode* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu) :
+    TagTreeNode(parent, photobook, tagNode, contextMenu)
+{
 }
 
 
-TagTreeNodeRadioGroup::~TagTreeNodeRadioGroup() {
+TagTreeNodeRadioGroup::~TagTreeNodeRadioGroup()
+{
 }
 
 
-FilterNode* TagTreeNodeRadioGroup::filter() {
-
+FilterNode* TagTreeNodeRadioGroup::filter()
+{
     tracer->invoked(__func__);
 
     FilterNode* rootFilter = new FilterNodeOpAnd(0);
@@ -78,79 +83,84 @@ FilterNode* TagTreeNodeRadioGroup::filter() {
         child = dynamic_cast<TagTreeNodeRadio*>(child->nextSibling());
     }
 
-
     return rootFilter;
 }
 
 
-void TagTreeNodeRadioGroup::leftClicked(TagTree* tagTree, int column) {
-
+void TagTreeNodeRadioGroup::leftClicked(TagTree* tagTree, int column)
+{
     tracer->invoked(__func__);
 
     switch (column) {
-    case TagTree::COLUMN_FILTER :
-
-        // be sure that the filter reflects the children settings!
-        updateFilterState();
-
-        TagTreeNode::leftClicked(tagTree, column);
-
-        //now set all children to my state
-        TagTreeNodeRadio* act = NULL;
-        QListViewItem * myChild = firstChild();
-        while( myChild ) {
-            //ignore non Radio Items (if they would be a child)
-            act = dynamic_cast<TagTreeNodeRadio*>(myChild);
-            if (act) {
-                act->applyFilterState(m_filterState);
-                act->repaint();
+        case TagTree::COLUMN_FILTER :
+        {
+            // be sure that the filter reflects the children settings!
+            updateFilterState();
+    
+            TagTreeNode::leftClicked(tagTree, column);
+    
+            //now set all children to my state
+            TagTreeNodeRadio* act = NULL;
+            QListViewItem * myChild = firstChild();
+            while( myChild ) {
+                //ignore non Radio Items (if they would be a child)
+                act = dynamic_cast<TagTreeNodeRadio*>(myChild);
+                if (act) {
+                    act->applyFilterState(m_filterState);
+                    act->repaint();
+                }
+                // and go on with the next child
+                myChild = myChild->nextSibling();
             }
-            // and go on with the next child
-            myChild = myChild->nextSibling();
+    
+            // force redrawing of this listviewitem
+            this->repaint();
+    
+            m_photobook->autoRefreshView();
+            break;
         }
-
-        // force redrawing of this listviewitem
-        this->repaint();
-
-        m_photobook->autoRefreshView();
-        break;
     }
 }
 
 
-void TagTreeNodeRadioGroup::rightClicked(__attribute__((unused)) TagTree* tagTree, int column) {
-
+void TagTreeNodeRadioGroup::rightClicked(__attribute__((unused)) TagTree* tagTree, int column)
+{
     tracer->invoked(__func__);
 
     switch (column) {
-    case TagTree::COLUMN_TEXT :
-        TagTreeNode::rightClicked(tagTree, column);
-        break;
-
-    case TagTree::COLUMN_FILTER :
-        TagTreeNode::rightClicked(tagTree, column);
-
-        //now set all children to my state
-        TagTreeNodeRadio* act = NULL;
-        QListViewItem * myChild = firstChild();
-        while( myChild ) {
-            //ignore non Radio Items (if they would be a child)
-            act = dynamic_cast<TagTreeNodeRadio*>(myChild);
-            if (act) {
-                act->applyFilterState(m_filterState);
-                act->repaint();
-            }
-            // and go on with the next child
-            myChild = myChild->nextSibling();
+        case TagTree::COLUMN_TEXT :
+        {
+            TagTreeNode::rightClicked(tagTree, column);
+            break;
         }
-
-        // force redrawing of this listviewitem
-        this->repaint();
-
-        m_photobook->autoRefreshView();
-        break;
+    
+        case TagTree::COLUMN_FILTER :
+        {
+            TagTreeNode::rightClicked(tagTree, column);
+    
+            //now set all children to my state
+            TagTreeNodeRadio* act = NULL;
+            QListViewItem * myChild = firstChild();
+            while( myChild ) {
+                //ignore non Radio Items (if they would be a child)
+                act = dynamic_cast<TagTreeNodeRadio*>(myChild);
+                if (act) {
+                    act->applyFilterState(m_filterState);
+                    act->repaint();
+                }
+                // and go on with the next child
+                myChild = myChild->nextSibling();
+            }
+    
+            // force redrawing of this listviewitem
+            this->repaint();
+    
+            m_photobook->autoRefreshView();
+            break;
+        }
     }
 }
+
 
 /**
  * sets the selected tag to src
@@ -165,8 +175,7 @@ void TagTreeNodeRadioGroup::setSelectedTag(TagTreeNodeRadio* src)
     // get all selected files
     const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
 
-    if (selectedFiles->count())
-    {
+    if (selectedFiles->count()) {
         QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
 
         //now loop over all radio children and tag the selected items
@@ -227,17 +236,23 @@ void TagTreeNodeRadioGroup::updateFilterState()
         if (child) {
 
             switch (child->filterState()) {
-            case TagTreeNode::FILTERSTATE_INCLUDE:
-                includeFound = 1;
-                break;
-
-            case TagTreeNode::FILTERSTATE_EXCLUDE:
-                excludeFound = 1;
-                break;
-
-            case TagTreeNode::FILTERSTATE_IGNORE:
-                ignoreFound = 1;
-                break;
+                case TagTreeNode::FILTERSTATE_INCLUDE:
+                {
+                    includeFound = 1;
+                    break;
+                }
+    
+                case TagTreeNode::FILTERSTATE_EXCLUDE:
+                {
+                    excludeFound = 1;
+                    break;
+                }
+    
+                case TagTreeNode::FILTERSTATE_IGNORE:
+                {
+                    ignoreFound = 1;
+                    break;
+                }
             }
 
             // we can abort if there are different selections
@@ -271,22 +286,26 @@ void TagTreeNodeRadioGroup::updateFilterState()
 void TagTreeNodeRadioGroup::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
 {
     switch (column) {
-    case TagTree::COLUMN_TEXT :
-    case TagTree::COLUMN_VALUE:
-        TagTreeNode::paintCell(p, cg, column, width, alignment);
-        break;
-
-    case TagTree::COLUMN_FILTER :
-        // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-
-        // draw the checkbox in the center of the cell in the size of the font
-        int size = p->fontInfo().pixelSize()+2;
-        QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
-
-        TreeHelper::drawCheckBox(p, cg, rect, m_filterState, true);
-
-        break;
+        case TagTree::COLUMN_TEXT :
+        case TagTree::COLUMN_VALUE :
+        {
+            TagTreeNode::paintCell(p, cg, column, width, alignment);
+            break;
+        }
+    
+        case TagTree::COLUMN_FILTER :
+        {
+            // paint the cell with the alternating background color
+            p->fillRect(0, 0, width, this->height(), backgroundColor(2));
+    
+            // draw the checkbox in the center of the cell in the size of the font
+            int size = p->fontInfo().pixelSize()+2;
+            QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
+    
+            TreeHelper::drawCheckBox(p, cg, rect, m_filterState, true);
+    
+            break;
+        }
     }
 }
 

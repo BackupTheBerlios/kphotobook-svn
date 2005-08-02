@@ -23,107 +23,109 @@
 
 #include "../tracer/tracer.h"
 
+#include <kfileitem.h>
 #include <klistview.h>
 #include <kpopupmenu.h>
-#include <kfileitem.h>
 
-#include <qptrlist.h>
-#include <qstring.h>
+#include <qintdict.h>
 #include <qlistview.h>
 #include <qpoint.h>
-#include <qintdict.h>
+#include <qptrlist.h>
+#include <qstring.h>
 
 class File;
 class KPhotoBook;
-
 class SourceDir;
 class SourceDirTreeNode;
+
 
 /**
  * The SourceDirTree (can display checkboxes in the columns).
  *
  * CVS-ID $Id$
  */
-class SourceDirTree : public KListView {
-
-Q_OBJECT
-
-private:
-    static Tracer* tracer;
-
-public:
-    static const int COLUMN_TEXT = 0;
-    static const int COLUMN_SELECTED = 1;
-    static const int COLUMN_INCLUDED = 2;
-
-    SourceDirTree(QWidget* parent, KPhotoBook* photobook, const char* name);
-
-    ~SourceDirTree() {
-        delete m_sourceDirNodeDict;
-    }
-
-    void expandCurrent(bool recursive = true);
-    void collapseCurrent(bool recursive = true);
-    void expandAll();
-    void collapseAll();
-
-    void includeWholeSourceDir();
-    void excludeWholeSourceDir();
-    void invertSourceDir();
-    void includeAllSourceDirs();
-    void excludeAllSourceDirs();
-    void invertAllSourceDirs();
-
-    void addSourceDirs(QPtrList<SourceDir>* rootNodeList);
-    void addSourceDir(SourceDir* rootNode);
-    void removeSourceDir(SourceDirTreeNode* node);
-
-    void reflectSelectedFiles(const KFileItemList* selectedFiles);
-
-    KPhotoBook* photobook() {
-        return m_photobook;
-    }
-
-    SourceDirTreeNode* selectedSourceDir();
-
-    void doRepaintAll();
-
-    /**
-     * Returns a list containing the ids of the opened nodes.
-     */
-    QStringList* getOpenNodes();
-
-    /**
-     * Opens the nodes with the specified ids.
-     */
-    void openNodes(QStringList* nodes);
-
-    /**
-     * Returns a dictionary containing the string representation of the filter
-     * of every node.
-     * The dictionary contains the node-id as key and the filter as value.
-     */
-    QIntDict<QString>* getFilter();
-
-    /**
-     * Applies the specified filters to the nodes in the sourcedirtree.
-     * The dictionary must contain the node-id as key and the filter as value.
-     */
-    void applyFilter(QIntDict<QString>* filterList);
-
-public slots:
-    void slotLoadSettings();
-
-private slots:
-    void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
-    void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
-
-private:
-    void buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<SourceDir>* children);
-
-    KPhotoBook* m_photobook;
-
-    QIntDict<SourceDirTreeNode>* m_sourceDirNodeDict;
+class SourceDirTree : public KListView
+{
+    Q_OBJECT
+    
+    private:
+        static Tracer* tracer;
+    
+    public:
+        static const int COLUMN_TEXT = 0;
+        static const int COLUMN_SELECTED = 1;
+        static const int COLUMN_INCLUDED = 2;
+    
+        SourceDirTree(QWidget* parent, KPhotoBook* photobook, const char* name);
+        
+        ~SourceDirTree()
+        {
+            delete m_sourceDirNodeDict;
+        }
+    
+        void expandCurrent(bool recursive = true);
+        void collapseCurrent(bool recursive = true);
+        void expandAll();
+        void collapseAll();
+    
+        void includeWholeSourceDir();
+        void excludeWholeSourceDir();
+        void invertSourceDir();
+        void includeAllSourceDirs();
+        void excludeAllSourceDirs();
+        void invertAllSourceDirs();
+    
+        void addSourceDirs(QPtrList<SourceDir>* rootNodeList);
+        void addSourceDir(SourceDir* rootNode);
+        void removeSourceDir(SourceDirTreeNode* node);
+    
+        void reflectSelectedFiles(const KFileItemList* selectedFiles);
+    
+        KPhotoBook* photobook()
+        {
+            return m_photobook;
+        }
+    
+        SourceDirTreeNode* selectedSourceDir();
+    
+        void doRepaintAll();
+    
+        /**
+        * Returns a list containing the ids of the opened nodes.
+        */
+        QStringList* getOpenNodes();
+    
+        /**
+        * Opens the nodes with the specified ids.
+        */
+        void openNodes(QStringList* nodes);
+    
+        /**
+        * Returns a dictionary containing the string representation of the filter
+        * of every node.
+        * The dictionary contains the node-id as key and the filter as value.
+        */
+        QIntDict<QString>* getFilter();
+    
+        /**
+        * Applies the specified filters to the nodes in the sourcedirtree.
+        * The dictionary must contain the node-id as key and the filter as value.
+        */
+        void applyFilter(QIntDict<QString>* filterList);
+    
+    public slots:
+        void slotLoadSettings();
+    
+    private slots:
+        void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
+        void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
+    
+    private:
+        void buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<SourceDir>* children);
+    
+        KPhotoBook* m_photobook;
+    
+        QIntDict<SourceDirTreeNode>* m_sourceDirNodeDict;
 };
 
 #endif

@@ -21,18 +21,18 @@
 #include "filternodetagstring.h"
 
 
-FilterNodeTagString::FilterNodeTagString(FilterNode* parent, TagNodeString* tagNodeString, QString pattern)
-    : FilterNode(parent)
-    , m_tagNodeString(tagNodeString)
-    , m_pattern(pattern)
+FilterNodeTagString::FilterNodeTagString(FilterNode* parent, TagNodeString* tagNodeString, QString pattern) :
+    FilterNode(parent),
+    m_tagNodeString(tagNodeString),
+    m_pattern(pattern)
 {
 }
 
 
-FilterNodeTagString::FilterNodeTagString(TagNodeString* tagNodeString, QString pattern)
-    : FilterNode(0)
-    , m_tagNodeString(tagNodeString)
-    , m_pattern(pattern)
+FilterNodeTagString::FilterNodeTagString(TagNodeString* tagNodeString, QString pattern) :
+    FilterNode(0),
+    m_tagNodeString(tagNodeString),
+    m_pattern(pattern)
 {
 }
 
@@ -42,8 +42,8 @@ FilterNodeTagString::~FilterNodeTagString()
 }
 
 
-bool FilterNodeTagString::evaluate(File* file) throw(FilterException*) {
-
+bool FilterNodeTagString::evaluate(File* file) throw(FilterException*)
+{
     return m_tagNodeString->tagged(file, m_pattern);
 }
 

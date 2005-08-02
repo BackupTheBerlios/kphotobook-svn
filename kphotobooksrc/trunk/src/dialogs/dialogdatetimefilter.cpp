@@ -36,15 +36,15 @@
 Tracer* DialogDateTimeFilter::tracer = Tracer::getInstance("kde.kphotobook.widgets", "DialogDateTimeFilter");
 
 
-DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name)
-    : KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true)
-    , m_state(INVALID)
-    , m_tabWidget(0)
-    , m_timeRuler(0)
-    , m_dateTable(0)
-    , m_fromDateTime(0)
-    , m_toDateTime(0)
-    , m_noDateSet(0)
+DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name) :
+    KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
+    m_state(INVALID),
+    m_tabWidget(0),
+    m_timeRuler(0),
+    m_dateTable(0),
+    m_fromDateTime(0),
+    m_toDateTime(0),
+    m_noDateSet(0)
 {
     tracer->invoked(__func__, "no parameter");
 
@@ -53,15 +53,15 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name)
 }
 
 
-DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, bool noDateSet)
-    : KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true)
-    , m_state(INVALID)
-    , m_tabWidget(0)
-    , m_timeRuler(0)
-    , m_dateTable(0)
-    , m_fromDateTime(0)
-    , m_toDateTime(0)
-    , m_noDateSet(0)
+DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, bool noDateSet) :
+    KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
+    m_state(INVALID),
+    m_tabWidget(0),
+    m_timeRuler(0),
+    m_dateTable(0),
+    m_fromDateTime(0),
+    m_toDateTime(0),
+    m_noDateSet(0)
 {
     tracer->invoked(__func__, "no date set");
 
@@ -72,15 +72,15 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, bo
 }
 
 
-DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* singleDate)
-    : KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true)
-    , m_state(INVALID)
-    , m_tabWidget(0)
-    , m_timeRuler(0)
-    , m_dateTable(0)
-    , m_fromDateTime(0)
-    , m_toDateTime(0)
-    , m_noDateSet(0)
+DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* singleDate) :
+    KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
+    m_state(INVALID),
+    m_tabWidget(0),
+    m_timeRuler(0),
+    m_dateTable(0),
+    m_fromDateTime(0),
+    m_toDateTime(0),
+    m_noDateSet(0)
 {
     tracer->invoked(__func__, "single date");
 
@@ -92,15 +92,15 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QD
 }
 
 
-DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* fromDateTime, QDateTime* toDateTime)
-    : KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true)
-    , m_state(INVALID)
-    , m_tabWidget(0)
-    , m_timeRuler(0)
-    , m_dateTable(0)
-    , m_fromDateTime(0)
-    , m_toDateTime(0)
-    , m_noDateSet(0)
+DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* fromDateTime, QDateTime* toDateTime) :
+    KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
+    m_state(INVALID),
+    m_tabWidget(0),
+    m_timeRuler(0),
+    m_dateTable(0),
+    m_fromDateTime(0),
+    m_toDateTime(0),
+    m_noDateSet(0)
 {
     tracer->invoked(__func__, "from/to date");
 
@@ -130,15 +130,15 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QD
 }
 
 
-DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QString pattern)
-    : KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true)
-    , m_state(INVALID)
-    , m_tabWidget(0)
-    , m_timeRuler(0)
-    , m_dateTable(0)
-    , m_fromDateTime(0)
-    , m_toDateTime(0)
-    , m_noDateSet(0)
+DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QString pattern) :
+    KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
+    m_state(INVALID),
+    m_tabWidget(0),
+    m_timeRuler(0),
+    m_dateTable(0),
+    m_fromDateTime(0),
+    m_toDateTime(0),
+    m_noDateSet(0)
 {
     tracer->invoked(__func__, "pattern");
 
@@ -149,7 +149,8 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QS
 
 
 DialogDateTimeFilter::~DialogDateTimeFilter()
-{}
+{
+}
 
 
 QDateTime DialogDateTimeFilter::getDateTimeFrom()

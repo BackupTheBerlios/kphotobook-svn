@@ -25,31 +25,33 @@
 
 class TagNodeTitle;
 
+
 /**
  * Concrete tagtreenode for displaying a title.
  *
  * CVS-ID $Id$
  */
-class TagTreeNodeTitle : public TagTreeNode {
-
+class TagTreeNodeTitle : public TagTreeNode
+{
 public:
     TagTreeNodeTitle(TagTree* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
     TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
+    
     virtual ~TagTreeNodeTitle();
 
     /**
      * Sets the filter to find images without this tag set.
      */
-    virtual void deselectFilter() {
+    virtual void deselectFilter()
+    {
         // we do nothing, because we cannot yet filtertitles
     }
 
     /**
      * Resets the filter.
      */
-    virtual void resetFilter() {
+    virtual void resetFilter()
+    {
         // we do nothing, because we cannot yet filtertitles
     }
 };

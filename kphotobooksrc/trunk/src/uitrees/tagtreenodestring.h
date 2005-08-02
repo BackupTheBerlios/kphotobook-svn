@@ -41,9 +41,8 @@ class TagTreeNodeString : public TagTreeNode
 
     public:
         TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
         TagTreeNodeString(TagTreeNode* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
+        
         virtual ~TagTreeNodeString();
 
         void setFilterValue(QString filterValue) {

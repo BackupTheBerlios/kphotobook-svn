@@ -22,9 +22,10 @@
 
 #include <kapp.h>
 
-#include <qstyle.h>
 #include <qcheckbox.h>
 #include <qradiobutton.h>
+#include <qstyle.h>
+
 
 //
 // constants for tree

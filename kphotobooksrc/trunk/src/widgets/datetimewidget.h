@@ -23,14 +23,13 @@
 
 #include "../tracer/tracer.h"
 
-
-// #include <qcolor.h>
 #include <qdatetime.h>
 #include <qstring.h>
 #include <qwidget.h>
 
 class KLineEdit;
 class KLocale;
+
 
 class DateTimeWidget : public QWidget
 {

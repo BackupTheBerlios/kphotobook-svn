@@ -5,39 +5,36 @@
 #include "kphotobookview.h"
 
 #include "constants.h"
-#include "settings/settings.h"
-
 #include "kphotobook.h"
 #include "engine/file.h"
-
+#include "engine/sourcedir.h"
+#include "settings/settings.h"
+#include "uitrees/sourcedirtree.h"
+#include "uitrees/sourcedirtreenode.h"
 #include "uitrees/tagtree.h"
 #include "uitrees/tagtreenode.h"
 
-#include "engine/sourcedir.h"
-#include "uitrees/sourcedirtree.h"
-#include "uitrees/sourcedirtreenode.h"
-
-#include "kfile.h"
-#include <kmessagebox.h>
-#include <krun.h>
-#include <klocale.h>
-#include <kprocess.h>
+#include <kfile.h>
 #include <kfileiconview.h>
+#include <klocale.h>
+#include <kmessagebox.h>
+#include <kprocess.h>
+#include <krun.h>
 
+#include <qlayout.h>
 #include <qobject.h>
 #include <qpainter.h>
-#include <qlayout.h>
-#include <qstring.h>
 #include <qpopupmenu.h>
+#include <qstring.h>
 
 
 Tracer* KPhotoBookView::tracer = Tracer::getInstance("kde.kphotobook", "KPhotoBookView");
 
 
-KPhotoBookView::KPhotoBookView(QWidget *parent)
-    : KMdiChildView(parent)
-    , m_currentImagePreviewSize(-1) {
-
+KPhotoBookView::KPhotoBookView(QWidget *parent) :
+    KMdiChildView(parent),
+    m_currentImagePreviewSize(-1)
+{
     // store casted pointer to the photobook
     m_photobook = dynamic_cast<KPhotoBook*>(parent);
 
@@ -66,8 +63,8 @@ KPhotoBookView::KPhotoBookView(QWidget *parent)
 }
 
 
-KPhotoBookView::~KPhotoBookView() {
-
+KPhotoBookView::~KPhotoBookView()
+{
     tracer->invoked(__func__);
 
     ///@todo remove the current previewed files
@@ -77,15 +74,15 @@ KPhotoBookView::~KPhotoBookView() {
 }
 
 
-void KPhotoBookView::removeTagNode(TagTreeNode* node) {
-
+void KPhotoBookView::removeTagNode(TagTreeNode* node)
+{
     // the node's destructor removes itself from the tree
     delete node;
 }
 
 
-void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
-
+void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles)
+{
     tracer->invoked(__func__, "updating the displayed images...");
 
     // remember all selected files if no selected files are specified
@@ -122,13 +119,13 @@ void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles) {
 }
 
 
-void KPhotoBookView::storeConfiguration() {
-
+void KPhotoBookView::storeConfiguration()
+{
 }
 
 
-void KPhotoBookView::updateCurrentImageSize() {
-
+void KPhotoBookView::updateCurrentImageSize()
+{
     if (m_currentImagePreviewSize == Settings::imagePreviewSize()) {
         // preview size has not changed --> do not update the view
         return;
@@ -155,8 +152,8 @@ void KPhotoBookView::updateCurrentImageSize() {
 //
 // public slots
 //
-void KPhotoBookView::slotLoadSettings() {
-
+void KPhotoBookView::slotLoadSettings()
+{
     updateCurrentImageSize();
 
     if (Settings::imagePreviewSelectionMode() == Settings::EnumImagePreviewSelectionMode::Extended) {
@@ -172,8 +169,8 @@ void KPhotoBookView::slotLoadSettings() {
 //
 // protected
 //
-void KPhotoBookView::keyPressEvent(QKeyEvent* e) {
-
+void KPhotoBookView::keyPressEvent(QKeyEvent* e)
+{
     if (e->key() == Qt::Key_Control) {
         m_photobook->startTemporaryUnlockTagging();
     }
@@ -182,8 +179,8 @@ void KPhotoBookView::keyPressEvent(QKeyEvent* e) {
 }
 
 
-void KPhotoBookView::keyReleaseEvent(QKeyEvent *e) {
-
+void KPhotoBookView::keyReleaseEvent(QKeyEvent *e)
+{
     if (e->key() == Qt::Key_Control) {
         m_photobook->stopTemporaryUnlockTagging();
     }
@@ -192,8 +189,8 @@ void KPhotoBookView::keyReleaseEvent(QKeyEvent *e) {
 }
 
 
-void KPhotoBookView::focusOutEvent(__attribute__((unused)) QFocusEvent *e) {
-
+void KPhotoBookView::focusOutEvent(__attribute__((unused)) QFocusEvent *e)
+{
     m_photobook->stopTemporaryUnlockTagging();
 }
 
@@ -201,8 +198,8 @@ void KPhotoBookView::focusOutEvent(__attribute__((unused)) QFocusEvent *e) {
 //
 // private slots
 //
-void KPhotoBookView::slotShowCurrentImage() {
-
+void KPhotoBookView::slotShowCurrentImage()
+{
     if (Settings::toolsUseInternalImageViewer()) {
         tracer->sdebug(__func__) << "Opening internal Imageviewer ... " << endl;
 
@@ -227,8 +224,8 @@ void KPhotoBookView::slotShowCurrentImage() {
 //
 // private methods
 //
-void KPhotoBookView::removeAllFiles() {
-
+void KPhotoBookView::removeAllFiles()
+{
     // we must deselect all files before removing it to improve the speed
     m_fileView->clearSelection();
 

@@ -24,8 +24,8 @@
 Tracer* FilterNodeOpAnd::tracer = Tracer::getInstance("kde.kphotobook.engine", "FilterNodeOpAnd");
 
 
-FilterNodeOpAnd::FilterNodeOpAnd(FilterNode* parent)
-    :FilterNode(parent)
+FilterNodeOpAnd::FilterNodeOpAnd(FilterNode* parent) :
+    FilterNode(parent)
 {
 }
 

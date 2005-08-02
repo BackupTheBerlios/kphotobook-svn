@@ -27,35 +27,38 @@
 #include <qcheckbox.h>
 #include <qdir.h>
 
+
 /**
  * Dialog for adding a source directory.
  *
  * CVS-ID $Id$
  */
-class DialogAddSourceDir : public KDialogBase {
-
-Q_OBJECT
-
-public:
-    DialogAddSourceDir(QWidget* parent = 0, const char* name = 0);
-
-    ~DialogAddSourceDir();
-
-    QDir* directory() {
-        return new QDir(m_currentDirectoryLineEdit->text());
-    }
-
-    bool recursive() {
-        return m_recursiveCheckBox->state();
-    }
-
-private slots:
-    void slotDirectoryButtonClicked();
-    void slotTextChanged(const QString& text);
-
-private:
-    KLineEdit* m_currentDirectoryLineEdit;
-    QCheckBox* m_recursiveCheckBox;
+class DialogAddSourceDir : public KDialogBase
+{
+    Q_OBJECT
+    
+    public:
+        DialogAddSourceDir(QWidget* parent = 0, const char* name = 0);
+    
+        ~DialogAddSourceDir();
+    
+        QDir* directory()
+        {
+            return new QDir(m_currentDirectoryLineEdit->text());
+        }
+    
+        bool recursive()
+        {
+            return m_recursiveCheckBox->state();
+        }
+    
+    private slots:
+        void slotDirectoryButtonClicked();
+        void slotTextChanged(const QString& text);
+    
+    private:
+        KLineEdit* m_currentDirectoryLineEdit;
+        QCheckBox* m_recursiveCheckBox;
 };
 
 #endif

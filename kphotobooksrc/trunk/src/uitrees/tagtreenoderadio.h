@@ -25,36 +25,37 @@
 
 class TagNodeRadio;
 
+
 /**
  * Concrete tagtreenode for displaying a boolean tagnode.
  *
  * CVS-ID $Id: tagtreenodeboolean.h 289 2005-04-03 19:35:11Z starcube $
  */
-class TagTreeNodeRadio : public TagTreeNode {
-
-private:
-    static Tracer* tracer;
-
-public:
-    TagTreeNodeRadio(TagTree* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
-    TagTreeNodeRadio(TagTreeNode* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
-    virtual ~TagTreeNodeRadio();
-
-    /**
-     * Returns an FilterNode used to describe this filter.
-     */
-    FilterNode* subfilter();
-
-    virtual void leftClicked(TagTree* tagTree, int column);
-    virtual void rightClicked(TagTree* tagTree, int column);
-
-    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
-
-    void setState(bool selected) {
-        m_tagCurrentMatch = (selected ? TagTreeNode::TAGGED : TagTreeNode::UNTAGGED);
-    }
+class TagTreeNodeRadio : public TagTreeNode
+{
+    private:
+        static Tracer* tracer;
+    
+    public:
+        TagTreeNodeRadio(TagTree* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+        TagTreeNodeRadio(TagTreeNode* parent, TagNodeRadio* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+        
+        virtual ~TagTreeNodeRadio();
+    
+        /**
+        * Returns an FilterNode used to describe this filter.
+        */
+        FilterNode* subfilter();
+    
+        virtual void leftClicked(TagTree* tagTree, int column);
+        virtual void rightClicked(TagTree* tagTree, int column);
+    
+        virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
+    
+        void setState(bool selected)
+        {
+            m_tagCurrentMatch = (selected ? TagTreeNode::TAGGED : TagTreeNode::UNTAGGED);
+        }
 };
 
 #endif

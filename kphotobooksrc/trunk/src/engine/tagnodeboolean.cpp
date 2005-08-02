@@ -23,17 +23,19 @@
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocboolean.h"
 
+
 Tracer* TagNodeBoolean::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeBoolean");
 
-TagNodeBoolean::TagNodeBoolean(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
-    : TagNode(id, text, comment, iconName, parent) {
 
+TagNodeBoolean::TagNodeBoolean(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent) :
+    TagNode(id, text, comment, iconName, parent)
+{
     tracer->sinvoked(__func__) << "with id: " << id << ", text: " << text << ", icon: " << iconName << endl;
 }
 
 
-void TagNodeBoolean::setTagged(File* file, bool tagged) {
-
+void TagNodeBoolean::setTagged(File* file, bool tagged)
+{
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
     if (fileTagNodeAssoc) {
         FileTagNodeAssocBoolean* fileTagNodeAssocBoolean = dynamic_cast<FileTagNodeAssocBoolean*>(fileTagNodeAssoc);
@@ -44,8 +46,8 @@ void TagNodeBoolean::setTagged(File* file, bool tagged) {
 }
 
 
-bool TagNodeBoolean::tagged(File* file) {
-
+bool TagNodeBoolean::tagged(File* file)
+{
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
     if (fileTagNodeAssoc == 0) {
         return false;

@@ -26,17 +26,19 @@
 
 #include <qregexp.h>
 
+
 Tracer* TagNodeString::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeString");
 
-TagNodeString::TagNodeString(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
-    : TagNode(id, text, comment, iconName, parent) {
 
+TagNodeString::TagNodeString(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent) :
+    TagNode(id, text, comment, iconName, parent)
+{
     tracer->sinvoked(__func__) << "with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
 }
 
 
-void TagNodeString::setTagged(File* file, QString value) {
-
+void TagNodeString::setTagged(File* file, QString value)
+{
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
     if (fileTagNodeAssoc) {
         FileTagNodeAssocString* fileTagNodeAssocString = dynamic_cast<FileTagNodeAssocString*>(fileTagNodeAssoc);
@@ -47,8 +49,8 @@ void TagNodeString::setTagged(File* file, QString value) {
 }
 
 
-bool TagNodeString::tagged(File* file, QString pattern) {
-
+bool TagNodeString::tagged(File* file, QString pattern)
+{
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
 
     if (fileTagNodeAssoc == 0) {
@@ -87,5 +89,3 @@ bool TagNodeString::tagged(File* file)
         return !s.isEmpty();
     }
 }
-
-

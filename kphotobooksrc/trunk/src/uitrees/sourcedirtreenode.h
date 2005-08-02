@@ -26,8 +26,8 @@
 #include <klistview.h>
 #include <kpopupmenu.h>
 
-#include <qstring.h>
 #include <qpixmap.h>
+#include <qstring.h>
 
 class KPhotoBook;
 class SourceDirTree;
@@ -39,96 +39,99 @@ class SourceDir;
  *
  * CVS-ID $Id$
  */
-class SourceDirTreeNode : public KListViewItem {
-
-private:
-    static Tracer* tracer;
-
-public:
-    /**
-     * Creates a new toplevel SourceDirTreeNode in the specified SourceDirTree.
-     * @param parent The KListView to add the created SourceDirTreeNode to.
-     * @param photobook The photobook.
-     * @param sourceDir The SourceDir to represent in the SourceDirTree.
-     * @param contextMenu The contextMenu to display on this SourceDirTreeNode (optional). If not set, no contextMenu is shown.
-     */
-    SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu = 0);
-    SourceDirTreeNode(SourceDirTreeNode* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu = 0);
-
-    virtual ~SourceDirTreeNode() {
-    }
-
-    /**
-     * Refreshes the displayed icon.
-     */
-    void refreshIcon();
-
-    /**
-     * Expands or collapses the whole subtree beginning with this TagTreeNode.
-     * @param open Indicates if the subtree must be expanded (true) or collapsed (false).
-     */
-    void setOpenRecursive(bool open);
-
-    /**
-     * Returns the source directory represented by this SourceDirTreeNode.
-     * @return The source directory represented by this SourceDirTreeNode.
-     */
-    SourceDir* sourceDir() {
-        return m_sourceDir;
-    }
-
-    void setSelectedFilesCount(int selectedFilesCount);
-    void increaseSelectedFilesCount(int amount) {
-        setSelectedFilesCount(m_selectedFilesCount + amount);
-    }
-    int selectedFilesCount() {
-        return m_selectedFilesCount;
-    }
-
-    void setIncluded(bool included);
-    bool included();
-    void invertInclusion();
-
-    void setIncludedRecursive(bool included);
-    void invertInclusionRecursive();
-
-    /**
-     * Returns the currently set filter as string representation.
-     */
-    virtual QString getFilterString();
-
-    /**
-     * Applies the filter returned by getFilter().
-     */
-    virtual void applyFilterString(QString filter);
-
-    /**
-     * This method is called by the SourceDirTree when this SourceDirTreeNode is clicked with the
-     * left mouse button.
-     * @param sourceDirTree The SourceDirTree we belong to.
-     * @param column The column number the user clicked in.
-     */
-    void leftClicked(SourceDirTree* sourceDirTree, int column);
-
-    /**
-     * This method is called by the SourceDirTree when this SourceDirTreeNode is clicked with the
-     * right mouse button.
-     * @param sourceDirTree The SourceDirTree we belong to.
-     * @param column The column number the user clicked in.
-     */
-    void rightClicked(SourceDirTree* sourceDirTree, int column);
-
-    void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
-
-private:
-    KPhotoBook* m_photobook;
-    SourceDir* m_sourceDir;
-
-    unsigned int m_selectedFilesCount;
-
-    KPopupMenu* m_contextMenu;
-
-    void init(bool showRelativePath);
+class SourceDirTreeNode : public KListViewItem
+{
+    private:
+        static Tracer* tracer;
+    
+    public:
+        /**
+        * Creates a new toplevel SourceDirTreeNode in the specified SourceDirTree.
+        * @param parent The KListView to add the created SourceDirTreeNode to.
+        * @param photobook The photobook.
+        * @param sourceDir The SourceDir to represent in the SourceDirTree.
+        * @param contextMenu The contextMenu to display on this SourceDirTreeNode (optional). If not set, no contextMenu is shown.
+        */
+        SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu = 0);
+        SourceDirTreeNode(SourceDirTreeNode* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu = 0);
+    
+        virtual ~SourceDirTreeNode()
+        {
+        }
+    
+        /**
+        * Refreshes the displayed icon.
+        */
+        void refreshIcon();
+    
+        /**
+        * Expands or collapses the whole subtree beginning with this TagTreeNode.
+        * @param open Indicates if the subtree must be expanded (true) or collapsed (false).
+        */
+        void setOpenRecursive(bool open);
+    
+        /**
+        * Returns the source directory represented by this SourceDirTreeNode.
+        * @return The source directory represented by this SourceDirTreeNode.
+        */
+        SourceDir* sourceDir() {
+            return m_sourceDir;
+        }
+    
+        void setSelectedFilesCount(int selectedFilesCount);
+        void increaseSelectedFilesCount(int amount)
+        {
+            setSelectedFilesCount(m_selectedFilesCount + amount);
+        }
+        int selectedFilesCount()
+        {
+            return m_selectedFilesCount;
+        }
+    
+        void setIncluded(bool included);
+        bool included();
+        void invertInclusion();
+    
+        void setIncludedRecursive(bool included);
+        void invertInclusionRecursive();
+    
+        /**
+        * Returns the currently set filter as string representation.
+        */
+        virtual QString getFilterString();
+    
+        /**
+        * Applies the filter returned by getFilter().
+        */
+        virtual void applyFilterString(QString filter);
+    
+        /**
+        * This method is called by the SourceDirTree when this SourceDirTreeNode is clicked with the
+        * left mouse button.
+        * @param sourceDirTree The SourceDirTree we belong to.
+        * @param column The column number the user clicked in.
+        */
+        void leftClicked(SourceDirTree* sourceDirTree, int column);
+    
+        /**
+        * This method is called by the SourceDirTree when this SourceDirTreeNode is clicked with the
+        * right mouse button.
+        * @param sourceDirTree The SourceDirTree we belong to.
+        * @param column The column number the user clicked in.
+        */
+        void rightClicked(SourceDirTree* sourceDirTree, int column);
+    
+        void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
+    
+    private:
+        KPhotoBook* m_photobook;
+        SourceDir* m_sourceDir;
+    
+        unsigned int m_selectedFilesCount;
+    
+        KPopupMenu* m_contextMenu;
+    
+        void init(bool showRelativePath);
 };
 
 

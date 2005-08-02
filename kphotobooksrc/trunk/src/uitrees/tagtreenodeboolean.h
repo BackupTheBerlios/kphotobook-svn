@@ -25,29 +25,29 @@
 
 class TagNodeBoolean;
 
+
 /**
  * Concrete tagtreenode for displaying a boolean tagnode.
  *
  * CVS-ID $Id$
  */
-class TagTreeNodeBoolean : public TagTreeNode {
-
-public:
-    TagTreeNodeBoolean(TagTree* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
-    TagTreeNodeBoolean(TagTreeNode* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
-    virtual ~TagTreeNodeBoolean();
-
-    /**
-     * Returns an FilterNode used to describe this filter.
-     */
-    virtual FilterNode* filter();
-
-    virtual void leftClicked(TagTree* tagTree, int column);
-    virtual void rightClicked(TagTree* tagTree, int column);
-
-    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
+class TagTreeNodeBoolean : public TagTreeNode
+{
+    public:
+        TagTreeNodeBoolean(TagTree* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+        TagTreeNodeBoolean(TagTreeNode* parent, TagNodeBoolean* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+        
+        virtual ~TagTreeNodeBoolean();
+    
+        /**
+        * Returns an FilterNode used to describe this filter.
+        */
+        virtual FilterNode* filter();
+    
+        virtual void leftClicked(TagTree* tagTree, int column);
+        virtual void rightClicked(TagTree* tagTree, int column);
+    
+        virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
 };
 
 #endif

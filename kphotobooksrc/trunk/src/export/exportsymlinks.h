@@ -24,10 +24,9 @@
 #include "../tracer/tracer.h"
 
 #include <qobject.h>
-#include <qwidget.h>
-#include <qthread.h>
-
 #include <qstring.h>
+#include <qthread.h>
+#include <qwidget.h>
 
 #include <kfileitem.h>
 #include <kprogress.h>
@@ -40,77 +39,74 @@
  *
  * CVS-ID $Id$
 */
-class ExportSymlinks : public QObject { //, public QThread {
-
-  Q_OBJECT
-
-private:
-    static Tracer* tracer;
-
-public:
-  /**
-   * Creates a new instance prepared to export to the specified directory.
-   * If the specified destinationDir is invalid nothing is done here, the
-   * start() method will handle this.
-   *
-   * @param parent The parent, used for displaying dialogs.
-   * @param destinationDir The directory to export to.
-   */
-  ExportSymlinks(QWidget* parent, QString destinationDir);
-
-  ~ExportSymlinks();
-
-  /**
-   * Sets the sourceFiles to create symbolic links to.
-   * If the specified list is 0 or empty, the start method will do nothing.
-   *
-   * @param sourceFiles The files to create symlinks to.T
-   */
-  void setSourceFiles(const KFileItemList* sourceFiles);
-
-  /**
-   * Starts exporting the files.
-   * This class handles all possible problems by asking the user what to do.
-   * If the destinationDir specified in the constructor is invalid, only 
-   * a message is traced and the method is leaved. It is up to the caller
-   * to ensure that the destinationDir is valid.
-   */
-  void execute();
-
-
-public slots:
-  /**
-   * Stops creating (exporting) symbolic links.
-   * Already written links are not removed!
-   */
-  void slotCancel();
-
-
-private:
-  /**
-   * Just for keeping the start method a bit smaller.
-   */
-  void doExport();
-  
-  /**
-   * Does the actual job of creating the symbolic link.
-   * Also all needed user interaction (rename/skip/autoskip/overwrite,...)
-   * is done within this method.
-   */
-  void createSymlink(QString sourceFile, QString symlink);
-
-
-private:
-  QWidget* m_parent;
-  QString m_destinationDir;
-
-  QPtrList<KFileItem>* m_sourceFiles;
-
-  KProgressDialog* m_progressDialog;
-  
-  bool m_cancelling;
-  bool m_autoSkip;
-  bool m_overwriteAll;
+class ExportSymlinks : public QObject //, public QThread
+{
+    Q_OBJECT
+    
+    private:
+        static Tracer* tracer;
+    
+    public:
+        /**
+        * Creates a new instance prepared to export to the specified directory.
+        * If the specified destinationDir is invalid nothing is done here, the
+        * start() method will handle this.
+        *
+        * @param parent The parent, used for displaying dialogs.
+        * @param destinationDir The directory to export to.
+        */
+        ExportSymlinks(QWidget* parent, QString destinationDir);
+        
+        ~ExportSymlinks();
+        
+        /**
+        * Sets the sourceFiles to create symbolic links to.
+        * If the specified list is 0 or empty, the start method will do nothing.
+        *
+        * @param sourceFiles The files to create symlinks to.T
+        */
+        void setSourceFiles(const KFileItemList* sourceFiles);
+        
+        /**
+        * Starts exporting the files.
+        * This class handles all possible problems by asking the user what to do.
+        * If the destinationDir specified in the constructor is invalid, only 
+        * a message is traced and the method is leaved. It is up to the caller
+        * to ensure that the destinationDir is valid.
+        */
+        void execute();
+        
+    public slots:
+        /**
+        * Stops creating (exporting) symbolic links.
+        * Already written links are not removed!
+        */
+        void slotCancel();
+        
+    private:
+        /**
+        * Just for keeping the start method a bit smaller.
+        */
+        void doExport();
+        
+        /**
+        * Does the actual job of creating the symbolic link.
+        * Also all needed user interaction (rename/skip/autoskip/overwrite,...)
+        * is done within this method.
+        */
+        void createSymlink(QString sourceFile, QString symlink);
+    
+    private:
+        QWidget* m_parent;
+        QString m_destinationDir;
+        
+        QPtrList<KFileItem>* m_sourceFiles;
+        
+        KProgressDialog* m_progressDialog;
+        
+        bool m_cancelling;
+        bool m_autoSkip;
+        bool m_overwriteAll;
 };
 
 #endif

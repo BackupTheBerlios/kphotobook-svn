@@ -30,6 +30,7 @@
 class File;
 class TagNodeRadio;
 
+
 /**
  * Concrete class representing the association between a file and a TagNodeRadio.
  * This associations contains a reference to the tagnode and the state of the association.
@@ -43,7 +44,6 @@ class FileTagNodeAssocRadio : public FileTagNodeAssoc
     
     public:
         FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, bool value = false);
-    
         FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, QString value);
     
         ~FileTagNodeAssocRadio()

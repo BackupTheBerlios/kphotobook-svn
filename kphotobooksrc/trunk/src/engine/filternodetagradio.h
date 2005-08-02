@@ -21,43 +21,44 @@
 #ifndef FILTERNODETAGBOOLEAN_H
 #define FILTERNODETAGBOOLEAN_H
 
-#include "filternode.h"
 #include "file.h"
+#include "filternode.h"
 #include "tagnoderadio.h"
 
 #include <qobject.h>
+
 
 /**
  *
  * CVS-ID $Id: tagnode.h 307 2005-04-17 12:47:26Z starcube $
  */
-class FilterNodeTagRadio : public FilterNode {
-
-Q_OBJECT
-
-public:
-    FilterNodeTagRadio(FilterNode* parent, TagNodeRadio* tagNodeRadio, bool value);
-    FilterNodeTagRadio(TagNodeRadio* tagNodeRadio, bool value);
-
-    ~FilterNodeTagRadio();
-
-    /**
-     * Evaluates if this subtree or leafnode matches the given file.
-     */
-    virtual bool evaluate(File* file) throw(FilterException*);
-
-    /**
-     * Prints the value of this Filternode and calls this method with a increased
-     * indention on each child.
-     * The method is intended for debugging the filter.
-     *
-     * @indention the indention to put before the text.
-     */
-    virtual void dump(QString indention = QString(""));
-
-private:
-    TagNodeRadio* m_tagNodeRadio;
-    bool m_value;
+class FilterNodeTagRadio : public FilterNode
+{
+    Q_OBJECT
+    
+    public:
+        FilterNodeTagRadio(FilterNode* parent, TagNodeRadio* tagNodeRadio, bool value);
+        FilterNodeTagRadio(TagNodeRadio* tagNodeRadio, bool value);
+    
+        ~FilterNodeTagRadio();
+    
+        /**
+        * Evaluates if this subtree or leafnode matches the given file.
+        */
+        virtual bool evaluate(File* file) throw(FilterException*);
+    
+        /**
+        * Prints the value of this Filternode and calls this method with a increased
+        * indention on each child.
+        * The method is intended for debugging the filter.
+        *
+        * @indention the indention to put before the text.
+        */
+        virtual void dump(QString indention = QString(""));
+    
+    private:
+        TagNodeRadio* m_tagNodeRadio;
+        bool m_value;
 };
 
 #endif

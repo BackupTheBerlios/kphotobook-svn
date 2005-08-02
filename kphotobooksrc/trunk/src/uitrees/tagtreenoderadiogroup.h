@@ -28,42 +28,42 @@
 
 class TagNodeRadioGroup;
 
+
 /**
  * Concrete tagtreenode for displaying a radiogroup.
  *
  * CVS-ID $Id: tagtreenoderadiogroup.h 274 2005-03-25 08:52:15Z choenig $
  */
-class TagTreeNodeRadioGroup : public TagTreeNode {
-
-private:
-    static Tracer* tracer;
-
-public:
-    TagTreeNodeRadioGroup(TagTree* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
-    TagTreeNodeRadioGroup(TagTreeNode* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
-    virtual ~TagTreeNodeRadioGroup();
-
-    /**
-     * Returns an FilterNode used to describe this filter.
-     */
-    virtual FilterNode* filter();
-
-    virtual void leftClicked( TagTree* tagTree, int column);
-    virtual void rightClicked(TagTree* tagTree, int column);
-
-    virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
-
-    /**
-     * sets the selected child to src
-     */
-    void setSelectedTag(TagTreeNodeRadio* src);
-
-    /**
-     * updates the filterstate of this group depending on its children states
-     */
-    void updateFilterState();
+class TagTreeNodeRadioGroup : public TagTreeNode
+{
+    private:
+        static Tracer* tracer;
+    
+    public:
+        TagTreeNodeRadioGroup(TagTree* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+        TagTreeNodeRadioGroup(TagTreeNode* parent, TagNodeRadioGroup* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
+        
+        virtual ~TagTreeNodeRadioGroup();
+    
+        /**
+        * Returns an FilterNode used to describe this filter.
+        */
+        virtual FilterNode* filter();
+    
+        virtual void leftClicked( TagTree* tagTree, int column);
+        virtual void rightClicked(TagTree* tagTree, int column);
+    
+        virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
+    
+        /**
+        * sets the selected child to src
+        */
+        void setSelectedTag(TagTreeNodeRadio* src);
+    
+        /**
+        * updates the filterstate of this group depending on its children states
+        */
+        void updateFilterState();
 };
 
 #endif

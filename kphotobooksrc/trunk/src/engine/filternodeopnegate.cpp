@@ -24,8 +24,8 @@
 Tracer* FilterNodeOpNegate::tracer = Tracer::getInstance("kde.kphotobook.engine", "FilterNodeOpNegate");
 
 
-FilterNodeOpNegate::FilterNodeOpNegate(FilterNode* parent)
-    :FilterNode(parent)
+FilterNodeOpNegate::FilterNodeOpNegate(FilterNode* parent) :
+    FilterNode(parent)
 {
 }
 

@@ -33,9 +33,9 @@
 Tracer* TagTreeNodeString::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNodeSTring");
 
 
-TagTreeNodeString::TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, photobook, tagNode, contextMenu)
-    , m_filterValue(QString::null)
+TagTreeNodeString::TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu) :
+    TagTreeNode(parent, photobook, tagNode, contextMenu),
+    m_filterValue(QString::null)
 {
     // enable editing of value and filter
     if (!tagNode->readonly()) {
@@ -45,9 +45,9 @@ TagTreeNodeString::TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KP
 }
 
 
-TagTreeNodeString::TagTreeNodeString(TagTreeNode* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, photobook, tagNode, contextMenu)
-    , m_filterValue(QString::null)
+TagTreeNodeString::TagTreeNodeString(TagTreeNode* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu) :
+    TagTreeNode(parent, photobook, tagNode, contextMenu),
+    m_filterValue(QString::null)
 {
     // enable editing of value and filter
     if (!tagNode->readonly()) {
@@ -58,7 +58,8 @@ TagTreeNodeString::TagTreeNodeString(TagTreeNode* parent, TagNodeString* tagNode
 
 
 TagTreeNodeString::~TagTreeNodeString()
-{}
+{
+}
 
 
 FilterNode* TagTreeNodeString::filter()
@@ -148,11 +149,11 @@ void TagTreeNodeString::handleRenaming(int column, const QString& text)
     TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
 
     switch (column) {
-        case TagTree::COLUMN_TEXT : {
+        case TagTree::COLUMN_TEXT :
             break;
-        }
 
-        case TagTree::COLUMN_VALUE : {
+        case TagTree::COLUMN_VALUE :
+        {
             QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
 
             // loop over all selected files and change their state
@@ -178,7 +179,8 @@ void TagTreeNodeString::handleRenaming(int column, const QString& text)
             break;
         }
 
-        case TagTree::COLUMN_FILTER : {
+        case TagTree::COLUMN_FILTER :
+        {
             // filter has changed --> update the text in the node and auto refresh view
             setFilterValue(text);
 
@@ -194,12 +196,14 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
     TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
 
     switch (column) {
-        case TagTree::COLUMN_TEXT : {
+        case TagTree::COLUMN_TEXT :
+        {
             TagTreeNode::paintCell(p, cg, column, width, alignment);
             break;
         }
 
-        case TagTree::COLUMN_VALUE : {
+        case TagTree::COLUMN_VALUE :
+        {
             bool mixed = false;
             QString text = "";
             if (m_tagCurrentMatch == TagTreeNode::MIXTAGGED) {
@@ -258,7 +262,8 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
             break;
         }
 
-        case TagTree::COLUMN_FILTER : {
+        case TagTree::COLUMN_FILTER :
+        {
             // if filtering an empty string (the filter is ignored), we display the third state of the checkbox
             if (m_filterValue.isEmpty()) {
                 // paint the cell with the alternating background color
@@ -339,14 +344,20 @@ QString* TagTreeNodeString::getCommonValue(const KFileItemList* selectedFiles)
 QString TagTreeNodeString::toolTip(int column)
 {
     switch (column) {
-    case TagTree::COLUMN_TEXT:
-    case TagTree::COLUMN_FILTER:
-        return TagTreeNode::toolTip(column);
-        break;
-    case TagTree::COLUMN_VALUE:
-        return text(TagTree::COLUMN_VALUE);
-        break;
+        case TagTree::COLUMN_TEXT:
+        case TagTree::COLUMN_FILTER:
+        {
+            return TagTreeNode::toolTip(column);
+            break;
+        }
+        
+        case TagTree::COLUMN_VALUE:
+        {
+            return text(TagTree::COLUMN_VALUE);
+            break;
+        }
     }
+    
     return "";
 }
 

@@ -34,70 +34,74 @@
 
 class TagTreeNode;
 
+
 /**
  * The dialog to create a now tag.
  *
  * CVS-ID $Id: dialogcreatetag.h 284 2005-03-31 20:03:08Z choenig $
  */
-class DialogManageTag : public KDialogBase {
-
-Q_OBJECT
-
-public:
-    enum Mode {
-        MODE_CREATE_TAG,
-        MODE_EDIT_TAG
-    };
-
-public:
-    DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parentNode, TagTreeNode* tagTreeNode, KPhotoBook* photobook, const char *name);
-
-    ~DialogManageTag();
-
-    TagNode::Type tagType();
-
-    QString tagName() {
-        return m_nameLineEdit->text();
-    }
-
-    QString tagComment() {
-        return m_commentLineEdit->text();
-    }
-
-    QString tagIcon() {
-        return m_iconLineEdit->text();
-    }
-
-    bool tagSecret() {
-        return m_chkSecret->isChecked();
-    }
-
-
-private slots:
-    void slotValidate();
-
-    void slotIconButtonClicked();
-
-private:
-
-    void fillTypeCombo(TagTreeNode* parentNode);
-
-    Mode m_mode;
-
-    TagTreeNode* m_parentNode;
-    TagTreeNode* m_tagTreeNode;
-
-    KPhotoBook* m_photobook;
-
-    KComboBox* m_typeComboBox;
-    QValueList<TagNode::Type>* m_typeComboBoxEntries;
-
-    KLineEdit* m_nameLineEdit;
-    KLineEdit* m_commentLineEdit;
-    KLineEdit* m_iconLineEdit;
-    QPushButton* m_iconButton;
-    QCheckBox* m_chkSecret;
-
+class DialogManageTag : public KDialogBase
+{
+    Q_OBJECT
+    
+    public:
+        enum Mode {
+            MODE_CREATE_TAG,
+            MODE_EDIT_TAG
+        };
+    
+    public:
+        DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parentNode, TagTreeNode* tagTreeNode, KPhotoBook* photobook, const char *name);
+    
+        ~DialogManageTag();
+    
+        TagNode::Type tagType();
+    
+        QString tagName()
+        {
+            return m_nameLineEdit->text();
+        }
+    
+        QString tagComment()
+        {
+            return m_commentLineEdit->text();
+        }
+    
+        QString tagIcon()
+        {
+            return m_iconLineEdit->text();
+        }
+    
+        bool tagSecret()
+        {
+            return m_chkSecret->isChecked();
+        }
+    
+    
+    private slots:
+        void slotValidate();
+    
+        void slotIconButtonClicked();
+    
+    private:
+    
+        void fillTypeCombo(TagTreeNode* parentNode);
+    
+        Mode m_mode;
+    
+        TagTreeNode* m_parentNode;
+        TagTreeNode* m_tagTreeNode;
+    
+        KPhotoBook* m_photobook;
+    
+        KComboBox* m_typeComboBox;
+        QValueList<TagNode::Type>* m_typeComboBoxEntries;
+    
+        KLineEdit* m_nameLineEdit;
+        KLineEdit* m_commentLineEdit;
+        KLineEdit* m_iconLineEdit;
+        QPushButton* m_iconButton;
+        QCheckBox* m_chkSecret;
 };
 
 #endif

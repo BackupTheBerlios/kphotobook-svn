@@ -6,8 +6,8 @@
 #include "settings/settings.h"
 #include "tracer/tracer.h"
 
-#include <kapplication.h>
 #include <kaboutdata.h>
+#include <kapplication.h>
 #include <kcmdlineargs.h>
 #include <klocale.h>
 #include <ksplashscreen.h>
@@ -15,7 +15,9 @@
 
 #include <qfileinfo.h>
 
+
 static Tracer* tracer = Tracer::getInstance( "kde.kphotobook", "" );
+
 
 static const char description[] = I18N_NOOP(
             "KPhotoBook is a sophisticated and highly optimized KDE\n"

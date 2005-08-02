@@ -21,8 +21,8 @@
 #ifndef DIALOGDATETIMECHOOSER_H
 #define DIALOGDATETIMECHOOSER_H
 
-#include "../tracer/tracer.h"
 #include "../widgets/datetimewidget.h"
+#include "../tracer/tracer.h"
 
 #include <kdialogbase.h>
 

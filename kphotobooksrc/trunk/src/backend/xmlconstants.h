@@ -23,53 +23,55 @@
 
 #include <qstring.h>
 
+
 /**
  * Constants used by the xml parser and writer.
  *
  * CVS-ID $Id$
  */
-class XmlConstants{
-
-public:
-    // the constants containg the element- and attribute-names
-    static const QString ELEMENT_KPHOTOBOOK;
-    static const QString ELEMENT_SOURCEDIRS;
-    static const QString ELEMENT_SOURCEDIR;
-    static const QString ELEMENT_TAGS;
-    static const QString ELEMENT_TAG;
-    static const QString ELEMENT_FILES;
-    static const QString ELEMENT_FILE;
-    static const QString ELEMENT_TAGASSOC;
-
-    static const QString ATTRIBUTE_KPHOTOBOOK_NAME;
-    static const QString ATTRIBUTE_KPHOTOBOOK_UID;
-
-    static const QString ATTRIBUTE_SOURCEDIR_ID;
-    static const QString ATTRIBUTE_SOURCEDIR_DIR;
-    static const QString ATTRIBUTE_SOURCEDIR_RECURSIVE;
-
-    static const QString ATTRIBUTE_TAG_ID;
-    static const QString ATTRIBUTE_TAG_NAME;
-    static const QString ATTRIBUTE_TAG_COMMENT;
-    static const QString ATTRIBUTE_TAG_TYPE;
-    static const QString ATTRIBUTE_TAG_ICON;
-    static const QString ATTRIBUTE_TAG_SECRET;
-
-    static const QString ATTRIBUTE_FILES_SOURCEDIRID;
-
-    static const QString ATTRIBUTE_FILE_NAME;
-    static const QString ATTRIBUTE_FILE_ROTATE;
-
-    static const QString ATTRIBUTE_TAGASSOC_TAGID;
-    static const QString ATTRIBUTE_TAGASSOC_VALUE;
-
-public:
-    XmlConstants(){
-    }
-
-    ~XmlConstants(){
-    }
-
+class XmlConstants
+{
+    public:
+        // the constants containg the element- and attribute-names
+        static const QString ELEMENT_KPHOTOBOOK;
+        static const QString ELEMENT_SOURCEDIRS;
+        static const QString ELEMENT_SOURCEDIR;
+        static const QString ELEMENT_TAGS;
+        static const QString ELEMENT_TAG;
+        static const QString ELEMENT_FILES;
+        static const QString ELEMENT_FILE;
+        static const QString ELEMENT_TAGASSOC;
+    
+        static const QString ATTRIBUTE_KPHOTOBOOK_NAME;
+        static const QString ATTRIBUTE_KPHOTOBOOK_UID;
+    
+        static const QString ATTRIBUTE_SOURCEDIR_ID;
+        static const QString ATTRIBUTE_SOURCEDIR_DIR;
+        static const QString ATTRIBUTE_SOURCEDIR_RECURSIVE;
+    
+        static const QString ATTRIBUTE_TAG_ID;
+        static const QString ATTRIBUTE_TAG_NAME;
+        static const QString ATTRIBUTE_TAG_COMMENT;
+        static const QString ATTRIBUTE_TAG_TYPE;
+        static const QString ATTRIBUTE_TAG_ICON;
+        static const QString ATTRIBUTE_TAG_SECRET;
+    
+        static const QString ATTRIBUTE_FILES_SOURCEDIRID;
+    
+        static const QString ATTRIBUTE_FILE_NAME;
+        static const QString ATTRIBUTE_FILE_ROTATE;
+    
+        static const QString ATTRIBUTE_TAGASSOC_TAGID;
+        static const QString ATTRIBUTE_TAGASSOC_VALUE;
+    
+    public:
+        XmlConstants()
+        {
+        }
+    
+        ~XmlConstants()
+        {
+        }
 };
 
 #endif

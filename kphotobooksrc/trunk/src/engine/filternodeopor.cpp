@@ -21,8 +21,8 @@
 #include "filternodeopor.h"
 
 
-FilterNodeOpOr::FilterNodeOpOr(FilterNode* parent)
-    :FilterNode(parent)
+FilterNodeOpOr::FilterNodeOpOr(FilterNode* parent) :
+    FilterNode(parent)
 {
 }
 
@@ -34,7 +34,6 @@ FilterNodeOpOr::~FilterNodeOpOr()
     
 bool FilterNodeOpOr::evaluate(File* file) throw(FilterException*)
 {
-
     // an or operator with no value is evaluated to true!
     if (m_children->count() == 0) {
         return true;

@@ -30,6 +30,7 @@
 class File;
 class TagNodeBoolean;
 
+
 /**
  * Concrete class representing the association between a file and a TagNodeBoolean.
  * This associations contains a reference to the tagnode and the state of the association.
@@ -43,7 +44,6 @@ class FileTagNodeAssocBoolean : public FileTagNodeAssoc
     
     public:
         FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value = false);
-    
         FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value);
     
         ~FileTagNodeAssocBoolean()

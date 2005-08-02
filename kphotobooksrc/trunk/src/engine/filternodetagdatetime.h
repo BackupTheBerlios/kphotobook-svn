@@ -21,12 +21,13 @@
 #ifndef FILTERNODETAGDATETIME_H
 #define FILTERNODETAGDATETIME_H
 
-#include "filternode.h"
 #include "file.h"
+#include "filternode.h"
 #include "tagnodedatetime.h"
 
 #include <qobject.h>
 #include <qstring.h>
+
 
 /**
  *
@@ -34,36 +35,36 @@
  */
 class FilterNodeTagDateTime : public FilterNode
 {
-Q_OBJECT
-
-public:
-    FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime);
-    FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime);
-
-    FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QString pattern);
-    FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QString pattern);
-
-    ~FilterNodeTagDateTime();
-
-    /**
-     * Evaluates if this subtree or leafnode matches the given file.
-     */
-    virtual bool evaluate(File* file) throw(FilterException*);
-
-    /**
-     * Prints the value of this Filternode and calls this method with a increased
-     * indention on each child.
-     * The method is intended for debugging the filter.
-     *
-     * @indention the indention to put before the text.
-     */
-    virtual void dump(QString indention = QString(""));
-
-private:
-    TagNodeDateTime* m_tagNodeDateTime;
-    QString m_pattern;
-    QDateTime* m_fromDateTime;
-    QDateTime* m_toDateTime;
+    Q_OBJECT
+    
+    public:
+        FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime);
+        FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime);
+    
+        FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QString pattern);
+        FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QString pattern);
+    
+        ~FilterNodeTagDateTime();
+    
+        /**
+        * Evaluates if this subtree or leafnode matches the given file.
+        */
+        virtual bool evaluate(File* file) throw(FilterException*);
+    
+        /**
+        * Prints the value of this Filternode and calls this method with a increased
+        * indention on each child.
+        * The method is intended for debugging the filter.
+        *
+        * @indention the indention to put before the text.
+        */
+        virtual void dump(QString indention = QString(""));
+    
+    private:
+        TagNodeDateTime* m_tagNodeDateTime;
+        QString m_pattern;
+        QDateTime* m_fromDateTime;
+        QDateTime* m_toDateTime;
 };
 
 #endif

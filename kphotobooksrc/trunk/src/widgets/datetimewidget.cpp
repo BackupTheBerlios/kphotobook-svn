@@ -35,15 +35,15 @@
 Tracer* DateTimeWidget::tracer = Tracer::getInstance("kde.kphotobook.widgets", "DateTimeWidget");
 
 
-DateTimeWidget::DateTimeWidget(QWidget* parent, const QDateTime& dateTime)
-        : QWidget(parent)
-        , m_locale(KGlobal::locale())
-        , m_dateLine(0)
-        , m_timeLine(0)
-        , m_chosenDate(0)
-        , m_chosenDateIsValid(true)
-        , m_chosenTime(0)
-        , m_chosenTimeIsValid(true)
+DateTimeWidget::DateTimeWidget(QWidget* parent, const QDateTime& dateTime) :
+    QWidget(parent),
+    m_locale(KGlobal::locale()),
+    m_dateLine(0),
+    m_timeLine(0),
+    m_chosenDate(0),
+    m_chosenDateIsValid(true),
+    m_chosenTime(0),
+    m_chosenTimeIsValid(true)
 {
     initUI(dateTime);
 }

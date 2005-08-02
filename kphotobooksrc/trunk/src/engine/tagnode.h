@@ -26,12 +26,13 @@
 #include <klocale.h>
 
 #include <qobject.h>
-#include <qstring.h>
 #include <qpixmap.h>
 #include <qptrlist.h>
+#include <qstring.h>
 
 class FileTagNodeAssoc;
 class File;
+
 
 /**
  * The superclass for all different taypes of tagnodes.
@@ -40,10 +41,10 @@ class File;
  */
 class TagNode : public QObject
 {
+    Q_OBJECT
+    
     private:
         static Tracer* tracer;
-    
-    Q_OBJECT
     
     public:
     

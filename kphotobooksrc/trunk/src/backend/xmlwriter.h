@@ -21,10 +21,9 @@
 #ifndef XMLWRITER_H
 #define XMLWRITER_H
 
-#include "../tracer/tracer.h"
-
+#include "xmlconstants.h"
 #include "../exception.h"
-#include "../backend/xmlconstants.h"
+#include "../tracer/tracer.h"
 
 #include <qfile.h>
 #include <qstring.h>
@@ -36,40 +35,43 @@ class TagNode;
 class FileTagNodeAssoc;
 class QTextStream;
 
+
 /**
  * This class is writing the xml-file containing all needed data of the engine.
  *
  * CVS-ID $Id$
  */
-class XmlWriter : public XmlConstants {
-
-private:
-    static Tracer* tracer;
-
-public:
-    XmlWriter(Engine* engine)
-        : XmlConstants()
-        , m_engine(engine) {
-    }
-
-    ~XmlWriter() {
-    }
-
-    void store(QFile* file) throw(PersistingException*);
-
-private:
-    Engine* m_engine;
-
-    void dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent);
-    void dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent);
-    void dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent);
-    void dumpFile(QTextStream& stream, File* file, QString indent);
-    void dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent);
-
-    /**
-     * Quotes all needed characters in the specified string for xml files.
-     */
-    QString entitize(const QString data);
+class XmlWriter : public XmlConstants
+{
+    private:
+        static Tracer* tracer;
+    
+    public:
+        XmlWriter(Engine* engine) :
+            XmlConstants(),
+            m_engine(engine)
+        {
+        }
+    
+        ~XmlWriter()
+        {
+        }
+    
+        void store(QFile* file) throw(PersistingException*);
+    
+    private:
+        Engine* m_engine;
+    
+        void dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent);
+        void dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent);
+        void dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent);
+        void dumpFile(QTextStream& stream, File* file, QString indent);
+        void dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent);
+    
+        /**
+        * Quotes all needed characters in the specified string for xml files.
+        */
+        QString entitize(const QString data);
 };
 
 #endif

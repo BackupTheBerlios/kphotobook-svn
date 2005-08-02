@@ -21,18 +21,18 @@
 #include "filternodetagradio.h"
 
 
-FilterNodeTagRadio::FilterNodeTagRadio(FilterNode* parent, TagNodeRadio* tagNodeRadio, bool value)
-    : FilterNode(parent)
-    , m_tagNodeRadio(tagNodeRadio)
-    , m_value(value)
+FilterNodeTagRadio::FilterNodeTagRadio(FilterNode* parent, TagNodeRadio* tagNodeRadio, bool value) :
+    FilterNode(parent),
+    m_tagNodeRadio(tagNodeRadio),
+    m_value(value)
 {
 }
 
 
-FilterNodeTagRadio::FilterNodeTagRadio(TagNodeRadio* tagNodeRadio, bool value)
-    : FilterNode(0)
-    , m_tagNodeRadio(tagNodeRadio)
-    , m_value(value)
+FilterNodeTagRadio::FilterNodeTagRadio(TagNodeRadio* tagNodeRadio, bool value) :
+    FilterNode(0) ,
+    m_tagNodeRadio(tagNodeRadio),
+    m_value(value)
 {
 }
 
@@ -42,8 +42,8 @@ FilterNodeTagRadio::~FilterNodeTagRadio()
 }
 
 
-bool FilterNodeTagRadio::evaluate(File* file) throw(FilterException*) {
-
+bool FilterNodeTagRadio::evaluate(File* file) throw(FilterException*)
+{
     return m_tagNodeRadio->tagged(file) == m_value;
 }
 

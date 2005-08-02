@@ -25,28 +25,30 @@
 
 #include "tagnode.h"
 
-#include <qstring.h>
 #include <qfile.h>
+#include <qstring.h>
+
 
 /**
  * Concrete tagnode implementation representing a string tag.
  *
  * CVS-ID $Id: tagnodeboolean.h 274 2005-03-25 08:52:15Z choenig $
  */
-class TagNodeString : public TagNode {
-
-private:
-    static Tracer* tracer;
-
-public:
-    TagNodeString(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
-
-    ~TagNodeString() {
-    }
-
-    void setTagged(File* file, QString value);
-    bool tagged(File* file, QString pattern);
-    bool tagged(File* file);
+class TagNodeString : public TagNode
+{
+    private:
+        static Tracer* tracer;
+    
+    public:
+        TagNodeString(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
+    
+        ~TagNodeString()
+        {
+        }
+    
+        void setTagged(File* file, QString value);
+        bool tagged(File* file, QString pattern);
+        bool tagged(File* file);
 };
 
 #endif

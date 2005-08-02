@@ -29,6 +29,7 @@
 #include <qfile.h>
 #include <qstring.h>
 
+
 /**
  * Concrete tagnode implementation representing a datetime tag.
  *
@@ -42,7 +43,8 @@ private:
 public:
     TagNodeDateTime(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
 
-    ~TagNodeDateTime() {
+    ~TagNodeDateTime()
+    {
     }
 
     void setTagged(File* file, QDateTime value);

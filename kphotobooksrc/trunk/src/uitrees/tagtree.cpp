@@ -20,44 +20,44 @@
 
 #include "tagtree.h"
 
-#include "../constants.h"
-#include "../settings/settings.h"
-
 #include "tagtreenode.h"
-#include "../kphotobook.h"
-#include "../engine/tagnode.h"
-#include "../engine/tagnodetitle.h"
-#include "../engine/tagnodeboolean.h"
-#include "../engine/tagnodestring.h"
-#include "../engine/tagnoderadiogroup.h"
-#include "../engine/tagnoderadio.h"
-#include "../engine/tagnodedatetime.h"
-#include "tagtreenodetitle.h"
 #include "tagtreenodeboolean.h"
-#include "tagtreenodestring.h"
+#include "tagtreenodedatetime.h"
 #include "tagtreenoderadiogroup.h"
 #include "tagtreenoderadio.h"
-#include "tagtreenodedatetime.h"
+#include "tagtreenodestring.h"
+#include "tagtreenodetitle.h"
+#include "../constants.h"
+#include "../engine/tagnode.h"
+#include "../engine/tagnodeboolean.h"
+#include "../engine/tagnodedatetime.h"
+#include "../engine/tagnoderadiogroup.h"
+#include "../engine/tagnoderadio.h"
+#include "../engine/tagnodestring.h"
+#include "../engine/tagnodetitle.h"
+#include "../kphotobook.h"
+#include "../settings/settings.h"
 
+#include <kiconloader.h>
 #include <klocale.h>
 #include <kstdaccel.h>
-#include <kiconloader.h>
 
-#include <qwidget.h>
-#include <qheader.h>
 #include <qcursor.h>
+#include <qheader.h>
 #include <qobjectlist.h>
+#include <qwidget.h>
 
 #include <typeinfo>
+
 
 Tracer* TagTree::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTree");
 
 
-TagTree::TagTree(QWidget* parent, KPhotoBook* photobook, const char* name)
-    : KListView(parent, name)
-    , m_photobook(photobook)
-    , m_toolTip(this) {
-
+TagTree::TagTree(QWidget* parent, KPhotoBook* photobook, const char* name) :
+    KListView(parent, name),
+    m_photobook(photobook),
+    m_toolTip(this)
+{
     setFont(Settings::tagTreeFont());
 
     // create columns
@@ -99,24 +99,28 @@ TagTree::TagTree(QWidget* parent, KPhotoBook* photobook, const char* name)
 }
 
 
-void TagTree::expandCurrent(bool recursive) {
-
+void TagTree::expandCurrent(bool recursive)
+{
     if (recursive) {
         dynamic_cast<TagTreeNode*>(currentItem())->setOpenRecursive(true);
     } else {
         currentItem()->setOpen(true);
     }
 }
-void TagTree::collapseCurrent(bool recursive) {
 
+
+void TagTree::collapseCurrent(bool recursive)
+{
     if (recursive) {
         dynamic_cast<TagTreeNode*>(currentItem())->setOpenRecursive(false);
     } else {
         currentItem()->setOpen(false);
     }
 }
-void TagTree::expandAll() {
 
+
+void TagTree::expandAll()
+{
     QListViewItemIterator it(this);
     while (it.current()) {
         TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
@@ -139,8 +143,8 @@ void TagTree::collapseAll() {
 }
 
 
-void TagTree::addTagNodes(QPtrList<TagNode>* rootNodeList) {
-
+void TagTree::addTagNodes(QPtrList<TagNode>* rootNodeList)
+{
     TagNode* rootNode;
     for ( rootNode = rootNodeList->first(); rootNode; rootNode = rootNodeList->next() ) {
         addTagNode(rootNode);
@@ -148,8 +152,8 @@ void TagTree::addTagNodes(QPtrList<TagNode>* rootNodeList) {
 }
 
 
-void TagTree::addTagNode(TagNode* rootNode) {
-
+void TagTree::addTagNode(TagNode* rootNode)
+{
     tracer->sdebug(__func__) << "Converting subtree with root node: " << *rootNode->text() << "..." << endl;
 
     TagTreeNode* tagTreeNode = 0;
@@ -182,8 +186,8 @@ void TagTree::addTagNode(TagNode* rootNode) {
 }
 
 
-void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
-
+void TagTree::addTagNode(TagTreeNode* parent, TagNode* child)
+{
     tracer->sdebug(__func__) << "Converting node: " << *child->text() << "..." << endl;
 
     TagTreeNode* tagTreeNode = 0;
@@ -216,8 +220,8 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child) {
 }
 
 
-void TagTree::deselectFilter() {
-
+void TagTree::deselectFilter()
+{
     QListViewItemIterator it(this);
     while (it.current()) {
         TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
@@ -229,8 +233,8 @@ void TagTree::deselectFilter() {
 }
 
 
-void TagTree::resetFilter() {
-
+void TagTree::resetFilter()
+{
     QListViewItemIterator it(this);
     while (it.current()) {
         TagTreeNode* item = dynamic_cast<TagTreeNode*>(it.current());
@@ -242,7 +246,8 @@ void TagTree::resetFilter() {
 }
 
 
-void TagTree::doRepaintAll() {
+void TagTree::doRepaintAll()
+{
     QListViewItemIterator it(this);
     while (it.current()) {
 
@@ -254,8 +259,8 @@ void TagTree::doRepaintAll() {
 }
 
 
-QStringList* TagTree::getOpenNodes() {
-
+QStringList* TagTree::getOpenNodes()
+{
     QStringList* openNodes = new QStringList();
 
     // loop over *all* nodes in the tree
@@ -275,8 +280,8 @@ QStringList* TagTree::getOpenNodes() {
 }
 
 
-void TagTree::openNodes(QStringList* openNodes) {
-
+void TagTree::openNodes(QStringList* openNodes)
+{
     // loop over *all* nodes in the tree
     QListViewItemIterator it(this);
     while (it.current()) {
@@ -293,8 +298,8 @@ void TagTree::openNodes(QStringList* openNodes) {
 }
 
 
-QIntDict<QString>* TagTree::getFilter() {
-
+QIntDict<QString>* TagTree::getFilter()
+{
     QIntDict<QString>* filterList = new QIntDict<QString>();
 
     // loop over *all* nodes in the tree
@@ -315,8 +320,8 @@ QIntDict<QString>* TagTree::getFilter() {
 }
 
 
-void TagTree::applyFilter(QIntDict<QString>* filterList) {
-
+void TagTree::applyFilter(QIntDict<QString>* filterList)
+{
     // loop over *all* nodes in the tree
     QListViewItemIterator it(this);
     while (it.current()) {
@@ -336,8 +341,8 @@ void TagTree::applyFilter(QIntDict<QString>* filterList) {
 //
 // public slots
 //
-void TagTree::slotLoadSettings() {
-
+void TagTree::slotLoadSettings()
+{
     setFont(Settings::tagTreeFont());
     doRepaintAll();
 }
@@ -346,8 +351,8 @@ void TagTree::slotLoadSettings() {
 //
 // protected slots
 //
-void TagTree::keyPressEvent(QKeyEvent* e) {
-
+void TagTree::keyPressEvent(QKeyEvent* e)
+{
     if (e->key() == Qt::Key_Control) {
         m_photobook->startTemporaryUnlockTagging();
     }
@@ -355,8 +360,9 @@ void TagTree::keyPressEvent(QKeyEvent* e) {
     e->ignore();
 }
 
-void TagTree::keyReleaseEvent(QKeyEvent *e) {
 
+void TagTree::keyReleaseEvent(QKeyEvent *e)
+{
     if (e->key() == Qt::Key_Control) {
         m_photobook->stopTemporaryUnlockTagging();
     }
@@ -364,24 +370,26 @@ void TagTree::keyReleaseEvent(QKeyEvent *e) {
     e->ignore();
 }
 
-void TagTree::focusOutEvent(__attribute__((unused)) QFocusEvent *e) {
 
+void TagTree::focusOutEvent(__attribute__((unused)) QFocusEvent *e)
+{
     m_photobook->stopTemporaryUnlockTagging();
 }
+
 
 //
 // private slots
 //
-void TagTree::slotListViewDoubleClicked(QListViewItem* item, __attribute__((unused)) const QPoint& point, int column) {
-
+void TagTree::slotListViewDoubleClicked(QListViewItem* item, __attribute__((unused)) const QPoint& point, int column)
+{
     if (column == TagTree::COLUMN_TEXT) {
         setOpen(item, !isOpen(item));
     }
 }
 
 
-void TagTree::slotListViewClicked(int button, QListViewItem* item, __attribute__((unused)) const QPoint& point, int column) {
-
+void TagTree::slotListViewClicked(int button, QListViewItem* item, __attribute__((unused)) const QPoint& point, int column)
+{
     if (button == Qt::RightButton && item == 0) {
         // show contextMenu if right clicked on no item
         m_photobook->contextMenuTagTree()->exec(QCursor::pos());
@@ -403,8 +411,8 @@ void TagTree::slotListViewClicked(int button, QListViewItem* item, __attribute__
 }
 
 
-void TagTree::slotItemRenamed(QListViewItem* item, int column, const QString& text) {
-
+void TagTree::slotItemRenamed(QListViewItem* item, int column, const QString& text)
+{
     tracer->sinvoked(__func__) << "with text: >" << text << "<" << endl;
 
     if (typeid(*item) == typeid(TagTreeNodeString)) {
@@ -419,8 +427,8 @@ void TagTree::slotItemRenamed(QListViewItem* item, int column, const QString& te
 //
 // private
 //
-void TagTree::buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children) {
-
+void TagTree::buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children)
+{
     // test if there are children
     if (!children) {
         return;
@@ -438,7 +446,7 @@ void TagTree::buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children)
 //
 // responsible for showing the tooltip in the tree
 //
-void TreeToolTip::maybeTip( const QPoint &point )
+void TreeToolTip::maybeTip(const QPoint &point)
 {
     QListViewItem *item = m_view->itemAt( point );
     if ( item ) {

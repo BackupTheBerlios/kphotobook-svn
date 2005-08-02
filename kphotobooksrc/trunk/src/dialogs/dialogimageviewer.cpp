@@ -23,8 +23,8 @@
 #include <qlayout.h>
 
 
-DialogImageViewer::DialogImageViewer(QWidget* parent, KFileIconView* fileView)
-:KDialog(parent, "", false)
+DialogImageViewer::DialogImageViewer(QWidget* parent, KFileIconView* fileView) :
+    KDialog(parent, "", false)
 {
     this->setWFlags(Qt::WStyle_StaysOnTop | Qt::WNoAutoErase | Qt::WPaintClever);
     //FIXME this should be solved somehow clever

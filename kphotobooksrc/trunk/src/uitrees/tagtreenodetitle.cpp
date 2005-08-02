@@ -20,19 +20,22 @@
 
 #include "tagtreenodetitle.h"
 
-#include "../settings/settings.h"
-#include "../engine/tagnodetitle.h"
 #include "tagtree.h"
+#include "../engine/tagnodetitle.h"
+#include "../settings/settings.h"
 
-TagTreeNodeTitle::TagTreeNodeTitle(TagTree* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, photobook, tagNode, contextMenu) {
+TagTreeNodeTitle::TagTreeNodeTitle(TagTree* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu) :
+    TagTreeNode(parent, photobook, tagNode, contextMenu)
+{
 }
 
 
-TagTreeNodeTitle::TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu)
-    : TagTreeNode(parent, photobook, tagNode, contextMenu) {
+TagTreeNodeTitle::TagTreeNodeTitle(TagTreeNode* parent, TagNodeTitle* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu) :
+    TagTreeNode(parent, photobook, tagNode, contextMenu)
+{
 }
 
 
-TagTreeNodeTitle::~TagTreeNodeTitle() {
+TagTreeNodeTitle::~TagTreeNodeTitle()
+{
 }

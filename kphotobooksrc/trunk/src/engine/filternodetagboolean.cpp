@@ -21,18 +21,18 @@
 #include "filternodetagboolean.h"
 
 
-FilterNodeTagBoolean::FilterNodeTagBoolean(FilterNode* parent, TagNodeBoolean* tagNodeBoolean, bool value)
-    : FilterNode(parent)
-    , m_tagNodeBoolean(tagNodeBoolean)
-    , m_value(value)
+FilterNodeTagBoolean::FilterNodeTagBoolean(FilterNode* parent, TagNodeBoolean* tagNodeBoolean, bool value) :
+    FilterNode(parent),
+    m_tagNodeBoolean(tagNodeBoolean),
+    m_value(value)
 {
 }
 
 
-FilterNodeTagBoolean::FilterNodeTagBoolean(TagNodeBoolean* tagNodeBoolean, bool value)
-    : FilterNode(0)
-    , m_tagNodeBoolean(tagNodeBoolean)
-    , m_value(value)
+FilterNodeTagBoolean::FilterNodeTagBoolean(TagNodeBoolean* tagNodeBoolean, bool value) :
+    FilterNode(0),
+    m_tagNodeBoolean(tagNodeBoolean),
+    m_value(value)
 {
 }
 
@@ -42,8 +42,8 @@ FilterNodeTagBoolean::~FilterNodeTagBoolean()
 }
 
 
-bool FilterNodeTagBoolean::evaluate(File* file) throw(FilterException*) {
-
+bool FilterNodeTagBoolean::evaluate(File* file) throw(FilterException*)
+{
     return m_tagNodeBoolean->tagged(file) == m_value;
 }
 

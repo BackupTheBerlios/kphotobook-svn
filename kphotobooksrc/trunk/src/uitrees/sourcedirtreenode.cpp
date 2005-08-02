@@ -20,50 +20,50 @@
 
 #include "sourcedirtreenode.h"
 
-#include "../constants.h"
-#include "../settings/settings.h"
-
-#include "../kphotobook.h"
-#include "treehelper.h"
-
-#include "../engine/sourcedir.h"
 #include "sourcedirtree.h"
+#include "treehelper.h"
+#include "../constants.h"
+#include "../engine/sourcedir.h"
+#include "../kphotobook.h"
+#include "../settings/settings.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
 
-#include <qpixmap.h>
-#include <qfont.h>
 #include <qcursor.h>
+#include <qfont.h>
 #include <qpainter.h>
+#include <qpixmap.h>
+
 
 Tracer* SourceDirTreeNode::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "SourceDirTreeNode");
 
-SourceDirTreeNode::SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu)
-    : KListViewItem(parent)
-    , m_photobook(photobook)
-    , m_sourceDir(sourceDir)
-    , m_selectedFilesCount(0)
-    , m_contextMenu(contextMenu) {
 
+SourceDirTreeNode::SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu) :
+    KListViewItem(parent),
+    m_photobook(photobook),
+    m_sourceDir(sourceDir),
+    m_selectedFilesCount(0),
+    m_contextMenu(contextMenu)
+{
     init(false);
 }
 
 
-SourceDirTreeNode::SourceDirTreeNode(SourceDirTreeNode* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu)
-    : KListViewItem(parent)
-    , m_photobook(photobook)
-    , m_sourceDir(sourceDir)
-    , m_selectedFilesCount(0)
-    , m_contextMenu(contextMenu) {
-
+SourceDirTreeNode::SourceDirTreeNode(SourceDirTreeNode* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu) :
+    KListViewItem(parent),
+    m_photobook(photobook),
+    m_sourceDir(sourceDir),
+    m_selectedFilesCount(0),
+    m_contextMenu(contextMenu)
+{
     init(true);
 }
 
 
-void SourceDirTreeNode::refreshIcon() {
-
+void SourceDirTreeNode::refreshIcon()
+{
     if (Settings::sourceDirTreeShowIcons()) {
         QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, Settings::sourceDirTreeIconSize(), true);
         if (iconSet.isNull()) {
@@ -78,7 +78,8 @@ void SourceDirTreeNode::refreshIcon() {
 }
 
 
-void SourceDirTreeNode::setOpenRecursive(bool open) {
+void SourceDirTreeNode::setOpenRecursive(bool open)
+{
     setOpen(open);
 
     // do recursive call on every child
@@ -90,7 +91,8 @@ void SourceDirTreeNode::setOpenRecursive(bool open) {
 }
 
 
-void SourceDirTreeNode::setSelectedFilesCount(int selectedFilesCount) {
+void SourceDirTreeNode::setSelectedFilesCount(int selectedFilesCount)
+{
     m_selectedFilesCount = selectedFilesCount;
     QString selected = QString("%1 / %2");
     selected = selected.arg(m_selectedFilesCount);
@@ -99,23 +101,27 @@ void SourceDirTreeNode::setSelectedFilesCount(int selectedFilesCount) {
 }
 
 
-void SourceDirTreeNode::setIncluded(bool included) {
+void SourceDirTreeNode::setIncluded(bool included)
+{
     m_sourceDir->setInclude(included);
     repaint();
 }
 
 
-bool SourceDirTreeNode::included() {
+bool SourceDirTreeNode::included()
+{
     return m_sourceDir->include();
 }
 
 
-void SourceDirTreeNode::invertInclusion() {
+void SourceDirTreeNode::invertInclusion()
+{
     setIncluded(!included());
 }
 
 
-void SourceDirTreeNode::setIncludedRecursive(bool included) {
+void SourceDirTreeNode::setIncludedRecursive(bool included)
+{
     setIncluded(included);
 
     // do recursive call on every child
@@ -127,7 +133,8 @@ void SourceDirTreeNode::setIncludedRecursive(bool included) {
 }
 
 
-void SourceDirTreeNode::invertInclusionRecursive() {
+void SourceDirTreeNode::invertInclusionRecursive()
+{
     invertInclusion();
 
     // do recursive call on every child
@@ -139,8 +146,8 @@ void SourceDirTreeNode::invertInclusionRecursive() {
 }
 
 
-QString SourceDirTreeNode::getFilterString() {
-
+QString SourceDirTreeNode::getFilterString()
+{
     QString filter;
 
     if (!m_sourceDir->include()) {
@@ -151,83 +158,93 @@ QString SourceDirTreeNode::getFilterString() {
 }
 
 
-void SourceDirTreeNode::applyFilterString(QString filter) {
-
+void SourceDirTreeNode::applyFilterString(QString filter)
+{
     m_sourceDir->setInclude(filter != "exclude");
 }
 
 
-void SourceDirTreeNode::leftClicked(__attribute__((unused)) SourceDirTree* sourceDirTree, int column) {
-
+void SourceDirTreeNode::leftClicked(__attribute__((unused)) SourceDirTree* sourceDirTree, int column)
+{
     switch (column) {
-    case SourceDirTree::COLUMN_TEXT:
-        break;
-
-    case SourceDirTree::COLUMN_SELECTED:
-        break;
-
-    case SourceDirTree::COLUMN_INCLUDED:
-        m_sourceDir->setInclude(!m_sourceDir->include());
-        // force redrawing of this listviewitem
-        this->repaint();
-
-        m_photobook->autoRefreshView();
-        break;
-    }
-}
-
-
-void SourceDirTreeNode::rightClicked(__attribute__((unused)) SourceDirTree* sourceDirTree, int column) {
-
-    switch (column) {
-    case SourceDirTree::COLUMN_TEXT:
-        if (m_contextMenu) {
-            m_contextMenu->exec(QCursor::pos());
+        case SourceDirTree::COLUMN_TEXT:
+            break;
+    
+        case SourceDirTree::COLUMN_SELECTED:
+            break;
+    
+        case SourceDirTree::COLUMN_INCLUDED:
+        {
+            m_sourceDir->setInclude(!m_sourceDir->include());
+            // force redrawing of this listviewitem
+            this->repaint();
+    
+            m_photobook->autoRefreshView();
+            break;
         }
-        break;
-
-    case SourceDirTree::COLUMN_SELECTED:
-        break;
-
-    case SourceDirTree::COLUMN_INCLUDED:
-        break;
     }
 }
 
 
-void SourceDirTreeNode::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment) {
+void SourceDirTreeNode::rightClicked(__attribute__((unused)) SourceDirTree* sourceDirTree, int column)
+{
+    switch (column) {
+        case SourceDirTree::COLUMN_TEXT :
+        {
+            if (m_contextMenu) {
+                m_contextMenu->exec(QCursor::pos());
+            }
+            break;
+        }
+    
+        case SourceDirTree::COLUMN_SELECTED:
+            break;
+    
+        case SourceDirTree::COLUMN_INCLUDED:
+            break;
+    }
+}
 
+
+void SourceDirTreeNode::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
+{
     QColorGroup myCg(cg);
     if (!m_sourceDir->found()) {
         myCg.setColor(QColorGroup::Text, cg.mid());
     }
 
     switch (column) {
-    case SourceDirTree::COLUMN_TEXT :
-        KListViewItem::paintCell(p, myCg, column, width, alignment);
-        break;
-
-    case SourceDirTree::COLUMN_SELECTED : {
-        QFont oldFont = p->font();
-        if  (m_selectedFilesCount > 0) {
-            QFont font = QFont(oldFont);
-            font.setBold(true);
-            p->setFont(font);
+        case SourceDirTree::COLUMN_TEXT :
+        {
+            KListViewItem::paintCell(p, myCg, column, width, alignment);
+            break;
         }
-        KListViewItem::paintCell(p, myCg, column, width, alignment);
-        p->setFont(oldFont);
-        break;
-    }
-    case SourceDirTree::COLUMN_INCLUDED :
-        // paint the cell with the alternating background color
-        p->fillRect(0, 0, width, this->height(), backgroundColor(0));
-
-        // draw the checkbox in the center of the cell
-        QRect rect((width-this->height()+4)/2, 2, this->height()-4, this->height()-4);
-
-        TreeHelper::drawCheckBox(p, myCg, rect, m_sourceDir->include(), true);
-
-        break;
+    
+        case SourceDirTree::COLUMN_SELECTED :
+        {
+            QFont oldFont = p->font();
+            if  (m_selectedFilesCount > 0) {
+                QFont font = QFont(oldFont);
+                font.setBold(true);
+                p->setFont(font);
+            }
+            KListViewItem::paintCell(p, myCg, column, width, alignment);
+            p->setFont(oldFont);
+            break;
+        }
+        
+        case SourceDirTree::COLUMN_INCLUDED :
+        {
+            // paint the cell with the alternating background color
+            p->fillRect(0, 0, width, this->height(), backgroundColor(0));
+    
+            // draw the checkbox in the center of the cell
+            QRect rect((width-this->height()+4)/2, 2, this->height()-4, this->height()-4);
+    
+            TreeHelper::drawCheckBox(p, myCg, rect, m_sourceDir->include(), true);
+    
+            break;
+        }
     }
 }
 
@@ -235,8 +252,8 @@ void SourceDirTreeNode::paintCell(QPainter *p, const QColorGroup &cg, int column
 //
 // private
 //
-void SourceDirTreeNode::init(bool showRelativePath) {
-
+void SourceDirTreeNode::init(bool showRelativePath)
+{
     refreshIcon();
 
     // create and set text for text column

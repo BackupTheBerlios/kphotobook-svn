@@ -22,21 +22,21 @@
 
 #include "../settings/settings.h"
 
-#include <klocale.h>
+#include <kfiledialog.h>
 #include <kglobal.h>
 #include <kiconloader.h>
-#include <kfiledialog.h>
+#include <klocale.h>
 
-#include <qwidget.h>
-#include <qlayout.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
 #include <qiconset.h>
+#include <qlabel.h>
+#include <qlayout.h>
+#include <qpushbutton.h>
+#include <qwidget.h>
 
 
-DialogAddSourceDir::DialogAddSourceDir(QWidget* parent, const char* name)
-    : KDialogBase( parent, name, true, i18n("Add sourcedirectory"), KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, false ) {
-
+DialogAddSourceDir::DialogAddSourceDir(QWidget* parent, const char* name) :
+    KDialogBase(parent, name, true, i18n("Add sourcedirectory"), KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, false)
+{
     QWidget* mainPanel = new QWidget(this, "mainPanel");
     setMainWidget(mainPanel);
     QVBoxLayout* mainPanelLayout = new QVBoxLayout(mainPanel, 0, 5, "mainPanelLayout");
@@ -76,16 +76,16 @@ DialogAddSourceDir::DialogAddSourceDir(QWidget* parent, const char* name)
 }
 
 
-DialogAddSourceDir::~DialogAddSourceDir() {
-
+DialogAddSourceDir::~DialogAddSourceDir()
+{
     // save chosen directory only if OK is clicked
     if (result()) {
         Settings::setFileSystemLastAddedSourcedir(m_currentDirectoryLineEdit->text());
     }
 }
 
-void DialogAddSourceDir::slotDirectoryButtonClicked() {
-
+void DialogAddSourceDir::slotDirectoryButtonClicked()
+{
     QDir dir(m_currentDirectoryLineEdit->text());
 
     QString choosedDir = KFileDialog::getExistingDirectory(dir.absPath(), this, "Choose the sourcedirectory to add");
@@ -94,8 +94,8 @@ void DialogAddSourceDir::slotDirectoryButtonClicked() {
     }
 }
 
-void DialogAddSourceDir::slotTextChanged(__attribute__((unused))const QString& text) {
-
+void DialogAddSourceDir::slotTextChanged(__attribute__((unused))const QString& text)
+{
     QDir dir(m_currentDirectoryLineEdit->text());
 
     this->enableButtonOK(dir.exists());

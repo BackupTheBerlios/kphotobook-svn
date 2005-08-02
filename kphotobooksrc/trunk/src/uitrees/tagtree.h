@@ -26,19 +26,18 @@
 #include <klistview.h>
 #include <kpopupmenu.h>
 
+#include <qintdict.h>
+#include <qlistview.h>
+#include <qnamespace.h>
+#include <qpoint.h>
 #include <qptrlist.h>
 #include <qstring.h>
-#include <qlistview.h>
-#include <qpoint.h>
-#include <qnamespace.h>
 #include <qstringlist.h>
-#include <qintdict.h>
 #include <qtooltip.h>
 
 class TagNode;
 class TagTreeNode;
 class KPhotoBook;
-
 
 
 /**
@@ -47,7 +46,11 @@ class KPhotoBook;
 class TreeToolTip : public QToolTip
 {
     public:
-        TreeToolTip( QListView *view ) : QToolTip( view->viewport() ), m_view( view ) {}
+        TreeToolTip( QListView *view ) :
+            QToolTip( view->viewport() ),
+            m_view( view )
+        {
+        }
 
     protected:
         virtual void maybeTip( const QPoint & );
@@ -57,89 +60,90 @@ class TreeToolTip : public QToolTip
 };
 
 
-
-
 /**
  * The tagtree (can display checkboxes in the columns).
  *
  * CVS-ID $Id$
  */
-class TagTree : public KListView {
-
+class TagTree : public KListView
+{
     Q_OBJECT
 
-private:
-    static Tracer* tracer;
-
-public:
-    static const int COLUMN_TEXT = 0;
-    static const int COLUMN_VALUE = 1;
-    static const int COLUMN_FILTER = 2;
-
-    TagTree(QWidget* parent, KPhotoBook* photobook, const char* name);
-    ~TagTree() {
-    }
-
-    void expandCurrent(bool recursive = true);
-    void collapseCurrent(bool recursive = true);
-    void expandAll();
-    void collapseAll();
-
-    void addTagNodes(QPtrList<TagNode>* rootNodeList);
-    void addTagNode(TagNode* rootNode);
-    void addTagNode(TagTreeNode* parent, TagNode* child);
-
-    void deselectFilter();
-    void resetFilter();
-
-    KPhotoBook* photobook() {
-        return m_photobook;
-    }
-
-    void doRepaintAll();
-
-    /**
-     * Returns a list containing the ids of the opened nodes.
-     */
-    QStringList* getOpenNodes();
-
-    /**
-     * Opens the nodes with the specified ids.
-     */
-    void openNodes(QStringList* nodes);
-
-    /**
-     * Returns a dictionary containing the string representation of the filter
-     * of every node.
-     * The dictionary contains the node-id as key and the filter as value.
-     */
-    QIntDict<QString>* getFilter();
-
-    /**
-     * Applies the specified filters to the nodes in the tagtree.
-     * The dictionary must contain the node-id as key and the filter as value.
-     */
-    void applyFilter(QIntDict<QString>* filterList);
-
-public slots:
-    void slotLoadSettings();
-
-protected:
-    void keyPressEvent(QKeyEvent* e);
-    void keyReleaseEvent(QKeyEvent *e);
-    void focusOutEvent(QFocusEvent *e);
-
-private slots:
-    void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
-    void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
-    void slotItemRenamed(QListViewItem* item, int col, const QString& text);
-
-private:
-    void buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children);
-
-    KPhotoBook* m_photobook;
-
-    TreeToolTip m_toolTip;
+    private:
+        static Tracer* tracer;
+    
+    public:
+        static const int COLUMN_TEXT = 0;
+        static const int COLUMN_VALUE = 1;
+        static const int COLUMN_FILTER = 2;
+    
+        TagTree(QWidget* parent, KPhotoBook* photobook, const char* name);
+        
+        ~TagTree()
+        {
+        }
+    
+        void expandCurrent(bool recursive = true);
+        void collapseCurrent(bool recursive = true);
+        void expandAll();
+        void collapseAll();
+    
+        void addTagNodes(QPtrList<TagNode>* rootNodeList);
+        void addTagNode(TagNode* rootNode);
+        void addTagNode(TagTreeNode* parent, TagNode* child);
+    
+        void deselectFilter();
+        void resetFilter();
+    
+        KPhotoBook* photobook()
+        {
+            return m_photobook;
+        }
+    
+        void doRepaintAll();
+    
+        /**
+        * Returns a list containing the ids of the opened nodes.
+        */
+        QStringList* getOpenNodes();
+    
+        /**
+        * Opens the nodes with the specified ids.
+        */
+        void openNodes(QStringList* nodes);
+    
+        /**
+        * Returns a dictionary containing the string representation of the filter
+        * of every node.
+        * The dictionary contains the node-id as key and the filter as value.
+        */
+        QIntDict<QString>* getFilter();
+    
+        /**
+        * Applies the specified filters to the nodes in the tagtree.
+        * The dictionary must contain the node-id as key and the filter as value.
+        */
+        void applyFilter(QIntDict<QString>* filterList);
+    
+    public slots:
+        void slotLoadSettings();
+    
+    protected:
+        void keyPressEvent(QKeyEvent* e);
+        void keyReleaseEvent(QKeyEvent *e);
+        void focusOutEvent(QFocusEvent *e);
+    
+    private slots:
+        void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
+        void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
+        void slotItemRenamed(QListViewItem* item, int col, const QString& text);
+    
+    private:
+        void buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children);
+    
+        KPhotoBook* m_photobook;
+    
+        TreeToolTip m_toolTip;
 };
 
 #endif

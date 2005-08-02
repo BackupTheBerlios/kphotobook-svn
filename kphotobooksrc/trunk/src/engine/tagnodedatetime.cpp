@@ -27,10 +27,12 @@
 
 #include <qregexp.h>
 
+
 Tracer* TagNodeDateTime::tracer = Tracer::getInstance("kde.kphotobook.engine", "TagNodeDateTime");
 
-TagNodeDateTime::TagNodeDateTime(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent)
-    : TagNode(id, text, comment, iconName, parent)
+
+TagNodeDateTime::TagNodeDateTime(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent) :
+    TagNode(id, text, comment, iconName, parent)
 {
     tracer->sinvoked(__func__) << "with id: " << id << ", text: " << text << ", comment: " << comment << "icon: " << iconName << endl;
 }

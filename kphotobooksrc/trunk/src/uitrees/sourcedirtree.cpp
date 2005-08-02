@@ -21,31 +21,32 @@
 #include "sourcedirtree.h"
 
 #include "../constants.h"
-#include "../settings/settings.h"
-
-#include "../kphotobook.h"
 #include "../engine/file.h"
 #include "../engine/sourcedir.h"
+#include "../kphotobook.h"
+#include "../settings/settings.h"
 #include "../uitrees/sourcedirtreenode.h"
 
+#include <kiconloader.h>
 #include <klocale.h>
 #include <kstdaccel.h>
-#include <kiconloader.h>
 
-#include <qwidget.h>
-#include <qheader.h>
 #include <qcursor.h>
+#include <qheader.h>
 #include <qobjectlist.h>
+#include <qwidget.h>
 
 #include <typeinfo>
 
+
 Tracer* SourceDirTree::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "SourceDirTree");
 
-SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char* name )
-    : KListView( parent, name )
-    , m_photobook(photobook)
-    , m_sourceDirNodeDict(new QIntDict<SourceDirTreeNode>) {
 
+SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char* name ) :
+    KListView( parent, name ),
+    m_photobook(photobook),
+    m_sourceDirNodeDict(new QIntDict<SourceDirTreeNode>)
+{
     setFont(Settings::sourceDirTreeFont());
 
     // create columns
@@ -75,24 +76,28 @@ SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char
 }
 
 
-void SourceDirTree::expandCurrent(bool recursive) {
-
+void SourceDirTree::expandCurrent(bool recursive)
+{
     if (recursive) {
         dynamic_cast<SourceDirTreeNode*>(currentItem())->setOpenRecursive(true);
     } else {
         currentItem()->setOpen(true);
     }
 }
-void SourceDirTree::collapseCurrent(bool recursive) {
 
+
+void SourceDirTree::collapseCurrent(bool recursive)
+{
     if (recursive) {
         dynamic_cast<SourceDirTreeNode*>(currentItem())->setOpenRecursive(false);
     } else {
         currentItem()->setOpen(false);
     }
 }
-void SourceDirTree::expandAll() {
 
+
+void SourceDirTree::expandAll()
+{
     QListViewItemIterator it(this);
     while (it.current()) {
         SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
@@ -102,8 +107,10 @@ void SourceDirTree::expandAll() {
         ++it;
     }
 }
-void SourceDirTree::collapseAll() {
 
+
+void SourceDirTree::collapseAll()
+{
     QListViewItemIterator it(this);
     while (it.current()) {
         SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
@@ -115,17 +122,26 @@ void SourceDirTree::collapseAll() {
 }
 
 
-void SourceDirTree::includeWholeSourceDir() {
+void SourceDirTree::includeWholeSourceDir()
+{
     dynamic_cast<SourceDirTreeNode*>(currentItem())->setIncludedRecursive(true);
 }
-void SourceDirTree::excludeWholeSourceDir() {
+
+
+void SourceDirTree::excludeWholeSourceDir()
+{
     dynamic_cast<SourceDirTreeNode*>(currentItem())->setIncludedRecursive(false);
 }
-void SourceDirTree::invertSourceDir() {
+
+
+void SourceDirTree::invertSourceDir()
+{
     dynamic_cast<SourceDirTreeNode*>(currentItem())->invertInclusionRecursive();
 }
-void SourceDirTree::includeAllSourceDirs() {
 
+
+void SourceDirTree::includeAllSourceDirs()
+{
     QListViewItemIterator it(this);
     while (it.current()) {
         SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
@@ -135,8 +151,10 @@ void SourceDirTree::includeAllSourceDirs() {
         ++it;
     }
 }
-void SourceDirTree::excludeAllSourceDirs() {
 
+
+void SourceDirTree::excludeAllSourceDirs()
+{
     QListViewItemIterator it(this);
     while (it.current()) {
         SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
@@ -146,8 +164,10 @@ void SourceDirTree::excludeAllSourceDirs() {
         ++it;
     }
 }
-void SourceDirTree::invertAllSourceDirs() {
 
+
+void SourceDirTree::invertAllSourceDirs()
+{
     QListViewItemIterator it(this);
     while (it.current()) {
         SourceDirTreeNode* item = dynamic_cast<SourceDirTreeNode*>(it.current());
@@ -159,8 +179,8 @@ void SourceDirTree::invertAllSourceDirs() {
 }
 
 
-void SourceDirTree::addSourceDirs(QPtrList<SourceDir>* rootNodeList) {
-
+void SourceDirTree::addSourceDirs(QPtrList<SourceDir>* rootNodeList)
+{
     SourceDir* rootNode;
     for ( rootNode = rootNodeList->first(); rootNode; rootNode = rootNodeList->next() ) {
         addSourceDir(rootNode);
@@ -168,8 +188,8 @@ void SourceDirTree::addSourceDirs(QPtrList<SourceDir>* rootNodeList) {
 }
 
 
-void SourceDirTree::addSourceDir(SourceDir* rootNode) {
-
+void SourceDirTree::addSourceDir(SourceDir* rootNode)
+{
     tracer->sinvoked(__func__) << " with sourcedir: '" << rootNode->dir()->absPath() << "'..." << endl;
 
     SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(this, m_photobook, rootNode, m_photobook->contextMenuSourceDir());
@@ -182,14 +202,15 @@ void SourceDirTree::addSourceDir(SourceDir* rootNode) {
 }
 
 
-void SourceDirTree::removeSourceDir(SourceDirTreeNode* node) {
+void SourceDirTree::removeSourceDir(SourceDirTreeNode* node)
+{
     m_sourceDirNodeDict->remove(node->sourceDir()->id());
     delete node;
 }
 
 
-void SourceDirTree::reflectSelectedFiles(const KFileItemList* selectedFiles) {
-
+void SourceDirTree::reflectSelectedFiles(const KFileItemList* selectedFiles)
+{
     // reset the number of selected files on all sourcedirnodes to 0
     QListViewItemIterator it(this);
     while (it.current()) {
@@ -214,8 +235,8 @@ void SourceDirTree::reflectSelectedFiles(const KFileItemList* selectedFiles) {
 }
 
 
-SourceDirTreeNode* SourceDirTree::selectedSourceDir() {
-
+SourceDirTreeNode* SourceDirTree::selectedSourceDir()
+{
     if (typeid(*currentItem()) != typeid(SourceDirTreeNode)) {
         tracer->swarning(__func__) << "sourcedirTree contains a node of other type than 'SourceDirTreeNode'" << endl;
         return 0;
@@ -225,7 +246,8 @@ SourceDirTreeNode* SourceDirTree::selectedSourceDir() {
 }
 
 
-void SourceDirTree::doRepaintAll() {
+void SourceDirTree::doRepaintAll()
+{
     QListViewItemIterator it(this);
     while (it.current()) {
 
@@ -237,8 +259,8 @@ void SourceDirTree::doRepaintAll() {
 }
 
 
-QStringList* SourceDirTree::getOpenNodes() {
-
+QStringList* SourceDirTree::getOpenNodes()
+{
     QStringList* openNodes = new QStringList();
 
     // loop over *all* nodes in the tree
@@ -258,8 +280,8 @@ QStringList* SourceDirTree::getOpenNodes() {
 }
 
 
-void SourceDirTree::openNodes(QStringList* openNodes) {
-
+void SourceDirTree::openNodes(QStringList* openNodes)
+{
     // loop over *all* nodes in the tree
     QListViewItemIterator it(this);
     while (it.current()) {
@@ -276,8 +298,8 @@ void SourceDirTree::openNodes(QStringList* openNodes) {
 }
 
 
-QIntDict<QString>* SourceDirTree::getFilter() {
-
+QIntDict<QString>* SourceDirTree::getFilter()
+{
     QIntDict<QString>* filterList = new QIntDict<QString>();
 
     // loop over *all* nodes in the tree
@@ -298,8 +320,8 @@ QIntDict<QString>* SourceDirTree::getFilter() {
 }
 
 
-void SourceDirTree::applyFilter(QIntDict<QString>* filterList) {
-
+void SourceDirTree::applyFilter(QIntDict<QString>* filterList)
+{
     // loop over *all* nodes in the tree
     QListViewItemIterator it(this);
     while (it.current()) {
@@ -319,8 +341,8 @@ void SourceDirTree::applyFilter(QIntDict<QString>* filterList) {
 //
 // public slots
 //
-void SourceDirTree::slotLoadSettings() {
-
+void SourceDirTree::slotLoadSettings()
+{
     setFont(Settings::sourceDirTreeFont());
     doRepaintAll();
 }
@@ -329,16 +351,16 @@ void SourceDirTree::slotLoadSettings() {
 //
 // private slots
 //
-void SourceDirTree::slotListViewDoubleClicked(QListViewItem* item, __attribute__((unused)) const QPoint& point, int column) {
-
+void SourceDirTree::slotListViewDoubleClicked(QListViewItem* item, __attribute__((unused)) const QPoint& point, int column)
+{
     if (column == SourceDirTree::COLUMN_TEXT) {
         setOpen(item, !isOpen(item));
     }
 }
 
 
-void SourceDirTree::slotListViewClicked(int button, QListViewItem* item, __attribute__((unused)) const QPoint& point, int column) {
-
+void SourceDirTree::slotListViewClicked(int button, QListViewItem* item, __attribute__((unused)) const QPoint& point, int column)
+{
     if (button == Qt::RightButton && item == 0) {
         // show contextMenu if right clicked on no item
         m_photobook->contextMenuSourceDirTree()->exec(QCursor::pos());
@@ -363,8 +385,8 @@ void SourceDirTree::slotListViewClicked(int button, QListViewItem* item, __attri
 //
 // private methods
 //
-void SourceDirTree::buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<SourceDir>* children) {
-
+void SourceDirTree::buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<SourceDir>* children)
+{
     // test if there are children
     if (!children || !children->count()) {
         return;

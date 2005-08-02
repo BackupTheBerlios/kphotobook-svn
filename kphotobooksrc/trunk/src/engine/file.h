@@ -29,9 +29,10 @@
 #include <qptrlist.h>
 
 class Engine;
+class FileTagNodeAssoc;
 class SourceDir;
 class TagNode;
-class FileTagNodeAssoc;
+
 
 /**
  * Represents a file/image.

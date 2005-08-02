@@ -21,20 +21,22 @@
 #include "xmlwriter.h"
 
 #include "../engine/engine.h"
-#include "../engine/sourcedir.h"
-#include "../engine/tagnode.h"
 #include "../engine/file.h"
 #include "../engine/filetagnodeassoc.h"
+#include "../engine/sourcedir.h"
+#include "../engine/tagnode.h"
 
 #include <qfileinfo.h>
 #include <qregexp.h>
 
 #include <typeinfo>
 
+
 Tracer* XmlWriter::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlWriter");
 
-void XmlWriter::store(QFile* file2write) throw(PersistingException*) {
 
+void XmlWriter::store(QFile* file2write) throw(PersistingException*)
+{
     tracer->sinvoked(__func__) << "With file: '" << QFileInfo(*file2write).absFilePath() << "'." << endl;
 
     if (!file2write->open(IO_WriteOnly)) {
@@ -106,8 +108,8 @@ void XmlWriter::store(QFile* file2write) throw(PersistingException*) {
 }
 
 
-void XmlWriter::dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent) {
-
+void XmlWriter::dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent)
+{
     SourceDir* child;
     for ( child = sourceDir->children()->first(); child; child = sourceDir->children()->next() ) {
 
@@ -127,8 +129,8 @@ void XmlWriter::dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QStrin
 }
 
 
-void XmlWriter::dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent) {
-
+void XmlWriter::dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent)
+{
     // dump the specified tagnode
     stream << indent << "<"
             << ELEMENT_TAG << " "
@@ -166,8 +168,8 @@ void XmlWriter::dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString inde
 }
 
 
-void XmlWriter::dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent) {
-
+void XmlWriter::dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent)
+{
     stream << indent << "<" << ELEMENT_FILES << " " << ATTRIBUTE_FILES_SOURCEDIRID << "=\"" << sourceDir->id() << "\">" << "\n";
 
     // dump the files in the specified sourceDir
@@ -190,8 +192,8 @@ void XmlWriter::dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString ind
 }
 
 
-void XmlWriter::dumpFile(QTextStream& stream, File* file, QString indent) {
-
+void XmlWriter::dumpFile(QTextStream& stream, File* file, QString indent)
+{
     // dump the specified tagnode
     stream << indent << "<" << ELEMENT_FILE << " " << ATTRIBUTE_FILE_NAME << "=\"" << entitize(file->fileInfo()->fileName()) << "\" " << ATTRIBUTE_FILE_ROTATE << "=\"" << file->rotate() << "\">\n";
 
@@ -209,8 +211,8 @@ void XmlWriter::dumpFile(QTextStream& stream, File* file, QString indent) {
 }
 
 
-void XmlWriter::dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent) {
-
+void XmlWriter::dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent)
+{
     if (assoc->mustDump()) {
         stream << indent
             << "<" << ELEMENT_TAGASSOC << " "
@@ -220,8 +222,8 @@ void XmlWriter::dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString 
 }
 
 
-QString XmlWriter::entitize(const QString data) {
-
+QString XmlWriter::entitize(const QString data)
+{
     QString temp = QString(data);
 
     temp.replace('&', "&amp;"); // This _must_ come first

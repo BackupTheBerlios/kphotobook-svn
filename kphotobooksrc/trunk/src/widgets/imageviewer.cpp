@@ -20,34 +20,33 @@
 
 #include "imageviewer.h"
 
-#include "../tracer/tracer.h"
-#include "../settings/settings.h"
 #include "../dialogs/dialogimageviewer.h"
+#include "../settings/settings.h"
+#include "../tracer/tracer.h"
 
-#include <qmenubar.h>
-#include <qfiledialog.h>
-#include <qmessagebox.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qapplication.h>
-#include <qclipboard.h>
-#include <qsimplerichtext.h>
-#include <qcursor.h>
-#include <qdatetime.h>
-
-
-#include <klocale.h>
 #include <kaction.h>
+#include <kfileiconview.h>
+#include <klocale.h>
 #include <kstdaccel.h>
 #include <kstdaction.h>
-#include <kfileiconview.h>
+
+#include <qapplication.h>
+#include <qclipboard.h>
+#include <qcursor.h>
+#include <qdatetime.h>
+#include <qfiledialog.h>
+#include <qlabel.h>
+#include <qpainter.h>
+#include <qmenubar.h>
+#include <qmessagebox.h>
+#include <qsimplerichtext.h>
+
 
 Tracer* ImageViewer::tracer = Tracer::getInstance("kde.kphotobook.widgets", "ImageViewer");
 
 
-
-ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* name)
-: QWidget( parent, name, Qt::WDestructiveClose)
+ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* name) :
+    QWidget( parent, name, Qt::WDestructiveClose)
 {
     tracer->invoked(__func__);
 
@@ -92,8 +91,8 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
 }
 
 
-ImageViewer::~ImageViewer() {
-
+ImageViewer::~ImageViewer()
+{
     tracer->invoked(__func__) ;
 
     //delete the timers
@@ -102,14 +101,12 @@ ImageViewer::~ImageViewer() {
 }
 
 
-
 void ImageViewer::free()
 {
     m_curImage->free();
     m_nxtImage->free();
     m_prvImage->free();
 }
-
 
 
 /**
@@ -189,7 +186,6 @@ void ImageViewer::show(File* selectedFile)
 }
 
 
-
 void ImageViewer::buildPtrList(KFileIconView* view, PtrRingBuffer<File>& ringbuffer)
 {
     ringbuffer.clear();
@@ -206,8 +202,6 @@ void ImageViewer::buildPtrList(KFileIconView* view, PtrRingBuffer<File>& ringbuf
 
     ringbuffer.first();
 }
-
-
 
 
 /**
@@ -234,10 +228,6 @@ void ImageViewer::slotWorkTimerFired()
         QApplication::restoreOverrideCursor();
     }
 }
-
-
-
-
 
 
 void ImageViewer::slotStartSlideshow(int secs)
@@ -284,6 +274,7 @@ void ImageViewer::slotToggleShowImageCounter()
     update();
 }
 
+
 void ImageViewer::slotToggleShowInfoOverlay()
 {
     bool b = !Settings::toolsViewerShowFileInfos();
@@ -300,8 +291,8 @@ void ImageViewer::slotToggleShowInfoOverlay()
 }
 
 
-void ImageViewer::wheelEvent (QWheelEvent* e ) {
-
+void ImageViewer::wheelEvent (QWheelEvent* e )
+{
     //stop the timer, if it is running
     if (m_workTimer->isActive()) {
         m_workTimer->stop();
@@ -428,7 +419,6 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
 {
     QPopupMenu* popup = new QPopupMenu(this);
 
-
     QString c = QString("<font color=black><b>%1</b></font>")
         .arg(m_lstImages.current()->fileInfo()->fileName());
 
@@ -484,14 +474,6 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
 
     delete popup;
 }
-
-
-
-
-
-
-
-
 
 
 /**
@@ -595,8 +577,6 @@ void ImageViewer::generateImageCounterOverlay()
 }
 
 
-
-
 void ImageViewer::generateInfoOverlay()
 {
     //if we don't show it, we don't generate it!
@@ -604,8 +584,6 @@ void ImageViewer::generateInfoOverlay()
         m_infoOverlay.resize(0,0);
         return;
     }
-
-
 
     QString date = QDateTime::currentDateTime().toString("yyyy.MM.dd - hh:mm:ss");
 
@@ -616,8 +594,6 @@ void ImageViewer::generateInfoOverlay()
     table += row.arg("Filename").arg(m_lstImages.current()->fileInfo()->fileName());
     table += row.arg("Iso").arg("100");
     table += "</table>";
-
-
 
 
     QSimpleRichText srt(table, font());
@@ -658,18 +634,13 @@ void ImageViewer::generateInfoOverlay()
 }
 
 
-
-
-
-
-
 /*
   The resize event handler, if a valid pixmap was loaded it will call
   scale() to fit the pixmap to the new widget size.
 */
 
-void ImageViewer::resizeEvent( QResizeEvent * ) {
-
+void ImageViewer::resizeEvent( QResizeEvent * )
+{
     if ( !m_curImage->isValid() )  {         // we couldn't load the image
         tracer->sdebug(__func__) << "pixmap is null, unable to display!" << endl;
         return;
@@ -695,14 +666,13 @@ void ImageViewer::resizeEvent( QResizeEvent * ) {
 }
 
 
-
 /*
   Draws the portion of the scaled pixmap that needs to be updated or prints
   an error message if no legal pixmap has been loaded.
 */
 
-void ImageViewer::paintEvent( QPaintEvent *e ) {
-
+void ImageViewer::paintEvent( QPaintEvent *e )
+{
     if ( m_curImage->scaled()->isNull() ) {
         tracer->sdebug(__func__) << "preScaled Image is null, unable to display!" << endl;
         //force the current image to finish its work!
@@ -751,19 +721,13 @@ void ImageViewer::paintEvent( QPaintEvent *e ) {
 }
 
 
-
-
-
-
-
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
 
 Tracer* XImage::tracer = Tracer::getInstance("kde.kphotobook.dialogs", "XImage");
-
-
 
 
 XImage::XImage(int maxWidth, int maxHeight)
@@ -781,7 +745,6 @@ XImage::XImage(int maxWidth, int maxHeight)
 
     setMaxDimensions(maxWidth, maxHeight);
 }
-
 
 
 XImage::~XImage()
@@ -888,7 +851,6 @@ bool XImage::doWork(bool forceFull)
 }
 
 
-
 /**
  * @returns true, if work has to be done
  */
@@ -911,7 +873,6 @@ bool XImage::isValid()
 }
 
 
-
 /**
  * asks the image to be scaled.
  *
@@ -920,8 +881,8 @@ bool XImage::isValid()
  *
  *
  */
-void XImage::scale(int width, int height, bool forceDoWork) {
-
+void XImage::scale(int width, int height, bool forceDoWork)
+{
     //if we already have that size, do nothing;
 //     if (m_desiredWidth == width && m_desiredHeight == height)
 //         return ;
@@ -935,9 +896,6 @@ void XImage::scale(int width, int height, bool forceDoWork) {
         doWork(true);
     }
 }
-
-
-
 
 
 /**
@@ -964,8 +922,6 @@ bool XImage::loadImage()
 
     return success;
 }
-
-
 
 
 /**
@@ -1049,6 +1005,3 @@ bool XImage::scaleImage()
 
     return true;
 }
-
-
-

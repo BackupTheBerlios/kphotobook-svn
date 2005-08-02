@@ -24,9 +24,9 @@
 Tracer* FilterNode::dumper = Tracer::getInstance("kde.kphotobook.engine", "FilterNode");
 
 
-FilterNode::FilterNode(FilterNode* parent)
-    : m_parent(0)
-    , m_children(new QPtrList<FilterNode>)
+FilterNode::FilterNode(FilterNode* parent) :
+    m_parent(0),
+    m_children(new QPtrList<FilterNode>)
 {
     if (parent) {
         m_parent = parent;
@@ -41,8 +41,8 @@ FilterNode::~FilterNode()
 }
 
 
-void FilterNode::addChild(FilterNode* child) {
-
+void FilterNode::addChild(FilterNode* child)
+{
     if (child) {
         child->m_parent = this;
         m_children->append(child);

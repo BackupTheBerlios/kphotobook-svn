@@ -21,81 +21,75 @@
 #include "kphotobook.h"
 
 #include "constants.h"
-
-#include "settings/settings.h"
-#include "settings/settingsgeneral.h"
-#include "settings/settingstagtree.h"
-#include "settings/settingssourcedirtree.h"
-#include "settings/settingsimagepreview.h"
-#include "settings/settingstools.h"
-#include "settings/settingsfilehandling.h"
-
-#include "kphotobookview.h"
-#include "engine/engine.h"
-#include "engine/file.h"
 #include "exception.h"
+#include "kphotobookview.h"
+
 #include "dialogs/dialogaddsourcedir.h"
 #include "dialogs/dialogmanagetag.h"
-
-#include "engine/tagnode.h"
-#include "uitrees/tagtree.h"
-#include "uitrees/tagtreenode.h"
-#include "uitrees/tagtreenodetitle.h"
-#include "uitrees/tagtreenodeboolean.h"
-#include "uitrees/tagtreenodestring.h"
-#include "uitrees/tagtreenoderadiogroup.h"
-#include "uitrees/tagtreenoderadio.h"
-#include "uitrees/tagtreenodedatetime.h"
-
-#include "engine/sourcedir.h"
-#include "uitrees/sourcedirtree.h"
-#include "uitrees/sourcedirtreenode.h"
-
-#include "engine/filternodeopor.h"
+#include "engine/engine.h"
+#include "engine/file.h"
 #include "engine/filternodeopand.h"
-
+#include "engine/filternodeopor.h"
+#include "engine/sourcedir.h"
+#include "engine/tagnode.h"
 #include "export/exportsymlinks.h"
 #include "import/imageimporter.h"
+#include "settings/settings.h"
+#include "settings/settingsfilehandling.h"
+#include "settings/settingsgeneral.h"
+#include "settings/settingsimagepreview.h"
+#include "settings/settingssourcedirtree.h"
+#include "settings/settingstagtree.h"
+#include "settings/settingstools.h"
+#include "uitrees/sourcedirtree.h"
+#include "uitrees/sourcedirtreenode.h"
+#include "uitrees/tagtree.h"
+#include "uitrees/tagtreenode.h"
+#include "uitrees/tagtreenodeboolean.h"
+#include "uitrees/tagtreenodedatetime.h"
+#include "uitrees/tagtreenoderadio.h"
+#include "uitrees/tagtreenoderadiogroup.h"
+#include "uitrees/tagtreenodestring.h"
+#include "uitrees/tagtreenodetitle.h"
 
-
-#include <kapplication.h>
-#include <kglobal.h>
-#include <klocale.h>
-#include <kiconloader.h>
-#include <kdeversion.h>
-#include <kmenubar.h>
-#include <kstatusbar.h>
-#include <kkeydialog.h>
 #include <kaccel.h>
-#include <kio/netaccess.h>
+#include <kaction.h>
+#include <kapplication.h>
+#include <kcombobox.h>
+#include <kconfigdialog.h>
+#include <kdeversion.h>
+#include <kedittoolbar.h>
+#include <kedittoolbar.h>
 #include <kfiledialog.h>
+#include <kfileitem.h>
+#include <kglobal.h>
+#include <kiconloader.h>
+#include <kio/netaccess.h>
+#include <kkeydialog.h>
+#include <klistview.h>
+#include <klocale.h>
+#include <kmditoolviewaccessor.h>
+#include <kmenubar.h>
+#include <kmessagebox.h>
+#include <kstatusbar.h>
+#include <kstdaccel.h>
+#include <kstdaction.h>
+#include <ktip.h>
+#include <ktoolbar.h>
 #include <kurl.h>
 #include <kurldrag.h>
 #include <kurlrequesterdlg.h>
-#include <kmessagebox.h>
-#include <kedittoolbar.h>
-#include <kstdaccel.h>
-#include <kaction.h>
-#include <kstdaction.h>
-#include <kfileitem.h>
-#include <kconfigdialog.h>
-#include <kcombobox.h>
-#include <ktoolbar.h>
-#include <klistview.h>
-#include <kedittoolbar.h>
-#include <kmditoolviewaccessor.h>
 #include <kurlrequesterdlg.h>
-#include <ktip.h>
 
 #include <qdragobject.h>
-#include <qpainter.h>
-#include <qpaintdevicemetrics.h>
 #include <qfileinfo.h>
-#include <qptrlist.h>
-#include <qlistview.h>
-#include <qlayout.h>
-#include <qsizepolicy.h>
 #include <qheader.h>
+#include <qlayout.h>
+#include <qlistview.h>
+#include <qpaintdevicemetrics.h>
+#include <qpainter.h>
+#include <qptrlist.h>
+#include <qsizepolicy.h>
 #include <qstringlist.h>
 
 #include <typeinfo>
@@ -104,38 +98,38 @@
 Tracer* KPhotoBook::tracer = Tracer::getInstance("kde.kphotobook", "KPhotoBook");
 
 
-KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode)
-    : KMdiMainFrm(0, "kphotobookMainWindow", mdiMode)
-    , m_view(0)
-    , m_tagTree(0)
-    , m_sourcedirTree(0)
-    , m_engine(new Engine())
+KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode) :
+    KMdiMainFrm(0, "kphotobookMainWindow", mdiMode),
+    m_view(0),
+    m_tagTree(0),
+    m_sourcedirTree(0),
+    m_engine(new Engine()),
 
-    , m_inTagtreeTemporaryUnlocking(false)
-    , m_tagtreeWasLocked(false)
+    m_inTagtreeTemporaryUnlocking(false),
+    m_tagtreeWasLocked(false),
 
-    , m_tagTreeToolBar(0)
-    , m_sourceDirTreeToolBar(0)
+    m_tagTreeToolBar(0),
+    m_sourceDirTreeToolBar(0),
 
-    , m_autoRefreshViewAction(0)
-    , m_zoomIn(0)
-    , m_zoomOut(0)
-    , m_save(0)
-    , m_andifyTagsAction(0)
-    , m_orifyTagsAction(0)
+    m_autoRefreshViewAction(0),
+    m_zoomIn(0),
+    m_zoomOut(0),
+    m_save(0),
+    m_andifyTagsAction(0),
+    m_orifyTagsAction(0),
 
-    , m_contextMenuSourceDirTree(0)
-    , m_contextMenuSourceDir(0)
-    , m_contextMenuSubDir(0)
-    , m_contextMenuTagTree(0)
-    , m_contextMenuTagTreeItem(0)
+    m_contextMenuSourceDirTree(0),
+    m_contextMenuSourceDir(0),
+    m_contextMenuSubDir(0),
+    m_contextMenuTagTree(0),
+    m_contextMenuTagTreeItem(0),
 
-    , m_settingsGeneral(0)
-    , m_settingsImagePreview(0)
-    , m_settingsTagTree(0)
-    , m_settingsSourceDirTree(0)
-    , m_settingsFileHandling(0)
-    , m_settingsTools(0)
+    m_settingsGeneral(0),
+    m_settingsImagePreview(0),
+    m_settingsTagTree(0),
+    m_settingsSourceDirTree(0),
+    m_settingsFileHandling(0),
+    m_settingsTools(0)
 {
     if (splash) {
         m_splashScreen = splash;
@@ -198,15 +192,15 @@ KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode)
 }
 
 
-KPhotoBook::~KPhotoBook() {
-
+KPhotoBook::~KPhotoBook()
+{
     delete m_engine;
     closeWindow(m_view);
 }
 
 
-void KPhotoBook::init() {
-
+void KPhotoBook::init()
+{
     // and a status bar
     statusBar()->show();
     statusBar()->insertItem(i18n("Initialized"), 1, 100);
@@ -229,8 +223,8 @@ void KPhotoBook::init() {
 }
 
 
-QString KPhotoBook::currentURL() {
-
+QString KPhotoBook::currentURL()
+{
     if (m_engine && m_engine->fileinfo()) {
         return m_engine->fileinfo()->absFilePath();
     } else {
@@ -239,25 +233,27 @@ QString KPhotoBook::currentURL() {
 }
 
 
-QPtrList<SourceDir>* KPhotoBook::sourceDirs() {
+QPtrList<SourceDir>* KPhotoBook::sourceDirs()
+{
     return m_engine->sourceDirs();
 }
 
 
-QPtrList<TagNode>* KPhotoBook::tagForest() {
+QPtrList<TagNode>* KPhotoBook::tagForest()
+{
     return m_engine->tagForest();
 }
 
 
-void KPhotoBook::dirtyfy() {
-
+void KPhotoBook::dirtyfy()
+{
     m_engine->dirtyfy();
     updateState();
 }
 
 
-bool KPhotoBook::isTagTextValid(TagTreeNode* parent, QString& text) {
-
+bool KPhotoBook::isTagTextValid(TagTreeNode* parent, QString& text)
+{
     TagNode* tagNode = 0;
     if (parent) {
         tagNode = parent->tagNode();
@@ -267,8 +263,8 @@ bool KPhotoBook::isTagTextValid(TagTreeNode* parent, QString& text) {
 }
 
 
-void KPhotoBook::load(QFileInfo& fileinfo) {
-
+void KPhotoBook::load(QFileInfo& fileinfo)
+{
     tracer->sinvoked(__func__) << "invoked with file: " << fileinfo.absFilePath() << endl;
 
     Engine* newEngine = 0;
@@ -325,8 +321,8 @@ void KPhotoBook::load(QFileInfo& fileinfo) {
 }
 
 
-void KPhotoBook::setupActions() {
-
+void KPhotoBook::setupActions()
+{
     //
     // file menu
     //
@@ -702,8 +698,8 @@ void KPhotoBook::setupActions() {
 }
 
 
-void KPhotoBook::setupContextMenus() {
-
+void KPhotoBook::setupContextMenus()
+{
     m_contextMenuSourceDirTree = static_cast<KPopupMenu*>(guiFactory()->container("contextMenu_sourceDirTree", this));
     m_contextMenuSourceDir = static_cast<KPopupMenu*>(guiFactory()->container("contextMenu_sourceDir", this));
     m_contextMenuSubDir = static_cast<KPopupMenu*>(guiFactory()->container("contextMenu_subDir", this));
@@ -714,8 +710,8 @@ void KPhotoBook::setupContextMenus() {
 }
 
 
-QPtrList<File>* KPhotoBook::files(FilterNode *filterRootNode) {
-
+QPtrList<File>* KPhotoBook::files(FilterNode *filterRootNode)
+{
     tracer->invoked(__func__);
 
     // build the filter from the tagtree if the specified filter is empty
@@ -751,8 +747,8 @@ QPtrList<File>* KPhotoBook::files(FilterNode *filterRootNode) {
 //
 // protected
 //
-bool KPhotoBook::queryClose() {
-
+bool KPhotoBook::queryClose()
+{
     tracer->invoked(__func__);
 
     //store returnvalue temporary...
@@ -903,19 +899,19 @@ bool KPhotoBook::checkForUntagged()
 }
 
 
-
-bool KPhotoBook::queryExit() {
-
+bool KPhotoBook::queryExit()
+{
     tracer->invoked(__func__);
 
     return true;
 }
 
+
 /**
  * this slot is called, when the splash timer fires.
- *
  */
-void KPhotoBook::slotSplashTimerFired()  {
+void KPhotoBook::slotSplashTimerFired()
+{
     if (m_splashScreen) {
         m_splashScreen->finish(this);
         delete m_splashScreen;
@@ -924,11 +920,12 @@ void KPhotoBook::slotSplashTimerFired()  {
     }
 }
 
+
 //
 // private slots
 //
-void KPhotoBook::slotFileNew() {
-
+void KPhotoBook::slotFileNew()
+{
     // this slot is called whenever the File->New menu is selected,
     // the New shortcut is pressed (usually CTRL+N) or the New toolbar
     // button is clicked
@@ -938,8 +935,8 @@ void KPhotoBook::slotFileNew() {
 }
 
 
-void KPhotoBook::slotFileOpen(const KURL& url) {
-
+void KPhotoBook::slotFileOpen(const KURL& url)
+{
     // this slot is called whenever the File->Open menu is selected,
     // the Open shortcut is pressed (usually CTRL+O) or the Open toolbar
     // button is clicked. in those cases url isEmpty() !.
@@ -1018,8 +1015,8 @@ void KPhotoBook::slotFileOpen(const KURL& url) {
 }
 
 
-bool KPhotoBook::slotFileSave() {
-
+bool KPhotoBook::slotFileSave()
+{
     // this slot is called whenever the File->Save menu is selected,
     // the Save shortcut is pressed (usually CTRL+S) or the Save toolbar
     // button is clicked
@@ -1047,8 +1044,8 @@ bool KPhotoBook::slotFileSave() {
 }
 
 
-bool KPhotoBook::slotFileSaveAs() {
-
+bool KPhotoBook::slotFileSaveAs()
+{
     // this slot is called whenever the File->Save As menu is selected,
 
     bool fileSaved = false;
@@ -1088,7 +1085,8 @@ bool KPhotoBook::slotFileSaveAs() {
 }
 
 
-void KPhotoBook::slotToggleFullscreen() {
+void KPhotoBook::slotToggleFullscreen()
+{
     if (isFullScreen()) {
         setWindowState(windowState() & ~Qt::WindowFullScreen);
     } else {
@@ -1098,14 +1096,14 @@ void KPhotoBook::slotToggleFullscreen() {
 }
 
 
-void KPhotoBook::slotOptionsConfigureKeys() {
-
+void KPhotoBook::slotOptionsConfigureKeys()
+{
     KKeyDialog::configure(actionCollection(), "kphotobookui.rc");
 }
 
 
-void KPhotoBook::slotOptionsConfigureToolbars() {
-
+void KPhotoBook::slotOptionsConfigureToolbars()
+{
     // use the standard toolbar editor
     KEditToolbar dlg(factory());
     if (dlg.exec()) {
@@ -1114,8 +1112,8 @@ void KPhotoBook::slotOptionsConfigureToolbars() {
 }
 
 
-void KPhotoBook::slotOptionsPreferences() {
-
+void KPhotoBook::slotOptionsPreferences()
+{
     // try to show the same settings dialog as last time
     if(KConfigDialog::showDialog("settings")) {
         return;
@@ -1158,14 +1156,16 @@ void KPhotoBook::slotOptionsPreferences() {
     dialog->show();
 }
 
+
 void KPhotoBook::slotTipOfDay()
 {
     // show tip of the day
     KTipDialog::showTip(this, QString::null, true);
 }
 
-void KPhotoBook::slotAddSourcedir() {
 
+void KPhotoBook::slotAddSourcedir()
+{
     tracer->invoked(__func__);
 
     DialogAddSourceDir* dialog = new DialogAddSourceDir(m_view, "DialogAddSourceDir");
@@ -1201,8 +1201,8 @@ void KPhotoBook::slotAddSourcedir() {
 }
 
 
-void KPhotoBook::slotEditSourceDir() {
-
+void KPhotoBook::slotEditSourceDir()
+{
     tracer->invoked(__func__);
 
     tracer->error(__func__, "NOT IMPLEMENTED YET");
@@ -1211,8 +1211,8 @@ void KPhotoBook::slotEditSourceDir() {
 }
 
 
-void KPhotoBook::slotRemoveSourceDir() {
-
+void KPhotoBook::slotRemoveSourceDir()
+{
     tracer->invoked(__func__);
 
     // get the sourcedir to remove from the tagtree
@@ -1247,8 +1247,8 @@ void KPhotoBook::slotRemoveSourceDir() {
 }
 
 
-void KPhotoBook::slotAddMaintag() {
-
+void KPhotoBook::slotAddMaintag()
+{
     tracer->invoked(__func__);
 
     DialogManageTag* dialog = new DialogManageTag(m_view, DialogManageTag::MODE_CREATE_TAG, 0, 0, this, "DialogManageTag");
@@ -1268,8 +1268,8 @@ void KPhotoBook::slotAddMaintag() {
 }
 
 
-void KPhotoBook::slotCreateSubtag() {
-
+void KPhotoBook::slotCreateSubtag()
+{
     tracer->invoked(__func__);
 
     // get the tag to add a child to
@@ -1300,8 +1300,8 @@ void KPhotoBook::slotCreateSubtag() {
 }
 
 
-void KPhotoBook::slotEditTag() {
-
+void KPhotoBook::slotEditTag()
+{
     tracer->invoked(__func__);
 
     // get the tag to add a child to
@@ -1336,8 +1336,8 @@ void KPhotoBook::slotEditTag() {
 }
 
 
-void KPhotoBook::slotDeleteTag() {
-
+void KPhotoBook::slotDeleteTag()
+{
     tracer->invoked(__func__);
 
     // get the tag to add a child to
@@ -1381,8 +1381,8 @@ void KPhotoBook::slotDeleteTag() {
 }
 
 
-void KPhotoBook::slotToggleLockUnlockTagging() {
-
+void KPhotoBook::slotToggleLockUnlockTagging()
+{
     tracer->invoked(__func__);
 
     Settings::setTagTreeLocked(!Settings::tagTreeLocked());
@@ -1391,8 +1391,8 @@ void KPhotoBook::slotToggleLockUnlockTagging() {
 }
 
 
-void KPhotoBook::slotRescanFilesystem() {
-
+void KPhotoBook::slotRescanFilesystem()
+{
     tracer->invoked(__func__);
 
     m_engine->fileSystemScanner()->rescan();
@@ -1408,23 +1408,32 @@ void KPhotoBook::slotRescanFilesystem() {
 }
 
 
-void KPhotoBook::slotAutoRefreshView() {
+void KPhotoBook::slotAutoRefreshView()
+{
     Settings::setImagePreviewAutoRefresh(!Settings::imagePreviewAutoRefresh());
 
     applyAutorefreshSetting();
 }
-void KPhotoBook::slotRefreshView() {
+
+
+void KPhotoBook::slotRefreshView()
+{
     m_view->updateFiles();
 }
 
-void KPhotoBook::slotIncreasePreviewSize() {
+
+void KPhotoBook::slotIncreasePreviewSize()
+{
     Settings::setImagePreviewSize(Settings::imagePreviewSize() + 8);
 
     applyZoomSetting();
 
     m_view->updateCurrentImageSize();
 }
-void KPhotoBook::slotDecreasePreviewSize() {
+
+
+void KPhotoBook::slotDecreasePreviewSize()
+{
     Settings::setImagePreviewSize(Settings::imagePreviewSize() - 8);
 
     applyZoomSetting();
@@ -1499,54 +1508,80 @@ void KPhotoBook::slotChangePreviewSizeActivated(int percent)
 }
 
 
-void KPhotoBook::slotIncludeWholeSourceDir() {
+void KPhotoBook::slotIncludeWholeSourceDir()
+{
     m_sourcedirTree->includeWholeSourceDir();
 
     autoRefreshView();
 }
-void KPhotoBook::slotExcludeWholeSourceDir() {
+
+
+void KPhotoBook::slotExcludeWholeSourceDir()
+{
     m_sourcedirTree->excludeWholeSourceDir();
 
     autoRefreshView();
 }
-void KPhotoBook::slotInvertSourceDir() {
+
+
+void KPhotoBook::slotInvertSourceDir()
+{
     m_sourcedirTree->invertSourceDir();
 
     autoRefreshView();
 }
-void KPhotoBook::slotIncludeAllSourceDirs() {
+
+
+void KPhotoBook::slotIncludeAllSourceDirs()
+{
     m_sourcedirTree->includeAllSourceDirs();
 
     autoRefreshView();
 }
-void KPhotoBook::slotExcludeAllSourceDirs() {
+
+
+void KPhotoBook::slotExcludeAllSourceDirs()
+{
     m_sourcedirTree->excludeAllSourceDirs();
 
     autoRefreshView();
 }
-void KPhotoBook::slotInvertAllSourceDirs() {
+
+
+void KPhotoBook::slotInvertAllSourceDirs()
+{
     m_sourcedirTree->invertAllSourceDirs();
 
     autoRefreshView();
 }
 
 
-void KPhotoBook::slotExpandSourceDir() {
+void KPhotoBook::slotExpandSourceDir()
+{
     m_sourcedirTree->expandCurrent();
 }
-void KPhotoBook::slotCollapseSourceDir() {
+
+
+void KPhotoBook::slotCollapseSourceDir()
+{
     m_sourcedirTree->collapseCurrent();
 }
-void KPhotoBook::slotExpandAllSourceDirs() {
+
+
+void KPhotoBook::slotExpandAllSourceDirs()
+{
     m_sourcedirTree->expandAll();
 }
-void KPhotoBook::slotCollapseAllSourceDirs() {
+
+
+void KPhotoBook::slotCollapseAllSourceDirs()
+{
     m_sourcedirTree->collapseAll();
 }
 
 
-void KPhotoBook::slotAndifyTags() {
-
+void KPhotoBook::slotAndifyTags()
+{
     int lastOperator = Settings::tagTreeFilterOperator();
 
     Settings::setTagTreeFilterOperator(Settings::EnumTagTreeFilterOperator::And);
@@ -1557,8 +1592,9 @@ void KPhotoBook::slotAndifyTags() {
     }
 }
 
-void KPhotoBook::slotOrifyTags() {
 
+void KPhotoBook::slotOrifyTags()
+{
     int lastOperator = Settings::tagTreeFilterOperator();
 
     Settings::setTagTreeFilterOperator(Settings::EnumTagTreeFilterOperator::Or);
@@ -1570,35 +1606,48 @@ void KPhotoBook::slotOrifyTags() {
 }
 
 
-void KPhotoBook::slotDeselectFilter() {
+void KPhotoBook::slotDeselectFilter()
+{
     m_tagTree->deselectFilter();
 
     autoRefreshView();
 }
 
-void KPhotoBook::slotResetFilter() {
+
+void KPhotoBook::slotResetFilter()
+{
     m_tagTree->resetFilter();
 
     autoRefreshView();
 }
 
 
-void KPhotoBook::slotExpandTag() {
+void KPhotoBook::slotExpandTag()
+{
     m_tagTree->expandCurrent();
 }
-void KPhotoBook::slotCollapseTag() {
+
+
+void KPhotoBook::slotCollapseTag()
+{
     m_tagTree->collapseCurrent();
 }
-void KPhotoBook::slotExpandAllTags() {
+
+
+void KPhotoBook::slotExpandAllTags()
+{
     m_tagTree->expandAll();
 }
-void KPhotoBook::slotCollapseAllTags() {
+
+
+void KPhotoBook::slotCollapseAllTags()
+{
     m_tagTree->collapseAll();
 }
 
 
-void KPhotoBook::slotFileSelectionChanged() {
-
+void KPhotoBook::slotFileSelectionChanged()
+{
     unsigned int selectedImagesCount = m_view->fileView()->selectedItems()->count();
 
     // update the statusbar to reflect the number of selected files
@@ -1616,8 +1665,8 @@ void KPhotoBook::slotFileSelectionChanged() {
 }
 
 
-void KPhotoBook::slotLoadSettings() {
-
+void KPhotoBook::slotLoadSettings()
+{
     applyOperatorSetting();
     applyZoomSetting();
     applyAutorefreshSetting();
@@ -1642,8 +1691,8 @@ void KPhotoBook::slotLoadSettings() {
 }
 
 
-void KPhotoBook::slotConfigDefaultClicked() {
-
+void KPhotoBook::slotConfigDefaultClicked()
+{
     Settings* defaultSettings = Settings::self();
     defaultSettings->useDefaults(true);
 
@@ -1663,14 +1712,15 @@ void KPhotoBook::slotConfigDefaultClicked() {
 }
 
 
-void KPhotoBook::slotRestoreToolViews() {
-
+void KPhotoBook::slotRestoreToolViews()
+{
     m_tagTreeToolView->place(KDockWidget::DockLeft, getMainDockWidget(), 20);
     m_sourceDirTreeToolView->place(KDockWidget::DockCenter, m_tagTree, 20);
 }
 
-void KPhotoBook::slotShowToolViewTagTree() {
 
+void KPhotoBook::slotShowToolViewTagTree()
+{
     if (!m_sourcedirTree->isHidden()) {
         m_tagTreeToolView->place(KDockWidget::DockCenter, m_sourcedirTree, 20);
 
@@ -1681,8 +1731,8 @@ void KPhotoBook::slotShowToolViewTagTree() {
     m_tagTreeToolView->show();
 }
 
-void KPhotoBook::slotShowToolViewSourceDirTree() {
-
+void KPhotoBook::slotShowToolViewSourceDirTree()
+{
     if (!m_tagTree->isHidden()) {
         m_sourceDirTreeToolView->place(KDockWidget::DockCenter, m_tagTree, 20);
 
@@ -1693,8 +1743,9 @@ void KPhotoBook::slotShowToolViewSourceDirTree() {
     m_sourceDirTreeToolView->show();
 }
 
-void KPhotoBook::slotExportMatchingFiles() {
 
+void KPhotoBook::slotExportMatchingFiles()
+{
     QDir dir(Settings::fileSystemLastExportedToDirectory());
 
     QString choosedDir = selectExportingDirectory(dir.absPath());
@@ -1714,8 +1765,8 @@ void KPhotoBook::slotExportMatchingFiles() {
 }
 
 
-void KPhotoBook::slotExportSelectedFiles() {
-
+void KPhotoBook::slotExportSelectedFiles()
+{
     QDir dir(Settings::fileSystemLastExportedToDirectory());
 
     QString choosedDir = selectExportingDirectory(dir.absPath());
@@ -1735,31 +1786,34 @@ void KPhotoBook::slotExportSelectedFiles() {
     }
 }
 
+
 ///@todo finish implementation of the imageImporter
-void KPhotoBook::slotImportImages() {
+void KPhotoBook::slotImportImages()
+{
     (new ImageImporter(this))->show();
 }
+
 
 //
 // private
 //
-void KPhotoBook::autoRefreshView() {
-
+void KPhotoBook::autoRefreshView()
+{
     if (m_view && Settings::imagePreviewAutoRefresh()) {
         m_view->updateFiles();
     }
 }
 
 
-void KPhotoBook::changeStatusbar(const QString& text) {
-
+void KPhotoBook::changeStatusbar(const QString& text)
+{
     // display the text on the statusbar
     statusBar()->changeItem(text, 1);
 }
 
 
-void KPhotoBook::setupToolWindowTagTree() {
-
+void KPhotoBook::setupToolWindowTagTree()
+{
     QWidget* tagTreePanel = new QWidget(this, "tagTreePanel");
     QVBoxLayout* tagTreePanelLayout = new QVBoxLayout(tagTreePanel, 0, 0, "tagTreePanelLayout");
     tagTreePanelLayout->setAutoAdd(true);
@@ -1803,8 +1857,8 @@ void KPhotoBook::setupToolWindowTagTree() {
 }
 
 
-void KPhotoBook::setupToolWindowSourceDirTree() {
-
+void KPhotoBook::setupToolWindowSourceDirTree()
+{
     // create sourcedirtree toolwindow
     QWidget* sourceDirTreePanel = new QWidget(this, "sourceDirTreePanel");
     QVBoxLayout* sourceDirTreePanelLayout = new QVBoxLayout(sourceDirTreePanel, 0, 0, "sourceDirTreePanelLayout");
@@ -1845,8 +1899,8 @@ void KPhotoBook::setupToolWindowSourceDirTree() {
 }
 
 
-void KPhotoBook::updateState() {
-
+void KPhotoBook::updateState()
+{
     // enable save if engine is dirty
     m_save->setEnabled(m_engine->dirty());
 
@@ -1858,8 +1912,8 @@ void KPhotoBook::updateState() {
 }
 
 
-void KPhotoBook::updateStatusBar() {
-
+void KPhotoBook::updateStatusBar()
+{
     // update the statusbar
     QString filesMsg = QString(i18n("Files: %1")).arg(m_engine->totalNumberOfFiles());
     statusBar()->changeItem(filesMsg, 2);
@@ -1873,8 +1927,8 @@ void KPhotoBook::updateStatusBar() {
 }
 
 
-SourceDir* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*) {
-
+SourceDir* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*)
+{
     SourceDir* newSourceDir = m_engine->fileSystemScanner()->addSourceFolder(sourceDir, recursive);
 
     updateState();
@@ -1882,16 +1936,16 @@ SourceDir* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(Engin
 }
 
 
-void KPhotoBook::removeSourceDir(SourceDir* sourceDir) {
-
+void KPhotoBook::removeSourceDir(SourceDir* sourceDir)
+{
     m_engine->fileSystemScanner()->removeSourceFolder(sourceDir);
 
     updateState();
 }
 
 
-TagNode* KPhotoBook::createTag(TagNode::Type type, const QString& name, const QString& comment, const QString& iconName, TagNode* parent) {
-
+TagNode* KPhotoBook::createTag(TagNode::Type type, const QString& name, const QString& comment, const QString& iconName, TagNode* parent)
+{
     tracer->sinvoked(__func__) << "Invoked with type: " << type << ", name: " << name << ", icon: " << iconName << endl;
 
     TagNode* tagNode = m_engine->createTag(parent, type, name, comment, iconName);
@@ -1901,15 +1955,15 @@ TagNode* KPhotoBook::createTag(TagNode::Type type, const QString& name, const QS
 }
 
 
-void KPhotoBook::applyZoomSetting() {
-
+void KPhotoBook::applyZoomSetting()
+{
     m_zoomIn->setEnabled(Settings::imagePreviewSize() < Constants::SETTINGS_MAX_PREVIEW_SIZE);
     m_zoomOut->setEnabled(Settings::imagePreviewSize() > Constants::SETTINGS_MIN_PREVIEW_SIZE);
 }
 
 
-void KPhotoBook::applyOperatorSetting() {
-
+void KPhotoBook::applyOperatorSetting()
+{
     m_andifyTagsAction->setChecked(Settings::tagTreeFilterOperator() == Settings::EnumTagTreeFilterOperator::And);
     m_orifyTagsAction->setChecked(Settings::tagTreeFilterOperator() != Settings::EnumTagTreeFilterOperator::And);
 
@@ -1919,8 +1973,8 @@ void KPhotoBook::applyOperatorSetting() {
 }
 
 
-void KPhotoBook::applyAutorefreshSetting() {
-
+void KPhotoBook::applyAutorefreshSetting()
+{
     m_autoRefreshViewAction->setChecked(Settings::imagePreviewAutoRefresh());
 
     if (m_settingsImagePreview) {
@@ -1931,8 +1985,8 @@ void KPhotoBook::applyAutorefreshSetting() {
 }
 
 
-void KPhotoBook::applyLockUnlockTaggingSettings() {
-
+void KPhotoBook::applyLockUnlockTaggingSettings()
+{
     m_lockUnlockTaggingAction->setChecked(Settings::tagTreeLocked());
     if (Settings::tagTreeLocked()) {
         m_lockUnlockTaggingAction->setText("Unlock tagging");
@@ -2071,8 +2125,8 @@ void KPhotoBook::loadFilter()
 }
 
 
-QStringList* KPhotoBook::intDict2stringList(QIntDict<QString>* intDict) {
-
+QStringList* KPhotoBook::intDict2stringList(QIntDict<QString>* intDict)
+{
     QStringList* stringList = new QStringList();
 
     QIntDictIterator<QString> it(*intDict);
@@ -2085,8 +2139,8 @@ QStringList* KPhotoBook::intDict2stringList(QIntDict<QString>* intDict) {
 }
 
 
-QIntDict<QString>* KPhotoBook::stringList2intDict(QStringList stringList) {
-
+QIntDict<QString>* KPhotoBook::stringList2intDict(QStringList stringList)
+{
     QIntDict<QString>* filterDict = new QIntDict<QString>;
 
     // loop over all entries in the stringlist
@@ -2120,8 +2174,8 @@ QIntDict<QString>* KPhotoBook::stringList2intDict(QStringList stringList) {
 }
 
 
-QString KPhotoBook::selectExportingDirectory(QString startDirectory) {
-
+QString KPhotoBook::selectExportingDirectory(QString startDirectory)
+{
   // prepare the directory chooser dialog
   KURLRequesterDlg* dialog = new KURLRequesterDlg(startDirectory, i18n("Directory to export to:"), this, "exportingDirectoryDialog", true);
   dialog->setCaption(i18n("Select the directory to export to"));
@@ -2148,7 +2202,6 @@ QString KPhotoBook::selectExportingDirectory(QString startDirectory) {
     KMessageBox::sorry(this, i18n("You must select an existing directory."), i18n("Export"));
   }
 }
-
 
 
 #include "kphotobook.moc"

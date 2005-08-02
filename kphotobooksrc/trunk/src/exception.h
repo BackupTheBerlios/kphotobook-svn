@@ -23,62 +23,72 @@
 
 #include <qstring.h>
 
+
 /**
  * The EngineException is the superclass of all exceptions thrown by the engine.
  *
  * CVS-ID $Id$
  */
-class EngineException {
-
-public:
-    EngineException(QString message)
-        : m_message(message)
-        , m_detailMessage(QString::null) {
-    }
-
-    EngineException(QString message, QString detailMessage)
-        : m_message(message)
-        , m_detailMessage(detailMessage) {
-    }
-
-    virtual ~EngineException() {
-        delete m_message;
-        delete m_detailMessage;
-    }
-
-    QString message() {
-        if (m_message.isNull()) {
-            return QString("");
+class EngineException
+{
+    public:
+        EngineException(QString message) :
+            m_message(message),
+            m_detailMessage(QString::null)
+        {
         }
-        return m_message;
-    }
-
-    QString detailMessage() {
-        if (m_detailMessage.isNull()) {
-            return QString("");
+    
+        EngineException(QString message, QString detailMessage) :
+            m_message(message),
+            m_detailMessage(detailMessage)
+        {
         }
-        return m_detailMessage;
-    }
-    void appendDetailMessage(QString& detailMessage) {
-        if (m_detailMessage.isEmpty()) {
-            m_detailMessage = QString("").append(detailMessage);
-        } else {
-            m_detailMessage.append("\n").append(detailMessage);
+    
+        virtual ~EngineException()
+        {
+            delete m_message;
+            delete m_detailMessage;
         }
-    }
-
-    QString toString() {
-        if (m_detailMessage.isEmpty()) {
+    
+        QString message()
+        {
+            if (m_message.isNull()) {
+                return QString("");
+            }
             return m_message;
-        } else {
-            return QString(m_message).append("\n").append(m_detailMessage);
         }
-    }
+    
+        QString detailMessage()
+        {
+            if (m_detailMessage.isNull()) {
+                return QString("");
+            }
+            return m_detailMessage;
+        }
 
-private:
-    QString m_message;
-    QString m_detailMessage;
+        void appendDetailMessage(QString& detailMessage)
+        {
+            if (m_detailMessage.isEmpty()) {
+                m_detailMessage = QString("").append(detailMessage);
+            } else {
+                m_detailMessage.append("\n").append(detailMessage);
+            }
+        }
+    
+        QString toString()
+        {
+            if (m_detailMessage.isEmpty()) {
+                return m_message;
+            } else {
+                return QString(m_message).append("\n").append(m_detailMessage);
+            }
+        }
+    
+    private:
+        QString m_message;
+        QString m_detailMessage;
 };
+
 
 /**
  * The PersistingException is thrown when a problem during persisting
@@ -86,43 +96,46 @@ private:
  *
  * CVS-ID $Id$
  */
-class PersistingException : public EngineException {
-
+class PersistingException : public EngineException
+{
     public:
-    PersistingException(QString message)
-    : EngineException(message) {
-    }
-
-    PersistingException(QString message, QString detailMessage)
-    : EngineException(message, detailMessage) {
-    }
-
-    ~PersistingException() {
-    }
-
-    private:
+        PersistingException(QString message) :
+            EngineException(message)
+        {
+        }
+    
+        PersistingException(QString message, QString detailMessage) :
+            EngineException(message, detailMessage)
+        {
+        }
+    
+        ~PersistingException()
+        {
+        }
 };
+
 
 /**
  * The FilterException is thrown when a problemwith the filter is detected.
  *
  * CVS-ID $Id$
  */
-class FilterException : public EngineException {
-
+class FilterException : public EngineException
+{
     public:
-        FilterException(QString message)
-    : EngineException(message) {
+        FilterException(QString message) :
+            EngineException(message)
+        {
+        }
+
+    FilterException(QString message, QString detailMessage) :
+        EngineException(message, detailMessage)
+    {
     }
 
-    FilterException(QString message, QString detailMessage)
-    : EngineException(message, detailMessage) {
+    ~FilterException()
+    {
     }
-
-    ~FilterException() {
-    }
-
-    private:
 };
 
 #endif

@@ -25,28 +25,30 @@
 
 #include "tagnode.h"
 
-#include <qstring.h>
 #include <qfile.h>
+#include <qstring.h>
+
 
 /**
  * Concrete tagnode implementation representing a boolean tag.
  *
  * CVS-ID $Id$
  */
-class TagNodeBoolean : public TagNode {
-
-private:
-    static Tracer* tracer;
-
-
-public:
-    TagNodeBoolean(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
-
-    ~TagNodeBoolean() {
-    }
-
-    void setTagged(File* file, bool tagged);
-    bool tagged(File* file);
+class TagNodeBoolean : public TagNode
+{
+    private:
+        static Tracer* tracer;
+    
+    
+    public:
+        TagNodeBoolean(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
+    
+        ~TagNodeBoolean()
+        {
+        }
+    
+        void setTagged(File* file, bool tagged);
+        bool tagged(File* file);
 };
 
 #endif

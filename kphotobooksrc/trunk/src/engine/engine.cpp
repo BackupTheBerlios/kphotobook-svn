@@ -20,56 +20,32 @@
 
 #include "engine.h"
 
-#include "../constants.h"
-#include "../settings/settings.h"
-
-#include "../backend/xmlparser.h"
-#include "../backend/xmlwriter.h"
-#include "sourcedir.h"
-#include "tagnode.h"
-#include "tagnodetitle.h"
-#include "tagnodeboolean.h"
+#include "file.h"
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocboolean.h"
-#include "file.h"
+#include "sourcedir.h"
+#include "tagnode.h"
+#include "tagnodeboolean.h"
+#include "tagnodetitle.h"
+#include "../backend/xmlparser.h"
+#include "../backend/xmlwriter.h"
+#include "../constants.h"
+#include "../settings/settings.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
 
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qxml.h>
 #include <qdatetime.h>
 #include <qintdict.h>
 #include <qptrlist.h>
 #include <qregexp.h>
-#include <qdatetime.h>
+#include <qstring.h>
+#include <qstringlist.h>
+#include <qxml.h>
 
 
 Tracer* Engine::tracer = Tracer::getInstance("kde.kphotobook.engine", "Engine");
-
-
-    bool m_dirty;
-    QFileInfo* m_fileinfo;
-    QString* m_uid;
-
-    FileSystemScanner* m_fileSystemScanner;
-
-    unsigned int m_nextSourceDirId;
-    QIntDict<SourceDir>* m_sourceDirDict;
-    QPtrList<SourceDir>* m_sourceDirs;
-
-    unsigned int m_nextTagNodeId;
-    QIntDict<TagNode>* m_tagNodeDict;
-    QPtrList<TagNode>* m_tagForest;
-    TagNodeTitle* m_exifTitleTag;
-
-    QDict<File>* m_fileDict;
-    QPtrList<File>* m_fileList;
-    QPtrList<File>* m_fileList2display;
-
-
 
 
 Engine::Engine() :

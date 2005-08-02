@@ -21,12 +21,13 @@
 #ifndef FILTERNODE_H
 #define FILTERNODE_H
 
-#include "../tracer/tracer.h"
-#include "../exception.h"
 #include "file.h"
+#include "../exception.h"
+#include "../tracer/tracer.h"
 
 #include <qobject.h>
 #include <qptrlist.h>
+
 
 /**
  * This is the generic superclass for all concrete FilterNodes.
@@ -35,55 +36,55 @@
  * 
  * CVS-ID $Id: tagnode.h 307 2005-04-17 12:47:26Z starcube $
  */
-class FilterNode : public QObject {
-
-Q_OBJECT
-
-protected:
-    static Tracer* dumper;
-
-public:
-    FilterNode(FilterNode* parent = 0);
-
-    ~FilterNode();
-
-    /**
-     * Adds the specified child to this parent and sets the parent of the child.
-     */
-    void addChild(FilterNode* child);
-
-    /**
-     * Returns the number of children this FilterNode has.
-     */
-    bool childrenCount() {
-        
-        return m_children->count();
-    }
+class FilterNode : public QObject
+{
+    Q_OBJECT
     
-    /**
-     * Evaluates if this subtree or leafnode matches the given file.
-     */
-    virtual bool evaluate(File* file) throw(FilterException*) = 0;
-
-    /**
-     * Prints the value of this Filternode and calls this method with a increased
-     * indention on each child.
-     * The method is intended for debugging the filter.
-     *
-     * @indention the indention to put before the text.
-     */
-    virtual void dump(QString indention = QString("")) = 0;
-
-protected:
-    /**
-     * The parent of this node.
-     */
-    FilterNode* m_parent;
-
-    /**
-     * The list of children.
-     */
-    QPtrList<FilterNode>* m_children;
+    protected:
+        static Tracer* dumper;
+    
+    public:
+        FilterNode(FilterNode* parent = 0);
+    
+        ~FilterNode();
+    
+        /**
+        * Adds the specified child to this parent and sets the parent of the child.
+        */
+        void addChild(FilterNode* child);
+    
+        /**
+        * Returns the number of children this FilterNode has.
+        */
+        bool childrenCount()
+        {
+            return m_children->count();
+        }
+        
+        /**
+        * Evaluates if this subtree or leafnode matches the given file.
+        */
+        virtual bool evaluate(File* file) throw(FilterException*) = 0;
+    
+        /**
+        * Prints the value of this Filternode and calls this method with a increased
+        * indention on each child.
+        * The method is intended for debugging the filter.
+        *
+        * @indention the indention to put before the text.
+        */
+        virtual void dump(QString indention = QString("")) = 0;
+    
+    protected:
+        /**
+        * The parent of this node.
+        */
+        FilterNode* m_parent;
+    
+        /**
+        * The list of children.
+        */
+        QPtrList<FilterNode>* m_children;
 };
 
 #endif

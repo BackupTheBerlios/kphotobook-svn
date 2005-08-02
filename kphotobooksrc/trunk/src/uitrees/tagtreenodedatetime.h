@@ -43,7 +43,7 @@ class TagTreeNodeDateTime : public TagTreeNode
     public:
         TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
         TagTreeNodeDateTime(TagTreeNode* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-
+        
         virtual ~TagTreeNodeDateTime();
 
         void setFilterValue(QString filterValue)

@@ -22,21 +22,23 @@
 
 #include "../settings/settings.h"
 
+#include <kapplication.h>
+
 #include <qpainter.h>
 #include <qstyle.h>
 #include <qtimer.h>
-
-#include <kapplication.h>
 
 #include <list>
 #include <math.h>
 
 using namespace std;
 
+
 Tracer* TimeRuler::tracer = Tracer::getInstance("kde.kphotobook.widgets", "TimeRuler");
 
-TimeRuler::TimeRuler(QWidget* parent)
-: QWidget(parent)
+
+TimeRuler::TimeRuler(QWidget* parent) :
+    QWidget(parent)
 {
     //the basic width of a month
     m_widthMonth = 15;
@@ -70,10 +72,10 @@ TimeRuler::TimeRuler(QWidget* parent)
 }
 
 
-
-TimeRuler::~TimeRuler() {
-    ;
+TimeRuler::~TimeRuler()
+{
 }
+
 
 void TimeRuler::slotSetSelected(const QDate& date, bool center)
 {
@@ -281,7 +283,8 @@ void TimeRuler::resizeEvent ( QResizeEvent * e)
 }
 
 
-void TimeRuler::paintEvent(QPaintEvent* e) {
+void TimeRuler::paintEvent(QPaintEvent* e)
+{
     QPainter painter(this);
     painter.setClipRect(e->rect());
 
@@ -318,7 +321,8 @@ void TimeRuler::paintEvent(QPaintEvent* e) {
 }
 
 
-void TimeRuler::mouseMoveEvent ( QMouseEvent * e ) {
+void TimeRuler::mouseMoveEvent ( QMouseEvent * e )
+{
     static QPoint last = e->pos();
 
     if (e->state() & Qt::LeftButton) {// && e->pos().y() > m_yBase) {
@@ -354,13 +358,15 @@ void TimeRuler::mouseMoveEvent ( QMouseEvent * e ) {
 }
 
 
-void TimeRuler::mousePressEvent(QMouseEvent* e) {
+void TimeRuler::mousePressEvent(QMouseEvent* e)
+{
     //store the press position to find out, if a click was intended or not
     m_mousePressPosition = e->pos();
 }
 
 
-void TimeRuler::mouseReleaseEvent(QMouseEvent* e) {
+void TimeRuler::mouseReleaseEvent(QMouseEvent* e)
+{
     int delta = 3;
     const QPoint* p = &(e->pos());
     if (m_mousePressPosition.x() + delta > p->x() &&
@@ -392,12 +398,14 @@ void TimeRuler::mouseReleaseEvent(QMouseEvent* e) {
 }
 
 
-void TimeRuler::wheelEvent ( QWheelEvent * e ) {
+void TimeRuler::wheelEvent ( QWheelEvent * e )
+{
     shift(20 * (e->delta() / 120));
 }
 
 
-void TimeRuler::mousePosToOffset(const QPoint& pos, int* year, int* month) {
+void TimeRuler::mousePosToOffset(const QPoint& pos, int* year, int* month)
+{
     if (pos.y() > m_yBase) {
         *year = -1;
         return;
@@ -415,7 +423,8 @@ void TimeRuler::mousePosToOffset(const QPoint& pos, int* year, int* month) {
 
 
 
-QRect TimeRuler::dateToBarRect(int year, int month, bool translateX, int height ) {
+QRect TimeRuler::dateToBarRect(int year, int month, bool translateX, int height )
+{
     //if height is 0, we return the bunding rect for the whole month
     if (height < 0) {
         height = m_yBase;
@@ -441,7 +450,8 @@ void TimeRuler::smoothShift(int x)
 }
 
 
-bool TimeRuler::shift(int x) {
+bool TimeRuler::shift(int x)
+{
     bool retval = true;
     if (x > 0) {
         if (m_xVis + width() + x < m_pixmap.width()) {
@@ -474,6 +484,7 @@ void TimeRuler::slotScrollTimerFired()
     }
 }
 
+
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
@@ -481,16 +492,20 @@ void TimeRuler::slotScrollTimerFired()
 /////////////////////////////////////////////////////////////////////////////////
 
 
-DateBinder::DateBinder() {
+DateBinder::DateBinder()
+{
     m_maxYear  = -1;
     m_maxMonth = -1;
     m_maxDay   = -1;
 }
 
-DateBinder::~DateBinder() {}
+DateBinder::~DateBinder()
+{
+}
 
 
-void DateBinder::addDate(const QDate& d) {
+void DateBinder::addDate(const QDate& d)
+{
     list<QDate>::iterator it;
     for (it= m_lstData.begin(); it != m_lstData.end(); ++it) {
         if ((*it) > d) {
@@ -560,16 +575,12 @@ int DateBinder::count (int year, int month, int day, bool cntd)
         }
     }
 
-
-
-
-
-
     return count;
 }
 
 
-int DateBinder::firstYear() {
+int DateBinder::firstYear()
+{
     if (m_lstData.size()) {
         return m_lstData.front().year();
     }
@@ -577,20 +588,22 @@ int DateBinder::firstYear() {
 }
 
 
-int DateBinder::lastYear() {
+int DateBinder::lastYear()
+{
     if (m_lstData.size()) {
         return m_lstData.back().year();
     }
     return -1;
 }
 
-int DateBinder::numYears() {
+int DateBinder::numYears()
+{
     return lastYear() - firstYear() + 1;
 }
 
 
-
-int DateBinder::maxYear() {
+int DateBinder::maxYear()
+{
     if (m_maxYear <= 0) {
         //calculate the max;
         list<QDate>::iterator it = m_lstData.begin();
@@ -619,7 +632,8 @@ int DateBinder::maxYear() {
 }
 
 
-int DateBinder::maxMonth() {
+int DateBinder::maxMonth()
+{
     if (m_maxMonth <= 0) {
         //calculate the max;
         list<QDate>::iterator it = m_lstData.begin();
@@ -647,7 +661,9 @@ int DateBinder::maxMonth() {
     return m_maxMonth;
 }
 
-int DateBinder::maxDay() {
+
+int DateBinder::maxDay()
+{
     if (m_maxDay <= 0) {
         //calculate the max;
         list<QDate>::iterator it = m_lstData.begin();
@@ -671,15 +687,6 @@ int DateBinder::maxDay() {
             m_maxDay = cur;
         }
     }
+    
     return m_maxDay;
 }
-
-
-
-
-
-
-
-
-
-
