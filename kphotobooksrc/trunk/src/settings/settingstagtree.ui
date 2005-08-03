@@ -53,7 +53,7 @@
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>&lt;b&gt;Font&lt;/b&gt;
-&lt;p&gt;Select the font for the Tag Tree font.&lt;/p&gt;</string>
+&lt;p&gt;This selects the font for the tag names in the tag tree.&lt;/p&gt;</string>
                     </property>
                 </widget>
                 <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
@@ -62,6 +62,11 @@
                     </property>
                     <property name="text">
                         <string>Icon size</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Icoin size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the tag-icons in the Tag Tree. The value can be between 16 and 48.&lt;/p&gt;</string>
                     </property>
                 </widget>
                 <widget class="KIntSpinBox" row="0" column="2">
@@ -101,7 +106,7 @@
                     <property name="whatsThis" stdset="0">
                         <string>&lt;b&gt;Show icons in the Tag Tree&lt;/b&gt;
 
-&lt;p&gt;If enabled the chosen icons for each tag will be shown left beside the tag text. If disabled, even if an icon is chosen for a tag, it will not be shown.&lt;/p&gt;</string>
+&lt;p&gt;If enabled the chosen icons for each tag will be shown left beside the tag name. If disabled, even if an icon is chosen for a tag, it will not be shown.&lt;/p&gt;</string>
                     </property>
                 </widget>
                 <spacer row="4" column="0">
@@ -176,6 +181,11 @@
                     <property name="text">
                         <string>Icon size</string>
                     </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Icon size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the toolbar icons of the tag tree. The size can be between 16 and 32.&lt;/p&gt;</string>
+                    </property>
                 </widget>
                 <widget class="KIntSpinBox">
                     <property name="name">
@@ -224,6 +234,11 @@
                     <property name="text">
                         <string>Filter operator</string>
                     </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Filter operator&lt;/b&gt;
+&lt;p&gt;&lt;b&gt;AND&lt;/b&gt;:If the filter operator is set to 'AND', only images which contain &lt;i&gt;all&lt;/i&gt; the tags set in the filter are displayed.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;OR&lt;/b&gt;:If the filter operator is set to 'OR', all images which contain &lt;i&gt;any&lt;/i&gt; of the tags set in the filter are shown.&lt;/p&gt;</string>
+                    </property>
                 </widget>
                 <widget class="KComboBox">
                     <item>
@@ -238,6 +253,11 @@
                     </item>
                     <property name="name">
                         <cstring>kcfg_TagTreeFilterOperator</cstring>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Filter operator&lt;/b&gt;
+&lt;p&gt;&lt;b&gt;AND&lt;/b&gt;:If the filter operator is set to 'AND', only images which contain &lt;i&gt;all&lt;/i&gt; the tags set in the filter are displayed.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;OR&lt;/b&gt;:If the filter operator is set to 'OR', all images which contain &lt;i&gt;any&lt;/i&gt; of the tags set in the filter are shown.&lt;/p&gt;</string>
                     </property>
                 </widget>
                 <spacer>
@@ -296,6 +316,10 @@
                     <property name="accel">
                         <string>Alt+B</string>
                     </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Remember open/closed nodes&lt;/b&gt;
+&lt;p&gt;If enabled KPhotoBook remembers open and closed tags and will set the tree when starting up to the state of the last session.&lt;/p&gt;</string>
+                    </property>
                 </widget>
                 <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
                     <property name="name">
@@ -303,6 +327,14 @@
                     </property>
                     <property name="text">
                         <string>&amp;Remember filter state</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+R</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Remember filter state&lt;/b&gt;
+&lt;p&gt;If enabled KPhotoBook will remember the filter of the tag tree and set it when starting up KPhotoBook.&lt;/p&gt;
+&lt;p&gt;If not enable the filter will be reset on startup so that all images are shown&lt;/p&gt;</string>
                     </property>
                 </widget>
                 <spacer row="2" column="0">
@@ -331,6 +363,9 @@
                     </property>
                     <property name="text">
                         <string>Set filter state of secret tags to 'exclude' by default</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Set filter state of secret tags to 'exclude' by default&lt;/b&gt;&lt;p&gt;If enabled the 'secret' tags will be excluded by default, meaning, that images which have a 'secret' tag associated will not be shown.&lt;/p&gt;</string>
                     </property>
                 </widget>
             </grid>

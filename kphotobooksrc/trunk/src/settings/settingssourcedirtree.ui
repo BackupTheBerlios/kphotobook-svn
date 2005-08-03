@@ -60,6 +60,11 @@
                                 <property name="name">
                                     <cstring>kcfg_SourceDirTreeIconSize</cstring>
                                 </property>
+                                <property name="whatsThis" stdset="0">
+                                    <string>&lt;b&gt;Icoin size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the source folder-icons in the Tag Tree. The value can be between 16 and 48.&lt;/p&gt;</string>
+                                </property>
                             </widget>
                             <spacer>
                                 <property name="name">
@@ -92,6 +97,10 @@
                         <property name="text">
                             <string>Font</string>
                         </property>
+                        <property name="whatsThis" stdset="0">
+                            <string>&lt;b&gt;Font&lt;/b&gt;
+&lt;p&gt;This selects the font for the folder names in the source folder tree.&lt;/p&gt;</string>
+                        </property>
                     </widget>
                     <widget class="QLabel" row="0" column="0">
                         <property name="name">
@@ -108,7 +117,12 @@
                     <cstring>kcfg_SourceDirTreeShowIcons</cstring>
                 </property>
                 <property name="text">
-                    <string>Show icons in the SourceDirTree</string>
+                    <string>Show icons in the Source Folder Tree</string>
+                </property>
+                <property name="whatsThis" stdset="0">
+                    <string>&lt;b&gt;Show icons in the Source FolderTree&lt;/b&gt;
+
+&lt;p&gt;If enabled the source folder icons will be shown left beside the folder name text. If disabled the icon will not be shown.&lt;/p&gt;</string>
                 </property>
             </widget>
         </vbox>
@@ -119,8 +133,8 @@
         </property>
         <property name="geometry">
             <rect>
-                <x>11</x>
-                <y>155</y>
+                <x>10</x>
+                <y>150</y>
                 <width>578</width>
                 <height>66</height>
             </rect>
@@ -139,10 +153,20 @@
                 <property name="text">
                     <string>Icon size</string>
                 </property>
+                <property name="whatsThis" stdset="0">
+                    <string>&lt;b&gt;Icon size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the toolbar icons of the source folder tree. The size can be between 16 and 32.&lt;/p&gt;</string>
+                </property>
             </widget>
             <widget class="KIntSpinBox">
                 <property name="name">
                     <cstring>kcfg_SourceDirTreeToolBarIconSize</cstring>
+                </property>
+                <property name="whatsThis" stdset="0">
+                    <string>&lt;b&gt;Icon size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the toolbar icons of the source folder tree. The size can be between 16 and 32.&lt;/p&gt;</string>
                 </property>
             </widget>
             <spacer>
@@ -177,15 +201,15 @@
         <property name="sizeHint">
             <size>
                 <width>20</width>
-                <height>70</height>
+                <height>120</height>
             </size>
         </property>
         <property name="geometry">
             <rect>
                 <x>290</x>
-                <y>399</y>
+                <y>350</y>
                 <width>20</width>
-                <height>70</height>
+                <height>120</height>
             </rect>
         </property>
     </spacer>
@@ -196,7 +220,7 @@
         <property name="geometry">
             <rect>
                 <x>10</x>
-                <y>240</y>
+                <y>220</y>
                 <width>578</width>
                 <height>96</height>
             </rect>
@@ -215,6 +239,10 @@
                 <property name="text">
                     <string>Remember open/closed nodes</string>
                 </property>
+                <property name="whatsThis" stdset="0">
+                    <string>&lt;b&gt;Remember open/closed nodes&lt;/b&gt;
+&lt;p&gt;If enabled KPhotoBook remembers open and closed tags and will set the tree when starting up to the state of the last session.&lt;/p&gt;</string>
+                </property>
             </widget>
             <widget class="QCheckBox">
                 <property name="name">
@@ -222,6 +250,11 @@
                 </property>
                 <property name="text">
                     <string>Remember filter state</string>
+                </property>
+                <property name="whatsThis" stdset="0">
+                    <string>&lt;b&gt;Remember filter state&lt;/b&gt;
+&lt;p&gt;If enabled KPhotoBook will remember the filter of the source folder tree and set it when starting up KPhotoBook.&lt;/p&gt;
+&lt;p&gt;If not enable the filter will be reset on startup so that all images are shown&lt;/p&gt;</string>
                 </property>
             </widget>
         </vbox>

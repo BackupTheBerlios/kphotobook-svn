@@ -51,6 +51,11 @@
                     <property name="text">
                         <string>GUI mode</string>
                     </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;GUI Mode&lt;/b&gt;
+&lt;p&gt;&lt;i&gt;Tab Page Mode&lt;/i&gt; will put tabs of the open trees above the tree window. One of the trees is always visible.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;IDEAl Mode&lt;/i&gt; will place the tabs on the left side. The trees can be hidden if necessary.&lt;/p&gt;</string>
+                    </property>
                 </widget>
                 <widget class="KComboBox">
                     <item>

@@ -32,6 +32,10 @@
             <property name="title">
                 <string>Patterns for files to handle</string>
             </property>
+            <property name="whatsThis" stdset="0">
+                <string>&lt;b&gt;Patterns for files to handle&lt;/b&gt;
+&lt;p&gt;This lists the image types which KPhotoBook shall scan for and put into the database. File types which are not on this list will not be displayed in the thumbnail viewer nor be put in the database.&lt;/p&gt;</string>
+            </property>
             <hbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
@@ -59,6 +63,10 @@
                             <property name="text">
                                 <string>Add</string>
                             </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Add&lt;/b&gt;
+&lt;p&gt;Add a new pattern&lt;/p&gt;</string>
+                            </property>
                         </widget>
                         <widget class="QPushButton">
                             <property name="name">
@@ -69,6 +77,10 @@
                             </property>
                             <property name="text">
                                 <string>Edit</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Edit&lt;/b&gt;
+&lt;p&gt;Edit an existing patern&lt;/p&gt;</string>
                             </property>
                         </widget>
                         <spacer>
@@ -98,6 +110,10 @@
                             <property name="text">
                                 <string>Remove</string>
                             </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Remove&lt;/b&gt;
+&lt;p&gt;Remove an existing pattern&lt;/p&gt;</string>
+                            </property>
                         </widget>
                         <spacer>
                             <property name="name">
@@ -123,6 +139,10 @@
                             <property name="text">
                                 <string>Default</string>
                             </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Default&lt;/b&gt;
+&lt;p&gt;Reset the list to the default values (*.jpg; *.jpeg)&lt;/p&gt;</string>
+                            </property>
                         </widget>
                     </vbox>
                 </widget>
@@ -133,7 +153,11 @@
                 <cstring>groupBox2</cstring>
             </property>
             <property name="title">
-                <string>Patterns for directories to ignore</string>
+                <string>Patterns for folders to ignore</string>
+            </property>
+            <property name="whatsThis" stdset="0">
+                <string>&lt;b&gt;Patterns for folders to ignore&lt;/b&gt;
+&lt;p&gt;This lists the folders which should be ignored when scanning the file system. For example there may be a folder containing thumbnails, which were generated automatically by another program. KPhotoBook will then ignore this folder.&lt;/p&gt;</string>
             </property>
             <hbox>
                 <property name="name">
@@ -162,6 +186,10 @@
                             <property name="text">
                                 <string>Add</string>
                             </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Add&lt;/b&gt;
+&lt;p&gt;Add a new pattern&lt;/p&gt;</string>
+                            </property>
                         </widget>
                         <widget class="QPushButton">
                             <property name="name">
@@ -172,6 +200,10 @@
                             </property>
                             <property name="text">
                                 <string>Edit</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Edit&lt;/b&gt;
+&lt;p&gt;Edit an existing patern&lt;/p&gt;</string>
                             </property>
                         </widget>
                         <spacer>
@@ -201,6 +233,10 @@
                             <property name="text">
                                 <string>Remove</string>
                             </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Remove&lt;/b&gt;
+&lt;p&gt;Remove an existing pattern&lt;/p&gt;</string>
+                            </property>
                         </widget>
                         <spacer>
                             <property name="name">
@@ -225,6 +261,10 @@
                             </property>
                             <property name="text">
                                 <string>Default</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Default&lt;/b&gt;
+&lt;p&gt;Reset the list to the default values (.*;[Tt]humbs; [Tt]humnails; [Tt]humbNails;)&lt;/p&gt;</string>
                             </property>
                         </widget>
                     </vbox>
@@ -290,10 +330,10 @@
     <slot>filePatternAdd_clicked()</slot>
     <slot>filePatternEdit_clicked()</slot>
     <slot>filePatternRemove_clicked()</slot>
+    <slot>filePatternDefault_clicked()</slot>
     <slot>dirPatternAdd_clicked()</slot>
     <slot>dirPatternEdit_clicked()</slot>
     <slot>dirPatternRemove_clicked()</slot>
-    <slot>filePatternDefault_clicked()</slot>
     <slot>dirPatternDefault_clicked()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
