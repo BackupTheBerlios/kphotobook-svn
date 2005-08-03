@@ -394,23 +394,24 @@ void ImageViewer::slotShowPrevImage()
 void ImageViewer::keyPressEvent ( QKeyEvent * e )
 {
     switch (e->key()) {
-    case Qt::Key_Right:
-        slotShowNextImage();
-        break;
-
-    case Qt::Key_Left:
-        slotShowPrevImage();
-        break;
-
-   ///@todo make enter toggle fullscreen
-    case Qt::Key_Return:
-    case Qt::Key_Enter:
-        emit signalEnterPressed();
-        break;
-
-    default:
-        e->ignore();
-        break;
+        case Qt::Key_Right: {
+            slotShowNextImage();
+            break;
+        }
+        case Qt::Key_Left: {
+            slotShowPrevImage();
+            break;
+        }
+        ///@todo make enter toggle fullscreen
+        case Qt::Key_Return:
+        case Qt::Key_Enter: {
+            emit signalEnterPressed();
+            break;
+        }
+        default: {
+            e->ignore();
+            break;
+        }
     }
 }
 

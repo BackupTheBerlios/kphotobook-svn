@@ -401,9 +401,8 @@ void FileSystemScanner::readEXIF(File* file)
                 TagNode* exifTagNodeEntry = exifTagNodeTitle->child(title);
 
                 switch (exifTagType) {
-                    case EXIF_TAG_DATE_TIME_ORIGINAL :
-                    case EXIF_TAG_DATE_TIME_DIGITIZED :
-                    {
+                    case EXIF_TAG_DATE_TIME_ORIGINAL:
+                    case EXIF_TAG_DATE_TIME_DIGITIZED: {
                         QDateTime dateTime = readExifDateTime(data);
                         TagNodeDateTime* exifTagNodeEntryDateTime = dynamic_cast<TagNodeDateTime*>(exifTagNodeEntry);
                         if (exifTagNodeEntryDateTime == 0) {
@@ -418,9 +417,7 @@ void FileSystemScanner::readEXIF(File* file)
 
                         break;
                     }
-
-                    default :
-                    {
+                    default: {
                         TagNodeString* exifTagNodeEntryString = dynamic_cast<TagNodeString*>(exifTagNodeEntry);
                         if (exifTagNodeEntryString == 0) {
                             // tagnode for this EXIF entry does not exist --> create it

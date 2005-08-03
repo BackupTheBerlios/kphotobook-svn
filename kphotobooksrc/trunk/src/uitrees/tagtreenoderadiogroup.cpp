@@ -92,8 +92,7 @@ void TagTreeNodeRadioGroup::leftClicked(TagTree* tagTree, int column)
     tracer->invoked(__func__);
 
     switch (column) {
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             // be sure that the filter reflects the children settings!
             updateFilterState();
     
@@ -128,14 +127,11 @@ void TagTreeNodeRadioGroup::rightClicked(__attribute__((unused)) TagTree* tagTre
     tracer->invoked(__func__);
 
     switch (column) {
-        case TagTree::COLUMN_TEXT :
-        {
+        case TagTree::COLUMN_TEXT: {
             TagTreeNode::rightClicked(tagTree, column);
             break;
         }
-    
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             TagTreeNode::rightClicked(tagTree, column);
     
             //now set all children to my state
@@ -236,20 +232,15 @@ void TagTreeNodeRadioGroup::updateFilterState()
         if (child) {
 
             switch (child->filterState()) {
-                case TagTreeNode::FILTERSTATE_INCLUDE:
-                {
+                case TagTreeNode::FILTERSTATE_INCLUDE: {
                     includeFound = 1;
                     break;
                 }
-    
-                case TagTreeNode::FILTERSTATE_EXCLUDE:
-                {
+                case TagTreeNode::FILTERSTATE_EXCLUDE: {
                     excludeFound = 1;
                     break;
                 }
-    
-                case TagTreeNode::FILTERSTATE_IGNORE:
-                {
+                case TagTreeNode::FILTERSTATE_IGNORE: {
                     ignoreFound = 1;
                     break;
                 }
@@ -286,15 +277,12 @@ void TagTreeNodeRadioGroup::updateFilterState()
 void TagTreeNodeRadioGroup::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
 {
     switch (column) {
-        case TagTree::COLUMN_TEXT :
-        case TagTree::COLUMN_VALUE :
-        {
+        case TagTree::COLUMN_TEXT:
+        case TagTree::COLUMN_VALUE: {
             TagTreeNode::paintCell(p, cg, column, width, alignment);
             break;
         }
-    
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             // paint the cell with the alternating background color
             p->fillRect(0, 0, width, this->height(), backgroundColor(2));
     

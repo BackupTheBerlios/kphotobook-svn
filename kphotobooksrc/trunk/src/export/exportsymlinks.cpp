@@ -146,8 +146,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
     
         // an error occured
         switch ( errorNo ) {
-            case EPERM:
-            {
+            case EPERM: {
                 tracer->serror(__func__) << "The filesystem containing newpath does not support the creation of symbolic links: " << m_destinationDir << endl;
         
                 QString msg = QString(i18n("The filesystem containing the destination directory does not support symbolic links:\n%1")).arg(m_destinationDir);
@@ -155,9 +154,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-        
-            case EFAULT:
-            {
+            case EFAULT: {
                 tracer->serror(__func__) << "Oldpath or newpath points outside your accessible address space: " << symlink << "-->" << sourceFile << endl;
         
                 QString msg = QString(i18n("Sourcefile or destinationfile points outside your accessible address space:\nSource: %1\nDestination: %2")).arg(sourceFile).arg(symlink);
@@ -165,9 +162,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-        
-            case EACCES:
-            {
+            case EACCES: {
                 tracer->serror(__func__) << "Write access to the directory containing newpath is not allowed for the process's effective uid, or one of the directories in newpath did not allow search (execute) permission: " << m_destinationDir << endl;
         
                 QString msg = QString(i18n("Can not write to the specified destination directory:\n%1\nPlease check that you have write permission.")).arg(m_destinationDir);
@@ -175,9 +170,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-        
-            case ENAMETOOLONG:
-            {
+            case ENAMETOOLONG: {
                 tracer->serror(__func__) << "Oldpath or newpath was too long: " << symlink << "-->" << sourceFile << endl;
         
                 QString msg = QString(i18n("The Sourcefilename or destinationfilename is too long:\nSource: %1\nDestination: %2")).arg(sourceFile).arg(symlink);
@@ -185,9 +178,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-    
-            case ENOENT:
-            {
+            case ENOENT: {
                 tracer->serror(__func__) << "A directory component in newpath does not exist or is a dangling symbolic link: " << m_destinationDir << endl;
         
                 QString msg = QString(i18n("The destination directory is invalid:\n%1")).arg(m_destinationDir);
@@ -195,9 +186,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-        
-            case ENOTDIR:
-            {
+            case ENOTDIR: {
                 tracer->serror(__func__) << "A component used as a directory in newpath is not, in fact, a directory: " << m_destinationDir << endl;
         
                 QString msg = QString(i18n("The destination directory is invalid:\n%1")).arg(m_destinationDir);
@@ -205,9 +194,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-        
-            case ENOMEM:
-            {
+            case ENOMEM: {
                 tracer->serror(__func__) << "Insufficient kernel memory was available." << endl;
         
                 QString msg = QString(i18n("Insufficient kernel memory was available."));
@@ -215,9 +202,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-        
-            case EROFS:
-            {
+            case EROFS: {
                 tracer->serror(__func__) << "Newpath is on a read-only filesystem: " << m_destinationDir << endl;
         
                 QString msg = QString(i18n("The destination directory is on a read only filesystem:\n%1")).arg(m_destinationDir);
@@ -225,9 +210,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-    
-            case EEXIST:
-            {
+            case EEXIST: {
                 tracer->sinfo(__func__) << "Newpath already exists: " << symlink << endl;
         
                 if (m_autoSkip) {
@@ -266,38 +249,27 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
             
                     // analyze the chosen action
                     switch (result) {
-                        case KIO::R_CANCEL :
-                        {
+                        case KIO::R_CANCEL: {
                             m_cancelling = true;
                             break;
                         }
-            
-                        case KIO::R_RENAME :
-                        {
+                        case KIO::R_RENAME: {
                             createSymlink(sourceFile, renameDlg->newDestURL().path().ascii());
                             break;
                         }
-            
-                        case KIO::R_AUTO_SKIP :
-                        {
+                        case KIO::R_AUTO_SKIP: {
                             m_autoSkip = true;
                             m_overwriteAll = false;
                         }
-                        
-                        case KIO::R_SKIP :
-                        {
+                        case KIO::R_SKIP: {
                             // nothing to do... just skip
                             break;
                         }
-            
-                        case KIO::R_OVERWRITE_ALL :
-                        {
+                        case KIO::R_OVERWRITE_ALL: {
                             m_overwriteAll = true;
                             m_autoSkip = false;
                         }
-                        
-                        case KIO::R_OVERWRITE :
-                        {
+                        case KIO::R_OVERWRITE: {
                             if(::remove(symlink.ascii()) == 0) {
                                 // already existing file successfully removed
                                 createSymlink(sourceFile, symlink);
@@ -326,9 +298,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 }
                 break;
             }
-        
-            case ELOOP:
-            {
+            case ELOOP: {
                 tracer->serror(__func__) << "To many symbolic links were encountered in resolving newpath: " << m_destinationDir << endl;
         
                 QString msg = QString(i18n("The destination path contains too many symbolic links:\n%1")).arg(m_destinationDir);
@@ -336,9 +306,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-        
-            case ENOSPC:
-            {
+            case ENOSPC: {
                 tracer->serror(__func__) << "The device containing the file has no room for the new directory entry: " << m_destinationDir << endl;
         
                 QString msg = QString(i18n("The device for the destination directory is full:\n%1")).arg(m_destinationDir);
@@ -346,9 +314,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-        
-            case EIO:
-            {
+            case EIO: {
                 tracer->serror(__func__) << "An I/O error occurred: " << symlink << "-->" << sourceFile << endl;
         
                 QString msg = QString(i18n("An I/O error occured:\nSource: %1\nDestination: %2")).arg(sourceFile).arg(symlink);
@@ -356,9 +322,7 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 m_cancelling = true;
                 break;
             }
-        
-            default:
-            {
+            default: {
                 tracer->serror(__func__) << "An unexpected error number catched (" << errorNo << "): " << symlink << "-->" << sourceFile << endl;
         
                 QString msg = QString(i18n("An unexpected error occured while creating symbolic link:\nSource: %1\nDestination: %2")).arg(sourceFile).arg(symlink);

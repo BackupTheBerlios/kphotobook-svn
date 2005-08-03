@@ -73,15 +73,16 @@ QString TagTreeNode::filterString()
     QString filter;
 
     switch (m_filterState) {
-    case TagTreeNode::FILTERSTATE_EXCLUDE:
-        filter = "exclude";
-        break;
-    case TagTreeNode::FILTERSTATE_INCLUDE:
-        filter = "include";
-        break;
-
-    case TagTreeNode::FILTERSTATE_IGNORE:
-        break;
+        case TagTreeNode::FILTERSTATE_EXCLUDE: {
+            filter = "exclude";
+            break;
+        }
+        case TagTreeNode::FILTERSTATE_INCLUDE: {
+            filter = "include";
+            break;
+        }    
+        case TagTreeNode::FILTERSTATE_IGNORE:
+            break;
     }
 
     return filter;
@@ -149,35 +150,38 @@ void TagTreeNode::leftClicked(__attribute__((unused)) TagTree* tagTree, int colu
     int button = KMessageBox::Yes;
 
     switch (column) {
-    case TagTree::COLUMN_TEXT :
-    case TagTree::COLUMN_VALUE:
-        break;
-
-    case TagTree::COLUMN_FILTER :
-        // change state of the filter: exclude -> ignore -> include -> exclude -> ...
-        switch (m_filterState) {
-        case TagTreeNode::FILTERSTATE_EXCLUDE: {
-            if (m_tagNode->secret()) {
-                button = KMessageBox::warningYesNo(0, i18n("<b></b>This tag is set secret!<br><br><b>Do you really don't care, if matching images are displayed now?</b>"), i18n("Secret Tag"));
-            }
-            if (button == KMessageBox::Yes) {
-                m_filterState = TagTreeNode::FILTERSTATE_IGNORE;
+        case TagTree::COLUMN_TEXT:
+            break;
+        case TagTree::COLUMN_VALUE:
+            break;
+        case TagTree::COLUMN_FILTER: {
+            // change state of the filter: exclude -> ignore -> include -> exclude -> ...
+            switch (m_filterState) {
+                case TagTreeNode::FILTERSTATE_EXCLUDE: {
+                    if (m_tagNode->secret()) {
+                        button = KMessageBox::warningYesNo(0, i18n("<b></b>This tag is set secret!<br><br><b>Do you really don't care, if matching images are displayed now?</b>"), i18n("Secret Tag"));
+                    }
+                    if (button == KMessageBox::Yes) {
+                        m_filterState = TagTreeNode::FILTERSTATE_IGNORE;
+                    }
+                    break;
+                }
+                case TagTreeNode::FILTERSTATE_IGNORE: {
+                    if (m_tagNode->secret()) {
+                        button = KMessageBox::warningYesNo(0, i18n("<b></b>This tag is set secret!<br><br><b>Do you really wan't to show matching images now?</b>"), i18n("Secret Tag"));
+                    }
+                    if (button == KMessageBox::Yes) {
+                        m_filterState = TagTreeNode::FILTERSTATE_INCLUDE;
+                    }
+                    break;
+                }
+                case TagTreeNode::FILTERSTATE_INCLUDE: {
+                    m_filterState = TagTreeNode::FILTERSTATE_EXCLUDE;
+                    break;
+                }
             }
             break;
         }
-        case TagTreeNode::FILTERSTATE_IGNORE:
-            if (m_tagNode->secret()) {
-                button = KMessageBox::warningYesNo(0, i18n("<b></b>This tag is set secret!<br><br><b>Do you really wan't to show matching images now?</b>"), i18n("Secret Tag"));
-            }
-            if (button == KMessageBox::Yes) {
-                m_filterState = TagTreeNode::FILTERSTATE_INCLUDE;
-            }
-            break;
-        case TagTreeNode::FILTERSTATE_INCLUDE:
-            m_filterState = TagTreeNode::FILTERSTATE_EXCLUDE;
-            break;
-        }
-        break;
     }
 }
 
@@ -189,32 +193,35 @@ void TagTreeNode::rightClicked(__attribute__((unused)) TagTree* tagTree, __attri
     int button = KMessageBox::Yes;
 
     switch (column) {
-    case TagTree::COLUMN_TEXT :
-        if (m_contextMenu) {
-            m_contextMenu->exec(QCursor::pos());
+        case TagTree::COLUMN_TEXT: {
+            if (m_contextMenu) {
+                m_contextMenu->exec(QCursor::pos());
+            }
+            break;
         }
-        break;
-
-
-    case TagTree::COLUMN_VALUE:
-        break;
-
-    case TagTree::COLUMN_FILTER:
-        // change state of the filter: exclude -> include -> ignore -> exclude -> ...
-        switch (m_filterState) {
-        case TagTreeNode::FILTERSTATE_EXCLUDE:
-            if (m_tagNode->secret()) {
-                button = KMessageBox::warningYesNo(0, i18n("<b></b>This tag is set secret!<br><br><b>Do you really wan't to show matching images now?</b>"), i18n("Secret Tag"));
-            }
-            if (button == KMessageBox::Yes) {
-                m_filterState = TagTreeNode::FILTERSTATE_INCLUDE;
-            }
+        case TagTree::COLUMN_VALUE:
             break;
-        case TagTreeNode::FILTERSTATE_IGNORE:
-            m_filterState = TagTreeNode::FILTERSTATE_EXCLUDE;
-            break;
-        case TagTreeNode::FILTERSTATE_INCLUDE:
-            m_filterState = TagTreeNode::FILTERSTATE_IGNORE;
+        case TagTree::COLUMN_FILTER: {
+            // change state of the filter: exclude -> include -> ignore -> exclude -> ...
+            switch (m_filterState) {
+                case TagTreeNode::FILTERSTATE_EXCLUDE: {
+                    if (m_tagNode->secret()) {
+                        button = KMessageBox::warningYesNo(0, i18n("<b></b>This tag is set secret!<br><br><b>Do you really wan't to show matching images now?</b>"), i18n("Secret Tag"));
+                    }
+                    if (button == KMessageBox::Yes) {
+                        m_filterState = TagTreeNode::FILTERSTATE_INCLUDE;
+                    }
+                    break;
+                }
+                case TagTreeNode::FILTERSTATE_IGNORE: {
+                    m_filterState = TagTreeNode::FILTERSTATE_EXCLUDE;
+                    break;
+                }
+                case TagTreeNode::FILTERSTATE_INCLUDE: {
+                    m_filterState = TagTreeNode::FILTERSTATE_IGNORE;
+                    break;
+                }
+            }
             break;
         }
     }
@@ -224,25 +231,24 @@ void TagTreeNode::rightClicked(__attribute__((unused)) TagTree* tagTree, __attri
 void TagTreeNode::paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment)
 {
     switch (column) {
-    case TagTree::COLUMN_TEXT :
-
-        //toggle bold tags
-        if (Settings::tagTreeBoldMatches() && recursiveFindTagged()
-            && (!Settings::tagTreeBoldMatchesCollapsedOnly() || (firstChild() && !isOpen()))) {
-
-                QFont f(p->font());
-                f.setBold(true);
-                p->setFont(f);
-            }
-
-        KListViewItem::paintCell(p, cg, column, width, alignment);
-        break;
-
-    case TagTree::COLUMN_VALUE :
-    case TagTree::COLUMN_FILTER :
-        KListViewItem::paintCell(p, cg, column, width, alignment);
-        break;
-
+        case TagTree::COLUMN_TEXT: {
+            //toggle bold tags
+            if (Settings::tagTreeBoldMatches() && recursiveFindTagged()
+                && (!Settings::tagTreeBoldMatchesCollapsedOnly() || (firstChild() && !isOpen()))) {
+    
+                    QFont f(p->font());
+                    f.setBold(true);
+                    p->setFont(f);
+                }
+    
+            KListViewItem::paintCell(p, cg, column, width, alignment);
+            break;
+        }
+        case TagTree::COLUMN_VALUE:
+        case TagTree::COLUMN_FILTER: {
+            KListViewItem::paintCell(p, cg, column, width, alignment);
+            break;
+        }
     }
 }
 
@@ -250,12 +256,12 @@ void TagTreeNode::paintCell(QPainter* p, const QColorGroup& cg, int column, int 
 QString TagTreeNode::toolTip(int column)
 {
     switch (column) {
-    case TagTree::COLUMN_TEXT:
-    case TagTree::COLUMN_VALUE:
-    case TagTree::COLUMN_FILTER:
-        return *(m_tagNode->comment());
-        break;
+        case TagTree::COLUMN_TEXT:
+        case TagTree::COLUMN_VALUE:
+        case TagTree::COLUMN_FILTER:
+            return *(m_tagNode->comment());
     }
+
     return "";
 }
 

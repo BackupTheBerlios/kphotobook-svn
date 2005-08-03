@@ -70,20 +70,20 @@ class TagNode : public QObject
         static QString tagNodeType( TagNode::Type typeId )
         {
             switch ( typeId ) {
-            case TagNode::TYPE_TITLE:
-                return "title";
-            case TagNode::TYPE_BOOLEAN:
-                return "boolean";
-            case TagNode::TYPE_STRING:
-                return "string";
-            case TagNode::TYPE_RADIOGROUP:
-                return "radiogroup";
-            case TagNode::TYPE_RADIO:
-                return "radio";
-            case TagNode::TYPE_DATETIME:
-                return "datetime";
-            default:
-                return QString::null;
+                case TagNode::TYPE_TITLE:
+                    return "title";
+                case TagNode::TYPE_BOOLEAN:
+                    return "boolean";
+                case TagNode::TYPE_STRING:
+                    return "string";
+                case TagNode::TYPE_RADIOGROUP:
+                    return "radiogroup";
+                case TagNode::TYPE_RADIO:
+                    return "radio";
+                case TagNode::TYPE_DATETIME:
+                    return "datetime";
+                default:
+                    return QString::null;
             }
         }
     

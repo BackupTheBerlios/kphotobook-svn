@@ -47,27 +47,34 @@ TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QS
 
     // create the new tagnode
     switch(typeId) {
-    case TagNode::TYPE_TITLE:
-        newTagNode = new TagNodeTitle(id, text, comment, iconName, parent);
-        break;
-    case TagNode::TYPE_BOOLEAN:
-        newTagNode = new TagNodeBoolean(id, text, comment, iconName, parent);
-        break;
-    case TagNode::TYPE_STRING:
-        newTagNode = new TagNodeString(id, text, comment, iconName, parent);
-        break;
-    case TagNode::TYPE_RADIOGROUP:
-        newTagNode = new TagNodeRadioGroup(id, text, comment, iconName, parent);
-        break;
-    case TagNode::TYPE_RADIO:
-        newTagNode = new TagNodeRadio(id, text, comment, iconName, parent);
-        break;
-    case TagNode::TYPE_DATETIME:
-        newTagNode = new TagNodeDateTime(id, text, comment, iconName, parent);
-        break;
-    default:
-        tracer->swarning(__func__) << "Called with unknown TypeID!" << endl;
-        return 0;
+        case TagNode::TYPE_TITLE: {
+            newTagNode = new TagNodeTitle(id, text, comment, iconName, parent);
+            break;
+        }
+        case TagNode::TYPE_BOOLEAN: {
+            newTagNode = new TagNodeBoolean(id, text, comment, iconName, parent);
+            break;
+        }
+        case TagNode::TYPE_STRING: {
+            newTagNode = new TagNodeString(id, text, comment, iconName, parent);
+            break;
+        }
+        case TagNode::TYPE_RADIOGROUP: {
+            newTagNode = new TagNodeRadioGroup(id, text, comment, iconName, parent);
+            break;
+        }
+        case TagNode::TYPE_RADIO: {
+            newTagNode = new TagNodeRadio(id, text, comment, iconName, parent);
+            break;
+        }
+        case TagNode::TYPE_DATETIME: {
+            newTagNode = new TagNodeDateTime(id, text, comment, iconName, parent);
+            break;
+        }
+        default: {
+            tracer->swarning(__func__) << "Called with unknown TypeID!" << endl;
+            return 0;
+        }
     }
 
     // do some more initialization on the just created concrete tagnode

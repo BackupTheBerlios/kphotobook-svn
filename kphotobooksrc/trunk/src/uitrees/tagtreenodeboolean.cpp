@@ -55,20 +55,15 @@ FilterNode* TagTreeNodeBoolean::filter()
     FilterNode* filter = 0;
 
     switch (m_filterState) {
-        case TagTreeNode::FILTERSTATE_EXCLUDE:
-        {
+        case TagTreeNode::FILTERSTATE_EXCLUDE: {
             filter = new FilterNodeTagBoolean(tagNode, false);
             break;
         }
-        
-        case TagTreeNode::FILTERSTATE_IGNORE:
-        {
+        case TagTreeNode::FILTERSTATE_IGNORE: {
             filter = 0;
             break;
         }
-        
-        case TagTreeNode::FILTERSTATE_INCLUDE:
-        {
+        case TagTreeNode::FILTERSTATE_INCLUDE: {
             filter = new FilterNodeTagBoolean(tagNode, true);
             break;
         }
@@ -83,12 +78,9 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
     TagNodeBoolean* tagNode = dynamic_cast<TagNodeBoolean*>(m_tagNode);
 
     switch (column) {
-        case TagTree::COLUMN_TEXT :
+        case TagTree::COLUMN_TEXT:
             break;
-    
-        case TagTree::COLUMN_VALUE :
-        {
-    
+        case TagTree::COLUMN_VALUE: {    
             // do nothing when tagging is locked
             if (Settings::tagTreeLocked()) {
                 return;
@@ -123,9 +115,7 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
             m_photobook->dirtyfy();
             break;
         }
-        
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             TagTreeNode::leftClicked(tagTree, column);
     
             // force redrawing of this listviewitem
@@ -133,7 +123,6 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
     
             m_photobook->autoRefreshView();
             break;
-    
         }
     }
 }
@@ -142,14 +131,11 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
 void TagTreeNodeBoolean::rightClicked(TagTree* tagTree, int column)
 {
     switch (column) {
-        case TagTree::COLUMN_TEXT :
-        {
+        case TagTree::COLUMN_TEXT: {
             TagTreeNode::rightClicked(tagTree, column);
             break;
         }
-    
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             TagTreeNode::rightClicked(tagTree, column);
     
             // force redrawing of this listviewitem
@@ -165,14 +151,11 @@ void TagTreeNodeBoolean::rightClicked(TagTree* tagTree, int column)
 void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
 {
     switch (column) {
-        case TagTree::COLUMN_TEXT :
-        {
+        case TagTree::COLUMN_TEXT: {
             TagTreeNode::paintCell(p, cg, column, width, alignment);
             break;
         }
-    
-        case TagTree::COLUMN_VALUE :
-        {
+        case TagTree::COLUMN_VALUE: {
             // paint the cell with the alternating background color
             p->fillRect(0, 0, width, this->height(), backgroundColor(1));
     
@@ -188,8 +171,7 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
             }
             break;
         }
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             // paint the cell with the alternating background color
             p->fillRect(0, 0, width, this->height(), backgroundColor(2));
     

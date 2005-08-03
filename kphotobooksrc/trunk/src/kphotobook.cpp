@@ -781,12 +781,14 @@ bool KPhotoBook::queryClose()
     }
 
     switch (mdiMode()) {
-        case KMdi::TabPageMode:
+        case KMdi::TabPageMode: {
             Settings::setGeneralViewMode(Settings::EnumGeneralViewMode::TabPageMode);
             break;
-        default:
+        }
+        default: {
             Settings::setGeneralViewMode(Settings::EnumGeneralViewMode::IDEAlMode);
             break;
+        }
     }
 
     //save the recent files

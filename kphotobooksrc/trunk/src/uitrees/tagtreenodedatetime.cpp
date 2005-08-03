@@ -114,11 +114,10 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
     TagNodeDateTime* tagNode = dynamic_cast<TagNodeDateTime*>(m_tagNode);
 
     switch (column) {
-        case TagTree::COLUMN_TEXT :
+        case TagTree::COLUMN_TEXT:
             break;
     
-        case TagTree::COLUMN_VALUE :
-        {
+        case TagTree::COLUMN_VALUE: {
             // do nothing when tagging is locked
             if (Settings::tagTreeLocked()) {
                 return;
@@ -179,9 +178,7 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
             }
             break;
         }
-    
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             // let the user enter a new value
             DialogDateTimeFilter* dateTimeFilter = createDialogDateTimeFilter(text(TagTree::COLUMN_FILTER));
             if (dateTimeFilter->exec() == QDialog::Accepted) {
@@ -206,14 +203,11 @@ void TagTreeNodeDateTime::rightClicked(TagTree* tagTree, int column)
 void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
 {
     switch (column) {
-        case TagTree::COLUMN_TEXT :
-        {
+        case TagTree::COLUMN_TEXT: {
             TagTreeNode::paintCell(p, cg, column, width, alignment);
             break;
         }
-
-        case TagTree::COLUMN_VALUE :
-        {
+        case TagTree::COLUMN_VALUE: {
             // get all selected files
             const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
             
@@ -252,9 +246,7 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
     
             break;
         }
-        
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             TagTreeNode::paintCell(p, cg, column, width, Qt::AlignLeft);
             break;
         }
@@ -352,62 +344,49 @@ void TagTreeNodeDateTime::applyFilter(DialogDateTimeFilter* dateTimeFilter)
 
     switch (dateTimeFilter->getState()) {
         case DialogDateTimeFilter::INVALID:
-        case DialogDateTimeFilter::NO_FILTER_SET:
-        {
+        case DialogDateTimeFilter::NO_FILTER_SET: {
             m_filterValue = QString::null;
             delete m_filterNode;
             m_filterNode = 0;
 
             break;
         }
-        
-        case DialogDateTimeFilter::FROM_DATE_SET:
-        {
+        case DialogDateTimeFilter::FROM_DATE_SET: {
             m_filterValue = QString(">= %1").arg(formatDateTime(dateTimeFilter->getDateTimeFrom()));
             delete m_filterNode;
             m_filterNode = new FilterNodeTagDateTime(tagNode, new QDateTime(dateTimeFilter->getDateTimeFrom()), 0);
 
             break;
         }
-        
-        case DialogDateTimeFilter::TO_DATE_SET:
-        {
+        case DialogDateTimeFilter::TO_DATE_SET: {
             m_filterValue = QString("<= %1").arg(formatDateTime(dateTimeFilter->getDateTimeTo()));
             delete m_filterNode;
             m_filterNode = new FilterNodeTagDateTime(tagNode, 0, new QDateTime(dateTimeFilter->getDateTimeTo()));
 
             break;
         }
-
-        case DialogDateTimeFilter::FROM_TO_DATE_SET:
-        {
+        case DialogDateTimeFilter::FROM_TO_DATE_SET: {
             m_filterValue = QString("%1 - %2").arg(formatDateTime(dateTimeFilter->getDateTimeFrom())).arg(formatDateTime(dateTimeFilter->getDateTimeTo()));
             delete m_filterNode;
             m_filterNode = new FilterNodeTagDateTime(tagNode, new QDateTime(dateTimeFilter->getDateTimeFrom()), new QDateTime(dateTimeFilter->getDateTimeTo()));
 
             break;
         }
-
-        case DialogDateTimeFilter::PATTERN_DATE_SET:
-        {
+        case DialogDateTimeFilter::PATTERN_DATE_SET: {
             m_filterValue = QString(dateTimeFilter->getPattern());
             delete m_filterNode;
             m_filterNode = new FilterNodeTagDateTime(tagNode, m_filterValue);
 
             break;
         }
-
-        case DialogDateTimeFilter::SINGLE_DATE_SET:
-        {
+        case DialogDateTimeFilter::SINGLE_DATE_SET: {
             m_filterValue = QString("= %1").arg(formatDateTime(dateTimeFilter->getDateTimeFrom()));
             delete m_filterNode;
             m_filterNode = new FilterNodeTagDateTime(tagNode, new QDateTime(dateTimeFilter->getDateTimeFrom()), new QDateTime(dateTimeFilter->getDateTimeTo()));
 
             break;
         }
-
-        case DialogDateTimeFilter::NO_DATE_SET:
-        {
+        case DialogDateTimeFilter::NO_DATE_SET: {
             m_filterValue = QString("()");
             delete m_filterNode;
             m_filterNode = new FilterNodeTagDateTime(tagNode, m_filterValue);

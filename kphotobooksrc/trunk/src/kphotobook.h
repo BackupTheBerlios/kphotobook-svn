@@ -69,7 +69,6 @@ class KToolBar;
  */
 class KPhotoBook : public KMdiMainFrm
 {
-
     Q_OBJECT
 
     private:

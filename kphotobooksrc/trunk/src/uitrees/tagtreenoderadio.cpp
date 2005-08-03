@@ -64,20 +64,15 @@ FilterNode* TagTreeNodeRadio::subfilter()
     FilterNode* filter = 0;
 
     switch (m_filterState) {
-        case FILTERSTATE_EXCLUDE:
-        {
+        case FILTERSTATE_EXCLUDE: {
             filter = new FilterNodeTagRadio(tagNode, false);
             break;
         }
-        
-        case FILTERSTATE_IGNORE:
-        {
+        case FILTERSTATE_IGNORE: {
             filter = 0;
             break;
         }
-        
-        case FILTERSTATE_INCLUDE:
-        {
+        case FILTERSTATE_INCLUDE: {
             filter = new FilterNodeTagRadio(tagNode, true);
             break;
         }
@@ -92,11 +87,10 @@ void TagTreeNodeRadio::leftClicked(TagTree* tagTree, int column)
     tracer->invoked(__func__);
 
     switch (column) {
-        case TagTree::COLUMN_TEXT :
+        case TagTree::COLUMN_TEXT:
             break;
     
-        case TagTree::COLUMN_VALUE :
-        {
+        case TagTree::COLUMN_VALUE: {
             // do nothing when tagging is locked
             if (Settings::tagTreeLocked()) {
                 return;
@@ -116,9 +110,7 @@ void TagTreeNodeRadio::leftClicked(TagTree* tagTree, int column)
     
             break;
         }
-        
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             TagTreeNode::leftClicked(tagTree, column);
     
             //now tell my father, that smth happened to me
@@ -142,14 +134,11 @@ void TagTreeNodeRadio::rightClicked(TagTree* tagTree, int column)
     tracer->invoked(__func__);
 
     switch (column) {
-        case TagTree::COLUMN_TEXT :
-        {
+        case TagTree::COLUMN_TEXT: {
             TagTreeNode::rightClicked(tagTree, column);
             break;
         }
-    
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             TagTreeNode::rightClicked(tagTree, column);
     
             //now tell my father, that smth happened to me
@@ -171,14 +160,11 @@ void TagTreeNodeRadio::rightClicked(TagTree* tagTree, int column)
 void TagTreeNodeRadio::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
 {
     switch (column) {
-        case TagTree::COLUMN_TEXT :
-        {
+        case TagTree::COLUMN_TEXT: {
             TagTreeNode::paintCell(p, cg, column, width, alignment);
             break;
         }
-    
-        case TagTree::COLUMN_VALUE :
-        {
+        case TagTree::COLUMN_VALUE: {
             // paint the cell with the alternating background color
             p->fillRect(0, 0, width, this->height(), backgroundColor(1));
     
@@ -194,9 +180,7 @@ void TagTreeNodeRadio::paintCell(QPainter *p, const QColorGroup &cg, int column,
     
             break;
         }
-    
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             // paint the cell with the alternating background color
             p->fillRect(0, 0, width, this->height(), backgroundColor(2));
     

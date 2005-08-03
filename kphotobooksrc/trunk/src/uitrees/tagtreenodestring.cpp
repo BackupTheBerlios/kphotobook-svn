@@ -103,12 +103,9 @@ void TagTreeNodeString::applyFilterString(QString filter)
 void TagTreeNodeString::leftClicked(__attribute__((unused)) TagTree* tagTree, int column)
 {
     switch (column) {
-        case TagTree::COLUMN_TEXT : {
+        case TagTree::COLUMN_TEXT:
             break;
-        }
-
-        case TagTree::COLUMN_VALUE : {
-            
+        case TagTree::COLUMN_VALUE: {
             // do nothing when tagging is locked
             if (Settings::tagTreeLocked()) {
                 return;
@@ -128,8 +125,7 @@ void TagTreeNodeString::leftClicked(__attribute__((unused)) TagTree* tagTree, in
             }
             break;
         }
-
-        case TagTree::COLUMN_FILTER : {
+        case TagTree::COLUMN_FILTER: {
             startRename(TagTree::COLUMN_FILTER);
             break;
         }
@@ -149,11 +145,8 @@ void TagTreeNodeString::handleRenaming(int column, const QString& text)
     TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
 
     switch (column) {
-        case TagTree::COLUMN_TEXT :
-            break;
-
-        case TagTree::COLUMN_VALUE :
-        {
+        case TagTree::COLUMN_TEXT:
+            break;        case TagTree::COLUMN_VALUE: {
             QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
 
             // loop over all selected files and change their state
@@ -178,9 +171,7 @@ void TagTreeNodeString::handleRenaming(int column, const QString& text)
             m_photobook->dirtyfy();
             break;
         }
-
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             // filter has changed --> update the text in the node and auto refresh view
             setFilterValue(text);
 
@@ -196,14 +187,11 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
     TagNodeString* tagNode = dynamic_cast<TagNodeString*>(m_tagNode);
 
     switch (column) {
-        case TagTree::COLUMN_TEXT :
-        {
+        case TagTree::COLUMN_TEXT: {
             TagTreeNode::paintCell(p, cg, column, width, alignment);
             break;
         }
-
-        case TagTree::COLUMN_VALUE :
-        {
+        case TagTree::COLUMN_VALUE: {
             bool mixed = false;
             QString text = "";
             if (m_tagCurrentMatch == TagTreeNode::MIXTAGGED) {
@@ -261,9 +249,7 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
             }
             break;
         }
-
-        case TagTree::COLUMN_FILTER :
-        {
+        case TagTree::COLUMN_FILTER: {
             // if filtering an empty string (the filter is ignored), we display the third state of the checkbox
             if (m_filterValue.isEmpty()) {
                 // paint the cell with the alternating background color
@@ -345,14 +331,11 @@ QString TagTreeNodeString::toolTip(int column)
 {
     switch (column) {
         case TagTree::COLUMN_TEXT:
-        case TagTree::COLUMN_FILTER:
-        {
+        case TagTree::COLUMN_FILTER: {
             return TagTreeNode::toolTip(column);
             break;
         }
-        
-        case TagTree::COLUMN_VALUE:
-        {
+        case TagTree::COLUMN_VALUE: {
             return text(TagTree::COLUMN_VALUE);
             break;
         }

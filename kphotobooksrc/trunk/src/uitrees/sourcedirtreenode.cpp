@@ -169,12 +169,9 @@ void SourceDirTreeNode::leftClicked(__attribute__((unused)) SourceDirTree* sourc
     switch (column) {
         case SourceDirTree::COLUMN_TEXT:
             break;
-    
         case SourceDirTree::COLUMN_SELECTED:
             break;
-    
-        case SourceDirTree::COLUMN_INCLUDED:
-        {
+        case SourceDirTree::COLUMN_INCLUDED: {
             m_sourceDir->setInclude(!m_sourceDir->include());
             // force redrawing of this listviewitem
             this->repaint();
@@ -189,17 +186,14 @@ void SourceDirTreeNode::leftClicked(__attribute__((unused)) SourceDirTree* sourc
 void SourceDirTreeNode::rightClicked(__attribute__((unused)) SourceDirTree* sourceDirTree, int column)
 {
     switch (column) {
-        case SourceDirTree::COLUMN_TEXT :
-        {
+        case SourceDirTree::COLUMN_TEXT: {
             if (m_contextMenu) {
                 m_contextMenu->exec(QCursor::pos());
             }
             break;
         }
-    
         case SourceDirTree::COLUMN_SELECTED:
             break;
-    
         case SourceDirTree::COLUMN_INCLUDED:
             break;
     }
@@ -214,14 +208,11 @@ void SourceDirTreeNode::paintCell(QPainter *p, const QColorGroup &cg, int column
     }
 
     switch (column) {
-        case SourceDirTree::COLUMN_TEXT :
-        {
+        case SourceDirTree::COLUMN_TEXT: {
             KListViewItem::paintCell(p, myCg, column, width, alignment);
             break;
         }
-    
-        case SourceDirTree::COLUMN_SELECTED :
-        {
+        case SourceDirTree::COLUMN_SELECTED: {
             QFont oldFont = p->font();
             if  (m_selectedFilesCount > 0) {
                 QFont font = QFont(oldFont);
@@ -232,9 +223,7 @@ void SourceDirTreeNode::paintCell(QPainter *p, const QColorGroup &cg, int column
             p->setFont(oldFont);
             break;
         }
-        
-        case SourceDirTree::COLUMN_INCLUDED :
-        {
+        case SourceDirTree::COLUMN_INCLUDED: {
             // paint the cell with the alternating background color
             p->fillRect(0, 0, width, this->height(), backgroundColor(0));
     

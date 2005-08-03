@@ -36,9 +36,9 @@ const QString Constants::ICON_TAG_FILTER_DESELECT = QString("filter_deselect");
 const QString Constants::ICON_TAG_FILTER_RESET = QString("filter_reset");
 
 const QString Constants::ICON_SOURCEDIR = QString("folder");
-const QString Constants::ICON_ADD_SOURCEDIR = QString("sourcedir_add");
-const QString Constants::ICON_EDIT_SOURCEDIR = QString("sourcedir_edit");
-const QString Constants::ICON_REMOVE_SOURCEDIR = QString("sourcedir_remove");
+const QString Constants::ICON_ADD_SOURCEDIR = QString("folder_add");
+const QString Constants::ICON_EDIT_SOURCEDIR = QString("folder_edit");
+const QString Constants::ICON_REMOVE_SOURCEDIR = QString("folder_remove");
 
 const QString Constants::ICON_RESCAN_FILESYSTEM = QString("filesystem_reload");
 
