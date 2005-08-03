@@ -36,7 +36,7 @@
 
 
 DialogAddSourceDir::DialogAddSourceDir(QWidget* parent, const char* name) :
-    KDialogBase(parent, name, true, i18n("Add sourcedirectory"), KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, false)
+    KDialogBase(parent, name, true, i18n("Add source folder"), KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, false)
 {
     QWidget* mainPanel = new QWidget(this, "mainPanel");
     setMainWidget(mainPanel);
@@ -48,12 +48,13 @@ DialogAddSourceDir::DialogAddSourceDir(QWidget* parent, const char* name) :
     QHBoxLayout* dirLayout = new QHBoxLayout(dirPanel, 0, 5, "dirPanelLayout");
     dirLayout->setAutoAdd(true);
 
-    new QLabel(i18n("Directory"), dirPanel, "directoryLabel");
+    new QLabel(i18n("Folder"), dirPanel, "directoryLabel");
+    QWhatsThis::add(dirPanel, i18n("Enter the path to the folder you want to add to the <i>KPhotoBook</i> database."));
 
     m_currentDirectoryLineEdit = new KLineEdit(dirPanel, "dirLineEdit");
     m_currentDirectoryLineEdit->setMinimumWidth(300);
     m_currentDirectoryLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QWhatsThis::add(m_currentDirectoryLineEdit, i18n("Enter the path to the folder you want to add to the <i>KPhotoBook</i> database."));
+    // QWhatsThis::add(m_currentDirectoryLineEdit, i18n("Enter the path to the folder you want to add to the <i>KPhotoBook</i> database."));
     QObject::connect(m_currentDirectoryLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 
     QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet("folder", KIcon::Small, 24, false);
@@ -63,8 +64,9 @@ DialogAddSourceDir::DialogAddSourceDir(QWidget* parent, const char* name) :
     QObject::connect(dirButton, SIGNAL(clicked()), this, SLOT(slotDirectoryButtonClicked()));
 
     // add checkbox
-    m_recursiveCheckBox = new QCheckBox(i18n("Add subdirectories recursively."), mainPanel, "recursiveCheckBox");
+    m_recursiveCheckBox = new QCheckBox(i18n("Add folders recursively."), mainPanel, "recursiveCheckBox");
     m_recursiveCheckBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QWhatsThis::add(m_recursiveCheckBox, i18n("If enabled, <i>KPhotoBook</i> will add the folder recursively, meaning that sub folders will be added to the database as well, while not following symbolic links to avoid an infinite loop."));
 
     // spacer
     QWidget* spacer = new QWidget(mainPanel, "spacer");
