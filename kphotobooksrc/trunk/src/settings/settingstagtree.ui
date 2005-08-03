@@ -64,7 +64,7 @@
                         <string>Icon size</string>
                     </property>
                     <property name="whatsThis" stdset="0">
-                        <string>&lt;b&gt;Icoin size&lt;/b&gt;
+                        <string>&lt;b&gt;Icon size&lt;/b&gt;
 
 &lt;p&gt;This sets the size of the tag-icons in the Tag Tree. The value can be between 16 and 48.&lt;/p&gt;</string>
                     </property>
