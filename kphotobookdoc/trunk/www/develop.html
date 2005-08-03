@@ -27,58 +27,84 @@
 <p>This chapter contains a - not at all - complete list about the used coding conventions used in <em>KPhotoBook</em>:</p>
 
 <ul>
-<li>use spaces instead of tabs</li>
-<li>indent code with 4 spaces</li>
-<li>classes/functions: left braces (opening curly brackets) '{' are written on its own line:
-<pre>    public class MyClass
+  <li>use spaces instead of tabs</li>
+
+  <li>indent code with 4 spaces</li>
+
+  <li>classes/functions: left braces (opening curly brackets) '{' are written on its own line:
+    <pre>    public class MyClass
     {
-      private:
-      ...
+        private:
+            ...
     }</pre>
-</li>
-<li>"normal blocks" (<code>if, for, while, ...</code>): left braces (opening curly brackets) '{' are wirtten on the same line as the command
-<pre>    if (true) {
-      doit();
+  </li>
+
+  <li>"normal blocks" (<code>if, for, while, ...</code>): left braces (opening curly brackets) '{' are wirtten on the same line as the command
+    <pre>    if (true) {
+        doit();
     }</pre>
-</li>
-<li>one line statements must always be written within braces '{}'<br />
-<strong>right:</strong>
-<pre>    if (true) {
-      doit();
+  </li>
+
+  <li>one line statements must always be written within braces '{}'<br />
+    <strong>right:</strong>
+    <pre>    if (true) {
+        doit();
     }</pre>
-<strong>wrong:</strong>
-<pre>    if (true)
-      doit();</pre>
-</li>
-<li>there is only one variable to be defined per line<br />
-<strong>right:</strong>
-<pre>    int x = 0;
+    <strong>wrong:</strong>
+    <pre>    if (true)
+        doit();</pre>
+  </li>
+
+  <li>there is only one variable to be defined per line<br />
+    <strong>right:</strong>
+    <pre>    int x = 0;
     int y = 0;</pre>
-<strong>wrong</strong>
-<pre>    int x,y = 0;
-</pre>
-</li>
-<li>The asterisk '*' for pointers belongs to the type and not to the variable:<br />
-<strong>right:</strong>
-<pre>    Class* myvar;</pre>
-<strong>wrong:</strong>
-<pre>    Class *myvar;</pre>
+    <strong>wrong</strong>
+    <pre>    int x,y = 0;
+    </pre>
+  </li>
 
-</li>
-<li>do NOT allow trailing spaces</li>
-<li>includes are split in 4 blocks. These blocks are separated with an empty line. Includes within a block are sorted alphabetically</li>
-    <li>
-        <ol>
-        <li>Header for the current cpp-file</li>
-        <li>Headers from the <em>KphotoBook</em> project</li>
-        <li>KDE-headers</li>
-        <li>QT-headers</li>
-        <li>Standard/System headers</li>
-        </ol>
-    </li>
-<li>TODOs must be written as "<code>///@TODO message</code>", the message should never be left empty.</li>
-<li>FIXMEs must be written as "<code>//FIXME message</code>" the message should never be left empty.</li>
+  <li>The asterisk '*' for pointers belongs to the type and not to the variable:<br />
+    <strong>right:</strong>
+    <pre>    Class* myvar;</pre>
+    <strong>wrong:</strong>
+    <pre>    Class *myvar;</pre>
+  </li>
 
+  <li>do NOT allow trailing spaces</li>
+
+  <li>includes are split in 4 blocks. These blocks are separated with an empty line. Includes within a block are sorted alphabetically
+    <ol>
+      <li>Header for the current cpp-file</li>
+      <li>Headers from the <em>KphotoBook</em> project</li>
+      <li>KDE-headers</li>
+      <li>QT-headers</li>
+      <li>Standard/System headers</li>
+    </ol>
+  </li>
+
+  <li>TODOs must be written as "<code>///@TODO message</code>", the message should never be left empty.</li>
+
+  <li>FIXMEs must be written as "<code>//FIXME message</code>" the message should never be left empty.</li>
+
+  <li>Format the switch statements like this:
+    <pre>    switch (key) {
+      case value1:
+      case value2:
+          break;
+      case value3: {
+          doSomething();
+          break;
+      }
+      case value4: {
+          doSomething();
+          doSomethingElse();
+          break;
+      }
+      default:
+          return 1;
+    }</pre>
+  </li>
 
 </ul>
 
