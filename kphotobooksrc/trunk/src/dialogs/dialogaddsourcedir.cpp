@@ -54,7 +54,7 @@ DialogAddSourceDir::DialogAddSourceDir(QWidget* parent, const char* name) :
     m_currentDirectoryLineEdit = new KLineEdit(dirPanel, "dirLineEdit");
     m_currentDirectoryLineEdit->setMinimumWidth(300);
     m_currentDirectoryLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    // QWhatsThis::add(m_currentDirectoryLineEdit, i18n("Enter the path to the folder you want to add to the <i>KPhotoBook</i> database."));
+
     QObject::connect(m_currentDirectoryLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 
     QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet("folder", KIcon::Small, 24, false);
