@@ -140,8 +140,11 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
     newTagGroupLayout->setRowSpacing(0, 10);
 
     // type
+    const char* typeWhatsThis = "<b>Type</b><p>There are several types of tags available. Chose a type that matches your needs best.</p><p><b>title</b>: A title is a kind of helper tag. You cannot filter by title tags. Their purpose is to give your tag tree some more structure.</p><p><b>boolean</b>: A boolean tag can be associated to an image or not, not supplementary data can be stored with this tag. You can filter for this tag.</p><p><b>string</b>: A string tag can hold text and numbers. You can for example write a description of your image.</p><p><b>optionlist</b>: An optin list is a list containing several options from which you can only use one.</p><p><b>datetime</b>: This tag can store a date and a time.</p>";
+
     QLabel* typeLabel = new QLabel(i18n("Type"), newTagGroup, "typeLabel");
     newTagGroupLayout->addWidget(typeLabel, 0, 0);
+    QWhatsThis::add(typeLabel, i18n(typeWhatsThis));
 
     m_typeComboBox = new KComboBox(false, newTagGroup, "typeComboBox");
     // now fill the available items;
@@ -153,41 +156,47 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
     }
 
     newTagGroupLayout->addMultiCellWidget(m_typeComboBox, 0, 0, 1, 2);
-    QWhatsThis::add(m_typeComboBox, i18n("<b>Type</b><p>There are several types of tags available. Chose a type that matches your needs best.</p><p><b>title</b>: A title is a kind of helper tag. You cannot filter by title tags. Their purpose is to give your tag tree some more structure.</p><p><b>boolean</b>: A boolean tag can be associated to an image or not, not supplementary data can be stored with this tag. You can filter for this tag.</p><p><b>string</b>: A string tag can hold text and numbers. You can for example write a description of your image.</p><p><b>optionlist</b>: An optin list is a list containing several options from which you can only use one.</p><p><b>datetime</b>: This tag can store a date and a time.</p>"));
+    QWhatsThis::add(m_typeComboBox, i18n(typeWhatsThis));
 
     // name
+    const char* nameWhatsThis = "<b>Name</b><p>Chose a name for the tag. There can be several tags with the same name if needed. You cannot use the name 'exif' for a tag.</p>";
+
     QLabel* nameLabel = new QLabel(i18n("Name"), newTagGroup, "nameLabel");
     newTagGroupLayout->addWidget(nameLabel, 1, 0);
-    QWhatsThis::add(nameLabel, i18n("<b>Name</b><p>Chose a name for the tag. There can be several tags with the same name if needed. You cannot use the name 'exif' for a tag.</p>"));
+    QWhatsThis::add(nameLabel, i18n(nameWhatsThis));
 
     m_nameLineEdit = new KLineEdit(newTagGroup, "nameLineEdit");
     m_nameLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     QObject::connect(m_nameLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotValidate()));
     newTagGroupLayout->addMultiCellWidget(m_nameLineEdit, 1, 1, 1, 2);
-    QWhatsThis::add(m_nameLineEdit, i18n("<b>Name</b><p>Chose a name for the tag. There can be several tags with the same name if needed. You cannot use the name 'exif' for a tag.</p>"));
+    QWhatsThis::add(m_nameLineEdit, i18n(nameWhatsThis));
 
     // comment
+    const char* commentWhatsThis = "<b>Comment</b><p>You can give your tags a comment. This can be used to provide further information to a tag. The comment will be displayed as toolTip when hovering over the tag name.</p>";
+
     QLabel* commentLabel = new QLabel(i18n("Comment"), newTagGroup, "commentLabel");
     newTagGroupLayout->addWidget(commentLabel, 2, 0);
-    QWhatsThis::add(commentLabel, i18n("<b>Comment</b><p>You can give your tags a comment. This can be used to provide further information to a tag. The comment will be displayed as toolTip when hovering over the tag name.</p>"));
+    QWhatsThis::add(commentLabel, i18n(commentWhatsThis));
 
     m_commentLineEdit = new KLineEdit(newTagGroup, "commentLineEdit");
     m_commentLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     newTagGroupLayout->addMultiCellWidget(m_commentLineEdit, 2, 2, 1, 2);
-    QWhatsThis::add(m_commentLineEdit, i18n("<b>Comment</b><p>You can give your tags a comment. This can be used to provide further information to a tag. The comment will be displayed as toolTip when hovering over the tag name.</p>"));
+    QWhatsThis::add(m_commentLineEdit, i18n(commentWhatsThis));
 
 
     // icon
+    const char* iconWhatsThis = "<b>Icon</b><p>Chose an icon for your tag. It's easier and quicker to refind the tags. Click on the button to open the icon selection dialog.</p>";
+
     QLabel* iconLabel = new QLabel(i18n("Icon"), newTagGroup, "iconLabel");
     newTagGroupLayout->addWidget(iconLabel, 3, 0);
-    QWhatsThis::add(iconLabel, i18n("<b>Icon</b><p>Chose an icon for your tag. It's easier and quicker to refind the tags. Click on the button to open the icon selection dialog.</p>"));
+    QWhatsThis::add(iconLabel, i18n(iconWhatsThis));
 
     m_iconLineEdit = new KLineEdit(newTagGroup, "iconLineEdit");
     m_iconLineEdit->setMinimumWidth(300);
     m_iconLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     QObject::connect(m_iconLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotValidate()));
     newTagGroupLayout->addWidget(m_iconLineEdit, 3, 1);
-    QWhatsThis::add(m_iconLineEdit, i18n("<b>Icon</b><p>Chose an icon for your tag. It's easier and quicker to refind the tags. Click on the button to open the icon selection dialog.</p>"));
+    QWhatsThis::add(m_iconLineEdit, i18n(iconWhatsThis));
 
     m_iconButton = new QPushButton(i18n("Icon"), newTagGroup, "iconButton");
     m_iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -196,13 +205,17 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
 
     QObject::connect(m_iconButton, SIGNAL(clicked()), this, SLOT(slotIconButtonClicked()));
 
+
+    // secret
+    const char* secretWhatsThis = "<b>Secret</b><p>If 'secret' is enabled, <i>KPhotoBook</i> will always ask you before you filter for images containing images with secret tags</i></p>";
+
     QLabel* iconSecret = new QLabel(i18n("Secret"), newTagGroup, "iconSecret");
     newTagGroupLayout->addWidget(iconSecret, 4, 0);
-    QWhatsThis::add(m_iconButton, i18n("<b>Secret</b><p>If 'secret' is enabled, <i>KPhotoBook</i> will always ask you before you filter for images containing images with secret tags</i></p>"));
+    QWhatsThis::add(iconSecret, i18n(secretWhatsThis));
 
     m_chkSecret = new QCheckBox(newTagGroup);
     newTagGroupLayout->addWidget(m_chkSecret, 4, 1);
-    QWhatsThis::add(m_chkSecret, i18n("<b>Secret</b><p>If 'secret' is enabled, <i>KPhotoBook</i> will always ask you before you filter for images containing images with secret tags</i></p>"));
+    QWhatsThis::add(m_chkSecret, i18n(secretWhatsThis));
 
     // spacer
     QWidget* spacer = new QWidget(mainPanel, "spacer");
