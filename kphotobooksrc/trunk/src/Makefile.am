@@ -14,7 +14,7 @@ kphotobook_LDFLAGS = $(KDE_RPATH) $(all_libraries)
 kphotobook_LDADD = -lkmdi $(LIB_KFILE) $(LIB_KDEPRINT) backend/libbackend.la \
     dialogs/libdialogs.la engine/libengine.la export/libexport.la \
     settings/libsettings.la widgets/libwidgets.la \
-    uitrees/libuitrees.la tracer/libtracer.la import/libimport.la
+    uitrees/libuitrees.la tracer/libtracer.la import/libimport.la utils/libutils.la
 
 # which sources should be compiled for kphotobook
 kphotobook_SOURCES = main.cpp kphotobook.cpp kphotobookview.cpp exception.cpp \
@@ -49,4 +49,4 @@ rc_DATA = kphotobookui.rc tips
 #kde_kcfgdir = $(kde_datadir)/kphotobook
 #kde_kcfg_DATA = settings.kcfg
 
-SUBDIRS = icons images backend widgets dialogs engine export settings uitrees tracer import 
+SUBDIRS = icons images backend widgets dialogs engine export settings uitrees tracer import utils

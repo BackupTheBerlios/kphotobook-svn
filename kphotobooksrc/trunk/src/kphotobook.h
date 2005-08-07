@@ -26,12 +26,11 @@
 #include "engine/tagnode.h"
 #include "settings/settings.h"
 #include "tracer/tracer.h"
+#include "utils/actionprovider.h"
+#include "utils/menuprovider.h"
 
-#include <kaction.h>
-#include <kactionclasses.h>
 #include <kapplication.h>
 #include <kmdimainfrm.h>
-#include <kpopupmenu.h>
 #include <ksplashscreen.h>
 #include <kurl.h>
 
@@ -101,6 +100,11 @@ class KPhotoBook : public KMdiMainFrm
         SourceDirTree* sourceDirTree()
         {
             return m_sourcedirTree;
+        }
+
+        MenuProvider* menus()
+        {
+            return m_menus;
         }
     
         void dirtyfy();
@@ -175,37 +179,7 @@ class KPhotoBook : public KMdiMainFrm
         /**
         * Refreshes the view only if autorefresh is enabled.
         */
-        void autoRefreshView();
-    
-        KPopupMenu* contextMenuSourceDirTree()
-        {
-            return m_contextMenuSourceDirTree;
-        }
-    
-        KPopupMenu* contextMenuSourceDir()
-        {
-            return m_contextMenuSourceDir;
-        }
-    
-        KPopupMenu* contextMenuSubDir()
-        {
-            return m_contextMenuSubDir;
-        }
-    
-        KPopupMenu* contextMenuTagTree()
-        {
-            return m_contextMenuTagTree;
-        }
-    
-        KPopupMenu* contextMenuTagTreeItem()
-        {
-            return m_contextMenuTagTreeItem;
-        }
-    
-        KPopupMenu* contextMenuTagTreeItemLeaf()
-        {
-            return m_contextMenuTagTreeItemLeaf;
-        }
+        void autoRefreshView();    
     
         /**
         * Enables or disables locking of tagging.
@@ -306,7 +280,6 @@ class KPhotoBook : public KMdiMainFrm
     private:
         void init();
         void setupAccel();
-        void setupActions();
         void setupContextMenus();
     
         void setupToolWindowTagTree();
@@ -341,17 +314,17 @@ class KPhotoBook : public KMdiMainFrm
         * current preview size of the images.
         */
         void applyZoomSetting();
-    
+
         /**
         * Activates or deactivates the operator (and / or) actions.
         */
         void applyOperatorSetting();
-    
+
         /**
         * Activates or deactivates the autorefresh actions.
         */
         void applyAutorefreshSetting();
-    
+
         /**
         * Stores the state (open/closed nodes) of the trees.
         */
@@ -427,26 +400,10 @@ class KPhotoBook : public KMdiMainFrm
         KToolBar* m_sourceDirTreeToolBar;
     
         // actions
-        KToggleAction* m_autoRefreshViewAction;
-        KToolBarPopupAction* m_zoomIn;
-        KToolBarPopupAction* m_zoomOut;
-    
-        KRecentFilesAction* m_recentFilesAction;
-    
-        KAction* m_save;
-        KAction* m_exportMatchingFiles;
-        KAction* m_exportSelectedFiles;
-        KToggleAction* m_andifyTagsAction;
-        KToggleAction* m_orifyTagsAction;
-        KToggleAction* m_lockUnlockTaggingAction;
+        ActionProvider* m_actions;
     
         // contextMenus
-        KPopupMenu* m_contextMenuSourceDirTree;
-        KPopupMenu* m_contextMenuSourceDir;
-        KPopupMenu* m_contextMenuSubDir;
-        KPopupMenu* m_contextMenuTagTree;
-        KPopupMenu* m_contextMenuTagTreeItem;
-        KPopupMenu* m_contextMenuTagTreeItemLeaf;
+        MenuProvider* m_menus;
     
         // settings pages
         SettingsGeneral* m_settingsGeneral;
@@ -455,7 +412,8 @@ class KPhotoBook : public KMdiMainFrm
         SettingsSourceDirTree* m_settingsSourceDirTree;
         SettingsFileHandling* m_settingsFileHandling;
         SettingsTools* m_settingsTools;
-    
+
+        // image viewer
         QTimer*        m_splashTimer;
         KSplashScreen* m_splashScreen;
 };

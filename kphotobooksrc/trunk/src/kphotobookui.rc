@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<gui name="kphotobook" version="16">
+<gui name="kphotobook" version="17">
 
 <MenuBar>
     <Menu name="file">
@@ -17,7 +17,7 @@
     </Menu>
     <Menu name="manage">
         <text>&amp;Manage</text>
-        <Action name="addSourceDir" />
+        <Action name="addFolder" />
         <Separator/>
         <Action name="addMaintag" />
         <Separator/>
@@ -34,8 +34,8 @@
         <Action name="expandAllTags" />
         <Action name="collapseAllTags" />
         <Separator/>
-        <Action name="expandAllSourceDirs" />
-        <Action name="collapseAllSourceDirs" />
+        <Action name="expandAllFolders" />
+        <Action name="collapseAllFolders" />
         <Separator/>
         <Action name="restoreToolViews" />
     </Menu>
@@ -43,7 +43,7 @@
         <Menu name="toolviews">
             <text>&amp;Tool Views</text>
             <Action name="showToolViewTagTree" />
-            <Action name="showToolViewSourceDirTree" />
+            <Action name="showToolViewFolderTree" />
         </Menu>
         <Separator/>
         <Action name="autoRefreshView" />
@@ -58,7 +58,7 @@
 
 <ToolBar name="manageToolBar" fullWidth="false" newline="false" >
   <text>Manage</text>
-  <Action name="addSourceDir" />
+  <Action name="addFolder" />
   <Action name="addMaintag" />
   <Separator/>
   <Action name="andifyTags" />
@@ -103,36 +103,36 @@
     <Action name="deleteTag" />
 </Menu>
 
-<Menu name="contextMenu_sourceDirTree">
-    <Action name="includeAllSourceDirs" />
-    <Action name="excludeAllSourceDirs" />
-    <Action name="invertAllSourceDirs" />
+<Menu name="contextMenu_folderTree">
+    <Action name="includeAllFolders" />
+    <Action name="excludeAllFolders" />
+    <Action name="invertAllFolderSelection" />
     <Separator/>
-    <Action name="expandAllSourceDirs" />
-    <Action name="collapseAllSourceDirs" />
+    <Action name="expandAllFolders" />
+    <Action name="collapseAllFolders" />
     <Separator/>
-    <Action name="addSourceDir" />
+    <Action name="addFolder" />
 </Menu>
 
-<Menu name="contextMenu_sourceDir">
-    <Action name="includeWholeSourceDir" />
-    <Action name="excludeWholeSourceDir" />
-    <Action name="invertSourceDir" />
+<Menu name="contextMenu_folder">
+    <Action name="includeWholeFolder" />
+    <Action name="excludeWholeFolder" />
+    <Action name="invertFolderSelection" />
     <Separator/>
-    <Action name="expandSourceDir" />
-    <Action name="collapseSourceDir" />
+    <Action name="expandFolder" />
+    <Action name="collapseFolder" />
     <Separator/>
-    <Action name="editSourceDir" />
-    <Action name="removeSourceDir" />
+    <Action name="editFolder" />
+    <Action name="removeFolder" />
 </Menu>
 
-<Menu name="contextMenu_subDir">
-    <Action name="includeWholeSourceDir" />
-    <Action name="excludeWholeSourceDir" />
-    <Action name="invertSourceDir" />
+<Menu name="contextMenu_subFolder">
+    <Action name="includeWholeFolder" />
+    <Action name="excludeWholeFolder" />
+    <Action name="invertFolderSelection" />
     <Separator/>
-    <Action name="expandSourceDir" />
-    <Action name="collapseSourceDir" />
+    <Action name="expandFolder" />
+    <Action name="collapseFolder" />
 </Menu>
 
 </gui>

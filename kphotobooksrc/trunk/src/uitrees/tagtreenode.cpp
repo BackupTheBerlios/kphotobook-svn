@@ -188,8 +188,6 @@ void TagTreeNode::leftClicked(__attribute__((unused)) TagTree* tagTree, int colu
 
 void TagTreeNode::rightClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column)
 {
-    tracer->sinvoked(__func__);
-
     int button = KMessageBox::Yes;
 
     switch (column) {

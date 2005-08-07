@@ -161,22 +161,22 @@ void TagTree::addTagNode(TagNode* rootNode)
     // create the concrete tagtreenode
     if (typeid(*rootNode) == typeid(TagNodeTitle)) {
         TagNodeTitle* node = dynamic_cast<TagNodeTitle*>(rootNode);
-        tagTreeNode = new TagTreeNodeTitle(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+        tagTreeNode = new TagTreeNodeTitle(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
     } else if (typeid(*rootNode) == typeid(TagNodeBoolean)) {
         TagNodeBoolean* node = dynamic_cast<TagNodeBoolean*>(rootNode);
-        tagTreeNode = new TagTreeNodeBoolean(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+        tagTreeNode = new TagTreeNodeBoolean(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
     } else if (typeid(*rootNode) == typeid(TagNodeString)) {
         TagNodeString* node = dynamic_cast<TagNodeString*>(rootNode);
-        tagTreeNode = new TagTreeNodeString(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+        tagTreeNode = new TagTreeNodeString(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
     } else if (typeid(*rootNode) == typeid(TagNodeRadioGroup)) {
         TagNodeRadioGroup* node = dynamic_cast<TagNodeRadioGroup*>(rootNode);
-        tagTreeNode = new TagTreeNodeRadioGroup(this, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+        tagTreeNode = new TagTreeNodeRadioGroup(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
     } else if (typeid(*rootNode) == typeid(TagNodeRadio)) {
         TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(rootNode);
-        tagTreeNode = new TagTreeNodeRadio(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+        tagTreeNode = new TagTreeNodeRadio(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
     } else if (typeid(*rootNode) == typeid(TagNodeDateTime)) {
         TagNodeDateTime* node = dynamic_cast<TagNodeDateTime*>(rootNode);
-        tagTreeNode = new TagTreeNodeDateTime(this, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+        tagTreeNode = new TagTreeNodeDateTime(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
     } else {
         tracer->swarning(__func__) << "unknown root tagtype received: " << rootNode->type() << "!"<< endl;
     }
@@ -195,22 +195,22 @@ void TagTree::addTagNode(TagTreeNode* parent, TagNode* child)
     // create the concrete tagtreenode
     if (typeid(*child) == typeid(TagNodeTitle)) {
         TagNodeTitle* node = dynamic_cast<TagNodeTitle*>(child);
-        tagTreeNode = new TagTreeNodeTitle(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+        tagTreeNode = new TagTreeNodeTitle(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
     } else if (typeid(*child) == typeid(TagNodeBoolean)) {
         TagNodeBoolean* node = dynamic_cast<TagNodeBoolean*>(child);
-        tagTreeNode = new TagTreeNodeBoolean(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+        tagTreeNode = new TagTreeNodeBoolean(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
     } else if (typeid(*child) == typeid(TagNodeString)) {
         TagNodeString* node = dynamic_cast<TagNodeString*>(child);
-        tagTreeNode = new TagTreeNodeString(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+        tagTreeNode = new TagTreeNodeString(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
     } else if (typeid(*child) == typeid(TagNodeRadioGroup)) {
         TagNodeRadioGroup* node = dynamic_cast<TagNodeRadioGroup*>(child);
-        tagTreeNode = new TagTreeNodeRadioGroup(parent, node, m_photobook, m_photobook->contextMenuTagTreeItem());
+        tagTreeNode = new TagTreeNodeRadioGroup(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
     } else if (typeid(*child) == typeid(TagNodeRadio)) {
         TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(child);
-        tagTreeNode = new TagTreeNodeRadio(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+        tagTreeNode = new TagTreeNodeRadio(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
     } else if (typeid(*child) == typeid(TagNodeDateTime)) {
         TagNodeDateTime* node = dynamic_cast<TagNodeDateTime*>(child);
-        tagTreeNode = new TagTreeNodeDateTime(parent, node, m_photobook, m_photobook->contextMenuTagTreeItemLeaf());
+        tagTreeNode = new TagTreeNodeDateTime(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
     } else {
         tracer->swarning(__func__) << "unknown sub tagtype received: " << child->type() << "!"<< endl;
     }
@@ -392,7 +392,7 @@ void TagTree::slotListViewClicked(int button, QListViewItem* item, __attribute__
 {
     if (button == Qt::RightButton && item == 0) {
         // show contextMenu if right clicked on no item
-        m_photobook->contextMenuTagTree()->exec(QCursor::pos());
+        m_photobook->menus()->contextMenuTagTree()->exec(QCursor::pos());
 
         // info: we do not use SIGNAL(contextMenu(KListView*, QListViewItem*, const QPoint&)
         // because we want the contextMenu only displayed on column 0

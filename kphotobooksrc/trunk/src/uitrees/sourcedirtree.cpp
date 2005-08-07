@@ -192,7 +192,7 @@ void SourceDirTree::addSourceDir(SourceDir* rootNode)
 {
     tracer->sinvoked(__func__) << " with sourcedir: '" << rootNode->dir()->absPath() << "'..." << endl;
 
-    SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(this, m_photobook, rootNode, m_photobook->contextMenuSourceDir());
+    SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(this, m_photobook, rootNode, m_photobook->menus()->contextMenuSourceDir());
 
     // insert the just created node into the dictionary
     m_sourceDirNodeDict->insert(rootNode->id(), sourceDirTreeNode);
@@ -363,7 +363,7 @@ void SourceDirTree::slotListViewClicked(int button, QListViewItem* item, __attri
 {
     if (button == Qt::RightButton && item == 0) {
         // show contextMenu if right clicked on no item
-        m_photobook->contextMenuSourceDirTree()->exec(QCursor::pos());
+        m_photobook->menus()->contextMenuSourceDirTree()->exec(QCursor::pos());
 
         // info: we do not use SIGNAL(contextMenu(KListView*, QListViewItem*, const QPoint&)
         // because we want the contextMenu only displayed on column 0
@@ -396,7 +396,7 @@ void SourceDirTree::buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<Sourc
     SourceDir* child;
     for (child = children->first(); child; child = children->next() ) {
 
-        SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(parent, m_photobook, child, m_photobook->contextMenuSubDir());
+        SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(parent, m_photobook, child, m_photobook->menus()->contextMenuSubDir());
 
         // insert the just created node into the dictionary
         m_sourceDirNodeDict->insert(child->id(), sourceDirTreeNode);
