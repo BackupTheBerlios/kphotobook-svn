@@ -35,18 +35,28 @@
 class TreeHelper
 {
     public:
+        enum TRISTATE {
+            NOT_CHECKED = -1,
+            UNDEFINED = 0,
+            CHECKED = 1
+        };
+
+    public:
         static void drawCheckBox( QPainter* p, const QColorGroup& cg, QRect rect, bool checked, bool enabled );
         static void drawCheckBox( QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled );
-    
+
         static void drawRadioButton( QPainter* p, const QColorGroup& cg, QRect rect, int tristate, bool enabled );
-    
+
+        static void drawCheckBox(QPainter* p, const QColorGroup& cg, const QColor& bg, int width, int height, bool enabled, TRISTATE tristate);
+        static void drawRadioButton(QPainter* p, const QColorGroup& cg, const QColor& bg, int width, int height, bool enabled, TRISTATE tristate);
+
     protected:
         TreeHelper()
         {}
-    
+
         ~TreeHelper()
         {}
-    
+
     private:
         // constants for tree
         static const int TREE_CHECKBOX_MAXSIZE;

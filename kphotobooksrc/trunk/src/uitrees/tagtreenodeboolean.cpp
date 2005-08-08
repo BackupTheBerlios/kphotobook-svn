@@ -80,30 +80,30 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
     switch (column) {
         case TagTree::COLUMN_TEXT:
             break;
-        case TagTree::COLUMN_VALUE: {    
+        case TagTree::COLUMN_VALUE: {
             // do nothing when tagging is locked
             if (Settings::tagTreeLocked()) {
                 return;
             }
-    
+
             // editing of the value is not allowed if tagnode is readonly
             if (m_tagNode->readonly()) {
                 return;
             }
-    
+
             // if not all are currently tagged, tag them, otherwise untag them
             bool newState = (m_tagCurrentMatch != TagTreeNode::TAGGED);
-    
+
             //now set our new state
             m_tagCurrentMatch = newState ? TagTreeNode::TAGGED : TagTreeNode::UNTAGGED;
-    
+
             // loop over all selected files and change their state
             QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
             for (it.toFirst(); it.current(); ++it) {
                 File* selectedFile = dynamic_cast<File*>(it.current());
                 tagNode->setTagged(selectedFile, newState);
             }
-    
+
             //now loop through all of our parents to set their state according to my changes
             TagTreeNode* node = this;
             while (node) {
@@ -111,16 +111,16 @@ void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, i
                 node->repaint();
                 node = dynamic_cast<TagTreeNode*>(node->parent());
             }
-    
+
             m_photobook->dirtyfy();
             break;
         }
         case TagTree::COLUMN_FILTER: {
             TagTreeNode::leftClicked(tagTree, column);
-    
+
             // force redrawing of this listviewitem
             this->repaint();
-    
+
             m_photobook->autoRefreshView();
             break;
         }
@@ -137,10 +137,10 @@ void TagTreeNodeBoolean::rightClicked(TagTree* tagTree, int column)
         }
         case TagTree::COLUMN_FILTER: {
             TagTreeNode::rightClicked(tagTree, column);
-    
+
             // force redrawing of this listviewitem
             this->repaint();
-    
+
             m_photobook->autoRefreshView();
             break;
         }
@@ -148,7 +148,7 @@ void TagTreeNodeBoolean::rightClicked(TagTree* tagTree, int column)
 }
 
 
-void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int column, int width, int alignment)
+void TagTreeNodeBoolean::paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment)
 {
     switch (column) {
         case TagTree::COLUMN_TEXT: {
@@ -156,31 +156,16 @@ void TagTreeNodeBoolean::paintCell(QPainter *p, const QColorGroup &cg, int colum
             break;
         }
         case TagTree::COLUMN_VALUE: {
-            // paint the cell with the alternating background color
-            p->fillRect(0, 0, width, this->height(), backgroundColor(1));
-    
-            // draw the checkbox in the center of the cell in the size of the font
-            int size = p->fontInfo().pixelSize()+2;
-            QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
-    
             if (m_tagCurrentMatch == TagTreeNode::NOSELECT) {
                 // no file is selected -> draw a disabled checkbox
-                TreeHelper::drawCheckBox(p, cg, rect, false, false);
+                TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_VALUE), width, this->height(), false, TreeHelper::NOT_CHECKED);
             } else {
-                TreeHelper::drawCheckBox(p, cg, rect, (int)m_tagCurrentMatch, !Settings::tagTreeLocked());
+                TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_VALUE), width, this->height(), !Settings::tagTreeLocked(), (TreeHelper::TRISTATE)m_tagCurrentMatch);
             }
             break;
         }
         case TagTree::COLUMN_FILTER: {
-            // paint the cell with the alternating background color
-            p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-    
-            // draw the checkbox in the center of the cell in the size of the font
-            int size = p->fontInfo().pixelSize()+2;
-            QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
-    
-            TreeHelper::drawCheckBox(p, cg, rect, (int)m_filterState, true);
-    
+            TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, (TreeHelper::TRISTATE)m_tagCurrentMatch);
             break;
         }
     }
