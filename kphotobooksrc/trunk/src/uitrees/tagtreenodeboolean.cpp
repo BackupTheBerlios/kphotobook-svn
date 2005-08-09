@@ -165,7 +165,7 @@ void TagTreeNodeBoolean::paintCell(QPainter* p, const QColorGroup& cg, int colum
             break;
         }
         case TagTree::COLUMN_FILTER: {
-            TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, (TreeHelper::TRISTATE)m_tagCurrentMatch);
+            TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, (TreeHelper::TRISTATE)m_filterState);
             break;
         }
     }

@@ -49,7 +49,7 @@ class TagTreeNode : public KListViewItem
 {
     private:
         static Tracer* tracer;
-    
+
     public:
         /**
         * gives information about the tag status. ie if the current tagTreeNode is
@@ -63,16 +63,16 @@ class TagTreeNode : public KListViewItem
             MIXTAGGED = 0,
             TAGGED    = 1
         };
-    
+
         /**
         * This enumeration is basis of the filterstates of the TagTreeNodes
         */
         enum FilterState {
             FILTERSTATE_EXCLUDE = -1,
-            FILTERSTATE_IGNORE,
-            FILTERSTATE_INCLUDE
+            FILTERSTATE_IGNORE = 0,
+            FILTERSTATE_INCLUDE = 1
         };
-    
+
         /**
         * Creates a new toplevel tagtreenode in the specified TagTree.
         * @param parent The TagTree to add the created TagTreeNode to.
@@ -82,28 +82,28 @@ class TagTreeNode : public KListViewItem
         */
         TagTreeNode(TagTree* parent, KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu = 0);
         TagTreeNode(TagTreeNode* parent,  KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu = 0);
-    
+
         virtual ~TagTreeNode()
         {
         }
-    
+
         /**
         * Refreshes the displayed icon and text.
         * Should be called after the represented TagNode has changed or another setting
         * has changed which influences the appearance of this TagTreeNode.
         */
         void refresh();
-    
+
         KPopupMenu* contextMenu()
         {
             return m_contextMenu;
         }
-    
+
         virtual TagNode* tagNode()
         {
             return m_tagNode;
         }
-    
+
         /**
         * Returns an FilterNode used to describe this filter.
         */
@@ -111,13 +111,13 @@ class TagTreeNode : public KListViewItem
         {
             return 0;
         }
-    
+
         /**
         * Expands or collapses the whole subtree beginning with this TagTreeNode.
         * @param open Indicates if the subtree must be expanded (true) or collapsed (false).
         */
         void setOpenRecursive(bool open);
-    
+
         /**
         * Sets the filter to find images without this tag set.
         */
@@ -127,7 +127,7 @@ class TagTreeNode : public KListViewItem
             // force redrawing of this listviewitem
             this->repaint();
         }
-    
+
         /**
         * Resets the filter.
         */
@@ -137,13 +137,13 @@ class TagTreeNode : public KListViewItem
             // force redrawing of this listviewitem
             this->repaint();
         }
-    
+
         /**
         * Returns the currently set filter as string representation.
         * This value is used to store in the database.
         */
         virtual QString filterString();
-    
+
         /**
         * returns the current state of the filternode
         */
@@ -151,13 +151,13 @@ class TagTreeNode : public KListViewItem
         {
             return m_filterState;
         }
-    
+
         /**
         * sets the filter according to the string
         */
         virtual void applyFilterString(QString filter);
-    
-    
+
+
         /**
         * sets the filter to state
         */
@@ -165,25 +165,25 @@ class TagTreeNode : public KListViewItem
         {
             m_filterState = state;
         }
-    
+
         /**
         * This method is called by the tagtree when this TagTreeNode is clicked with the
         * left mouse button.
         */
         virtual void leftClicked(TagTree* tagTree, int column);
-    
+
         /**
         * This method is called by the tagtree when this TagTreeNode is clicked with the
         * right mouse button.
         */
         virtual void rightClicked(TagTree* tagTree, int column);
-    
+
         /**
         * draws the cells of the tagtreeitems defaultwise
         */
         virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
-    
-    
+
+
         /**
         * returns the tooltip to be shown in the tree of this node
         */
@@ -197,26 +197,26 @@ class TagTreeNode : public KListViewItem
         {
             m_tagCurrentMatch = findTagMatch();
         }
-    
+
         /**
         * recursively asks all my children, if the are Tagged within the current selected images.
         * this also returns true, if a MIXTAGGED state is found, as this is also 'tagged'
         */
         virtual bool recursiveFindTagged();
-    
+
     protected:
-    
+
         /** parses the currently selected Images and looks, if a match can be found */
         MatchType findTagMatch();
-    
+
         KPhotoBook* m_photobook;
         TagNode* m_tagNode;
-    
+
         KPopupMenu* m_contextMenu;
-    
+
         /** saves, whether the selected images have Matched the current tagTreeNode, or not (or Mixed) */
         MatchType m_tagCurrentMatch;
-    
+
         TagTreeNode::FilterState m_filterState;
 };
 
