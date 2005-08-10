@@ -85,7 +85,7 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QD
     tracer->invoked(__func__, "single date");
 
     initUI();
-    
+
     m_tabWidget->showPage(m_singlePanel);
 
     m_timeRuler->slotSetSelected((singleDate && singleDate->date().isValid()) ? singleDate->date() : QDate::currentDate(), true);
@@ -160,7 +160,7 @@ QDateTime DialogDateTimeFilter::getDateTimeFrom()
     } else if (m_tabWidget->currentPage() == m_singlePanel) {
         ///@todo return the timerulers date.
     }
-    
+
     return QDate();
 }
 
@@ -176,7 +176,7 @@ QDateTime DialogDateTimeFilter::getDateTimeTo()
     } else if (m_tabWidget->currentPage() == m_singlePanel){
         ///@todo return the timerulers date.
     }
-    
+
     return QDate();
 }
 
@@ -216,7 +216,7 @@ void DialogDateTimeFilter::initUI()
     ///@todo remove disabling singleDate and pattern as soon as implemented
     m_singlePanel->setEnabled(false);
     m_patternPanel->setEnabled(false);
-    
+
     this->setMainWidget(mainPanel);
 }
 
@@ -230,7 +230,7 @@ QWidget* DialogDateTimeFilter::buildSinglePanel()
     m_timeRuler = new TimeRuler(m_singlePanel);
     connect(m_timeRuler, SIGNAL(selectionChanged(int, int)), this, SLOT(slotDateSelectionChanged(int, int)));
     m_dateTable = new KDatePicker(m_singlePanel);
-    connect(m_dateTable, SIGNAL(dateChanged(QDate )), m_timeRuler, SLOT(slotSetSelected(QDate)));
+    connect(m_dateTable, SIGNAL(dateChanged(QDate)), m_timeRuler, SLOT(slotSetSelected(const QDate&, bool)));
 
     return m_singlePanel;
 }
