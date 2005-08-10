@@ -301,23 +301,3 @@ QString* TagTreeNodeString::getCommonValue(const KFileItemList* selectedFiles)
     tracer->sdebug(__func__) << "commnon value is: " << (commonValue ? *commonValue : "0") << endl;
     return commonValue;
 }
-
-
-QString TagTreeNodeString::toolTip(int column)
-{
-    switch (column) {
-        case TagTree::COLUMN_TEXT:
-        case TagTree::COLUMN_FILTER: {
-            return TagTreeNode::toolTip(column);
-            break;
-        }
-        case TagTree::COLUMN_VALUE: {
-            return text(TagTree::COLUMN_VALUE);
-            break;
-        }
-    }
-
-    return "";
-}
-
-

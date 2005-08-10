@@ -80,7 +80,7 @@ QString TagTreeNode::filterString()
         case TagTreeNode::FILTERSTATE_INCLUDE: {
             filter = "include";
             break;
-        }    
+        }
         case TagTreeNode::FILTERSTATE_IGNORE:
             break;
     }
@@ -233,12 +233,12 @@ void TagTreeNode::paintCell(QPainter* p, const QColorGroup& cg, int column, int 
             //toggle bold tags
             if (Settings::tagTreeBoldMatches() && recursiveFindTagged()
                 && (!Settings::tagTreeBoldMatchesCollapsedOnly() || (firstChild() && !isOpen()))) {
-    
+
                     QFont f(p->font());
                     f.setBold(true);
                     p->setFont(f);
                 }
-    
+
             KListViewItem::paintCell(p, cg, column, width, alignment);
             break;
         }
@@ -251,16 +251,21 @@ void TagTreeNode::paintCell(QPainter* p, const QColorGroup& cg, int column, int 
 }
 
 
-QString TagTreeNode::toolTip(int column)
+QString TagTreeNode::toolTipText()
 {
-    switch (column) {
-        case TagTree::COLUMN_TEXT:
-        case TagTree::COLUMN_VALUE:
-        case TagTree::COLUMN_FILTER:
-            return *(m_tagNode->comment());
-    }
+    return *(m_tagNode->comment());
+}
 
-    return "";
+
+QString TagTreeNode::toolTipValue()
+{
+    return text(TagTree::COLUMN_VALUE);
+}
+
+
+QString TagTreeNode::toolTipFilter()
+{
+    return text(TagTree::COLUMN_FILTER);
 }
 
 

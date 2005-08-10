@@ -183,9 +183,8 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
             DialogDateTimeFilter* dateTimeFilter = createDialogDateTimeFilter(text(TagTree::COLUMN_FILTER));
             if (dateTimeFilter->exec() == QDialog::Accepted) {
                 applyFilter(dateTimeFilter);
+                m_photobook->autoRefreshView();
             }
-
-            m_photobook->autoRefreshView();
             break;
         }
     }
@@ -239,7 +238,14 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
             break;
         }
         case TagTree::COLUMN_FILTER: {
-            TagTreeNode::paintCell(p, cg, column, width, Qt::AlignLeft);
+            // if filtering an empty string (the filter is ignored), we display the third state of the checkbox
+            if (m_filterValue.isEmpty()) {
+                TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, TreeHelper::UNDEFINED);
+            } else if (m_filterValue == "()") {
+                TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, TreeHelper::NOT_CHECKED);
+            } else {
+                TagTreeNode::paintCell(p, cg, column, width, Qt::AlignLeft);
+            }
             break;
         }
     }

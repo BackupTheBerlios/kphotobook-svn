@@ -451,9 +451,23 @@ void TreeToolTip::maybeTip(const QPoint &point)
     QListViewItem *item = m_view->itemAt( point );
     if ( item ) {
         int column = m_view->header()->sectionAt(point.x());
-        QString text = static_cast<TagTreeNode*>( item )->toolTip(column);
-        if ( !text.isEmpty() ) {
-            tip ( m_view->itemRect( item ), text );
+        QString text("");
+        switch (column) {
+            case TagTree::COLUMN_TEXT: {
+                text = static_cast<TagTreeNode*>( item )->toolTipText();
+                break;
+            }
+            case TagTree::COLUMN_VALUE: {
+                text = static_cast<TagTreeNode*>( item )->toolTipValue();
+                break;
+            }
+            case TagTree::COLUMN_FILTER: {
+                text = static_cast<TagTreeNode*>( item )->toolTipFilter();
+                break;
+            }
+        }
+        if (!text.isEmpty()) {
+            tip(m_view->itemRect(item), text);
         }
     }
 }

@@ -42,7 +42,7 @@ class TagTreeNodeString : public TagTreeNode
     public:
         TagTreeNodeString(TagTree* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
         TagTreeNodeString(TagTreeNode* parent, TagNodeString* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-        
+
         virtual ~TagTreeNodeString();
 
         void setFilterValue(QString filterValue) {
@@ -89,8 +89,6 @@ class TagTreeNodeString : public TagTreeNode
         void handleRenaming(int column, const QString& text);
 
         virtual void paintCell(QPainter* p, const QColorGroup& cg, int column, int width, int alignment);
-
-        virtual QString toolTip(int column);
 
     private:
         /**
