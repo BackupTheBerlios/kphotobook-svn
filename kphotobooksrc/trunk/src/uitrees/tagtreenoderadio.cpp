@@ -89,39 +89,39 @@ void TagTreeNodeRadio::leftClicked(TagTree* tagTree, int column)
     switch (column) {
         case TagTree::COLUMN_TEXT:
             break;
-    
+
         case TagTree::COLUMN_VALUE: {
             // do nothing when tagging is locked
             if (Settings::tagTreeLocked()) {
                 return;
             }
-    
+
             // editing of the value is not allowed if tagnode is readonly
             if (m_tagNode->readonly()) {
                 return;
             }
-    
+
             // otherwise tell my parent (which is my radiogroup managing item) that i have been selected
             TagTreeNodeRadioGroup* grp = dynamic_cast<TagTreeNodeRadioGroup*>(parent());
             if (grp) {
                 // if it's already selected, we unselect all
                 grp->setSelectedTag(m_tagCurrentMatch == TagTreeNode::TAGGED ? 0L : this);
             }
-    
+
             break;
         }
         case TagTree::COLUMN_FILTER: {
             TagTreeNode::leftClicked(tagTree, column);
-    
+
             //now tell my father, that smth happened to me
             TagTreeNodeRadioGroup* grp = dynamic_cast<TagTreeNodeRadioGroup*>(parent());
             if (grp) {
                 grp->updateFilterState();
             }
-    
+
             // force redrawing of this listviewitem
             this->repaint();
-    
+
             m_photobook->autoRefreshView();
             break;
         }
@@ -140,16 +140,16 @@ void TagTreeNodeRadio::rightClicked(TagTree* tagTree, int column)
         }
         case TagTree::COLUMN_FILTER: {
             TagTreeNode::rightClicked(tagTree, column);
-    
+
             //now tell my father, that smth happened to me
             TagTreeNodeRadioGroup* grp = dynamic_cast<TagTreeNodeRadioGroup*>(parent());
             if (grp) {
                 grp->updateFilterState();
             }
-    
+
             // force redrawing of this listviewitem
             this->repaint();
-    
+
             m_photobook->autoRefreshView();
             break;
         }
@@ -165,31 +165,15 @@ void TagTreeNodeRadio::paintCell(QPainter *p, const QColorGroup &cg, int column,
             break;
         }
         case TagTree::COLUMN_VALUE: {
-            // paint the cell with the alternating background color
-            p->fillRect(0, 0, width, this->height(), backgroundColor(1));
-    
-            // draw the checkbox in the center of the cell in the size of the font
-            int size = p->fontInfo().pixelSize()+2;
-            QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
-    
             if (m_tagCurrentMatch == TagTreeNode::NOSELECT) {
-                TreeHelper::drawRadioButton(p, cg, rect, (int)TagTreeNode::UNTAGGED, false);
+                TreeHelper::drawRadioButton(p, cg, backgroundColor(TagTree::COLUMN_VALUE), width, this->height(), false, TreeHelper::NOT_CHECKED);
             } else {
-                TreeHelper::drawRadioButton(p, cg, rect, (int)m_tagCurrentMatch, !Settings::tagTreeLocked());
+                TreeHelper::drawRadioButton(p, cg, backgroundColor(TagTree::COLUMN_VALUE), width, this->height(), !Settings::tagTreeLocked(), (TreeHelper::TRISTATE)m_tagCurrentMatch);
             }
-    
             break;
         }
         case TagTree::COLUMN_FILTER: {
-            // paint the cell with the alternating background color
-            p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-    
-            // draw the checkbox in the center of the cell in the size of the font
-            int size = p->fontInfo().pixelSize()+2;
-            QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
-    
-            TreeHelper::drawCheckBox(p, cg, rect, m_filterState, true);
-    
+            TreeHelper::drawRadioButton(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, (TreeHelper::TRISTATE)m_filterState);
             break;
         }
     }

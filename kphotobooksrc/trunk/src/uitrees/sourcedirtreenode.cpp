@@ -175,7 +175,7 @@ void SourceDirTreeNode::leftClicked(__attribute__((unused)) SourceDirTree* sourc
             m_sourceDir->setInclude(!m_sourceDir->include());
             // force redrawing of this listviewitem
             this->repaint();
-    
+
             m_photobook->autoRefreshView();
             break;
         }
@@ -224,14 +224,7 @@ void SourceDirTreeNode::paintCell(QPainter *p, const QColorGroup &cg, int column
             break;
         }
         case SourceDirTree::COLUMN_INCLUDED: {
-            // paint the cell with the alternating background color
-            p->fillRect(0, 0, width, this->height(), backgroundColor(0));
-    
-            // draw the checkbox in the center of the cell
-            QRect rect((width-this->height()+4)/2, 2, this->height()-4, this->height()-4);
-    
-            TreeHelper::drawCheckBox(p, myCg, rect, m_sourceDir->include(), true);
-    
+            TreeHelper::drawCheckBox(p, cg, backgroundColor(SourceDirTree::COLUMN_INCLUDED), width, this->height(), true, m_sourceDir->include() ? TreeHelper::CHECKED : TreeHelper::NOT_CHECKED);
             break;
         }
     }

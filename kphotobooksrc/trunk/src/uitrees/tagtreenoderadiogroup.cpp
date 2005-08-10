@@ -95,9 +95,9 @@ void TagTreeNodeRadioGroup::leftClicked(TagTree* tagTree, int column)
         case TagTree::COLUMN_FILTER: {
             // be sure that the filter reflects the children settings!
             updateFilterState();
-    
+
             TagTreeNode::leftClicked(tagTree, column);
-    
+
             //now set all children to my state
             TagTreeNodeRadio* act = NULL;
             QListViewItem * myChild = firstChild();
@@ -111,10 +111,10 @@ void TagTreeNodeRadioGroup::leftClicked(TagTree* tagTree, int column)
                 // and go on with the next child
                 myChild = myChild->nextSibling();
             }
-    
+
             // force redrawing of this listviewitem
             this->repaint();
-    
+
             m_photobook->autoRefreshView();
             break;
         }
@@ -133,7 +133,7 @@ void TagTreeNodeRadioGroup::rightClicked(__attribute__((unused)) TagTree* tagTre
         }
         case TagTree::COLUMN_FILTER: {
             TagTreeNode::rightClicked(tagTree, column);
-    
+
             //now set all children to my state
             TagTreeNodeRadio* act = NULL;
             QListViewItem * myChild = firstChild();
@@ -147,10 +147,10 @@ void TagTreeNodeRadioGroup::rightClicked(__attribute__((unused)) TagTree* tagTre
                 // and go on with the next child
                 myChild = myChild->nextSibling();
             }
-    
+
             // force redrawing of this listviewitem
             this->repaint();
-    
+
             m_photobook->autoRefreshView();
             break;
         }
@@ -283,15 +283,7 @@ void TagTreeNodeRadioGroup::paintCell(QPainter *p, const QColorGroup &cg, int co
             break;
         }
         case TagTree::COLUMN_FILTER: {
-            // paint the cell with the alternating background color
-            p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-    
-            // draw the checkbox in the center of the cell in the size of the font
-            int size = p->fontInfo().pixelSize()+2;
-            QRect rect((width - size + 4)/2, (  this->height()-size )/2, size, size);
-    
-            TreeHelper::drawCheckBox(p, cg, rect, m_filterState, true);
-    
+            TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, (TreeHelper::TRISTATE)m_filterState);
             break;
         }
     }

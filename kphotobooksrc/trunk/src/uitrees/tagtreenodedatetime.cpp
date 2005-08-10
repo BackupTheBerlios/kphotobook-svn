@@ -116,13 +116,13 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
     switch (column) {
         case TagTree::COLUMN_TEXT:
             break;
-    
+
         case TagTree::COLUMN_VALUE: {
             // do nothing when tagging is locked
             if (Settings::tagTreeLocked()) {
                 return;
             }
-    
+
             // editing of the value is not allowed if tagnode is readonly
             if (m_tagNode->readonly()) {
                 return;
@@ -130,24 +130,24 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
 
             // get all selected files
             const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
-    
+
             if (selectedFiles->count()) {
 
                 QDateTime* commonValue = getCommonValue(selectedFiles);
-                
+
                 // let the user enter a new value
                 DialogDateTimeChooser* dateTimeChooser = new DialogDateTimeChooser(0, "DialogDateTimeChooser", commonValue ? *commonValue : QDateTime());
                 if (dateTimeChooser->exec() == QDialog::QDialog::Accepted) {
 
                     bool noDateTimeSet = dateTimeChooser->noDateTimeSet();
-                    QDateTime value = dateTimeChooser->dateTime();                    
+                    QDateTime value = dateTimeChooser->dateTime();
                     if (noDateTimeSet || value.isValid()) {
-                        
+
                         // get all selected files
                         const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
-        
+
                         if (selectedFiles->count()) {
-                            
+
                             // loop over all selected files and change their state
                             QPtrListIterator<KFileItem> it(*m_photobook->view()->fileView()->selectedItems());
                             it.toFirst();
@@ -165,9 +165,9 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
                                     tagNode->setTagged(selectedFile, value);
                                 }
                             }
-        
+
                             m_photobook->dirtyfy();
-        
+
                             // force redrawing of this listviewitem
                             this->repaint();
                         }
@@ -184,7 +184,7 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
             if (dateTimeFilter->exec() == QDialog::Accepted) {
                 applyFilter(dateTimeFilter);
             }
-            
+
             m_photobook->autoRefreshView();
             break;
         }
@@ -210,27 +210,19 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
         case TagTree::COLUMN_VALUE: {
             // get all selected files
             const KFileItemList* selectedFiles = m_photobook->view()->fileView()->selectedItems();
-            
+
             if (selectedFiles->count()) {
 
                 QDateTime* commonValue = getCommonValue(selectedFiles);
 
                 if (commonValue) {
-    
+
                     if (commonValue->isValid()) {
                         setText(TagTree::COLUMN_VALUE, formatDateTime(*commonValue));
                         KListViewItem::paintCell(p, cg, column, width, Qt::AlignLeft);
                     } else {
                         // the selected files have different values --> show the third state of a checkbox
-                    
-                        // paint the cell with the alternating background color
-                        p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-        
-                        // draw the checkbox in the center of the cell in the size of the font
-                        int size = p->fontInfo().pixelSize()+2;
-                        QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
-        
-                        TreeHelper::drawCheckBox(p, cg, rect, 0, true);
+                        TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_VALUE), width, this->height(), true, TreeHelper::UNDEFINED);
                     }
                 } else {
                     // none of the selected file has a value
@@ -243,7 +235,7 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
                 setText(TagTree::COLUMN_VALUE, "");
                 KListViewItem::paintCell(p, cg, column, width, Qt::AlignCenter);
             }
-    
+
             break;
         }
         case TagTree::COLUMN_FILTER: {
@@ -257,7 +249,7 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
 QDateTime* TagTreeNodeDateTime::getCommonValue(const KFileItemList* selectedFiles)
 {
     tracer->invoked(__func__);
-    
+
     TagNodeDateTime* tagNode = dynamic_cast<TagNodeDateTime*>(m_tagNode);
 
     QDateTime* commonValue = 0;
@@ -276,7 +268,7 @@ QDateTime* TagTreeNodeDateTime::getCommonValue(const KFileItemList* selectedFile
                 commonValue = new QDateTime(assoc->value());
                 continue;
             }
-            
+
             // ok we got an assoc remember it
             if (commonValue->isValid() && assoc->value() != *commonValue) {
                 // abort if not all selected images have the same tagvalue!
@@ -309,7 +301,7 @@ QString TagTreeNodeDateTime::formatDateTime(const QDateTime& dateTime)
     }
 }
 
-        
+
 QDateTime* TagTreeNodeDateTime::readDateTime(const QString& dateTimeStr)
 {
     tracer->sdebug(__func__) << "dateTime to convert: " << dateTimeStr << endl;
@@ -317,10 +309,10 @@ QDateTime* TagTreeNodeDateTime::readDateTime(const QString& dateTimeStr)
     int pos = dateTimeStr.findRev(" ");
     QString dateStr = dateTimeStr.mid(0, pos);
     QString timeStr = dateTimeStr.mid(pos+1);
-    
+
     tracer->sdebug(__func__) << "date to convert: " << dateStr << endl;
     tracer->sdebug(__func__) << "time to convert: " << timeStr << endl;
-    
+
     bool* ok;
     QDate date = m_locale->readDate(dateStr, ok);
     if (!*ok) {
@@ -333,7 +325,7 @@ QDateTime* TagTreeNodeDateTime::readDateTime(const QString& dateTimeStr)
         tracer->serror(__func__) << "Time part of datetime (" << dateTimeStr << ") is invalid: " << timeStr << "! Not setting time time." << endl;
         return new QDateTime(date);
     }
-    
+
     return new QDateTime(date, time);
 }
 
@@ -400,7 +392,7 @@ void TagTreeNodeDateTime::applyFilter(DialogDateTimeFilter* dateTimeFilter)
     this->repaint();
 }
 
-        
+
 DialogDateTimeFilter* TagTreeNodeDateTime::createDialogDateTimeFilter(QString filter)
 {
     filter = filter.stripWhiteSpace();
@@ -439,7 +431,7 @@ DialogDateTimeFilter* TagTreeNodeDateTime::createDialogDateTimeFilter(QString fi
         // 'no date' filter is set
         return new DialogDateTimeFilter(0, "DialogDateTimeFilter", true);
     }
-    
+
     // 'regexp' filter is set
     return new DialogDateTimeFilter(0, "DialogDateTimeFilter", filter);
 }

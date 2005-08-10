@@ -234,14 +234,7 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
 
             // if mixed is true, we display the third state of the checkbox
             if (mixed) {
-                // paint the cell with the alternating background color
-                p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-
-                // draw the checkbox in the center of the cell in the size of the font
-                int size = p->fontInfo().pixelSize()+2;
-                QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
-
-                TreeHelper::drawCheckBox(p, cg, rect, 0, true);
+                TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_VALUE), width, this->height(), true, TreeHelper::UNDEFINED);
             } else {
                 setText(TagTree::COLUMN_VALUE, text);
 
@@ -252,26 +245,9 @@ void TagTreeNodeString::paintCell(QPainter *p, const QColorGroup &cg, int column
         case TagTree::COLUMN_FILTER: {
             // if filtering an empty string (the filter is ignored), we display the third state of the checkbox
             if (m_filterValue.isEmpty()) {
-                // paint the cell with the alternating background color
-                p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-
-                // draw the checkbox in the center of the cell in the size of the font
-                int size = p->fontInfo().pixelSize()+2;
-                QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
-
-                TreeHelper::drawCheckBox(p, cg, rect, 0, true);
-
-            // if filtering an empty string (the value must be an empty string), we display an empty checkbox
+                TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, TreeHelper::UNDEFINED);
             } else if (m_filterValue == "()") {
-                // paint the cell with the alternating background color
-                p->fillRect(0, 0, width, this->height(), backgroundColor(2));
-
-                // draw the checkbox in the center of the cell in the size of the font
-                int size = p->fontInfo().pixelSize()+2;
-                QRect rect((width - size + 4)/2, (this->height() - size)/2, size, size);
-
-                TreeHelper::drawCheckBox(p, cg, rect, -1, true);
-
+                TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, TreeHelper::NOT_CHECKED);
             } else {
                 TagTreeNode::paintCell(p, cg, column, width, Qt::AlignLeft);
             }
@@ -340,7 +316,7 @@ QString TagTreeNodeString::toolTip(int column)
             break;
         }
     }
-    
+
     return "";
 }
 

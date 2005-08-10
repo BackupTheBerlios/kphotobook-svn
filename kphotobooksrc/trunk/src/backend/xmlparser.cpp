@@ -398,7 +398,7 @@ bool XmlParser::fatalError(const QXmlParseException& exception)
 bool XmlParser::handleSourceDir(const QXmlAttributes& atts)
 {
     tracer->sinvoked(__func__) << "with attributes: " << toString(atts) << endl;
-    
+
     // <sourcedir
     //   id="0"              (mandatory)
     //   dir="/fff/rt"       (mandatory)
@@ -619,7 +619,7 @@ bool XmlParser::handleTag(const QXmlAttributes& atts)
         tracer->sdebug(__func__) << "Optional attribute 'icon' of tagnode with the name '" << name
             << "' is empty." << endl;
     }
-    
+
     // secret is optional`
     if (!secret) {
         tracer->sdebug(__func__) << "Optional attribute 'secret' of tagnode with the name '" << name
@@ -674,7 +674,7 @@ bool XmlParser::handleTag(const QXmlAttributes& atts)
 
 bool XmlParser::handleFile(const QXmlAttributes& atts)
 {
-    tracer->sinvoked(__func__) << "with attributes: " << toString(atts) << endl;
+//    tracer->sinvoked(__func__) << "with attributes: " << toString(atts) << endl;
 
     // <file
     //   name="2003-06-04-10:01:45.jpg"    (mandatory)
