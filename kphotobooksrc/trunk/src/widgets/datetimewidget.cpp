@@ -137,11 +137,14 @@ void DateTimeWidget::initUI(const QDateTime& dateTime)
 
 void DateTimeWidget::slotClear()
 {
+    tracer->sinvoked(__func__);
     m_dateLine->setText("");
     m_dateLine->setFocus();
     m_dateLine->setCursorPosition(0);
+    tracer->debug(__func__, "middle");
     m_timeLine->setText("");
     m_dateLine->setCursorPosition(0);
+    tracer->debug(__func__, "ended");
 }
 
 

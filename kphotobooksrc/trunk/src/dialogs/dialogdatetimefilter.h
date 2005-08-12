@@ -22,6 +22,7 @@
 #define DIALOGDATETIMEFILTER_H
 
 #include "../tracer/tracer.h"
+#include "../utils/datetimefilterdata.h"
 #include "../widgets/datetimewidget.h"
 #include "../widgets/timeruler.h"
 
@@ -42,87 +43,18 @@ class DialogDateTimeFilter : public KDialogBase
 {
     Q_OBJECT
 
-    public:
-        /**
-         * The state of the datetime filter dialog. This state is returned by the method @link getState().
-         */
-        enum STATE {
-            /**
-             * If the dialog is in a invalid state.
-             */
-            INVALID = -1,
-            /**
-             * No filter is set. The engine must not filter by this date.
-             */
-            NO_FILTER_SET = 0,
-            /**
-             * Only the from date is set. The todate is not invalid but not set.
-             * This means the engine should not restrict the todate. Use @link getValidFrom().
-             */
-            FROM_DATE_SET = 1,
-            /** Only the to date is set. The fromdate is not invalid but not set.
-             * This means the engine should not restrict the fromdate. Use @link getValidTo().
-             */
-            TO_DATE_SET = 2,
-            /**
-             * The from and to date are set.
-             * Use @link getValidFrom() AND @link getValidTo().
-             */
-            FROM_TO_DATE_SET = 3,
-            /**
-             * A regular expression for matching dates is set.
-             * Use @link getPattern();
-             */
-            PATTERN_DATE_SET = 4,
-            /**
-             * Only a single date is chosen. That means the engine must show images with the date matching this date.
-             * ValidFrom and ValidTo are equal. Use @link getValidFrom() OR @link getValidTo().
-             */
-            SINGLE_DATE_SET = 8,
-            /**
-             * No date is set. The engine must show all images with this date not set.
-             */
-            NO_DATE_SET = 256
-        };
-
     private:
         static Tracer* tracer;
 
     public:
         DialogDateTimeFilter(QWidget* parent, const char* name);
-        DialogDateTimeFilter(QWidget* parent, const char* name, bool noDateSet);
+        DialogDateTimeFilter(QWidget* parent, const char* name, DateTimeFilterData* data);
+        /*
         DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* singleDate);
         DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* fromDateTime, QDateTime* toDateTime);
         DialogDateTimeFilter(QWidget* parent, const char* name, QString pattern);
+        */
         ~DialogDateTimeFilter();
-
-        /**
-         * Returns the state of the datetime filter dialog.
-         * @see STATE for details.
-         */
-        STATE getState()
-        {
-            return m_state;
-        }
-        
-        /**
-         * Returns the chosen from datetime.
-         * If the state (@see getState() and @see STATE) does not say the fromdate is set, it is not defined what is returned.
-         */
-        QDateTime getDateTimeFrom();
-        
-        /**
-         * Returns the chosen to datetime.
-         * If the state (@see getState() and @see STATE) does not say the todate is set, it is not defined what is returned.
-         */
-        QDateTime getDateTimeTo();
-
-        /**
-         * Returns the regular expression a date must match.
-         * If the state (@see getState() and @see STATE) does not say the pattern is set, it is not defined what is returned.
-         */
-        QString getPattern();
-
 
     private:
         void initUI();
@@ -153,8 +85,8 @@ class DialogDateTimeFilter : public KDialogBase
         void slotDateSelectionChanged(int, int);
 
     private:
-        STATE m_state;
-        
+        DateTimeFilterData* m_data;
+
         KTabWidget* m_tabWidget;
 
         QWidget* m_rangePanel;

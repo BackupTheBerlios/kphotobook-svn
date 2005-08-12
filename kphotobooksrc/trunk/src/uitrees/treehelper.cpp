@@ -21,6 +21,8 @@
 #include "treehelper.h"
 
 #include <kapp.h>
+#include <kglobal.h>
+#include <klocale.h>
 
 #include <qcheckbox.h>
 #include <qradiobutton.h>
@@ -128,3 +130,16 @@ void TreeHelper::drawRadioButton(QPainter* p, const QColorGroup& cg, const QColo
 
     style.drawControl(QStyle::CE_RadioButton, p, &radioBtn, rect, cg, flags);
 }
+
+
+QString TreeHelper::formatDateTime(const QDateTime& dateTime)
+{
+    static KLocale* locale = KGlobal::locale();
+    if (dateTime.time().isValid()) {
+        return locale->formatDateTime(dateTime, true, true);
+    } else {
+        return locale->formatDate(dateTime.date(), true);
+    }
+}
+
+

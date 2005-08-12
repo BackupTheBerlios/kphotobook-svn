@@ -22,9 +22,9 @@
 #define TAGTREENODEDATETIME_H
 
 #include "tagtreenode.h"
+#include "../utils/datetimefilterdata.h"
 
 #include <kfileitem.h>
-#include <klocale.h>
 
 class DialogDateTimeFilter;
 class TagNodeDateTime;
@@ -43,12 +43,13 @@ class TagTreeNodeDateTime : public TagTreeNode
     public:
         TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
         TagTreeNodeDateTime(TagTreeNode* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu = 0);
-        
+
         virtual ~TagTreeNodeDateTime();
 
         void setFilterValue(QString filterValue)
         {
-            m_filterValue = filterValue;
+            delete m_data;
+            m_data = new DateTimeFilterData(filterValue);
         }
 
         /**
@@ -92,29 +93,22 @@ class TagTreeNodeDateTime : public TagTreeNode
         QDateTime* getCommonValue(const KFileItemList* selectedFiles);
 
         /**
-         * Formats the given datetime to be displayed.
-         */
-        QString formatDateTime(const QDateTime& dateTime);
-
-        /**
          * Returns the dateTime represented by the given string. Returns 0 if the given string is invalid.
          */
-        QDateTime* readDateTime(const QString& dateTimeStr);
+//        QDateTime* readDateTime(const QString& dateTimeStr);
 
         /**
          * Returns a string representing the filter set in the @link DialogDateTimeFilter.
          */
-        void applyFilter(DialogDateTimeFilter* dateTimeFilter);
+//        void applyFilter(DialogDateTimeFilter* dateTimeFilter);
 
         /**
          * Instantiates a @link DialogDateTimeFilter representing the given filter.
          */
-        DialogDateTimeFilter* createDialogDateTimeFilter(QString filter);
+//        DialogDateTimeFilter* createDialogDateTimeFilter(QString filter);
 
     private:
-        KLocale* m_locale;
-
-        QString m_filterValue;
+        DateTimeFilterData* m_data;
         FilterNode* m_filterNode;
 };
 

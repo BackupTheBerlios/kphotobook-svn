@@ -21,6 +21,7 @@
 #ifndef TREEHELPER_H
 #define TREEHELPER_H
 
+#include <qdatetime.h>
 #include <qpainter.h>
 #include <qpalette.h>
 #include <qrect.h>
@@ -44,6 +45,11 @@ class TreeHelper
     public:
         static void drawCheckBox(QPainter* p, const QColorGroup& cg, const QColor& bg, int width, int height, bool enabled, TRISTATE tristate);
         static void drawRadioButton(QPainter* p, const QColorGroup& cg, const QColor& bg, int width, int height, bool enabled, TRISTATE tristate);
+
+        /**
+         * Formats the given datetime according the currently set locale.
+         */
+        static QString formatDateTime(const QDateTime& dateTime);
 
     protected:
         TreeHelper()

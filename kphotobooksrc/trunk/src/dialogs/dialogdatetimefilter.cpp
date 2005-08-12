@@ -21,7 +21,7 @@
 #include "dialogdatetimefilter.h"
 
 #include <kfiledialog.h>
-#include <kglobal.h>
+//#include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
 
@@ -38,13 +38,12 @@ Tracer* DialogDateTimeFilter::tracer = Tracer::getInstance("kde.kphotobook.widge
 
 DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name) :
     KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
-    m_state(INVALID),
+    m_data(new DateTimeFilterData()),
     m_tabWidget(0),
     m_timeRuler(0),
     m_dateTable(0),
     m_fromDateTime(0),
-    m_toDateTime(0),
-    m_noDateSet(0)
+    m_toDateTime(0)
 {
     tracer->invoked(__func__, "no parameter");
 
@@ -53,25 +52,24 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name) :
 }
 
 
-DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, bool noDateSet) :
+DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, DateTimeFilterData* data) :
     KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
-    m_state(INVALID),
+    m_data(data),
     m_tabWidget(0),
     m_timeRuler(0),
     m_dateTable(0),
     m_fromDateTime(0),
-    m_toDateTime(0),
-    m_noDateSet(0)
+    m_toDateTime(0)
 {
     tracer->invoked(__func__, "no date set");
 
     initUI();
     m_tabWidget->showPage(m_rangePanel);
 
-    m_noDateSet->setChecked(noDateSet);
+//    m_noDateSet->setChecked(noDateSet);
 }
 
-
+/*
 DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* singleDate) :
     KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
     m_state(INVALID),
@@ -147,12 +145,13 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QS
     ///@todo implement pattern thingys
 }
 
+*/
 
 DialogDateTimeFilter::~DialogDateTimeFilter()
 {
 }
 
-
+/*
 QDateTime DialogDateTimeFilter::getDateTimeFrom()
 {
     if (m_tabWidget->currentPage() == m_rangePanel) {
@@ -186,6 +185,7 @@ QString DialogDateTimeFilter::getPattern()
     ///@todo implement: return the date regular expression
     return QString::null;
 }
+*/
 
 
 void DialogDateTimeFilter::initUI()
@@ -273,7 +273,7 @@ QWidget* DialogDateTimeFilter::buildPatternPanel()
 
 void DialogDateTimeFilter::slotClear()
 {
-    m_state = NO_FILTER_SET;
+    m_data->m_state = DateTimeFilterData::NO_FILTER_SET;
     slotOk();
 }
 
@@ -286,28 +286,28 @@ void DialogDateTimeFilter::slotValidate()
             enableButtonOK(true);
             if (!m_fromDateTime->noDateSet() && !m_toDateTime->noDateSet()) {
                 // both from and to date are set
-                m_state = FROM_TO_DATE_SET;
+                m_data->m_state = DateTimeFilterData::FROM_TO_DATE_SET;
             } else if (!m_fromDateTime->noDateSet()) {
                 // from date is set only
-                m_state = FROM_DATE_SET;
+                m_data->m_state = DateTimeFilterData::FROM_DATE_SET;
             } else if (!m_toDateTime->noDateSet()) {
                 // from date is set only
-                m_state = TO_DATE_SET;
+                m_data->m_state = DateTimeFilterData::TO_DATE_SET;
             } else {
                 // neither from nor to date is set --> no filter set
-                m_state = NO_FILTER_SET;
+                m_data->m_state = DateTimeFilterData::NO_FILTER_SET;
             }
         } else {
             // datetime are not valid
             enableButtonOK(false);
-            m_state = INVALID;
+            m_data->m_state = DateTimeFilterData::INVALID;
         }
     } else if (m_tabWidget->currentPage() == m_patternPanel) {
         enableButtonOK(true);
-        m_state = DialogDateTimeFilter::PATTERN_DATE_SET;
+        m_data->m_state = DateTimeFilterData::PATTERN_DATE_SET;
     } else if (m_tabWidget->currentPage() == m_singlePanel){
         enableButtonOK(true);
-        m_state = DialogDateTimeFilter::SINGLE_DATE_SET;
+        m_data->m_state = DateTimeFilterData::SINGLE_DATE_SET;
     }
 }
 
@@ -317,7 +317,7 @@ void DialogDateTimeFilter::slotNoDateSetToggled(bool checked)
     if (checked) {
         m_tabWidget->setEnabled(false);
         enableButtonOK(true);
-        m_state = NO_DATE_SET;
+        m_data->m_state = DateTimeFilterData::NO_DATE_SET;
     } else {
         m_tabWidget->setEnabled(true);
         slotValidate();

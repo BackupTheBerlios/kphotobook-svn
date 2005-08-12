@@ -7,4 +7,5 @@ noinst_LTLIBRARIES = libutils.la
 #  ls -1 *.cpp | sed -e "s/\(.*\).cpp/\1.h \1.cpp \\\\/"
 libutils_la_SOURCES = \
 	actionprovider.h actionprovider.cpp \
+	datetimefilterdata.h datetimefilterdata.cpp \
 	menuprovider.h menuprovider.cpp

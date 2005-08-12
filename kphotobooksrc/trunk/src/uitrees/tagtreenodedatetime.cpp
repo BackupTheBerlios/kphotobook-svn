@@ -34,6 +34,7 @@
 #include <kdatepicker.h>
 #include <kdatetimewidget.h>
 #include <kglobal.h>
+#include <klocale.h>
 
 
 Tracer* TagTreeNodeDateTime::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNodeDateTime");
@@ -41,8 +42,7 @@ Tracer* TagTreeNodeDateTime::tracer = Tracer::getInstance("kde.kphotobook.uitree
 
 TagTreeNodeDateTime::TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu) :
     TagTreeNode(parent, photobook, tagNode, contextMenu),
-    m_locale(KGlobal::locale()),
-    m_filterValue(QString::null),
+    m_data(new DateTimeFilterData()),
     m_filterNode(0)
 {
 }
@@ -50,8 +50,7 @@ TagTreeNodeDateTime::TagTreeNodeDateTime(TagTree* parent, TagNodeDateTime* tagNo
 
 TagTreeNodeDateTime::TagTreeNodeDateTime(TagTreeNode* parent, TagNodeDateTime* tagNode, KPhotoBook* photobook, KPopupMenu* contextMenu) :
     TagTreeNode(parent, photobook, tagNode, contextMenu),
-    m_locale(KGlobal::locale()),
-    m_filterValue(QString::null),
+    m_data(new DateTimeFilterData()),
     m_filterNode(0)
 {
 }
@@ -59,6 +58,7 @@ TagTreeNodeDateTime::TagTreeNodeDateTime(TagTreeNode* parent, TagNodeDateTime* t
 
 TagTreeNodeDateTime::~TagTreeNodeDateTime()
 {
+    delete m_data;
     delete m_filterNode;
 }
 
@@ -72,10 +72,14 @@ FilterNode* TagTreeNodeDateTime::filter()
 
 void TagTreeNodeDateTime::deselectFilter()
 {
-    m_filterValue = QString("()");
-    setText(TagTree::COLUMN_FILTER, m_filterValue);
+    m_data->setFilterString("()");
+    setText(TagTree::COLUMN_FILTER, m_data->toString());
+
+    ///@TODO
+  /*
     delete m_filterNode;
     m_filterNode = new FilterNodeTagDateTime(dynamic_cast<TagNodeDateTime*>(m_tagNode), m_filterValue);
+   */
 
     // force redrawing of this listviewitem
     this->repaint();
@@ -84,8 +88,10 @@ void TagTreeNodeDateTime::deselectFilter()
 
 void TagTreeNodeDateTime::resetFilter()
 {
+    /*
     m_filterValue = QString::null;
     setText(TagTree::COLUMN_FILTER, m_filterValue);
+    */
 
     // force redrawing of this listviewitem
     this->repaint();
@@ -95,15 +101,19 @@ void TagTreeNodeDateTime::resetFilter()
 QString TagTreeNodeDateTime::getFilterString()
 {
     tracer->invoked(__func__);
-    return m_filterValue;
+    ///@TODO
+    //return m_filterValue;
 }
 
 
 void TagTreeNodeDateTime::applyFilterString(QString filter)
 {
     tracer->sinvoked(__func__) << "filter: " << filter << endl;
+    ///@TODO
+     /*
     m_filterValue = filter;
     setText(TagTree::COLUMN_FILTER, filter);
+     */
 }
 
 
@@ -180,11 +190,14 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
         }
         case TagTree::COLUMN_FILTER: {
             // let the user enter a new value
+            ///@TODO
+    /*
             DialogDateTimeFilter* dateTimeFilter = createDialogDateTimeFilter(text(TagTree::COLUMN_FILTER));
             if (dateTimeFilter->exec() == QDialog::Accepted) {
                 applyFilter(dateTimeFilter);
                 m_photobook->autoRefreshView();
             }
+      */
             break;
         }
     }
@@ -217,7 +230,7 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
                 if (commonValue) {
 
                     if (commonValue->isValid()) {
-                        setText(TagTree::COLUMN_VALUE, formatDateTime(*commonValue));
+                        setText(TagTree::COLUMN_VALUE, TreeHelper::formatDateTime(*commonValue));
                         KListViewItem::paintCell(p, cg, column, width, Qt::AlignLeft);
                     } else {
                         // the selected files have different values --> show the third state of a checkbox
@@ -239,13 +252,17 @@ void TagTreeNodeDateTime::paintCell(QPainter *p, const QColorGroup &cg, int colu
         }
         case TagTree::COLUMN_FILTER: {
             // if filtering an empty string (the filter is ignored), we display the third state of the checkbox
+            ///@TODO
+            /*
             if (m_filterValue.isEmpty()) {
                 TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, TreeHelper::UNDEFINED);
             } else if (m_filterValue == "()") {
                 TreeHelper::drawCheckBox(p, cg, backgroundColor(TagTree::COLUMN_FILTER), width, this->height(), true, TreeHelper::NOT_CHECKED);
             } else {
                 TagTreeNode::paintCell(p, cg, column, width, Qt::AlignLeft);
+
             }
+            */
             break;
         }
     }
@@ -293,21 +310,11 @@ QDateTime* TagTreeNodeDateTime::getCommonValue(const KFileItemList* selectedFile
         }
     }
 
-    tracer->sdebug(__func__) << "common value is: " << (commonValue ? m_locale->formatDateTime(*commonValue, true, true) : "0") << endl;
+    tracer->sdebug(__func__) << "common value is: " << (commonValue ? commonValue->toString() : "0") << endl;
     return commonValue;
 }
 
-
-QString TagTreeNodeDateTime::formatDateTime(const QDateTime& dateTime)
-{
-    if (dateTime.time().isValid()) {
-        return m_locale->formatDateTime(dateTime, true, true);
-    } else {
-        return m_locale->formatDate(dateTime.date(), true);
-    }
-}
-
-
+/*
 QDateTime* TagTreeNodeDateTime::readDateTime(const QString& dateTimeStr)
 {
     tracer->sdebug(__func__) << "dateTime to convert: " << dateTimeStr << endl;
@@ -334,10 +341,12 @@ QDateTime* TagTreeNodeDateTime::readDateTime(const QString& dateTimeStr)
 
     return new QDateTime(date, time);
 }
+*/
 
-
+/*
 void TagTreeNodeDateTime::applyFilter(DialogDateTimeFilter* dateTimeFilter)
 {
+
     TagNodeDateTime* tagNode = dynamic_cast<TagNodeDateTime*>(m_tagNode);
 
     switch (dateTimeFilter->getState()) {
@@ -396,11 +405,14 @@ void TagTreeNodeDateTime::applyFilter(DialogDateTimeFilter* dateTimeFilter)
 
     // force redrawing of this listviewitem
     this->repaint();
+
 }
+*/
 
-
+/*
 DialogDateTimeFilter* TagTreeNodeDateTime::createDialogDateTimeFilter(QString filter)
 {
+
     filter = filter.stripWhiteSpace();
     if (filter.isEmpty()) {
         // no filter is set
@@ -440,5 +452,6 @@ DialogDateTimeFilter* TagTreeNodeDateTime::createDialogDateTimeFilter(QString fi
 
     // 'regexp' filter is set
     return new DialogDateTimeFilter(0, "DialogDateTimeFilter", filter);
-}
 
+}
+*/
