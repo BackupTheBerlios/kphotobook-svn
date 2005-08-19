@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<gui name="kphotobook" version="18">
+<gui name="kphotobook" version="22">
 
 <MenuBar>
     <Menu name="file">
@@ -133,6 +133,30 @@
     <Separator/>
     <Action name="expandFolder" />
     <Action name="collapseFolder" />
+</Menu>
+
+<Menu name="contextMenu_imageViewer">
+    <text>Title</text>
+    <Action name="viewerBack" />
+    <Action name="viewerForward" />
+    <Separator/>
+    <Action name="viewerFullScreen" />
+    <Menu name="contextMenu_imageViewerSlideshow">
+        <text>Slideshow</text>
+        <Action name="viewer5secs" />
+        <Action name="viewer10secs" />
+        <Action name="viewer20secs" />
+        <Action name="viewer30secs" />
+        <Action name="viewer40secs" />
+        <Action name="viewer50secs" />
+        <Action name="viewer60secs" />
+    </Menu>
+    <Separator/>
+    <Action name="viewerSmoothScaling" />
+    <Action name="viewerShowImageCounter" />
+    <Action name="viewerShowImageInfos" />
+    <Separator/>
+    <Action name="viewerQuit" />
 </Menu>
 
 </gui>
