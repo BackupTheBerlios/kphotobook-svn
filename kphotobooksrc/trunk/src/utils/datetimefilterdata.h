@@ -21,6 +21,8 @@
 #ifndef _DATETIMEFILTERDATA_H_
 #define _DATETIMEFILTERDATA_H_
 
+#include "../tracer/tracer.h"
+
 #include <qdatetime.h>
 #include <qobject.h>
 #include <qstring.h>
@@ -35,7 +37,8 @@ class DateTimeFilterData : public QObject
 {
     Q_OBJECT
 
-    friend class DialogDateTimeFilter;
+    private:
+        static Tracer* tracer;
 
     public:
         /**
@@ -95,10 +98,20 @@ class DateTimeFilterData : public QObject
 
         /**
          * Sets the data stored according the given filterstring.
+         * The filterstring must be in the same format as returned by @link marshal().
          * Emits a dataChanged signal.
          */
         void setFilterString(const QString& filterstring);
 
+        void setFilterIsInvalid();
+        void setFilterNoFilterSet();
+        void setFilterNoDateSet();
+        void setFilterDateTimeFrom(const QDateTime& fromDateTime);
+        void setFilterDateTimeTo(const QDateTime& toDateTime);
+        void setFilterDateTimeRange(const QDateTime& fromDateTime, const QDateTime& toDateTime);
+        void setFilterSingleDate(const QDateTime& singleDate);
+        void setFilterPattern(const QString& pattern);
+        
         /**
          * Returns the state of the datetime filter dialog.
          * @see STATE for details.
@@ -142,7 +155,7 @@ class DateTimeFilterData : public QObject
         const QString toString();
 
         /**
-         * Returns a string representing the current filter.
+         * Returns a string representing the current filter containing the dates in ISO format.
          * This string can be used to instantiate a new instance of this class.
          */
         const QString marshal();

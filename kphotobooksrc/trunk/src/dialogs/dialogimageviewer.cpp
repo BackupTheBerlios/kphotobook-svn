@@ -27,8 +27,6 @@ DialogImageViewer::DialogImageViewer(QWidget* parent, KFileIconView* fileView) :
     KDialog(parent, "", false)
 {
     this->setWFlags(Qt::WStyle_StaysOnTop | Qt::WNoAutoErase | Qt::WPaintClever);
-    //FIXME this should be solved somehow clever
-    this->resize(640,481);
 
     m_imageViewer = new ImageViewer(this, fileView);
     connect(m_imageViewer, SIGNAL(signalEnterPressed()), SLOT(slotToggleFullscreen()));
@@ -81,7 +79,7 @@ void DialogImageViewer::mouseDoubleClickEvent ( QMouseEvent* /* e */ )
 
 void DialogImageViewer::slotToggleFullscreen()
 {
-   //switch fullscreen mode...
+    //switch fullscreen mode...
     if (isFullScreen()) {
         setWindowState(windowState() & ~Qt::WindowFullScreen);
     } else {

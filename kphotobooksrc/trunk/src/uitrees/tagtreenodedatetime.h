@@ -71,7 +71,7 @@ class TagTreeNodeDateTime : public TagTreeNode
         * Returns the currently set filter as string representation.
         * This value is used to store in the database.
         */
-        virtual QString getFilterString();
+        virtual QString filterString();
 
         /**
         * Applies the filter returned by getFilter().
@@ -92,24 +92,8 @@ class TagTreeNodeDateTime : public TagTreeNode
          */
         QDateTime* getCommonValue(const KFileItemList* selectedFiles);
 
-        /**
-         * Returns the dateTime represented by the given string. Returns 0 if the given string is invalid.
-         */
-//        QDateTime* readDateTime(const QString& dateTimeStr);
-
-        /**
-         * Returns a string representing the filter set in the @link DialogDateTimeFilter.
-         */
-//        void applyFilter(DialogDateTimeFilter* dateTimeFilter);
-
-        /**
-         * Instantiates a @link DialogDateTimeFilter representing the given filter.
-         */
-//        DialogDateTimeFilter* createDialogDateTimeFilter(QString filter);
-
     private:
         DateTimeFilterData* m_data;
-        FilterNode* m_filterNode;
 };
 
 #endif

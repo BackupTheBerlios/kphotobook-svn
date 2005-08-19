@@ -386,7 +386,7 @@ QString* Engine::generateUid()
 
 void Engine::createExifTagNode()
 {
-    TagNode* exifTagNode = createTag(0, TagNode::TYPE_TITLE, i18n("EXIF"), i18n("All EXIF data read from the image."), "exif");
+    TagNode* exifTagNode = createTag(0, TagNode::TYPE_TITLE, i18n("EXIF"), i18n("All EXIF data read from the image."), Constants::ICON_TAG_EXIF);
     m_exifTitleTag = dynamic_cast<TagNodeTitle*>(exifTagNode);
     m_exifTitleTag->setReadonly(true);
 }

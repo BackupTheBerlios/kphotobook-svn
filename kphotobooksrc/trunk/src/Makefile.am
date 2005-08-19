@@ -11,17 +11,27 @@ INCLUDES = $(all_includes)
 kphotobook_LDFLAGS = $(KDE_RPATH) $(all_libraries)
 
 # the libraries to link against.
+# ATTENTION: libtracer must be the last entry in this list!
 kphotobook_LDADD = -lkmdi $(LIB_KFILE) $(LIB_KDEPRINT) backend/libbackend.la \
     dialogs/libdialogs.la engine/libengine.la export/libexport.la \
     settings/libsettings.la widgets/libwidgets.la \
-    uitrees/libuitrees.la tracer/libtracer.la import/libimport.la utils/libutils.la
+    uitrees/libuitrees.la utils/libutils.la import/libimport.la \
+    tracer/libtracer.la 
 
 # which sources should be compiled for kphotobook
-kphotobook_SOURCES = main.cpp kphotobook.cpp kphotobookview.cpp exception.cpp \
-	constants.cpp
+kphotobook_SOURCES = \
+	constants.cpp \
+	exception.cpp \
+	main.cpp \
+	kphotobook.cpp \
+	kphotobookview.cpp
 
 # these are the headers for your project
-noinst_HEADERS = kphotobook.h kphotobookview.h constants.h exception.h
+noinst_HEADERS = \
+	constants.h \
+	exception.h \
+	kphotobook.h \
+	kphotobookview.h
 
 # client stuff
 
@@ -49,4 +59,4 @@ rc_DATA = kphotobookui.rc tips
 #kde_kcfgdir = $(kde_datadir)/kphotobook
 #kde_kcfg_DATA = settings.kcfg
 
-SUBDIRS = icons images backend widgets dialogs engine export settings uitrees tracer import utils
+SUBDIRS = icons images backend widgets dialogs engine export settings uitrees utils tracer import

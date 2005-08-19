@@ -21,10 +21,10 @@
 #include "dialogdatetimefilter.h"
 
 #include <kfiledialog.h>
-//#include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
 
+#include <qdatetime.h>
 #include <qgroupbox.h>
 #include <qiconset.h>
 #include <qlayout.h>
@@ -36,156 +36,98 @@
 Tracer* DialogDateTimeFilter::tracer = Tracer::getInstance("kde.kphotobook.widgets", "DialogDateTimeFilter");
 
 
-DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name) :
-    KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
-    m_data(new DateTimeFilterData()),
-    m_tabWidget(0),
-    m_timeRuler(0),
-    m_dateTable(0),
-    m_fromDateTime(0),
-    m_toDateTime(0)
-{
-    tracer->invoked(__func__, "no parameter");
-
-    initUI();
-    m_tabWidget->showPage(m_rangePanel);
-}
-
-
 DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, DateTimeFilterData* data) :
     KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
     m_data(data),
     m_tabWidget(0),
-    m_timeRuler(0),
-    m_dateTable(0),
-    m_fromDateTime(0),
-    m_toDateTime(0)
-{
-    tracer->invoked(__func__, "no date set");
-
-    initUI();
-    m_tabWidget->showPage(m_rangePanel);
-
-//    m_noDateSet->setChecked(noDateSet);
-}
-
-/*
-DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* singleDate) :
-    KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
-    m_state(INVALID),
-    m_tabWidget(0),
+    m_rangePanel(0),
+    m_patternPanel(0),
+    m_singlePanel(0),
     m_timeRuler(0),
     m_dateTable(0),
     m_fromDateTime(0),
     m_toDateTime(0),
+    m_pattern(0),
     m_noDateSet(0)
 {
-    tracer->invoked(__func__, "single date");
-
     initUI();
 
-    m_tabWidget->showPage(m_singlePanel);
+    if (!data) {
+        m_tabWidget->showPage(m_rangePanel);
+        return;
+    }
+    
+    switch(m_data->getState()) {
+        case DateTimeFilterData::INVALID: {
+            tracer->debug(__func__, "invalid data given");
+            m_tabWidget->showPage(m_rangePanel);
+            break;
+        }
+        case DateTimeFilterData::NO_FILTER_SET : {
+            tracer->debug(__func__, "no filter set");
+            m_tabWidget->showPage(m_rangePanel);
+            break;
+        }
+        case DateTimeFilterData::FROM_DATE_SET :
+        case DateTimeFilterData::TO_DATE_SET :
+        case DateTimeFilterData::FROM_TO_DATE_SET : {
 
-    m_timeRuler->slotSetSelected((singleDate && singleDate->date().isValid()) ? singleDate->date() : QDate::currentDate(), true);
-}
-
-
-DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* fromDateTime, QDateTime* toDateTime) :
-    KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
-    m_state(INVALID),
-    m_tabWidget(0),
-    m_timeRuler(0),
-    m_dateTable(0),
-    m_fromDateTime(0),
-    m_toDateTime(0),
-    m_noDateSet(0)
-{
-    tracer->invoked(__func__, "from/to date");
-
-    initUI();
-
-    m_tabWidget->showPage(m_rangePanel);
-
-    // set the from datetime
-    static QTime MINIMUM_TIME = QTime(00, 00, 00);
-    if (fromDateTime && fromDateTime->isValid()) {
-        if (fromDateTime->time().isValid() && fromDateTime->time() != MINIMUM_TIME) {
-            m_fromDateTime->setDateTime(*fromDateTime);
-        } else {
-            m_fromDateTime->setDate(fromDateTime->date());
+            if (m_data->getState() & DateTimeFilterData::FROM_DATE_SET == DateTimeFilterData::FROM_DATE_SET) {
+                tracer->debug(__func__, "from datetime set");
+                // set the from datetime
+                static QTime MINIMUM_TIME = QTime(00, 00, 00);
+                QDateTime fromDateTime = m_data->getDateTimeFrom();
+                if (fromDateTime.isValid()) {
+                    if (fromDateTime.time().isValid() && fromDateTime.time() != MINIMUM_TIME) {
+                        m_fromDateTime->setDateTime(fromDateTime);
+                    } else {
+                        m_fromDateTime->setDate(fromDateTime.date());
+                    }
+                }
+            }
+            
+            if (m_data->getState() & DateTimeFilterData::TO_DATE_SET == DateTimeFilterData::TO_DATE_SET) {
+                tracer->debug(__func__, "to datetime set");
+                // set the to datetime
+                static QTime MAXIMUM_TIME = QTime(23, 59, 59);
+                QDateTime toDateTime = m_data->getDateTimeTo();
+                if (toDateTime.isValid()) {
+                    if (toDateTime.time().isValid() && toDateTime.time() != MAXIMUM_TIME) {
+                        m_toDateTime->setDateTime(toDateTime);
+                    } else {
+                        m_toDateTime->setDate(toDateTime.date());
+                    }
+                }
+            }
+            m_tabWidget->showPage(m_rangePanel);
+            break;
+        }
+        case DateTimeFilterData::PATTERN_DATE_SET : {
+            tracer->debug(__func__, "pattern set");
+            m_pattern->setText(m_data->getPattern());
+            m_tabWidget->showPage(m_patternPanel);
+            break;
+        }
+        case DateTimeFilterData::SINGLE_DATE_SET : {
+            tracer->debug(__func__, "singledate set");
+            QDateTime singleDate = m_data->getDateTimeFrom();
+            m_timeRuler->slotSetSelected((singleDate.date().isValid()) ? singleDate.date() : QDate::currentDate(), true);
+            m_tabWidget->showPage(m_singlePanel);
+            break;
+        }
+        case DateTimeFilterData::NO_DATE_SET : {
+            tracer->debug(__func__, "'no date set' set");
+            m_noDateSet->setChecked(true);
+            m_tabWidget->showPage(m_rangePanel);
+            break;
         }
     }
-
-    // set the to datetime
-    static QTime MAXIMUM_TIME = QTime(23, 59, 59);
-    if (toDateTime && toDateTime->isValid()) {
-        if (toDateTime->time().isValid() && toDateTime->time() != MAXIMUM_TIME) {
-            m_toDateTime->setDateTime(*toDateTime);
-        } else {
-            m_toDateTime->setDate(toDateTime->date());
-        }
-    }
 }
 
-
-DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, QString pattern) :
-    KDialogBase(parent, name, true, i18n("Datetime filter"), KDialogBase::Default|KDialogBase::Ok|KDialogBase::Cancel, KDialogBase::Ok, true),
-    m_state(INVALID),
-    m_tabWidget(0),
-    m_timeRuler(0),
-    m_dateTable(0),
-    m_fromDateTime(0),
-    m_toDateTime(0),
-    m_noDateSet(0)
-{
-    tracer->invoked(__func__, "pattern");
-
-    initUI();
-
-    ///@todo implement pattern thingys
-}
-
-*/
 
 DialogDateTimeFilter::~DialogDateTimeFilter()
 {
 }
-
-/*
-QDateTime DialogDateTimeFilter::getDateTimeFrom()
-{
-    if (m_tabWidget->currentPage() == m_rangePanel) {
-        return m_fromDateTime->dateTime();
-    } else if (m_tabWidget->currentPage() == m_singlePanel) {
-        ///@todo return the timerulers date.
-    }
-
-    return QDate();
-}
-
-
-QDateTime DialogDateTimeFilter::getDateTimeTo()
-{
-    if (m_tabWidget->currentPage() == m_rangePanel) {
-        if (m_toDateTime->noTimeSet()) {
-            return QDateTime(m_toDateTime->dateTime().date(), QTime(23, 59, 59));
-        } else {
-            return m_toDateTime->dateTime();
-        }
-    } else if (m_tabWidget->currentPage() == m_singlePanel){
-        ///@todo return the timerulers date.
-    }
-
-    return QDate();
-}
-
-
-QString DialogDateTimeFilter::getPattern()
-{
-    ///@todo implement: return the date regular expression
-    return QString::null;
-}
-*/
 
 
 void DialogDateTimeFilter::initUI()
@@ -215,7 +157,6 @@ void DialogDateTimeFilter::initUI()
 
     ///@todo remove disabling singleDate and pattern as soon as implemented
     m_singlePanel->setEnabled(false);
-    m_patternPanel->setEnabled(false);
 
     this->setMainWidget(mainPanel);
 }
@@ -264,8 +205,20 @@ QWidget* DialogDateTimeFilter::buildPatternPanel()
     m_patternPanel = new QWidget(this, "patternPanel");
     QVBoxLayout* patternPanelLayout = new QVBoxLayout(m_patternPanel, 0, 5, "patternPanelLayout");
     patternPanelLayout->setAutoAdd(true);
+    patternPanelLayout->setMargin(10);
 
-    ///@todo implement
+    QGroupBox* patternFieldGroup = new QGroupBox(i18n("Pattern"), m_patternPanel, "patternFieldGroup");
+    patternFieldGroup->setColumns(1);
+    m_pattern = new QLineEdit(patternFieldGroup, "m_pattern");
+    m_pattern->setFocus();
+    connect(m_pattern, SIGNAL(textChanged(const QString&)), this, SLOT(slotValidate()));
+
+    QGroupBox* patternUsageGroup = new QGroupBox(i18n("Usage"), m_patternPanel, "patternUsageGroup");
+    patternUsageGroup->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    patternUsageGroup->setColumns(1);
+
+    ///@todo write the howto/usage
+    new QLabel(i18n("Here we should explain how to enter a pattern..."), patternUsageGroup);
 
     return m_patternPanel;
 }
@@ -273,7 +226,7 @@ QWidget* DialogDateTimeFilter::buildPatternPanel()
 
 void DialogDateTimeFilter::slotClear()
 {
-    m_data->m_state = DateTimeFilterData::NO_FILTER_SET;
+    m_data->setFilterNoFilterSet();
     slotOk();
 }
 
@@ -286,28 +239,31 @@ void DialogDateTimeFilter::slotValidate()
             enableButtonOK(true);
             if (!m_fromDateTime->noDateSet() && !m_toDateTime->noDateSet()) {
                 // both from and to date are set
-                m_data->m_state = DateTimeFilterData::FROM_TO_DATE_SET;
+                m_data->setFilterDateTimeRange(m_fromDateTime->dateTime(),
+                                               m_toDateTime->noTimeSet() ? QDateTime(m_toDateTime->dateTime().date(), QTime(23, 59, 59)) : m_toDateTime->dateTime());
             } else if (!m_fromDateTime->noDateSet()) {
                 // from date is set only
-                m_data->m_state = DateTimeFilterData::FROM_DATE_SET;
+                m_data->setFilterDateTimeFrom(m_fromDateTime->dateTime());
             } else if (!m_toDateTime->noDateSet()) {
-                // from date is set only
-                m_data->m_state = DateTimeFilterData::TO_DATE_SET;
+                // to date is set only
+                m_data->setFilterDateTimeTo(m_toDateTime->noTimeSet() ? QDateTime(m_toDateTime->dateTime().date(), QTime(23, 59, 59)) : m_toDateTime->dateTime());
             } else {
                 // neither from nor to date is set --> no filter set
-                m_data->m_state = DateTimeFilterData::NO_FILTER_SET;
+                m_data->setFilterNoFilterSet();
             }
         } else {
             // datetime are not valid
             enableButtonOK(false);
-            m_data->m_state = DateTimeFilterData::INVALID;
+            m_data->setFilterIsInvalid();
         }
     } else if (m_tabWidget->currentPage() == m_patternPanel) {
+        tracer->sdebug(__func__) << "entered pattern is: " << m_pattern->text() << endl;
         enableButtonOK(true);
-        m_data->m_state = DateTimeFilterData::PATTERN_DATE_SET;
+        m_data->setFilterPattern(m_pattern->text());
     } else if (m_tabWidget->currentPage() == m_singlePanel){
         enableButtonOK(true);
-        m_data->m_state = DateTimeFilterData::SINGLE_DATE_SET;
+        ///@todo get the date from the timeruler
+//        m_data->setFilterSingleDate(m_singlePanel->);
     }
 }
 
@@ -317,7 +273,7 @@ void DialogDateTimeFilter::slotNoDateSetToggled(bool checked)
     if (checked) {
         m_tabWidget->setEnabled(false);
         enableButtonOK(true);
-        m_data->m_state = DateTimeFilterData::NO_DATE_SET;
+        m_data->setFilterNoDateSet();
     } else {
         m_tabWidget->setEnabled(true);
         slotValidate();
@@ -329,5 +285,6 @@ void DialogDateTimeFilter::slotDateSelectionChanged(int year, int month)
 {
     m_dateTable->setDate(QDate(year, month, 1));
 }
+
 
 #include "dialogdatetimefilter.moc"

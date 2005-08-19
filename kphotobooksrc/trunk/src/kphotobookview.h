@@ -70,11 +70,12 @@ class KPhotoBookView : public KMdiChildView {
         void updateFiles(QPtrList<KFileItem> *selectedFiles = 0);
     
         void storeConfiguration();
+        void loadConfiguration();
     
         void removeAllFiles();
     
         void updateCurrentImageSize();
-    
+
     signals:
         /**
         * Use this signal to change the content of the statusbar
@@ -88,7 +89,7 @@ class KPhotoBookView : public KMdiChildView {
         void keyPressEvent(QKeyEvent* e);
         void keyReleaseEvent(QKeyEvent *e);
         void focusOutEvent(QFocusEvent *e);
-    
+
     private slots:
         void slotShowCurrentImage();
     

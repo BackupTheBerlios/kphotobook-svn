@@ -27,6 +27,7 @@
 
 #include <kdialog.h>
 
+class KPhotoBook;
 class KFileIconView;
 
 
@@ -45,7 +46,7 @@ class DialogImageViewer : public KDialog
         virtual void show (File* selectedImage);
     
         virtual bool close ( bool alsoDelete );
-    
+
     public slots:
         void    slotToggleFullscreen();
     

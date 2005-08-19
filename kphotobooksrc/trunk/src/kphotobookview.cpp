@@ -33,6 +33,9 @@ Tracer* KPhotoBookView::tracer = Tracer::getInstance("kde.kphotobook", "KPhotoBo
 
 KPhotoBookView::KPhotoBookView(QWidget *parent) :
     KMdiChildView(parent),
+    m_photobook(0),
+    m_fileView(0),
+    m_dlgImageViewer(0),
     m_currentImagePreviewSize(-1)
 {
     // store casted pointer to the photobook
@@ -50,8 +53,10 @@ KPhotoBookView::KPhotoBookView(QWidget *parent) :
         m_fileView->setSelectionMode(KFile::Multi);
     }
 
+    // image viewer
     m_dlgImageViewer = new DialogImageViewer(this, m_fileView);
-
+                                
+    // rest of fileview
     m_fileView->setResizeMode(KFileIconView::Adjust);
     m_fileView->setFont(Settings::imagePreviewFont());
     m_fileView->showPreviews();
@@ -71,6 +76,7 @@ KPhotoBookView::~KPhotoBookView()
     //m_fileView->clearView();
 
     // all components are deleted automagically by the destructor of QWidget
+    delete m_dlgImageViewer;
 }
 
 
@@ -121,6 +127,25 @@ void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles)
 
 void KPhotoBookView::storeConfiguration()
 {
+    KConfig* config = KGlobal::config();
+    
+    QString group = QString("ImageViewer:%1").arg(*(m_photobook->uid()));
+    config->setGroup(group);
+    config->writeEntry("DialogSize", m_dlgImageViewer->size());
+
+    // force writing
+    config->sync();
+}
+
+
+void KPhotoBookView::loadConfiguration()
+{
+    KConfig* config = KGlobal::config();
+    
+    QString group = QString("ImageViewer:%1").arg(*(m_photobook->uid()));
+    config->setGroup(group);
+    QSize defaultSize = QSize(640, 480);
+    m_dlgImageViewer->resize(config->readSizeEntry("DialogSize", &defaultSize));
 }
 
 

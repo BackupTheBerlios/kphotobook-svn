@@ -185,7 +185,17 @@ class KPhotoBook : public KMdiMainFrm
         * Enables or disables locking of tagging.
         */
         void applyLockUnlockTaggingSettings();
-    
+
+        /**
+         * Returns the unique identifier of the engine.
+         */
+        const QString* uid();
+
+        ActionProvider* actions()
+        {
+            return m_actions;
+        }
+
     protected:
         /**
         * This method is called after close is called on the instance.
@@ -276,7 +286,7 @@ class KPhotoBook : public KMdiMainFrm
         void slotExportSelectedFiles();
     
         void slotImportImages();
-    
+
     private:
         void init();
         void setupAccel();

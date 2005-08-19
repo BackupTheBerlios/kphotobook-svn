@@ -76,6 +76,8 @@ class Constants
         
         static const QString ICON_TAG_LOCK;
         static const QString ICON_TAG_UNLOCK;
+        
+        static const QString ICON_TAG_EXIF;
     
         // file-extension
         static const QString FILE_EXTENSION; /**< The default used fileextension for kphotobook files. */

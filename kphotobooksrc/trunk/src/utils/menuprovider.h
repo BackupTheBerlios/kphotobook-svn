@@ -21,6 +21,8 @@
 #ifndef _MENUPROVIDER_H_
 #define _MENUPROVIDER_H_
 
+#include "../tracer/tracer.h"
+
 #include <kpopupmenu.h>
 
 class KPhotoBook;
@@ -28,11 +30,16 @@ class KPhotoBook;
 
 /**
  * This class holds all context menus used in kphotobook.
+ * It is implemented using lazy loading of the menus. That means the menus are
+ * read from the config during the first call for getting a menu.
  *
  * CVS-ID $Id: constants.h 435 2005-08-02 20:36:17Z starcube $
  */
 class MenuProvider
 {
+    private:
+        static Tracer* tracer;
+    
     public:
         /**
          * Instantiates this MenuProvider and sets up all menus.
@@ -43,45 +50,40 @@ class MenuProvider
             // the menus will be deleted automatically as soon m_kphotobook is deleted
         }
 
-        KPopupMenu* contextMenuSourceDirTree()
+        KPopupMenu* contextMenuSourceDirTree();
+        KPopupMenu* contextMenuSourceDir();
+        KPopupMenu* contextMenuSubDir();
+        KPopupMenu* contextMenuTagTree();
+        KPopupMenu* contextMenuTagTreeItem();
+        KPopupMenu* contextMenuTagTreeItemLeaf();
+        KPopupMenu* contextMenuImageViewer();
+
+    private:
+        KPopupMenu* foobar (KPopupMenu* menu, QString menuname)
         {
-            return m_contextMenuSourceDirTree;
-        }
-    
-        KPopupMenu* contextMenuSourceDir()
-        {
-            return m_contextMenuSourceDir;
-        }
-    
-        KPopupMenu* contextMenuSubDir()
-        {
-            return m_contextMenuSubDir;
-        }
-    
-        KPopupMenu* contextMenuTagTree()
-        {
-            return m_contextMenuTagTree;
-        }
-    
-        KPopupMenu* contextMenuTagTreeItem()
-        {
-            return m_contextMenuTagTreeItem;
-        }
-    
-        KPopupMenu* contextMenuTagTreeItemLeaf()
-        {
-            return m_contextMenuTagTreeItemLeaf;
+            if (menu) {
+                return menu;
+            }
+
+            tracer->swarning(__func__) << "menu with internal name '" << menuname << "' does not exist, could not be loaded!" << endl;
+            // we just return an empty context menu to avoid crashes!
+            return m_emptyContextMenu;
         }
 
     private:
+        KPhotoBook* m_kphotobook;
+
+        KPopupMenu* m_emptyContextMenu;
+        
         KPopupMenu* m_contextMenuSourceDirTree;
         KPopupMenu* m_contextMenuSourceDir;
         KPopupMenu* m_contextMenuSubDir;
+        
         KPopupMenu* m_contextMenuTagTree;
         KPopupMenu* m_contextMenuTagTreeItem;
         KPopupMenu* m_contextMenuTagTreeItemLeaf;
 
-        KPhotoBook* m_kphotobook;
+        KPopupMenu* m_contextMenuImageViewer;
 };
 
 #endif

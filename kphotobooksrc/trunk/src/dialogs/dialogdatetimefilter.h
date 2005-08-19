@@ -31,7 +31,7 @@
 #include <ktabwidget.h>
 
 #include <qcheckbox.h>
-#include <qdatetime.h>
+#include <qlineedit.h> 
 
 
 /**
@@ -47,13 +47,7 @@ class DialogDateTimeFilter : public KDialogBase
         static Tracer* tracer;
 
     public:
-        DialogDateTimeFilter(QWidget* parent, const char* name);
-        DialogDateTimeFilter(QWidget* parent, const char* name, DateTimeFilterData* data);
-        /*
-        DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* singleDate);
-        DialogDateTimeFilter(QWidget* parent, const char* name, QDateTime* fromDateTime, QDateTime* toDateTime);
-        DialogDateTimeFilter(QWidget* parent, const char* name, QString pattern);
-        */
+        DialogDateTimeFilter(QWidget* parent, const char* name, DateTimeFilterData* data = 0);
         ~DialogDateTimeFilter();
 
     private:
@@ -71,6 +65,7 @@ class DialogDateTimeFilter : public KDialogBase
 
         /**
          * Validates the entered data and enables/disables the ok button.
+         * It also stores the current active data in the DateTimeFilterData (@link m_data).
          */
         void slotValidate();
 
@@ -98,6 +93,8 @@ class DialogDateTimeFilter : public KDialogBase
 
         DateTimeWidget* m_fromDateTime;
         DateTimeWidget* m_toDateTime;
+
+        QLineEdit* m_pattern;
 
         QCheckBox* m_noDateSet;
 };

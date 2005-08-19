@@ -69,6 +69,8 @@ const QString Constants::ICON_RESTORE_TOOL_VIEWS = QString("view_layout_restore"
 const QString Constants::ICON_TAG_LOCK = QString("tag_lock");
 const QString Constants::ICON_TAG_UNLOCK = QString("tag_unlock");
 
+const QString Constants::ICON_TAG_EXIF = QString("tag_exif");
+
 //
 // file-extension
 //

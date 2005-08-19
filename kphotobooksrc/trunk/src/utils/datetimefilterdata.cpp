@@ -23,6 +23,9 @@
 #include "../uitrees/treehelper.h"
 
 
+Tracer* DateTimeFilterData::tracer = Tracer::getInstance("kde.kphotobook.utils", "DateTimeFilterData");
+
+
 DateTimeFilterData::DateTimeFilterData() :
     m_state(INVALID),
     m_fromDateTime(QDateTime()),
@@ -82,6 +85,86 @@ void DateTimeFilterData::setFilterString(const QString& filterstring)
         m_pattern = QString(filter);
     }
 
+    emit dataChanged();
+}
+
+
+void DateTimeFilterData::setFilterIsInvalid()
+{
+    m_state = INVALID;
+    emit dataChanged();
+}
+
+
+void DateTimeFilterData::setFilterNoFilterSet()
+{
+    m_state = NO_FILTER_SET;
+    emit dataChanged();
+}
+
+
+void DateTimeFilterData::setFilterNoDateSet()
+{
+    m_state = NO_DATE_SET;
+    emit dataChanged();
+}
+
+
+void DateTimeFilterData::setFilterDateTimeFrom(const QDateTime& fromDateTime)
+{
+    if (!fromDateTime.isValid()) {
+        m_state = INVALID;
+    } else {
+        m_state = FROM_DATE_SET;
+        m_fromDateTime = QDateTime(fromDateTime);
+    }
+    emit dataChanged();
+}
+
+
+void DateTimeFilterData::setFilterDateTimeTo(const QDateTime& toDateTime)
+{
+    if (!toDateTime.isValid()) {
+        m_state = INVALID;
+    } else {
+        m_state = TO_DATE_SET;
+        m_toDateTime = QDateTime(toDateTime);
+    }
+    emit dataChanged();
+}
+
+
+void DateTimeFilterData::setFilterDateTimeRange(const QDateTime& fromDateTime, const QDateTime& toDateTime)
+{
+    if (!fromDateTime.isValid() || !toDateTime.isValid()) {
+        m_state = INVALID;
+    } else {
+        m_state = FROM_TO_DATE_SET;
+        m_fromDateTime = QDateTime(fromDateTime);
+        m_toDateTime = QDateTime(toDateTime);
+    }
+    emit dataChanged();
+}
+
+
+void DateTimeFilterData::setFilterSingleDate(const QDateTime& singleDate)
+{
+    if (!singleDate.isValid()) {
+        m_state = INVALID;
+    } else {
+        m_state = SINGLE_DATE_SET;
+        m_fromDateTime = QDateTime(singleDate);
+        m_toDateTime = QDateTime(singleDate);
+    }
+    emit dataChanged();
+}
+
+
+void DateTimeFilterData::setFilterPattern(const QString& pattern)
+{
+    tracer->sinvoked(__func__) << "with pattern: " << pattern << endl;
+    m_state = PATTERN_DATE_SET;
+    m_pattern = QString(pattern);
     emit dataChanged();
 }
 

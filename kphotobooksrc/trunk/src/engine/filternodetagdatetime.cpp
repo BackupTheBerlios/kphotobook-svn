@@ -21,74 +21,83 @@
 #include "filternodetagdatetime.h"
 
 
-FilterNodeTagDateTime::FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime) :
+FilterNodeTagDateTime::FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, DateTimeFilterData* data) :
     FilterNode(parent),
     m_tagNodeDateTime(tagNodeDateTime),
-    m_pattern(QString::null),
-    m_fromDateTime(fromDateTime),
-    m_toDateTime(toDateTime)
+    m_data(data)
 {
 }
 
 
-FilterNodeTagDateTime::FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime) :
+FilterNodeTagDateTime::FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, DateTimeFilterData* data) :
     FilterNode(0),
     m_tagNodeDateTime(tagNodeDateTime),
-    m_pattern(QString::null),
-    m_fromDateTime(fromDateTime),
-    m_toDateTime(toDateTime)
-{
-}
-
-
-FilterNodeTagDateTime::FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QString pattern) :
-    FilterNode(parent),
-    m_tagNodeDateTime(tagNodeDateTime),
-    m_pattern(pattern),
-    m_fromDateTime(0),
-    m_toDateTime(0)
-{
-}
-
-
-FilterNodeTagDateTime::FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QString pattern) :
-    FilterNode(0),
-    m_tagNodeDateTime(tagNodeDateTime),
-    m_pattern(pattern),
-    m_fromDateTime(0),
-    m_toDateTime(0)
+    m_data(data)
 {
 }
 
 
 FilterNodeTagDateTime::~FilterNodeTagDateTime()
 {
-    delete m_fromDateTime;
-    delete m_toDateTime;
 }
 
 
 bool FilterNodeTagDateTime::evaluate(File* file) throw(FilterException*)
 {
-    if (m_pattern.isNull()) {
-        return m_tagNodeDateTime->tagged(file, m_fromDateTime, m_toDateTime);
-    } else {
-        return m_tagNodeDateTime->tagged(file, m_pattern);
+    switch (m_data->getState()) {
+        case DateTimeFilterData::INVALID:
+        case DateTimeFilterData::NO_FILTER_SET: {
+            return false;
+        }
+        case DateTimeFilterData::FROM_DATE_SET: {
+            return m_tagNodeDateTime->tagged(file, new QDateTime(m_data->getDateTimeFrom()), 0);
+        }
+        case DateTimeFilterData::TO_DATE_SET: {
+            return m_tagNodeDateTime->tagged(file, 0, new QDateTime(m_data->getDateTimeTo()));
+        }
+        case DateTimeFilterData::FROM_TO_DATE_SET: {
+            return m_tagNodeDateTime->tagged(file, new QDateTime(m_data->getDateTimeFrom()), new QDateTime(m_data->getDateTimeTo()));
+        }
+        case DateTimeFilterData::PATTERN_DATE_SET: {
+            return m_tagNodeDateTime->tagged(file, m_data->getPattern());
+        }
+        case DateTimeFilterData::SINGLE_DATE_SET: {
+            return m_tagNodeDateTime->tagged(file, new QDateTime(m_data->getDateTimeFrom()), new QDateTime(m_data->getDateTimeTo()));
+        }
+        case DateTimeFilterData::NO_DATE_SET: {
+            return !m_tagNodeDateTime->tagged(file);
+        }
     }
+    
+    return false;
 }
 
 
 void FilterNodeTagDateTime::dump(QString indention)
 {
-    if (m_pattern.isNull()) {
-        if (m_fromDateTime) {
-            dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " >= " << m_fromDateTime->toString() << endl;
+    switch (m_data->getState()) {
+        case DateTimeFilterData::INVALID:
+        case DateTimeFilterData::NO_FILTER_SET: {
+            break;
         }
-        if (m_toDateTime) {
-            dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " <= " << m_toDateTime->toString() << endl;
+        case DateTimeFilterData::FROM_DATE_SET: {
+            dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " >= " << m_data->getDateTimeFrom().toString() << endl;
         }
-    } else {
-        dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " = " << m_pattern << endl;
+        case DateTimeFilterData::TO_DATE_SET: {
+            dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " <= " << m_data->getDateTimeTo().toString() << endl;
+        }
+        case DateTimeFilterData::FROM_TO_DATE_SET: {
+            dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " >= " << m_data->getDateTimeFrom().toString() << " <= " << m_data->getDateTimeTo().toString() << endl;
+        }
+        case DateTimeFilterData::PATTERN_DATE_SET: {
+            dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " ~= " << m_data->getPattern() << endl;
+        }
+        case DateTimeFilterData::SINGLE_DATE_SET: {
+            dumper->sdebug("dump") << indention << *m_tagNodeDateTime->text() << " == " << m_data->getDateTimeTo().toString() << endl;
+        }
+        case DateTimeFilterData::NO_DATE_SET: {
+            break;
+        }
     }
 }
 

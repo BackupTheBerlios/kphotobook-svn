@@ -24,6 +24,7 @@
 #include "file.h"
 #include "filternode.h"
 #include "tagnodedatetime.h"
+#include "../utils/datetimefilterdata.h"
 
 #include <qobject.h>
 #include <qstring.h>
@@ -38,11 +39,8 @@ class FilterNodeTagDateTime : public FilterNode
     Q_OBJECT
     
     public:
-        FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime);
-        FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QDateTime* fromDateTime, QDateTime* toDateTime);
-    
-        FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, QString pattern);
-        FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, QString pattern);
+        FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, DateTimeFilterData* data);
+        FilterNodeTagDateTime(TagNodeDateTime* tagNodeDateTime, DateTimeFilterData* data);
     
         ~FilterNodeTagDateTime();
     
@@ -62,9 +60,7 @@ class FilterNodeTagDateTime : public FilterNode
     
     private:
         TagNodeDateTime* m_tagNodeDateTime;
-        QString m_pattern;
-        QDateTime* m_fromDateTime;
-        QDateTime* m_toDateTime;
+        DateTimeFilterData* m_data;
 };
 
 #endif

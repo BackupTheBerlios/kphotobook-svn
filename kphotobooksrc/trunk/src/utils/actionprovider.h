@@ -21,12 +21,15 @@
 #ifndef _ACTIONPROVIDER_H_
 #define _ACTIONPROVIDER_H_
 
+#include "../tracer/tracer.h"
+
 #include <kaction.h>
 #include <kactioncollection.h>
 #include <kapplication.h>
 #include <kurl.h>
 
 class KPhotoBook;
+class ImageViewer;
 
 
 /**
@@ -36,6 +39,9 @@ class KPhotoBook;
  */
 class ActionProvider
 {
+    private:
+        static Tracer* tracer;
+    
     public:
         /**
          * Instantiates this ActionProvider and sets up all actions.
@@ -53,7 +59,7 @@ class ActionProvider
         void saveRecentFiles() {
             m_recentFiles->saveEntries(kapp->config());
         }
-
+        
     private:
         void setupFileActions();
         void setupSettingActions();
@@ -138,6 +144,15 @@ class ActionProvider
         KAction* m_showTagTree;
         KAction* m_showFolderTree;
 
+        // imageviewer actions
+        KAction* m_viewerBack;
+        KAction* m_viewerForward;
+        KToggleAction* m_viewerFullScreen;
+        KToggleAction* m_viewerSmoothScaling;
+        KToggleAction* m_viewerShowImageCounter;
+        KToggleAction* m_viewerShowImageInfos;
+        KAction* m_viewerQuit;
+        
     private:
         KPhotoBook* m_kphotobook;
 };

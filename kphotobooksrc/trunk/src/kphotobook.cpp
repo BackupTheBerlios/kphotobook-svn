@@ -135,7 +135,14 @@ KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode) :
     createStandardStatusBarAction();
 
     // create the gui
-    createGUI(0);
+    // creates the menus and toolbars from the ui.rc files
+    // all actions used in the menus and toolbars must already be instantiated here!
+    KMdiMainFrm::createGUI(0);
+
+    // let's setup our context menus
+    // it is important to this here and not earlier!!!
+    // createGUI must be called before this
+    m_menus = new MenuProvider(this);
 
     // apply action states
     applyAutorefreshSetting();
@@ -143,10 +150,6 @@ KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode) :
     applyLockUnlockTaggingSettings();
     applyOperatorSetting();
     
-    // let's setup our context menus
-    // it is important to this here and not earlier!!!
-    m_menus = new MenuProvider(this);
-
     // it is important to create the view after setting up context menus
     m_view = new KPhotoBookView(this);
 
@@ -307,6 +310,9 @@ void KPhotoBook::load(QFileInfo& fileinfo)
         loadTreeState();
         loadFilter();
 
+        // restore the view
+        m_view->loadConfiguration();
+
         // add the files to the view
         m_view->updateFiles();
     } else {
@@ -344,8 +350,17 @@ QPtrList<File>* KPhotoBook::files(FilterNode *filterRootNode)
     // get the files matching the filter
     QPtrList<File>* files = m_engine->files(filterRootNode);
 
+    // delete the filter tree
+    delete filterRootNode;
+
     updateState();
     return files;
+}
+
+
+const QString* KPhotoBook::uid()
+{
+    return m_engine->uid();
 }
 
 
@@ -405,6 +420,12 @@ bool KPhotoBook::queryClose()
     // store dock configuration
     writeDockConfig(KGlobal::config(), "DockConfig");
 
+    // store the tree states
+    if (m_engine->uid()) {
+        storeTreeState();
+        storeFilter();
+    }
+
     // store the data if necessary
     if (m_engine && m_engine->dirty()) {
 
@@ -440,12 +461,6 @@ bool KPhotoBook::queryClose()
             return false;
             break;
         }
-    }
-
-    // store the tree states
-    if (m_engine->uid()) {
-      storeTreeState();
-      storeFilter();
     }
 
     //at last check for untaged images
