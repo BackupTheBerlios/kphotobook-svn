@@ -124,6 +124,11 @@ class TagTree : public KListView
         * The dictionary must contain the node-id as key and the filter as value.
         */
         void applyFilter(QIntDict<QString>* filterList);
+
+        TagTreeNode* getExifTagTreeNode()
+        {
+            return m_exifTagTreeNode;
+        }
     
     public slots:
         void slotLoadSettings();
@@ -142,6 +147,7 @@ class TagTree : public KListView
         void buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children);
     
         KPhotoBook* m_photobook;
+        TagTreeNode* m_exifTagTreeNode;
     
         TreeToolTip m_toolTip;
 };

@@ -242,6 +242,12 @@ QPtrList<TagNode>* KPhotoBook::tagForest()
 }
 
 
+TagNodeTitle* KPhotoBook::getExifTagNodeTitle()
+{
+    return m_engine->getExifTagNodeTitle();
+}
+
+
 void KPhotoBook::dirtyfy()
 {
     m_engine->dirtyfy();
@@ -426,6 +432,11 @@ bool KPhotoBook::queryClose()
         storeFilter();
     }
 
+    // check for untaged images
+    if (!checkForUntagged()) {
+        return false;
+    }
+
     // store the data if necessary
     if (m_engine && m_engine->dirty()) {
 
@@ -453,25 +464,21 @@ bool KPhotoBook::queryClose()
 
         case KMessageBox::No :
             // just close the application
-            return true;
+            retval = true;
             break;
 
         case KMessageBox::Cancel :
             // abort closing if cancel is clicked
-            return false;
+            retval = false;
             break;
         }
     }
 
-    //at last check for untaged images
-    return checkForUntagged();
-
-    // if we got here there was nothing to save --> simply close
     return retval;
 }
 
 
-//this checks, if there are untagged images, and if so, informs the user about that
+// this checks, if there are untagged images, and if so, informs the user about that
 // problems: if there are untagged images, and the users decides to not exit kpb,
 // the old treestatefilter is set to the new one on exit. but there is no suitable
 // sollution for this, i think. On the other hand this is not a real problem, as we
@@ -489,6 +496,13 @@ bool KPhotoBook::checkForUntagged()
     //now switch the filter to 'and' and untagged images
     slotAndifyTags();
     m_tagTree->deselectFilter();
+
+    // ignore EXIF tags!
+    QListViewItem * child = m_tagTree->getExifTagTreeNode()->firstChild();
+    while (child) {
+        static_cast<TagTreeNode*>(child)->resetFilter();
+        child = child->nextSibling();
+    }
 
     // refresh tag view
     slotRefreshView();

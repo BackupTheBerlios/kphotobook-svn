@@ -51,6 +51,7 @@ class SettingsTools;
 class SourceDir;
 class SourceDirTree;
 class TagNode;
+class TagNodeTitle;
 class TagTree;
 class TagTreeNode;
 
@@ -169,7 +170,12 @@ class KPhotoBook : public KMdiMainFrm
         * Returns all possible tags of all files.
         */
         QPtrList<TagNode>* tagForest();
-    
+
+        /**
+         * Returns the tagnode representing the EXIF title.
+         */
+        TagNodeTitle* getExifTagNodeTitle();
+
         /**
         * Returns all files matching the specified filter.
         * If the filter is 0, it is build from the selection in the tagtree.

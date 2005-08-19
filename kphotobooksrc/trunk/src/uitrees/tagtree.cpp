@@ -181,6 +181,12 @@ void TagTree::addTagNode(TagNode* rootNode)
         tracer->swarning(__func__) << "unknown root tagtype received: " << rootNode->type() << "!"<< endl;
     }
 
+    // remember the exif title tagnode
+    if (m_photobook->getExifTagNodeTitle() == tagTreeNode->tagNode()) {
+        tracer->sdebug(__func__) << "exif title tag found: " << tagTreeNode->text(0) << endl;
+        m_exifTagTreeNode = tagTreeNode;
+    }
+    
     // build the whole tree
     buildTagNodeTree(tagTreeNode, rootNode->children());
 }
