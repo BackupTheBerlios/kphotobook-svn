@@ -125,6 +125,7 @@ class ImageViewer : public QWidget
         void  slotToggleShowInfoOverlay();
     
         void  slotStartSlideshow(int secs);
+        void  slotClose();
     
     private:
         void  generateImageCounterOverlay();

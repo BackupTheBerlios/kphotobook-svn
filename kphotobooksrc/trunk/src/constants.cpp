@@ -27,49 +27,49 @@ const QString Constants::STRING_VALUE_FALSE = QString("false");
 //
 // icons
 //
-const QString Constants::ICON_TAG = QString("tag");
-const QString Constants::ICON_CREATE_MAINTAG = QString("tag_add");
-const QString Constants::ICON_CREATE_SUBTAG = QString("tag_add");
-const QString Constants::ICON_EDIT_TAG = QString("tag_edit");
-const QString Constants::ICON_DELETE_TAG = QString("tag_del");
-const QString Constants::ICON_TAG_FILTER_DESELECT = QString("filter_deselect");
-const QString Constants::ICON_TAG_FILTER_RESET = QString("filter_reset");
+const QString Constants::ICON_TAG = QString("kpb_tag");
+const QString Constants::ICON_CREATE_MAINTAG = QString("kpb_tag_add");
+const QString Constants::ICON_CREATE_SUBTAG = QString("kpb_tag_add");
+const QString Constants::ICON_EDIT_TAG = QString("kpb_tag_edit");
+const QString Constants::ICON_DELETE_TAG = QString("kpb_tag_del");
+const QString Constants::ICON_TAG_FILTER_DESELECT = QString("kpb_filter_deselect");
+const QString Constants::ICON_TAG_FILTER_RESET = QString("kpb_filter_reset");
 
-const QString Constants::ICON_SOURCEDIR = QString("folder");
-const QString Constants::ICON_ADD_SOURCEDIR = QString("folder_add");
-const QString Constants::ICON_EDIT_SOURCEDIR = QString("folder_edit");
-const QString Constants::ICON_REMOVE_SOURCEDIR = QString("folder_remove");
+const QString Constants::ICON_SOURCEDIR = QString("kpb_folder");
+const QString Constants::ICON_ADD_SOURCEDIR = QString("kpb_folder_add");
+const QString Constants::ICON_EDIT_SOURCEDIR = QString("kpb_folder_edit");
+const QString Constants::ICON_REMOVE_SOURCEDIR = QString("kpb_folder_remove");
 
-const QString Constants::ICON_RESCAN_FILESYSTEM = QString("filesystem_reload");
+const QString Constants::ICON_RESCAN_FILESYSTEM = QString("kpb_filesystem_reload");
 
-const QString Constants::ICON_AUTOREFRESH_VIEW = QString("view_autorefresh");
-const QString Constants::ICON_REFRESH_VIEW = QString("view_refresh");
-const QString Constants::ICON_INCREASE_PREVIEWSIZE = QString("viewmag+");
-const QString Constants::ICON_DECREASE_PREVIEWSIZE = QString("viewmag-");
+const QString Constants::ICON_AUTOREFRESH_VIEW = QString("kpb_view_autorefresh");
+const QString Constants::ICON_REFRESH_VIEW = QString("kpb_view_refresh");
+const QString Constants::ICON_INCREASE_PREVIEWSIZE = QString("kpb_viewmag_plus");
+const QString Constants::ICON_DECREASE_PREVIEWSIZE = QString("kpb_viewmag_minus");
 
-const QString Constants::ICON_INCLUDE_WHOLE_FOLDER = QString("folder_green");
-const QString Constants::ICON_EXCLUDE_WHOLE_FOLDER = QString("folder_red");
-const QString Constants::ICON_INVERT_FOLDER_SELECTION = QString("invert");
+const QString Constants::ICON_INCLUDE_WHOLE_FOLDER = QString("kpb_folder_green");
+const QString Constants::ICON_EXCLUDE_WHOLE_FOLDER = QString("kpb_folder_red");
+const QString Constants::ICON_INVERT_FOLDER_SELECTION = QString("kpb_invert");
 
-const QString Constants::ICON_EXPAND_FOLDER = QString("expand");
-const QString Constants::ICON_COLLAPSE_FOLDER = QString("collapse");
+const QString Constants::ICON_EXPAND_FOLDER = QString("kpb_expand");
+const QString Constants::ICON_COLLAPSE_FOLDER = QString("kpb_collapse");
 
-const QString Constants::ICON_SETTINGS_GENERAL = QString("folder_home");
-const QString Constants::ICON_SETTINGS_TAG = QString("tag");
-const QString Constants::ICON_SETTINGS_SOURCEDIR = QString("folder");
-const QString Constants::ICON_SETTINGS_IMAGEPREVIEW = QString("view_refresh");
-const QString Constants::ICON_SETTINGS_FILEHANDLING = QString("folder_txt");
-const QString Constants::ICON_SETTINGS_TOOLS = QString("kfind");
+const QString Constants::ICON_SETTINGS_GENERAL = QString("kpb_folder_home");
+const QString Constants::ICON_SETTINGS_TAG = QString("kpb_tag");
+const QString Constants::ICON_SETTINGS_SOURCEDIR = QString("kpb_folder");
+const QString Constants::ICON_SETTINGS_IMAGEPREVIEW = QString("kpb_view_refresh");
+const QString Constants::ICON_SETTINGS_FILEHANDLING = QString("kpb_folder_txt");
+const QString Constants::ICON_SETTINGS_TOOLS = QString("kpb_kfind");
 
-const QString Constants::ICON_OPERATOR_AND = QString("andify");
-const QString Constants::ICON_OPERATOR_OR = QString("orify");
+const QString Constants::ICON_OPERATOR_AND = QString("kpb_andify");
+const QString Constants::ICON_OPERATOR_OR = QString("kpb_orify");
 
-const QString Constants::ICON_RESTORE_TOOL_VIEWS = QString("view_layout_restore");
+const QString Constants::ICON_RESTORE_TOOL_VIEWS = QString("kpb_view_layout_restore");
 
-const QString Constants::ICON_TAG_LOCK = QString("tag_lock");
-const QString Constants::ICON_TAG_UNLOCK = QString("tag_unlock");
+const QString Constants::ICON_TAG_LOCK = QString("kpb_tag_lock");
+const QString Constants::ICON_TAG_UNLOCK = QString("kpb_tag_unlock");
 
-const QString Constants::ICON_TAG_EXIF = QString("tag_exif");
+const QString Constants::ICON_TAG_EXIF = QString("kpb_tag_exif");
 
 //
 // file-extension

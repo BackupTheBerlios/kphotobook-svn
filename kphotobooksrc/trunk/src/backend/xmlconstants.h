@@ -55,6 +55,7 @@ class XmlConstants
         static const QString ATTRIBUTE_TAG_TYPE;
         static const QString ATTRIBUTE_TAG_ICON;
         static const QString ATTRIBUTE_TAG_SECRET;
+        static const QString ATTRIBUTE_TAG_READONLY;
     
         static const QString ATTRIBUTE_FILES_SOURCEDIRID;
     

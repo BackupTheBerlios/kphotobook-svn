@@ -150,6 +150,10 @@ void XmlWriter::dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString inde
         stream << " " << ATTRIBUTE_TAG_SECRET << "=\"yes\"";
     }
 
+    if (tagnode->readonly()) {
+        stream << " " << ATTRIBUTE_TAG_READONLY << "=\"yes\"";
+    }
+
     // handle children if there are any
     if (tagnode->children() && tagnode->children()->count() > 0) {
         stream << ">" << "\n";

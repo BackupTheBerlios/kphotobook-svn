@@ -390,6 +390,14 @@ void ImageViewer::slotShowPrevImage()
 }
 
 
+void ImageViewer::slotClose()
+{
+    this->slotStartSlideshow(0);
+    static_cast<QWidget*>(parent())->close();
+}
+
+
+
 ///@todo make the key stuff configurable, but I don't know how, yet
 void ImageViewer::keyPressEvent ( QKeyEvent * e )
 {
@@ -469,7 +477,8 @@ void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent *
 
     popup->insertSeparator();
 
-    KStdAction::quit(parent(), SLOT(close()), 0)->plug(popup);
+    // if close is pressed, close the window AND stop the slideshow
+    KStdAction::close(this, SLOT(slotClose()), 0)->plug(popup);
 
     popup->exec(QCursor::pos());
 
