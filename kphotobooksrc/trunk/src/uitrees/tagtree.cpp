@@ -236,6 +236,13 @@ void TagTree::deselectFilter()
 
         ++it;
     }
+
+    // ignore EXIF tags!
+    QListViewItem * child = m_exifTagTreeNode->firstChild();
+    while (child) {
+        static_cast<TagTreeNode*>(child)->resetFilter();
+        child = child->nextSibling();
+    }
 }
 
 

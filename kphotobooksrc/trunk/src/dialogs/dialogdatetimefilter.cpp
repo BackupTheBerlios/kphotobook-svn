@@ -72,7 +72,7 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, Da
         case DateTimeFilterData::TO_DATE_SET :
         case DateTimeFilterData::FROM_TO_DATE_SET : {
 
-            if (m_data->getState() & DateTimeFilterData::FROM_DATE_SET == DateTimeFilterData::FROM_DATE_SET) {
+            if ((m_data->getState() & DateTimeFilterData::FROM_DATE_SET) == DateTimeFilterData::FROM_DATE_SET) {
                 tracer->debug(__func__, "from datetime set");
                 // set the from datetime
                 static QTime MINIMUM_TIME = QTime(00, 00, 00);
@@ -86,7 +86,7 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, Da
                 }
             }
             
-            if (m_data->getState() & DateTimeFilterData::TO_DATE_SET == DateTimeFilterData::TO_DATE_SET) {
+            if ((m_data->getState() & DateTimeFilterData::TO_DATE_SET) == DateTimeFilterData::TO_DATE_SET) {
                 tracer->debug(__func__, "to datetime set");
                 // set the to datetime
                 static QTime MAXIMUM_TIME = QTime(23, 59, 59);

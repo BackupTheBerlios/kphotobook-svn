@@ -497,13 +497,6 @@ bool KPhotoBook::checkForUntagged()
     slotAndifyTags();
     m_tagTree->deselectFilter();
 
-    // ignore EXIF tags!
-    QListViewItem * child = m_tagTree->getExifTagTreeNode()->firstChild();
-    while (child) {
-        static_cast<TagTreeNode*>(child)->resetFilter();
-        child = child->nextSibling();
-    }
-
     // refresh tag view
     slotRefreshView();
 
