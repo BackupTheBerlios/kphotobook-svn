@@ -6,6 +6,7 @@
 
 #include "constants.h"
 #include "kphotobook.h"
+#include "engine/engine.h"
 #include "engine/file.h"
 #include "engine/sourcedir.h"
 #include "settings/settings.h"
@@ -129,7 +130,7 @@ void KPhotoBookView::storeConfiguration()
 {
     KConfig* config = KGlobal::config();
     
-    QString group = QString("ImageViewer:%1").arg(*(m_photobook->uid()));
+    QString group = QString("ImageViewer:%1").arg(*(m_photobook->engine()->uid()));
     config->setGroup(group);
     config->writeEntry("DialogSize", m_dlgImageViewer->size());
 
@@ -142,7 +143,7 @@ void KPhotoBookView::loadConfiguration()
 {
     KConfig* config = KGlobal::config();
     
-    QString group = QString("ImageViewer:%1").arg(*(m_photobook->uid()));
+    QString group = QString("ImageViewer:%1").arg(*(m_photobook->engine()->uid()));
     config->setGroup(group);
     QSize defaultSize = QSize(640, 480);
     m_dlgImageViewer->resize(config->readSizeEntry("DialogSize", &defaultSize));

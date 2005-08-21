@@ -91,6 +91,15 @@ public:
         return m_fileinfo;
     }
 
+    /**
+     * Returns the current opened file or an empty string if the
+     * was never saved.
+     */
+    QString currentURL()
+    {
+        return m_fileinfo ? m_fileinfo->absFilePath() : "";
+    }
+    
     const QString* uid()
     {
         return m_uid;
@@ -115,14 +124,16 @@ public:
     /**
      * Returns all currently added source directories handled by this engine.
      */
-    QPtrList<SourceDir>* sourceDirs() {
+    QPtrList<SourceDir>* sourceDirs()
+    {
         return m_sourceDirs;
     }
 
     /**
      * returns all possible tags of all files
      */
-    QPtrList<TagNode>* tagForest() {
+    QPtrList<TagNode>* tagForest()
+    {
         return m_tagForest;
     }
 
@@ -154,7 +165,7 @@ public:
     /**
      * Returns the tagnode representing the EXIF title.
      */
-    TagNodeTitle* getExifTagNodeTitle()
+    TagNodeTitle* exifTagNodeTitle()
     {
         return m_exifTitleTag;
     }    

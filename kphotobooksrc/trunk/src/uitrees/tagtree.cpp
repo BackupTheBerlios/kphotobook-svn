@@ -28,6 +28,7 @@
 #include "tagtreenodestring.h"
 #include "tagtreenodetitle.h"
 #include "../constants.h"
+#include "../engine/engine.h"
 #include "../engine/tagnode.h"
 #include "../engine/tagnodeboolean.h"
 #include "../engine/tagnodedatetime.h"
@@ -182,7 +183,7 @@ void TagTree::addTagNode(TagNode* rootNode)
     }
 
     // remember the exif title tagnode
-    if (m_photobook->getExifTagNodeTitle() == tagTreeNode->tagNode()) {
+    if (m_photobook->engine()->exifTagNodeTitle() == tagTreeNode->tagNode()) {
         tracer->sdebug(__func__) << "exif title tag found: " << tagTreeNode->text(0) << endl;
         m_exifTagTreeNode = tagTreeNode;
     }

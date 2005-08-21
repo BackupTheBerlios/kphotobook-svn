@@ -155,7 +155,6 @@ int main( int argc, char** argv ) {
     if ( args->count() == 0 ) {
 
         widget = new KPhotoBook( splash, mdiMode );
-        app.setMainWidget(widget);
         widget->show();
 
         // try to load last opened file

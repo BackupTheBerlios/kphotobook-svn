@@ -84,6 +84,15 @@ class KPhotoBook : public KMdiMainFrm
         * Default Destructor
         */
         virtual ~KPhotoBook();
+
+        /**
+         * Returns the engine behind this KPhotoBook instance.
+         * An engine is never 0. Every instance has an engine.
+         */
+        Engine* engine()
+        {
+            return m_engine;
+        }
     
         /**
         * Returns the kphotobook-view of this kphotobook.
@@ -156,27 +165,6 @@ class KPhotoBook : public KMdiMainFrm
         void load(QFileInfo& fileinfo);
     
         /**
-        * Returns the current opened file or an empty string if the
-        * was never saved.
-        */
-        QString currentURL();
-    
-        /**
-        * Returns all currently added source directories handled by the engine.
-        */
-        QPtrList<SourceDir>* sourceDirs();
-    
-        /**
-        * Returns all possible tags of all files.
-        */
-        QPtrList<TagNode>* tagForest();
-
-        /**
-         * Returns the tagnode representing the EXIF title.
-         */
-        TagNodeTitle* getExifTagNodeTitle();
-
-        /**
         * Returns all files matching the specified filter.
         * If the filter is 0, it is build from the selection in the tagtree.
         */
@@ -191,11 +179,6 @@ class KPhotoBook : public KMdiMainFrm
         * Enables or disables locking of tagging.
         */
         void applyLockUnlockTaggingSettings();
-
-        /**
-         * Returns the unique identifier of the engine.
-         */
-        const QString* uid();
 
         ActionProvider* actions()
         {

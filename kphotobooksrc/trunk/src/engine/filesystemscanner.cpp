@@ -397,7 +397,7 @@ void FileSystemScanner::readEXIF(File* file)
 //                tracer->sdebug(__func__) << "    - " << title << " / " << name << " = " << data << " (" << description << ")" << endl;
 
                 // get the exif tagnode title and the tagnode representing this tag from the engine
-                TagNode* exifTagNodeTitle = m_engine->getExifTagNodeTitle();
+                TagNode* exifTagNodeTitle = m_engine->exifTagNodeTitle();
                 TagNode* exifTagNodeEntry = exifTagNodeTitle->child(title);
 
                 switch (exifTagType) {

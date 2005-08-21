@@ -164,7 +164,7 @@ KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode) :
     init();
 
     // add the tagNodes to the tagtree (an EMPTY engine also can have tags!)
-    m_tagTree->addTagNodes(tagForest());
+    m_tagTree->addTagNodes(m_engine->tagForest());
 
     // apply the saved mainwindow settings, if any, and ask the mainwindow
     // to automatically save settings if changed: window size, toolbar
@@ -220,34 +220,6 @@ void KPhotoBook::init()
 }
 
 
-QString KPhotoBook::currentURL()
-{
-    if (m_engine && m_engine->fileinfo()) {
-        return m_engine->fileinfo()->absFilePath();
-    } else {
-        return "";
-    }
-}
-
-
-QPtrList<SourceDir>* KPhotoBook::sourceDirs()
-{
-    return m_engine->sourceDirs();
-}
-
-
-QPtrList<TagNode>* KPhotoBook::tagForest()
-{
-    return m_engine->tagForest();
-}
-
-
-TagNodeTitle* KPhotoBook::getExifTagNodeTitle()
-{
-    return m_engine->getExifTagNodeTitle();
-}
-
-
 void KPhotoBook::dirtyfy()
 {
     m_engine->dirtyfy();
@@ -294,7 +266,7 @@ void KPhotoBook::load(QFileInfo& fileinfo)
 
         // set the new angine as current engine
         m_engine = newEngine;
-        Settings::setFileSystemLastOpenedFile(currentURL());
+        Settings::setFileSystemLastOpenedFile(m_engine->currentURL());
 
         updateState();
 
@@ -306,7 +278,7 @@ void KPhotoBook::load(QFileInfo& fileinfo)
         m_tagTree->clear();
 
         // add the tagNodes to the tagtree
-        m_tagTree->addTagNodes(tagForest());
+        m_tagTree->addTagNodes(m_engine->tagForest());
 
         // add the sourcedirectories to the tagtree
         m_sourcedirTree->clear();
@@ -364,12 +336,6 @@ QPtrList<File>* KPhotoBook::files(FilterNode *filterRootNode)
 }
 
 
-const QString* KPhotoBook::uid()
-{
-    return m_engine->uid();
-}
-
-
 //
 // protected
 //
@@ -381,7 +347,6 @@ bool KPhotoBook::queryClose()
     bool retval = true;
 
     // store the configuration
-    m_view->storeConfiguration();
 
     // we have to store the properties which aren't handled magically by framework (stringlist)
     QStringList stringList;
@@ -430,6 +395,7 @@ bool KPhotoBook::queryClose()
     if (m_engine->uid()) {
         storeTreeState();
         storeFilter();
+        m_view->storeConfiguration();
     }
 
     // check for untaged images
@@ -438,7 +404,7 @@ bool KPhotoBook::queryClose()
     }
 
     // store the data if necessary
-    if (m_engine && m_engine->dirty()) {
+    if (m_engine->dirty()) {
 
         // show save, discard, abort dialog
         QString fileName = QString("");
@@ -572,7 +538,7 @@ void KPhotoBook::slotFileOpen(const KURL& url)
     // if it is called by openRecent Action, url contains the url to load
 
     // store the data if necessary
-    if (m_engine && m_engine->dirty()) {
+    if (m_engine->dirty()) {
         // show save, discard, abort dialog
         QString fileName = QString("");
         if (m_engine->uid()) {
@@ -653,19 +619,17 @@ bool KPhotoBook::slotFileSave()
     bool fileSaved = false;
 
     // save the current file
-    if (m_engine) {
-        if (m_engine->alreadySavedOnce()) {
-            try {
-                m_engine->save();
-                fileSaved = true;
-            } catch(PersistingException* ex) {
-                KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
-                ///@todo it's very strange, but the application crashes if I delete the exception!!!
-                //delete ex;
-            }
-        } else {
-            return slotFileSaveAs();
+    if (m_engine->alreadySavedOnce()) {
+        try {
+            m_engine->save();
+            fileSaved = true;
+        } catch(PersistingException* ex) {
+            KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
+            ///@todo it's very strange, but the application crashes if I delete the exception!!!
+            //delete ex;
         }
+    } else {
+        return slotFileSaveAs();
     }
 
     updateState();
@@ -699,7 +663,7 @@ bool KPhotoBook::slotFileSaveAs()
             // save your info, here
             try {
                 m_engine->saveAs(newFile);
-                Settings::setFileSystemLastOpenedFile(currentURL());
+                Settings::setFileSystemLastOpenedFile(m_engine->currentURL());
                 fileSaved = true;
             } catch(PersistingException* ex) {
                 KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
@@ -1534,7 +1498,7 @@ void KPhotoBook::updateState()
     m_actions->m_save->setEnabled(m_engine->dirty());
 
     // display the opened file in the caption
-    setCaption(currentURL(), m_engine->dirty());
+    setCaption(m_engine->currentURL(), m_engine->dirty());
 
     // update the statusbar
     updateStatusBar();
