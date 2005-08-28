@@ -165,6 +165,7 @@ KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode) :
 
     // add the tagNodes to the tagtree (an EMPTY engine also can have tags!)
     m_tagTree->addTagNodes(m_engine->tagForest());
+    connect(m_engine, SIGNAL(newTagNode(TagNode*)), m_tagTree, SLOT(slotAddTagNode(TagNode*)));
 
     // apply the saved mainwindow settings, if any, and ask the mainwindow
     // to automatically save settings if changed: window size, toolbar
@@ -264,7 +265,7 @@ void KPhotoBook::load(QFileInfo& fileinfo)
         // delete current engine
         delete m_engine;
 
-        // set the new angine as current engine
+        // set the new engine as current engine
         m_engine = newEngine;
         Settings::setFileSystemLastOpenedFile(m_engine->currentURL());
 
@@ -279,6 +280,7 @@ void KPhotoBook::load(QFileInfo& fileinfo)
 
         // add the tagNodes to the tagtree
         m_tagTree->addTagNodes(m_engine->tagForest());
+        connect(m_engine, SIGNAL(newTagNode(TagNode*)), m_tagTree, SLOT(slotAddTagNode(TagNode*)));
 
         // add the sourcedirectories to the tagtree
         m_sourcedirTree->clear();
@@ -853,9 +855,6 @@ void KPhotoBook::slotAddMaintag()
         // let the engine create the new tagnode
         TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon());
         newTagNode->setSecret(dialog->tagSecret());
-
-        // add the new tagnode to the tagnodetree
-        m_tagTree->addTagNode(newTagNode);
     }
     delete dialog;
 }
@@ -883,11 +882,7 @@ void KPhotoBook::slotCreateSubtag()
         tracer->sdebug(__func__) << "Dialog exited with OK, type: " << dialog->tagType() << ", name: " << dialog->tagName() << ", icon: " << dialog->tagIcon() << endl;
 
         // let the engine create the new tagnode
-        TagNode* newTagNode = createTag(dialog->tagType(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon(), parent->tagNode());
-
-        // add the new tagnode to the tagnodetree
-        m_tagTree->addTagNode(parent, newTagNode);
-        parent->setOpen(true);
+        createTag(dialog->tagType(), dialog->tagName(), dialog->tagComment(), dialog->tagIcon(), parent->tagNode());
     }
     delete dialog;
 }
@@ -1436,6 +1431,7 @@ void KPhotoBook::setupToolWindowTagTree()
     m_actions->m_toggleLockUnlockTagging->plug(m_tagTreeToolBar);
 
     m_tagTree = new TagTree(tagTreePanel, this, "tagtree");
+    
 
     // set the icon
     QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, 16, true);

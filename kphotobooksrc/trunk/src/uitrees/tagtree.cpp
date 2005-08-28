@@ -153,80 +153,6 @@ void TagTree::addTagNodes(QPtrList<TagNode>* rootNodeList)
 }
 
 
-void TagTree::addTagNode(TagNode* rootNode)
-{
-    tracer->sdebug(__func__) << "Converting subtree with root node: " << *rootNode->text() << "..." << endl;
-
-    TagTreeNode* tagTreeNode = 0;
-
-    // create the concrete tagtreenode
-    if (typeid(*rootNode) == typeid(TagNodeTitle)) {
-        TagNodeTitle* node = dynamic_cast<TagNodeTitle*>(rootNode);
-        tagTreeNode = new TagTreeNodeTitle(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
-    } else if (typeid(*rootNode) == typeid(TagNodeBoolean)) {
-        TagNodeBoolean* node = dynamic_cast<TagNodeBoolean*>(rootNode);
-        tagTreeNode = new TagTreeNodeBoolean(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
-    } else if (typeid(*rootNode) == typeid(TagNodeString)) {
-        TagNodeString* node = dynamic_cast<TagNodeString*>(rootNode);
-        tagTreeNode = new TagTreeNodeString(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
-    } else if (typeid(*rootNode) == typeid(TagNodeRadioGroup)) {
-        TagNodeRadioGroup* node = dynamic_cast<TagNodeRadioGroup*>(rootNode);
-        tagTreeNode = new TagTreeNodeRadioGroup(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
-    } else if (typeid(*rootNode) == typeid(TagNodeRadio)) {
-        TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(rootNode);
-        tagTreeNode = new TagTreeNodeRadio(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
-    } else if (typeid(*rootNode) == typeid(TagNodeDateTime)) {
-        TagNodeDateTime* node = dynamic_cast<TagNodeDateTime*>(rootNode);
-        tagTreeNode = new TagTreeNodeDateTime(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
-    } else {
-        tracer->swarning(__func__) << "unknown root tagtype received: " << rootNode->type() << "!"<< endl;
-    }
-
-    // remember the exif title tagnode
-    if (m_photobook->engine()->exifTagNodeTitle() == tagTreeNode->tagNode()) {
-        tracer->sdebug(__func__) << "exif title tag found: " << tagTreeNode->text(0) << endl;
-        m_exifTagTreeNode = tagTreeNode;
-    }
-    
-    // build the whole tree
-    buildTagNodeTree(tagTreeNode, rootNode->children());
-}
-
-
-void TagTree::addTagNode(TagTreeNode* parent, TagNode* child)
-{
-    tracer->sdebug(__func__) << "Converting node: " << *child->text() << "..." << endl;
-
-    TagTreeNode* tagTreeNode = 0;
-
-    // create the concrete tagtreenode
-    if (typeid(*child) == typeid(TagNodeTitle)) {
-        TagNodeTitle* node = dynamic_cast<TagNodeTitle*>(child);
-        tagTreeNode = new TagTreeNodeTitle(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
-    } else if (typeid(*child) == typeid(TagNodeBoolean)) {
-        TagNodeBoolean* node = dynamic_cast<TagNodeBoolean*>(child);
-        tagTreeNode = new TagTreeNodeBoolean(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
-    } else if (typeid(*child) == typeid(TagNodeString)) {
-        TagNodeString* node = dynamic_cast<TagNodeString*>(child);
-        tagTreeNode = new TagTreeNodeString(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
-    } else if (typeid(*child) == typeid(TagNodeRadioGroup)) {
-        TagNodeRadioGroup* node = dynamic_cast<TagNodeRadioGroup*>(child);
-        tagTreeNode = new TagTreeNodeRadioGroup(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
-    } else if (typeid(*child) == typeid(TagNodeRadio)) {
-        TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(child);
-        tagTreeNode = new TagTreeNodeRadio(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
-    } else if (typeid(*child) == typeid(TagNodeDateTime)) {
-        TagNodeDateTime* node = dynamic_cast<TagNodeDateTime*>(child);
-        tagTreeNode = new TagTreeNodeDateTime(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
-    } else {
-        tracer->swarning(__func__) << "unknown sub tagtype received: " << child->type() << "!"<< endl;
-    }
-
-    // build the whole tree
-    buildTagNodeTree(tagTreeNode, child->children());
-}
-
-
 void TagTree::deselectFilter()
 {
     QListViewItemIterator it(this);
@@ -362,6 +288,44 @@ void TagTree::slotLoadSettings()
 }
 
 
+void TagTree::slotAddTagNode(TagNode* tagNode)
+{
+    if (!tagNode) {
+        tracer->swarning(__func__) << "called with 0!" << endl;
+        return;
+    }
+
+    if (tagNode->parent()) {
+        // find the TagTreeNode for the parentTagNode of the given tagNode
+        TagTreeNode* parentTagTreeNode = 0;
+        
+        // loop over *all* nodes in the tree
+        QListViewItemIterator it(this);
+        while (it.current()) {
+            TagTreeNode* node = dynamic_cast<TagTreeNode*>(it.current());
+            if (node->tagNode() == tagNode->parent()) {
+                parentTagTreeNode = node;
+                break;
+            }
+            ++it;
+        }
+
+        // parent tagtreenode not found... abort
+        if (!parentTagTreeNode) {
+            tracer->swarning(__func__) << "parent TagTreeNode not found!" << endl;
+            return;
+        }
+
+        // add the given tagnode as child to ots parent...
+        addTagNode(parentTagTreeNode, tagNode);
+        parentTagTreeNode->setOpen(true);
+    } else {
+        // this is a root node...
+        addTagNode(tagNode);
+    }
+}
+
+
 //
 // protected slots
 //
@@ -441,6 +405,80 @@ void TagTree::slotItemRenamed(QListViewItem* item, int column, const QString& te
 //
 // private
 //
+void TagTree::addTagNode(TagNode* rootNode)
+{
+    tracer->sdebug(__func__) << "Converting subtree with root node: " << *rootNode->text() << "..." << endl;
+
+    TagTreeNode* tagTreeNode = 0;
+
+    // create the concrete tagtreenode
+    if (typeid(*rootNode) == typeid(TagNodeTitle)) {
+        TagNodeTitle* node = dynamic_cast<TagNodeTitle*>(rootNode);
+        tagTreeNode = new TagTreeNodeTitle(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
+    } else if (typeid(*rootNode) == typeid(TagNodeBoolean)) {
+        TagNodeBoolean* node = dynamic_cast<TagNodeBoolean*>(rootNode);
+        tagTreeNode = new TagTreeNodeBoolean(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
+    } else if (typeid(*rootNode) == typeid(TagNodeString)) {
+        TagNodeString* node = dynamic_cast<TagNodeString*>(rootNode);
+        tagTreeNode = new TagTreeNodeString(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
+    } else if (typeid(*rootNode) == typeid(TagNodeRadioGroup)) {
+        TagNodeRadioGroup* node = dynamic_cast<TagNodeRadioGroup*>(rootNode);
+        tagTreeNode = new TagTreeNodeRadioGroup(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
+    } else if (typeid(*rootNode) == typeid(TagNodeRadio)) {
+        TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(rootNode);
+        tagTreeNode = new TagTreeNodeRadio(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
+    } else if (typeid(*rootNode) == typeid(TagNodeDateTime)) {
+        TagNodeDateTime* node = dynamic_cast<TagNodeDateTime*>(rootNode);
+        tagTreeNode = new TagTreeNodeDateTime(this, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
+    } else {
+        tracer->swarning(__func__) << "unknown root tagtype received: " << rootNode->type() << "!"<< endl;
+    }
+
+    // remember the exif title tagnode
+    if (m_photobook->engine()->exifTagNodeTitle() == tagTreeNode->tagNode()) {
+        tracer->sdebug(__func__) << "exif title tag found: " << tagTreeNode->text(0) << endl;
+        m_exifTagTreeNode = tagTreeNode;
+    }
+    
+    // build the whole tree
+    buildTagNodeTree(tagTreeNode, rootNode->children());
+}
+
+
+void TagTree::addTagNode(TagTreeNode* parent, TagNode* child)
+{
+    tracer->sdebug(__func__) << "Converting node: " << *child->text() << "..." << endl;
+
+    TagTreeNode* tagTreeNode = 0;
+
+    // create the concrete tagtreenode
+    if (typeid(*child) == typeid(TagNodeTitle)) {
+        TagNodeTitle* node = dynamic_cast<TagNodeTitle*>(child);
+        tagTreeNode = new TagTreeNodeTitle(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
+    } else if (typeid(*child) == typeid(TagNodeBoolean)) {
+        TagNodeBoolean* node = dynamic_cast<TagNodeBoolean*>(child);
+        tagTreeNode = new TagTreeNodeBoolean(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
+    } else if (typeid(*child) == typeid(TagNodeString)) {
+        TagNodeString* node = dynamic_cast<TagNodeString*>(child);
+        tagTreeNode = new TagTreeNodeString(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
+    } else if (typeid(*child) == typeid(TagNodeRadioGroup)) {
+        TagNodeRadioGroup* node = dynamic_cast<TagNodeRadioGroup*>(child);
+        tagTreeNode = new TagTreeNodeRadioGroup(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItem());
+    } else if (typeid(*child) == typeid(TagNodeRadio)) {
+        TagNodeRadio* node = dynamic_cast<TagNodeRadio*>(child);
+        tagTreeNode = new TagTreeNodeRadio(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
+    } else if (typeid(*child) == typeid(TagNodeDateTime)) {
+        TagNodeDateTime* node = dynamic_cast<TagNodeDateTime*>(child);
+        tagTreeNode = new TagTreeNodeDateTime(parent, node, m_photobook, m_photobook->menus()->contextMenuTagTreeItemLeaf());
+    } else {
+        tracer->swarning(__func__) << "unknown sub tagtype received: " << child->type() << "!"<< endl;
+    }
+
+    // build the whole tree
+    buildTagNodeTree(tagTreeNode, child->children());
+}
+
+
 void TagTree::buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children)
 {
     // test if there are children

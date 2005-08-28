@@ -89,8 +89,6 @@ class TagTree : public KListView
         void collapseAll();
     
         void addTagNodes(QPtrList<TagNode>* rootNodeList);
-        void addTagNode(TagNode* rootNode);
-        void addTagNode(TagTreeNode* parent, TagNode* child);
     
         void deselectFilter();
         void resetFilter();
@@ -132,6 +130,7 @@ class TagTree : public KListView
     
     public slots:
         void slotLoadSettings();
+        void slotAddTagNode(TagNode* tagNode);
     
     protected:
         void keyPressEvent(QKeyEvent* e);
@@ -144,6 +143,8 @@ class TagTree : public KListView
         void slotItemRenamed(QListViewItem* item, int col, const QString& text);
     
     private:
+        void addTagNode(TagNode* rootNode);
+        void addTagNode(TagTreeNode* parent, TagNode* child);
         void buildTagNodeTree(TagTreeNode* parent, QPtrList<TagNode>* children);
     
         KPhotoBook* m_photobook;

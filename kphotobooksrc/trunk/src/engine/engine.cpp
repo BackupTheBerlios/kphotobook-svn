@@ -193,6 +193,8 @@ TagNode* Engine::createTag(TagNode* parent, TagNode::Type type, const QString& t
 
     m_dirty = true;
 
+    emit(newTagNode(tagNode));
+    
     return tagNode;
 }
 
