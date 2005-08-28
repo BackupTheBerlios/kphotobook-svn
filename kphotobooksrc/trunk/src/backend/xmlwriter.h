@@ -30,7 +30,7 @@
 
 class Engine;
 class File;
-class SourceDir;
+class Folder;
 class TagNode;
 class FileTagNodeAssoc;
 class QTextStream;
@@ -62,9 +62,9 @@ class XmlWriter : public XmlConstants
     private:
         Engine* m_engine;
     
-        void dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent);
+        void dumpSourceDirs(QTextStream& stream, Folder* sourceDir, QString indent);
         void dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent);
-        void dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent);
+        void dumpFiles(QTextStream& stream, Folder* sourceDir, QString indent);
         void dumpFile(QTextStream& stream, File* file, QString indent);
         void dumpAssoc(QTextStream& stream, FileTagNodeAssoc* assoc, QString indent);
     

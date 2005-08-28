@@ -30,7 +30,7 @@
 #include "engine/file.h"
 #include "engine/filternodeopand.h"
 #include "engine/filternodeopor.h"
-#include "engine/sourcedir.h"
+#include "engine/folder.h"
 #include "engine/tagnode.h"
 #include "export/exportsymlinks.h"
 #include "import/imageimporter.h"
@@ -285,6 +285,7 @@ void KPhotoBook::load(QFileInfo& fileinfo)
         // add the sourcedirectories to the tagtree
         m_sourcedirTree->clear();
         m_sourcedirTree->addSourceDirs(m_engine->sourceDirs());
+        connect(m_engine, SIGNAL(newFolder(Folder*)), m_sourcedirTree, SLOT(slotAddFolder(Folder*)));
 
         // restore the tree states
         loadTreeState();
@@ -771,22 +772,23 @@ void KPhotoBook::slotAddSourcedir()
         tracer->sdebug(__func__) << "Dialog exited with OK, dir: " << dialog->directory()->absPath() << ", recursive: " << dialog->recursive() << endl;
 
         try {
-            // add the sourcedir to the engine
-            SourceDir* sourceDir = addSourceDir(dialog->directory(), dialog->recursive());
+            // add the folder to the engine
+            addSourceDir(dialog->directory(), dialog->recursive());
 
-            tracer->debug(__func__, "New sourcedirectory is ok. adding it to the view...");
-            m_sourcedirTree->addSourceDir(sourceDir);
+            ///@TODO remove...
+//            tracer->debug(__func__, "New folder is ok. adding it to the view...");
+//            m_sourcedirTree->addSourceDir(sourceDir);
 
             // update the view to display the new found files
             tracer->debug(__func__, "updating fileview");
             m_view->updateFiles();
 
-            // sourcedir added successfully
+            // folder added successfully
             newDirIsOk = true;
         } catch(EngineException* ex) {
-            tracer->serror(__func__) << "adding chosen sourcedir failed, dir: " << dialog->directory()->absPath() << ", recursive: " << dialog->recursive() << endl;
+            tracer->serror(__func__) << "adding chosen folder failed, dir: " << dialog->directory()->absPath() << ", recursive: " << dialog->recursive() << endl;
 
-            KMessageBox::detailedError(dialog, ex->message(), ex->detailMessage(), i18n("Adding sourcedir failed"));
+            KMessageBox::detailedError(dialog, ex->message(), ex->detailMessage(), i18n("Adding folder failed"));
 
             ///@todo it's very strange, but the application crashes if I delete the exception!!!
             //delete ex;
@@ -814,15 +816,15 @@ void KPhotoBook::slotRemoveSourceDir()
     SourceDirTreeNode* currentNode = m_sourcedirTree->selectedSourceDir();
 
     // show a dialog to the user
-    QString msg = QString(i18n("Do you want to remove the source directory?\n%1")).arg(currentNode->sourceDir()->dir()->absPath());
+    QString msg = QString(i18n("Do you want to remove the folder from the database?\n%1")).arg(currentNode->sourceDir()->dir()->absPath());
     int button = KMessageBox::questionYesNo(
         m_view,
         msg,
-        i18n("Removing source directory?")
+        i18n("Removing folder?")
     );
 
     if (button == KMessageBox::Yes) {
-        tracer->sinfo(__func__) << "Removing source directory: " << currentNode->sourceDir()->dir()->absPath() << endl;
+        tracer->sinfo(__func__) << "Removing folder: " << currentNode->sourceDir()->dir()->absPath() << endl;
 
         // remove all items from the view without deleting them
         m_view->removeAllFiles();
@@ -830,10 +832,10 @@ void KPhotoBook::slotRemoveSourceDir()
         // force clearing the view (to avoid a crash of the application)
         m_view->fileView()->clearView();
 
-        // remove the sourcedir from the engine
+        // remove the folder from the engine
         removeSourceDir(currentNode->sourceDir());
 
-        // remove the sourcedir from the view
+        // remove the folder from the view
         m_sourcedirTree->removeSourceDir(currentNode);
 
         // update the shown files
@@ -985,7 +987,7 @@ void KPhotoBook::slotRescanFilesystem()
 
     m_engine->fileSystemScanner()->rescan();
 
-    // add the sourcedirectories to the tagtree
+    // add the folder to the tagtree
     m_sourcedirTree->clear();
     m_sourcedirTree->addSourceDirs(m_engine->sourceDirs());
 
@@ -1516,16 +1518,16 @@ void KPhotoBook::updateStatusBar()
 }
 
 
-SourceDir* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*)
+Folder* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*)
 {
-    SourceDir* newSourceDir = m_engine->fileSystemScanner()->addSourceFolder(sourceDir, recursive);
+    Folder* newSourceDir = m_engine->fileSystemScanner()->addSourceFolder(sourceDir, recursive);
 
     updateState();
     return newSourceDir;
 }
 
 
-void KPhotoBook::removeSourceDir(SourceDir* sourceDir)
+void KPhotoBook::removeSourceDir(Folder* sourceDir)
 {
     m_engine->fileSystemScanner()->removeSourceFolder(sourceDir);
 

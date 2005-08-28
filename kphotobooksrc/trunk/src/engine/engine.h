@@ -36,13 +36,13 @@
 #include <qptrlist.h>
 #include <qstring.h>
 
-class SourceDir;
+class Folder;
 class File;
 class TagNode;
 
 
 /**
- * The engine managing all sourcedirs, tags and files/images.
+ * The engine managing all folders, tags and files/images.
  *
  * CVS-ID $Id$
  */
@@ -127,7 +127,7 @@ class Engine : public QObject
         /**
         * Returns all currently added source directories handled by this engine.
         */
-        QPtrList<SourceDir>* sourceDirs()
+        QPtrList<Folder>* sourceDirs()
         {
             return m_sourceDirs;
         }
@@ -183,6 +183,7 @@ class Engine : public QObject
 
     signals:
         void newTagNode(TagNode*);
+        void newFolder(Folder*);
     
     private:
         /**
@@ -218,12 +219,12 @@ class Engine : public QObject
         * This dictionary contains the id of the sourcedir as key and
         * the sourceDir-object as value.
         */
-        QIntDict<SourceDir>* m_sourceDirDict;
+        QIntDict<Folder>* m_sourceDirDict;
     
         /**
         * This list contains all sourcedirectories.
         */
-        QPtrList<SourceDir>* m_sourceDirs;
+        QPtrList<Folder>* m_sourceDirs;
     
         //
         // tagnode members

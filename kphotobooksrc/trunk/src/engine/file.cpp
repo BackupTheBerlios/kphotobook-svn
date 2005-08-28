@@ -21,7 +21,7 @@
 #include "file.h"
 
 #include "engine.h"
-#include "sourcedir.h"
+#include "folder.h"
 #include "tagnode.h"
 #include "filetagnodeassoc.h"
 
@@ -29,7 +29,7 @@
 Tracer* File::tracer = Tracer::getInstance("kde.kphotobook.engine", "File");
 
 
-File::File(Engine* engine, SourceDir* sourceDir, QFileInfo* fileInfo, int rotate) :
+File::File(Engine* engine, Folder* sourceDir, QFileInfo* fileInfo, int rotate) :
     KFileItem(KFileItem::Unknown, KFileItem::Unknown, QString("file:%1").arg(fileInfo->absFilePath())),
     m_engine(engine),
     m_sourceDir(sourceDir),

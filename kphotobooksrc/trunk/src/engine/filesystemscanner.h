@@ -29,7 +29,7 @@
 
 class Engine;
 class File;
-class SourceDir;
+class Folder;
 
 
 /**
@@ -66,12 +66,12 @@ class FileSystemScanner
         * If recursive is true, all folders below the given folder are added too.
         * If the sourcefolder cannot be added, an EngineException is thrown.
         */
-        SourceDir* addSourceFolder(QDir* folder, bool recursive) throw(EngineException*);
+        Folder* addSourceFolder(QDir* folder, bool recursive) throw(EngineException*);
     
         /**
         * Removes the specified sourceFolder and deletes all files and associations below this sourceFolder.
         */
-        void removeSourceFolder(SourceDir* sourceFolder);
+        void removeSourceFolder(Folder* sourceFolder);
 
         /**
          * Tests if the given folder is addable. If it is not addable an exception with an
@@ -80,9 +80,9 @@ class FileSystemScanner
         void testIfFolderIsAddable(QDir* folder, bool recursive) throw(EngineException*);
 
     private:
-        void rescanSourceFolders(QPtrList<SourceDir>* sourceDirs, bool forceEXIF);
-        void rescanSourceFolder(SourceDir* sourceDir, bool forceEXIF);
-        void addSourceFolders(SourceDir* parent);
+        void rescanSourceFolders(QPtrList<Folder>* sourceDirs, bool forceEXIF);
+        void rescanSourceFolder(Folder* sourceDir, bool forceEXIF);
+        void addSourceFolders(Folder* parent);
         void readEXIF(File* file);
         QDateTime readExifDateTime(const QString& data);
 

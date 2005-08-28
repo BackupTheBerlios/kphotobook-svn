@@ -35,7 +35,7 @@
 
 class File;
 class KPhotoBook;
-class SourceDir;
+class Folder;
 class SourceDirTreeNode;
 
 
@@ -75,8 +75,7 @@ class SourceDirTree : public KListView
         void excludeAllSourceDirs();
         void invertAllSourceDirs();
     
-        void addSourceDirs(QPtrList<SourceDir>* rootNodeList);
-        void addSourceDir(SourceDir* rootNode);
+        void addSourceDirs(QPtrList<Folder>* rootNodeList);
         void removeSourceDir(SourceDirTreeNode* node);
     
         void reflectSelectedFiles(const KFileItemList* selectedFiles);
@@ -115,13 +114,15 @@ class SourceDirTree : public KListView
     
     public slots:
         void slotLoadSettings();
+        void slotAddFolder(Folder* folder);
     
     private slots:
         void slotListViewClicked(int button, QListViewItem* item, const QPoint& point, int column);
         void slotListViewDoubleClicked(QListViewItem* item, const QPoint& point, int column);
     
     private:
-        void buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<SourceDir>* children);
+        void addSourceDir(Folder* rootNode);
+        void buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<Folder>* children);
     
         KPhotoBook* m_photobook;
     

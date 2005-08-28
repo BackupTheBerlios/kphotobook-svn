@@ -23,7 +23,7 @@
 #include "file.h"
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocboolean.h"
-#include "sourcedir.h"
+#include "folder.h"
 #include "tagnode.h"
 #include "tagnodeboolean.h"
 #include "tagnodetitle.h"
@@ -56,8 +56,8 @@ Engine::Engine() :
     m_fileSystemScanner(new FileSystemScanner(this)),
     
     m_nextSourceDirId(1),
-    m_sourceDirDict(new QIntDict<SourceDir>()),
-    m_sourceDirs(new QPtrList<SourceDir>()),
+    m_sourceDirDict(new QIntDict<Folder>()),
+    m_sourceDirs(new QPtrList<Folder>()),
     
     m_nextTagNodeId(1),
     m_tagNodeDict(new QIntDict<TagNode>()),
@@ -83,8 +83,8 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*) :
     m_fileSystemScanner(new FileSystemScanner(this)),
     
     m_nextSourceDirId(1),
-    m_sourceDirDict(new QIntDict<SourceDir>()),
-    m_sourceDirs(new QPtrList<SourceDir>()),
+    m_sourceDirDict(new QIntDict<Folder>()),
+    m_sourceDirs(new QPtrList<Folder>()),
     
     m_nextTagNodeId(1),
     m_tagNodeDict(new QIntDict<TagNode>()),
@@ -278,9 +278,9 @@ QPtrList<File>* Engine::files(FilterNode* filterRootNode)
     m_fileList2display->clear();
 
     // loop over all source directories
-    QIntDictIterator<SourceDir> sourceDirIt(*m_sourceDirDict);
+    QIntDictIterator<Folder> sourceDirIt(*m_sourceDirDict);
     for ( ; sourceDirIt.current(); ++sourceDirIt ) {
-        SourceDir* sourceDir = sourceDirIt.current();
+        Folder* sourceDir = sourceDirIt.current();
 
         // handle the files in this directory only if it is selected
         if (sourceDir->include()) {

@@ -30,7 +30,7 @@
 
 class Engine;
 class FileTagNodeAssoc;
-class SourceDir;
+class Folder;
 class TagNode;
 
 
@@ -51,14 +51,14 @@ class File : public KFileItem
         *
         * The parameter fileInfo must not be null! If it is, a NullPointer occurs.
         */
-        File(Engine* engine, SourceDir* sourceDir, QFileInfo* fileInfo, int rotate = 0);
+        File(Engine* engine, Folder* sourceDir, QFileInfo* fileInfo, int rotate = 0);
     
         ~File();
     
         /**
-        * Return the sourcedir this file belongs to.
+        * Return the folder this file belongs to.
         */
-        SourceDir* sourceDir()
+        Folder* sourceDir()
         {
             return m_sourceDir;
         }
@@ -120,9 +120,9 @@ class File : public KFileItem
         Engine* m_engine;
     
         /**
-        * The sourcedir we belong too.
+        * The folder we belong too.
         */
-        SourceDir* m_sourceDir;
+        Folder* m_sourceDir;
     
         /**
         * The represented file.

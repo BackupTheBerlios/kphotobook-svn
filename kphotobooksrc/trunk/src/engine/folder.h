@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SOURCEDIR_H
-#define SOURCEDIR_H
+#ifndef FOLDER_H
+#define FOLDER_H
 
 #include "../tracer/tracer.h"
 
@@ -31,11 +31,11 @@ class File;
 
 
 /**
- * Represents a sourcedirectory.
+ * Represents a folder added to the database.
  *
  * CVS-ID $Id$
  */
-class SourceDir : public QObject
+class Folder : public QObject
 {
     Q_OBJECT
 
@@ -43,60 +43,73 @@ class SourceDir : public QObject
         static Tracer* tracer;
     
     public:
-        SourceDir(unsigned int id, QDir* dir, bool recursive);
+        Folder(unsigned int id, QDir* dir, bool recursive);
     
-        ~SourceDir();
+        ~Folder();
     
-        void setParent(SourceDir* parent);
+        void setParent(Folder* parent);
     
-        SourceDir* parent() {
+        Folder* parent()
+        {
             return m_parent;
         }
     
-        QPtrList<SourceDir>* children() {
+        QPtrList<Folder>* children()
+        {
             return m_children;
         }
     
-        unsigned int id() {
+        unsigned int id()
+        {
             return m_id;
         }
     
-        QDir* dir() {
+        QDir* dir()
+        {
             return m_dir;
         }
     
-        bool recursive() {
+        bool recursive()
+        {
             return m_recursive;
         }
     
-        void setFound(bool found) {
+        void setFound(bool found)
+        {
             m_found = found;
         }
-        bool found() {
+        bool found()
+        {
             return m_found;
         }
     
-        void appendFile(File* file) {
+        void appendFile(File* file)
+        {
             m_files->append(file);
         }
-        QPtrList<File>* files() {
+        QPtrList<File>* files()
+        {
             return m_files;
         }
-        void removeFile(File* file) {
+        void removeFile(File* file)
+        {
             if (!m_deleteInProgress) {
                 m_files->remove(file);
             }
         }
     
-        void setInclude(bool include) {
+        void setInclude(bool include)
+        {
             m_include = include;
         }
-        bool include() {
+        bool include()
+        {
             return m_include;
         }
     
-        QString toString() {
-            return QString("id: %1, dir: >%2<, recursive: %3").arg(m_id).arg(m_dir->absPath()).arg(m_recursive);
+        QString toString()
+        {
+            return QString("id: %1, folder: >%2<, recursive: %3").arg(m_id).arg(m_dir->absPath()).arg(m_recursive);
         }
     
     signals:
@@ -112,46 +125,46 @@ class SourceDir : public QObject
         bool m_deleteInProgress;
     
         /**
-        * The unique id of this sourcedirectory.
+        * The unique id of this folder.
         */
         unsigned int m_id;
     
         /**
-        * The directory representing this sourcedirectory.
+        * The directory representing this folder.
         */
         QDir* m_dir;
     
         /**
-        * True if the files in the subdirectories of m_dir belong to this
-        * sourcedirectory too.
+        * True if the files in the subfolders of m_dir belong to this
+        * folder too.
         */
         bool m_recursive;
     
         /**
-        * Indicactes if this sourcedir existed while startup oder the last rescan
+        * Indicactes if this folder existed while startup oder the last rescan
         * of the filesystem;
         */
         bool m_found;
     
         /**
-        * The parent of this sourcedir.
-        * If the parent is not null, this sourcedir is not added be the user explicitely.
+        * The parent of this folder.
+        * If the parent is not null, this folder is not added be the user explicitely.
         * But it was added because the topmost parent was added recursively.
         */
-        SourceDir* m_parent;
+        Folder* m_parent;
     
         /**
         * The list of all implicitely added subdirectories.
         */
-        QPtrList<SourceDir>* m_children;
+        QPtrList<Folder>* m_children;
     
         /**
-        * The list of all files in this directory.
+        * The list of all files in this folder.
         */
         QPtrList<File>* m_files;
     
         /**
-        * Determines if the files in this directory are displayed...
+        * Determines if the files in this folder are displayed...
         */
         bool m_include;
 };

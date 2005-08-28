@@ -23,7 +23,7 @@
 #include "../engine/engine.h"
 #include "../engine/file.h"
 #include "../engine/filetagnodeassoc.h"
-#include "../engine/sourcedir.h"
+#include "../engine/folder.h"
 #include "../engine/tagnode.h"
 
 #include <qfileinfo.h>
@@ -59,7 +59,7 @@ void XmlWriter::store(QFile* file2write) throw(PersistingException*)
     // dump the sourcedirs
     stream << "  <!-- source directories -->" << "\n";
     stream << "  <" << ELEMENT_SOURCEDIRS << ">" << "\n";
-    SourceDir* sourceDir;
+    Folder* sourceDir;
     for ( sourceDir = m_engine->m_sourceDirs->first(); sourceDir; sourceDir = m_engine->m_sourceDirs->next() ) {
 
         QString recursive = QString("false");
@@ -108,9 +108,9 @@ void XmlWriter::store(QFile* file2write) throw(PersistingException*)
 }
 
 
-void XmlWriter::dumpSourceDirs(QTextStream& stream, SourceDir* sourceDir, QString indent)
+void XmlWriter::dumpSourceDirs(QTextStream& stream, Folder* sourceDir, QString indent)
 {
-    SourceDir* child;
+    Folder* child;
     for ( child = sourceDir->children()->first(); child; child = sourceDir->children()->next() ) {
 
         stream << indent << "<" << ELEMENT_SOURCEDIR << " " << ATTRIBUTE_SOURCEDIR_ID << "=\"" << child->id() << "\" " << ATTRIBUTE_SOURCEDIR_DIR << "=\"" << entitize(child->dir()->absPath()) << "\"";
@@ -172,7 +172,7 @@ void XmlWriter::dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString inde
 }
 
 
-void XmlWriter::dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString indent)
+void XmlWriter::dumpFiles(QTextStream& stream, Folder* sourceDir, QString indent)
 {
     stream << indent << "<" << ELEMENT_FILES << " " << ATTRIBUTE_FILES_SOURCEDIRID << "=\"" << sourceDir->id() << "\">" << "\n";
 
@@ -187,7 +187,7 @@ void XmlWriter::dumpFiles(QTextStream& stream, SourceDir* sourceDir, QString ind
 
     // call this method recursively for all subdirectories
     if (sourceDir->children() && sourceDir->children()->count() > 0) {
-        SourceDir* child;
+        Folder* child;
         for ( child = sourceDir->children()->first(); child; child = sourceDir->children()->next() ) {
 
             dumpFiles(stream, child, indent);

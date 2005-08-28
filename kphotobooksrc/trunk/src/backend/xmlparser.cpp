@@ -26,7 +26,7 @@
 #include "../engine/filetagnodeassocdatetime.h"
 #include "../engine/filetagnodeassocradio.h"
 #include "../engine/filetagnodeassocstring.h"
-#include "../engine/sourcedir.h"
+#include "../engine/folder.h"
 #include "../engine/tagnode.h"
 #include "../engine/tagnodeboolean.h"
 #include "../engine/tagnodedatetime.h"
@@ -405,7 +405,7 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts)
     //   recursive="true"    (optional)
     // >
 
-    SourceDir* sourceDir;
+    Folder* sourceDir;
 
     // the attributes 'id' and 'dir' are mandatory and the attribute 'recursive' is optional
     if (atts.length() == 2 || atts.length() == 3) {
@@ -483,7 +483,7 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts)
         }
 
         // everything is ok --> create the sourcedir
-        sourceDir = new SourceDir(id, dir, recursive);
+        sourceDir = new Folder(id, dir, recursive);
     } else {
         m_exception = new EngineException(
             "Tag 'sourcedir' must contain the attributes 'id', 'dir' and optionally 'recursive'.", "");
@@ -491,7 +491,7 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts)
     }
 
     // check that the id of the sourcedir is not already used
-    SourceDir* conflictingSourceDir = m_engine->m_sourceDirDict->find(sourceDir->id());
+    Folder* conflictingSourceDir = m_engine->m_sourceDirDict->find(sourceDir->id());
     if (conflictingSourceDir) {
         QString msg = QString("The id (%1) of the sourcedir '%2' conflicts with the sourcedir '%3'.").arg(sourceDir->id()).arg(sourceDir->dir()->absPath()).arg(conflictingSourceDir->dir()->absPath());
         m_exception = new EngineException(msg, "");
@@ -499,7 +499,7 @@ bool XmlParser::handleSourceDir(const QXmlAttributes& atts)
     }
 
     // get the enclosing sourcedirectory from the stack
-    SourceDir* parentSourceDir = m_sourceDirstack.current();
+    Folder* parentSourceDir = m_sourceDirstack.current();
 
     if (parentSourceDir) {
         // the current sourcedir seems to be the child of another sourcedir --> link it to its parent

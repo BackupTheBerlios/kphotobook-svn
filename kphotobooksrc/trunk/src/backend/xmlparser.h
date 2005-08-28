@@ -33,7 +33,7 @@
 
 class Engine;
 class File;
-class SourceDir;
+class Folder;
 class TagNode;
 
 
@@ -103,13 +103,13 @@ class XmlParser : public QXmlDefaultHandler, public XmlConstants
         SECTION m_section;
     
         // stack containing the enclosing sourcedir tags
-        QPtrStack<SourceDir> m_sourceDirstack;
+        QPtrStack<Folder> m_sourceDirstack;
     
         // stack containing the enclosing tags
         QPtrStack<TagNode> m_tagNodeStack;
     
         // the sourcedir of the currently handled files or 0
-        SourceDir* m_currentSourceDir;
+        Folder* m_currentSourceDir;
     
         // the file currently handled or 0
         File* m_currentFile;

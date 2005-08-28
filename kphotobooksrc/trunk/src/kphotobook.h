@@ -48,7 +48,7 @@ class SettingsSourceDirTree;
 class SettingsImagePreview;
 class SettingsFileHandling;
 class SettingsTools;
-class SourceDir;
+class Folder;
 class SourceDirTree;
 class TagNode;
 class TagNodeTitle;
@@ -290,17 +290,17 @@ class KPhotoBook : public KMdiMainFrm
         bool checkForUntagged();
     
         /**
-        * Adds the specified sourcedir and all images in it to the engine.
-        * If recursive is true, all directories below the sourcedir are added too.
-        * If the sourcedir cannot be added, an EngineException is thrown.
+        * Adds the specified folder and all images in it to the engine.
+        * If recursive is true, all directories below the folder are added too.
+        * If the folder cannot be added, an EngineException is thrown.
         */
-        SourceDir* addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*);
+        Folder* addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*);
     
         /**
-        * Removes the specified sourceDir and deletes all Files and associations
-        * below this sourceDir.
+        * Removes the specified folder and deletes all Files and associations
+        * below this folder.
         */
-        void removeSourceDir(SourceDir* sourceDir);
+        void removeSourceDir(Folder* sourceDir);
     
         /**
         * Creates a new tag with the specified parameters.

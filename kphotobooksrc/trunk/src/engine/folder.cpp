@@ -18,15 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "sourcedir.h"
+#include "folder.h"
 
 #include "file.h"
 
 
-Tracer* SourceDir::tracer = Tracer::getInstance("kde.kphotobook.engine", "SourceDir");
+Tracer* Folder::tracer = Tracer::getInstance("kde.kphotobook.engine", "Folder");
 
 
-SourceDir::SourceDir(unsigned int id, QDir* dir, bool recursive) :
+Folder::Folder(unsigned int id, QDir* dir, bool recursive) :
     m_deleteInProgress(false),
     m_id(id),
     m_dir(dir),
@@ -39,20 +39,20 @@ SourceDir::SourceDir(unsigned int id, QDir* dir, bool recursive) :
 }
 
 
-SourceDir::~SourceDir()
+Folder::~Folder()
 {
-    tracer->sinvoked(__func__) << "For sourcedir '" << m_dir->absPath() << "'." << endl;
+    tracer->sinvoked(__func__) << "For folder '" << m_dir->absPath() << "'." << endl;
 
     m_deleteInProgress = true;
 
-    // remove this sourcedir from the children list of the parent
+    // remove this folder from the children list of the parent
     if (m_parent) {
         m_parent->m_children->remove(this);
         m_parent = 0;
     }
 
     // set the parent of all children to 0
-    SourceDir* child;
+    Folder* child;
     if (m_children) {
         for (child = m_children->first(); child; child = m_children->next()) {
             child->m_parent = 0;
@@ -68,10 +68,10 @@ SourceDir::~SourceDir()
 }
 
 
-void SourceDir::setParent(SourceDir* parent)
+void Folder::setParent(Folder* parent)
 {
     if (m_parent) {
-        tracer->swarning(__func__) << "SourceDir '" << this->toString() << "' already has a parent directory: '" << parent->toString() << "'." << endl;
+        tracer->swarning(__func__) << "Folder '" << this->toString() << "' already has a parent folder: '" << parent->toString() << "'." << endl;
         return;
     }
 
@@ -79,11 +79,11 @@ void SourceDir::setParent(SourceDir* parent)
 
     // initialize children pointerlist if necessary
     if (!parent->m_children) {
-        parent->m_children = new QPtrList<SourceDir>;
+        parent->m_children = new QPtrList<Folder>;
     }
 
-    // add this sourcedir as child of the parent
+    // add this folder as child of the parent
     parent->m_children->append(this);
 }
 
-#include "sourcedir.moc"
+#include "folder.moc"

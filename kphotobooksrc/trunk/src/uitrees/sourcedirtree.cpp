@@ -22,7 +22,7 @@
 
 #include "../constants.h"
 #include "../engine/file.h"
-#include "../engine/sourcedir.h"
+#include "../engine/folder.h"
 #include "../kphotobook.h"
 #include "../settings/settings.h"
 #include "../uitrees/sourcedirtreenode.h"
@@ -179,26 +179,12 @@ void SourceDirTree::invertAllSourceDirs()
 }
 
 
-void SourceDirTree::addSourceDirs(QPtrList<SourceDir>* rootNodeList)
+void SourceDirTree::addSourceDirs(QPtrList<Folder>* rootNodeList)
 {
-    SourceDir* rootNode;
+    Folder* rootNode;
     for ( rootNode = rootNodeList->first(); rootNode; rootNode = rootNodeList->next() ) {
         addSourceDir(rootNode);
     }
-}
-
-
-void SourceDirTree::addSourceDir(SourceDir* rootNode)
-{
-    tracer->sinvoked(__func__) << " with sourcedir: '" << rootNode->dir()->absPath() << "'..." << endl;
-
-    SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(this, m_photobook, rootNode, m_photobook->menus()->contextMenuSourceDir());
-
-    // insert the just created node into the dictionary
-    m_sourceDirNodeDict->insert(rootNode->id(), sourceDirTreeNode);
-
-    // build the whole tree
-    buildSourceDirTree(sourceDirTreeNode, rootNode->children());
 }
 
 
@@ -348,6 +334,18 @@ void SourceDirTree::slotLoadSettings()
 }
 
 
+void SourceDirTree::slotAddFolder(Folder* folder)
+{
+    if (!folder) {
+        tracer->swarning(__func__) << "called with 0!" << endl;
+        return;
+    }
+
+    // this is a root node...
+    addSourceDir(folder);
+}
+
+
 //
 // private slots
 //
@@ -385,7 +383,21 @@ void SourceDirTree::slotListViewClicked(int button, QListViewItem* item, __attri
 //
 // private methods
 //
-void SourceDirTree::buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<SourceDir>* children)
+void SourceDirTree::addSourceDir(Folder* rootNode)
+{
+    tracer->sinvoked(__func__) << " with folder: '" << rootNode->dir()->absPath() << "'..." << endl;
+
+    SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(this, m_photobook, rootNode, m_photobook->menus()->contextMenuSourceDir());
+
+    // insert the just created node into the dictionary
+    m_sourceDirNodeDict->insert(rootNode->id(), sourceDirTreeNode);
+
+    // build the whole tree
+    buildSourceDirTree(sourceDirTreeNode, rootNode->children());
+}
+
+
+void SourceDirTree::buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<Folder>* children)
 {
     // test if there are children
     if (!children || !children->count()) {
@@ -393,7 +405,7 @@ void SourceDirTree::buildSourceDirTree(SourceDirTreeNode* parent, QPtrList<Sourc
     }
 
     // build the subtree of this node
-    SourceDir* child;
+    Folder* child;
     for (child = children->first(); child; child = children->next() ) {
 
         SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(parent, m_photobook, child, m_photobook->menus()->contextMenuSubDir());

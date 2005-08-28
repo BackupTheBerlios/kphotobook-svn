@@ -31,11 +31,11 @@
 
 class KPhotoBook;
 class SourceDirTree;
-class SourceDir;
+class Folder;
 
 
 /**
- * Specialized KListViewItem representing a SourceDir to be used in the SourceDirTree.
+ * Specialized KListViewItem representing a Folder to be used in the SourceDirTree.
  *
  * CVS-ID $Id$
  */
@@ -49,11 +49,11 @@ class SourceDirTreeNode : public KListViewItem
         * Creates a new toplevel SourceDirTreeNode in the specified SourceDirTree.
         * @param parent The KListView to add the created SourceDirTreeNode to.
         * @param photobook The photobook.
-        * @param sourceDir The SourceDir to represent in the SourceDirTree.
+        * @param sourceDir The Folder to represent in the SourceDirTree.
         * @param contextMenu The contextMenu to display on this SourceDirTreeNode (optional). If not set, no contextMenu is shown.
         */
-        SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu = 0);
-        SourceDirTreeNode(SourceDirTreeNode* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu = 0);
+        SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, Folder* sourceDir, KPopupMenu* contextMenu = 0);
+        SourceDirTreeNode(SourceDirTreeNode* parent, KPhotoBook* photobook, Folder* sourceDir, KPopupMenu* contextMenu = 0);
     
         virtual ~SourceDirTreeNode()
         {
@@ -74,7 +74,7 @@ class SourceDirTreeNode : public KListViewItem
         * Returns the source directory represented by this SourceDirTreeNode.
         * @return The source directory represented by this SourceDirTreeNode.
         */
-        SourceDir* sourceDir() {
+        Folder* sourceDir() {
             return m_sourceDir;
         }
     
@@ -125,7 +125,7 @@ class SourceDirTreeNode : public KListViewItem
     
     private:
         KPhotoBook* m_photobook;
-        SourceDir* m_sourceDir;
+        Folder* m_sourceDir;
     
         unsigned int m_selectedFilesCount;
     

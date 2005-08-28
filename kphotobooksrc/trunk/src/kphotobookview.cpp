@@ -8,7 +8,6 @@
 #include "kphotobook.h"
 #include "engine/engine.h"
 #include "engine/file.h"
-#include "engine/sourcedir.h"
 #include "settings/settings.h"
 #include "uitrees/sourcedirtree.h"
 #include "uitrees/sourcedirtreenode.h"

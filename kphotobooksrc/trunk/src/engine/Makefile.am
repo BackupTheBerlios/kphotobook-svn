@@ -22,7 +22,7 @@ libengine_la_SOURCES = \
 	filternodetagdatetime.h filternodetagdatetime.cpp \
 	filternodetagradio.h filternodetagradio.cpp \
 	filternodetagstring.h filternodetagstring.cpp \
-	sourcedir.h sourcedir.cpp \
+	folder.h folder.cpp \
 	tagnode.h tagnode.cpp \
 	tagnodeboolean.h tagnodeboolean.cpp \
 	tagnodedatetime.h tagnodedatetime.cpp \

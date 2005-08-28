@@ -23,7 +23,7 @@
 #include "sourcedirtree.h"
 #include "treehelper.h"
 #include "../constants.h"
-#include "../engine/sourcedir.h"
+#include "../engine/folder.h"
 #include "../kphotobook.h"
 #include "../settings/settings.h"
 
@@ -40,7 +40,7 @@
 Tracer* SourceDirTreeNode::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "SourceDirTreeNode");
 
 
-SourceDirTreeNode::SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu) :
+SourceDirTreeNode::SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photobook, Folder* sourceDir, KPopupMenu* contextMenu) :
     KListViewItem(parent),
     m_photobook(photobook),
     m_sourceDir(sourceDir),
@@ -51,7 +51,7 @@ SourceDirTreeNode::SourceDirTreeNode(SourceDirTree* parent, KPhotoBook* photoboo
 }
 
 
-SourceDirTreeNode::SourceDirTreeNode(SourceDirTreeNode* parent, KPhotoBook* photobook, SourceDir* sourceDir, KPopupMenu* contextMenu) :
+SourceDirTreeNode::SourceDirTreeNode(SourceDirTreeNode* parent, KPhotoBook* photobook, Folder* sourceDir, KPopupMenu* contextMenu) :
     KListViewItem(parent),
     m_photobook(photobook),
     m_sourceDir(sourceDir),
