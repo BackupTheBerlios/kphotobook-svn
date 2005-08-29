@@ -32,6 +32,7 @@
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
 
+#include <kfileiconview.h>
 #include <kfileitem.h>
 
 

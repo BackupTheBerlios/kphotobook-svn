@@ -27,6 +27,7 @@
 #include "../kphotobookview.h"
 #include "../settings/settings.h"
 
+#include <kfileiconview.h>
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <kmessagebox.h>

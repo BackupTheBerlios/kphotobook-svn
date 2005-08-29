@@ -26,6 +26,7 @@
 #include "../kphotobook.h"
 #include "../settings/settings.h"
 #include "../uitrees/sourcedirtreenode.h"
+#include "../utils/menuprovider.h"
 
 #include <kiconloader.h>
 #include <klocale.h>

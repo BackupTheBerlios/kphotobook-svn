@@ -27,7 +27,9 @@
 #include "../engine/tagnodeboolean.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
+#include "../settings/settings.h"
 
+#include <kfileiconview.h>
 #include <kfileitem.h>
 
 

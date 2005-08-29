@@ -30,9 +30,11 @@
 #include "../engine/tagnodedatetime.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
+#include "../settings/settings.h"
 
 #include <kdatepicker.h>
 #include <kdatetimewidget.h>
+#include <kfileiconview.h>
 #include <kglobal.h>
 #include <klocale.h>
 
@@ -64,10 +66,10 @@ FilterNode* TagTreeNodeDateTime::filter()
 {
     if (m_data->getState() == DateTimeFilterData::INVALID ||
         m_data->getState() == DateTimeFilterData::NO_FILTER_SET) {
-        
+
         return 0;
     }
-    
+
     return new FilterNodeTagDateTime(static_cast<TagNodeDateTime*>(m_tagNode), m_data);
 }
 
@@ -95,7 +97,7 @@ void TagTreeNodeDateTime::resetFilter()
 QString TagTreeNodeDateTime::filterString()
 {
     tracer->invoked(__func__);
-    
+
     return m_data->marshal();
 }
 
@@ -188,7 +190,7 @@ void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, 
                 setText(TagTree::COLUMN_FILTER, m_data->toString());
                 // force redrawing of this listviewitem
                 this->repaint();
-                
+
                 m_photobook->autoRefreshView();
             }
             break;

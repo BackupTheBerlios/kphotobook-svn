@@ -30,6 +30,7 @@
 #include "../engine/tagnoderadio.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
+#include "../settings/settings.h"
 
 #include <kfileitem.h>
 

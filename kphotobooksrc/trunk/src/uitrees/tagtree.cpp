@@ -38,6 +38,7 @@
 #include "../engine/tagnodetitle.h"
 #include "../kphotobook.h"
 #include "../settings/settings.h"
+#include "../utils/menuprovider.h"
 
 #include <kiconloader.h>
 #include <klocale.h>
@@ -298,7 +299,7 @@ void TagTree::slotAddTagNode(TagNode* tagNode)
     if (tagNode->parent()) {
         // find the TagTreeNode for the parentTagNode of the given tagNode
         TagTreeNode* parentTagTreeNode = 0;
-        
+
         // loop over *all* nodes in the tree
         QListViewItemIterator it(this);
         while (it.current()) {
@@ -439,7 +440,7 @@ void TagTree::addTagNode(TagNode* rootNode)
         tracer->sdebug(__func__) << "exif title tag found: " << tagTreeNode->text(0) << endl;
         m_exifTagTreeNode = tagTreeNode;
     }
-    
+
     // build the whole tree
     buildTagNodeTree(tagTreeNode, rootNode->children());
 }

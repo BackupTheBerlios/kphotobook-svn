@@ -28,6 +28,9 @@
 #include "../engine/tagnodestring.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
+#include "../settings/settings.h"
+
+#include <kfileiconview.h>
 
 
 Tracer* TagTreeNodeString::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNodeSTring");
