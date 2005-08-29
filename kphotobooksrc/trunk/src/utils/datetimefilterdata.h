@@ -21,7 +21,7 @@
 #ifndef _DATETIMEFILTERDATA_H_
 #define _DATETIMEFILTERDATA_H_
 
-#include "../tracer/tracer.h"
+class Tracer;
 
 #include <qdatetime.h>
 #include <qobject.h>
@@ -116,7 +116,7 @@ class DateTimeFilterData : public QObject
          * Returns the state of the datetime filter dialog.
          * @see STATE for details.
          */
-        const STATE getState()
+        const STATE getState() const
         {
             return m_state;
         }
@@ -125,7 +125,7 @@ class DateTimeFilterData : public QObject
          * Returns the chosen from datetime.
          * If the state (@see getState() and @see STATE) does not say the fromdate is set, it is not defined what is returned.
          */
-        const QDateTime getDateTimeFrom()
+        const QDateTime getDateTimeFrom() const
         {
             return m_fromDateTime;
         }
@@ -134,7 +134,7 @@ class DateTimeFilterData : public QObject
          * Returns the chosen to datetime.
          * If the state (@see getState() and @see STATE) does not say the todate is set, it is not defined what is returned.
          */
-        const QDateTime getDateTimeTo()
+        const QDateTime getDateTimeTo() const
         {
             return m_toDateTime;
         }
@@ -143,7 +143,7 @@ class DateTimeFilterData : public QObject
          * Returns the regular expression a date must match.
          * If the state (@see getState() and @see STATE) does not say the pattern is set, it is not defined what is returned.
          */
-        const QString getPattern()
+        const QString getPattern() const
         {
             return m_pattern;
         }
@@ -152,13 +152,13 @@ class DateTimeFilterData : public QObject
          * Returns a string representing this filter formatted to be shown to the user.
          * I.e. the dates are formatted for the current locale.
          */
-        const QString toString();
+        const QString toString() const;
 
         /**
          * Returns a string representing the current filter containing the dates in ISO format.
          * This string can be used to instantiate a new instance of this class.
          */
-        const QString marshal();
+        const QString marshal() const;
 
     signals:
         void dataChanged();

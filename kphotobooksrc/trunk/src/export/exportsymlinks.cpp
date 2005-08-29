@@ -20,12 +20,19 @@
 
 #include "exportsymlinks.h"
 
+#include "../tracer/tracer.h"
+
 #include <kapplication.h>
+#include <kfileitem.h>
 #include <kio/renamedlg.h>
 #include <klocale.h>
 #include <kmessagebox.h>
+#include <kprogress.h>
 
 #include <qdir.h>
+#include <qstring.h>
+#include <qthread.h>
+#include <qwidget.h>
 
 #include <errno.h>
 #include <string.h>
@@ -36,10 +43,10 @@
 Tracer* ExportSymlinks::tracer = Tracer::getInstance("kde.kphotobook.exports", "ExportSymlinks");
 
 
-ExportSymlinks::ExportSymlinks(QWidget* parent, QString destinationDir) :
+ExportSymlinks::ExportSymlinks(QWidget* parent, const QString& destinationDir) :
     QObject(static_cast<QObject*>(parent), "ExportSymlinks"),
     m_parent(parent),
-    m_destinationDir(destinationDir),
+    m_destinationDir(new QString(destinationDir)),
     m_sourceFiles(0),
     m_progressDialog(0),
     m_cancelling(false),
@@ -51,6 +58,7 @@ ExportSymlinks::ExportSymlinks(QWidget* parent, QString destinationDir) :
 
 ExportSymlinks::~ExportSymlinks()
 {
+    delete m_destinationDir;
     delete m_sourceFiles;
     delete m_progressDialog;
 }
@@ -67,11 +75,11 @@ void ExportSymlinks::setSourceFiles(const KFileItemList* s)
 void ExportSymlinks::execute()
 {
     // test the destination directory
-    if (m_destinationDir.isEmpty()) {
+    if (m_destinationDir->isEmpty()) {
         tracer->error(__func__, "The specified 'destinationDir' is null or empty!");
         return;
     }
-    QDir dir(m_destinationDir);
+    QDir dir(*m_destinationDir);
     if (!dir.exists()) {
         tracer->error(__func__, "The specified 'destinationDir' does not exist or is not a directory!");
         return;
@@ -112,7 +120,7 @@ void ExportSymlinks::doExport()
     KFileItem * currentFile;
     for ( currentFile = m_sourceFiles->first(); currentFile; currentFile = m_sourceFiles->next() ) {
     
-        QString symlink = QString("%1/%2").arg(m_destinationDir).arg(currentFile->name());
+        QString symlink = QString("%1/%2").arg(*m_destinationDir).arg(currentFile->name());
         m_progressDialog->setLabel(symlink);
         kapp->processEvents();
     
@@ -147,9 +155,9 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
         // an error occured
         switch ( errorNo ) {
             case EPERM: {
-                tracer->serror(__func__) << "The filesystem containing newpath does not support the creation of symbolic links: " << m_destinationDir << endl;
+                tracer->serror(__func__) << "The filesystem containing newpath does not support the creation of symbolic links: " << *m_destinationDir << endl;
         
-                QString msg = QString(i18n("The filesystem containing the destination directory does not support symbolic links:\n%1")).arg(m_destinationDir);
+                QString msg = QString(i18n("The filesystem containing the destination directory does not support symbolic links:\n%1")).arg(*m_destinationDir);
                 KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
                 m_cancelling = true;
                 break;
@@ -163,9 +171,9 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 break;
             }
             case EACCES: {
-                tracer->serror(__func__) << "Write access to the directory containing newpath is not allowed for the process's effective uid, or one of the directories in newpath did not allow search (execute) permission: " << m_destinationDir << endl;
+                tracer->serror(__func__) << "Write access to the directory containing newpath is not allowed for the process's effective uid, or one of the directories in newpath did not allow search (execute) permission: " << *m_destinationDir << endl;
         
-                QString msg = QString(i18n("Can not write to the specified destination directory:\n%1\nPlease check that you have write permission.")).arg(m_destinationDir);
+                QString msg = QString(i18n("Can not write to the specified destination directory:\n%1\nPlease check that you have write permission.")).arg(*m_destinationDir);
                 KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
                 m_cancelling = true;
                 break;
@@ -179,17 +187,17 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 break;
             }
             case ENOENT: {
-                tracer->serror(__func__) << "A directory component in newpath does not exist or is a dangling symbolic link: " << m_destinationDir << endl;
+                tracer->serror(__func__) << "A directory component in newpath does not exist or is a dangling symbolic link: " << *m_destinationDir << endl;
         
-                QString msg = QString(i18n("The destination directory is invalid:\n%1")).arg(m_destinationDir);
+                QString msg = QString(i18n("The destination directory is invalid:\n%1")).arg(*m_destinationDir);
                 KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
                 m_cancelling = true;
                 break;
             }
             case ENOTDIR: {
-                tracer->serror(__func__) << "A component used as a directory in newpath is not, in fact, a directory: " << m_destinationDir << endl;
+                tracer->serror(__func__) << "A component used as a directory in newpath is not, in fact, a directory: " << *m_destinationDir << endl;
         
-                QString msg = QString(i18n("The destination directory is invalid:\n%1")).arg(m_destinationDir);
+                QString msg = QString(i18n("The destination directory is invalid:\n%1")).arg(*m_destinationDir);
                 KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
                 m_cancelling = true;
                 break;
@@ -203,9 +211,9 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 break;
             }
             case EROFS: {
-                tracer->serror(__func__) << "Newpath is on a read-only filesystem: " << m_destinationDir << endl;
+                tracer->serror(__func__) << "Newpath is on a read-only filesystem: " << *m_destinationDir << endl;
         
-                QString msg = QString(i18n("The destination directory is on a read only filesystem:\n%1")).arg(m_destinationDir);
+                QString msg = QString(i18n("The destination directory is on a read only filesystem:\n%1")).arg(*m_destinationDir);
                 KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
                 m_cancelling = true;
                 break;
@@ -299,17 +307,17 @@ void ExportSymlinks::createSymlink(QString sourceFile, QString symlink)
                 break;
             }
             case ELOOP: {
-                tracer->serror(__func__) << "To many symbolic links were encountered in resolving newpath: " << m_destinationDir << endl;
+                tracer->serror(__func__) << "To many symbolic links were encountered in resolving newpath: " << *m_destinationDir << endl;
         
-                QString msg = QString(i18n("The destination path contains too many symbolic links:\n%1")).arg(m_destinationDir);
+                QString msg = QString(i18n("The destination path contains too many symbolic links:\n%1")).arg(*m_destinationDir);
                 KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
                 m_cancelling = true;
                 break;
             }
             case ENOSPC: {
-                tracer->serror(__func__) << "The device containing the file has no room for the new directory entry: " << m_destinationDir << endl;
+                tracer->serror(__func__) << "The device containing the file has no room for the new directory entry: " << *m_destinationDir << endl;
         
-                QString msg = QString(i18n("The device for the destination directory is full:\n%1")).arg(m_destinationDir);
+                QString msg = QString(i18n("The device for the destination directory is full:\n%1")).arg(*m_destinationDir);
                 KMessageBox::sorry(m_parent, msg, i18n("Could not export"));
                 m_cancelling = true;
                 break;

@@ -127,7 +127,7 @@ Tracer* Tracer::getInstance(const char* tracername, const char* classname)
 //
 // private constructor
 //
-Tracer::Tracer(QString tracername, QString tracerpartname, QString classname) :
+Tracer::Tracer(const QString& tracername, const QString& tracerpartname, const QString& classname) :
     m_tracername(new QString(tracername)),
     m_tracerpartname(new QString(tracerpartname)),
     m_classname(new QString(classname)),
@@ -164,14 +164,14 @@ void Tracer::setTraceLevel(TraceLevel tracelevel, bool recursive)
 }
 
 
-bool Tracer::setTraceLevel(QString tracelevel, bool recursive)
+bool Tracer::setTraceLevel(const QString& tracelevel, bool recursive)
 {
     // uppercase the tracelevel to set
-    tracelevel = tracelevel.upper().stripWhiteSpace();
+    QString preparedTracelevel = tracelevel.upper().stripWhiteSpace();
 
     // determine the id of the tracelevel to set
     for (int level = 0; level <= 6; level++) {
-        if (tracelevel == TRACE_LEVEL_NAME[level]) {
+        if (preparedTracelevel == TRACE_LEVEL_NAME[level]) {
             setTraceLevel((TraceLevel)level, recursive);
             return true;
         }        
@@ -181,7 +181,7 @@ bool Tracer::setTraceLevel(QString tracelevel, bool recursive)
 }
 
 
-void Tracer::debug(const char* method, const char* message, ...)
+void Tracer::debug(const char* method, const char* message, ...) const
 {
     // immediately return if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_DEBUG) {
@@ -222,7 +222,7 @@ void Tracer::debug(const char* method, const char* message, ...)
 }
 
 
-void Tracer::invoked(const char* method)
+void Tracer::invoked(const char* method) const
 {
     // immediately return if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_INVOKED) {
@@ -233,7 +233,7 @@ void Tracer::invoked(const char* method)
 }
 
 
-void Tracer::invoked(const char* method, const char* message, ...)
+void Tracer::invoked(const char* method, const char* message, ...) const
 {
     // immediately return if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_INVOKED) {
@@ -274,7 +274,7 @@ void Tracer::invoked(const char* method, const char* message, ...)
 }
 
 
-void Tracer::info(const char* method, const char* message, ...)
+void Tracer::info(const char* method, const char* message, ...) const
 {
     // immediately return if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_INFO) {
@@ -315,7 +315,7 @@ void Tracer::info(const char* method, const char* message, ...)
 }
 
 
-void Tracer::warning(const char* method, const char* message, ...)
+void Tracer::warning(const char* method, const char* message, ...) const
 {
     // immediately return if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_WARNING) {
@@ -356,7 +356,7 @@ void Tracer::warning(const char* method, const char* message, ...)
 }
 
 
-void Tracer::error(const char* method, const char* message, ...)
+void Tracer::error(const char* method, const char* message, ...) const
 {
     // immediately return if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_ERROR) {
@@ -397,7 +397,7 @@ void Tracer::error(const char* method, const char* message, ...)
 }
 
 
-void Tracer::fatal(const char* method, const char* message, ...)
+void Tracer::fatal(const char* method, const char* message, ...) const
 {
     // fatal traces cannot be suppressed!
 
@@ -435,7 +435,7 @@ void Tracer::fatal(const char* method, const char* message, ...)
 }
 
 
-void Tracer::trace(TraceLevel level, const char* method, const char* message, ...)
+void Tracer::trace(TraceLevel level, const char* method, const char* message, ...) const
 {
     // immediately return if the current set tracelevel is higher
     if (m_tracelevel > level) {
@@ -476,7 +476,7 @@ void Tracer::trace(TraceLevel level, const char* method, const char* message, ..
 }
 
 
-kdbgstream Tracer::sdebug(const char* method)
+kdbgstream Tracer::sdebug(const char* method) const
 {
     // return a NULL stream if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_DEBUG) {
@@ -487,7 +487,7 @@ kdbgstream Tracer::sdebug(const char* method)
 }
 
 
-kdbgstream Tracer::sinvoked(const char* method)
+kdbgstream Tracer::sinvoked(const char* method) const
 {
     // return a NULL stream if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_INVOKED) {
@@ -498,7 +498,7 @@ kdbgstream Tracer::sinvoked(const char* method)
 }
 
 
-kdbgstream Tracer::sinfo(const char* method)
+kdbgstream Tracer::sinfo(const char* method) const
 {
     // return a NULL stream if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_INFO) {
@@ -509,7 +509,7 @@ kdbgstream Tracer::sinfo(const char* method)
 }
 
 
-kdbgstream Tracer::swarning(const char* method)
+kdbgstream Tracer::swarning(const char* method) const
 {
     // return a NULL stream if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_WARNING) {
@@ -520,7 +520,7 @@ kdbgstream Tracer::swarning(const char* method)
 }
 
 
-kdbgstream Tracer::serror(const char* method)
+kdbgstream Tracer::serror(const char* method) const
 {
     // return a NULL stream if the current set tracelevel is higher
     if (m_tracelevel > LEVEL_ERROR) {
@@ -531,7 +531,7 @@ kdbgstream Tracer::serror(const char* method)
 }
 
 
-kdbgstream Tracer::sfatal(const char* method)
+kdbgstream Tracer::sfatal(const char* method) const
 {
     // fatal traces cannot be suppressed!
     
@@ -539,7 +539,7 @@ kdbgstream Tracer::sfatal(const char* method)
 }
 
 
-kdbgstream Tracer::strace(TraceLevel level, const char* method)
+kdbgstream Tracer::strace(TraceLevel level, const char* method) const
 {
     // return a NULL stream if the current set tracelevel is higher
     if (m_tracelevel > level) {
@@ -550,7 +550,7 @@ kdbgstream Tracer::strace(TraceLevel level, const char* method)
 }
 
 
-void Tracer::dump(QString indention)
+void Tracer::dump(QString indention) const
 {
     // print some useful infos about this tracer
     kdbgstream(indention, 0, 999, true)
@@ -573,7 +573,7 @@ void Tracer::dump(QString indention)
 //
 // private methods
 //
-QString Tracer::prepareMessageHeader(TraceLevel level, const char* method)
+QString Tracer::prepareMessageHeader(TraceLevel level, const char* method) const
 {
     QString msg;
 
@@ -590,7 +590,7 @@ QString Tracer::prepareMessageHeader(TraceLevel level, const char* method)
 }
 
 
-Tracer* Tracer::getChild(QString tracerpartname)
+Tracer* Tracer::getChild(const QString& tracerpartname) const
 {
     if (tracerpartname.isEmpty()) {
         return 0;

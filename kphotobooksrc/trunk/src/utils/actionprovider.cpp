@@ -22,7 +22,11 @@
 
 #include "../constants.h"
 #include "../kphotobook.h"
+#include "../tracer/tracer.h"
 
+#include <kaction.h>
+#include <kactioncollection.h>
+#include <kapplication.h>
 #include <kstdaccel.h>
 #include <kstdaction.h>
 
@@ -43,6 +47,18 @@ ActionProvider::ActionProvider(KPhotoBook* kphotobook) :
     setupFolderActions();
     setupTagActions();
     setupToolviewActions();
+}
+
+
+void ActionProvider::addRecentFile(KURL url)
+{
+    m_recentFiles->addURL(url);
+}
+        
+
+void ActionProvider::saveRecentFiles() const
+{
+    m_recentFiles->saveEntries(kapp->config());
 }
 
 

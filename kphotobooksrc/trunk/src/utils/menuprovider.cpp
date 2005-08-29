@@ -21,7 +21,9 @@
 #include "menuprovider.h"
 
 #include "../kphotobook.h"
+#include "../tracer/tracer.h"
 
+#include <kpopupmenu.h>
 #include <kxmlguifactory.h>
 
 
@@ -52,44 +54,58 @@ MenuProvider::MenuProvider(KPhotoBook* kphotobook) :
 }
 
 
-KPopupMenu* MenuProvider::contextMenuSourceDirTree()
+KPopupMenu* MenuProvider::contextMenuSourceDirTree() const
 {
     return foobar(m_contextMenuSourceDirTree, "contextMenu_folderTree");
 }
     
 
-KPopupMenu* MenuProvider::contextMenuSourceDir()
+KPopupMenu* MenuProvider::contextMenuSourceDir() const
 {
     return foobar(m_contextMenuSourceDir, "contextMenu_folder");
 }
     
 
-KPopupMenu* MenuProvider::contextMenuSubDir()
+KPopupMenu* MenuProvider::contextMenuSubDir() const
 {
     return foobar(m_contextMenuSubDir, "contextMenu_subfolder");
 }
     
 
-KPopupMenu* MenuProvider::contextMenuTagTree()
+KPopupMenu* MenuProvider::contextMenuTagTree() const
 {
     return foobar(m_contextMenuTagTree, "contextMenu_tagTree");
 }
 
 
-KPopupMenu* MenuProvider::contextMenuTagTreeItem()
+KPopupMenu* MenuProvider::contextMenuTagTreeItem() const
 {
     return foobar(m_contextMenuTagTreeItem, "contextMenu_tagTreeItem");
 }
     
 
-KPopupMenu* MenuProvider::contextMenuTagTreeItemLeaf()
+KPopupMenu* MenuProvider::contextMenuTagTreeItemLeaf() const
 {
     return foobar(m_contextMenuTagTreeItemLeaf, "contextMenu_tagTreeItemLeaf");
 }
 
 
-KPopupMenu* MenuProvider::contextMenuImageViewer()
+KPopupMenu* MenuProvider::contextMenuImageViewer() const
 {
     return foobar(m_contextMenuImageViewer, "contextMenu_imageViewer");
 }
 
+
+//
+// private
+//
+KPopupMenu* MenuProvider::foobar (KPopupMenu* menu, const QString& menuname) const
+{
+    if (menu) {
+        return menu;
+    }
+
+    tracer->swarning(__func__) << "menu with internal name '" << menuname << "' does not exist, could not be loaded!" << endl;
+    // we just return an empty context menu to avoid crashes!
+    return m_emptyContextMenu;
+}

@@ -21,15 +21,17 @@
 #ifndef EXPORTSYMLINKS_H
 #define EXPORTSYMLINKS_H
 
-#include "../tracer/tracer.h"
+class Tracer;
 
 #include <qobject.h>
-#include <qstring.h>
-#include <qthread.h>
-#include <qwidget.h>
+class QString;
+class QWidget;
+template<class type> class QPtrList;
 
-#include <kfileitem.h>
-#include <kprogress.h>
+class KFileItem;
+typedef QPtrList<KFileItem> KFileItemList;
+class KProgressDialog;
+
 
 
 /**
@@ -37,7 +39,7 @@
  * It creates symbolic links in the set destination directory to the
  * specified images.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: exportsymlinks.h 435 2005-08-02 20:36:17Z starcube $
 */
 class ExportSymlinks : public QObject //, public QThread
 {
@@ -55,7 +57,7 @@ class ExportSymlinks : public QObject //, public QThread
         * @param parent The parent, used for displaying dialogs.
         * @param destinationDir The directory to export to.
         */
-        ExportSymlinks(QWidget* parent, QString destinationDir);
+        ExportSymlinks(QWidget* parent, const QString& destinationDir);
         
         ~ExportSymlinks();
         
@@ -98,7 +100,7 @@ class ExportSymlinks : public QObject //, public QThread
     
     private:
         QWidget* m_parent;
-        QString m_destinationDir;
+        QString* m_destinationDir;
         
         QPtrList<KFileItem>* m_sourceFiles;
         

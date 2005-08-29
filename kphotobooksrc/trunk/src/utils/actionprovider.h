@@ -21,15 +21,17 @@
 #ifndef _ACTIONPROVIDER_H_
 #define _ACTIONPROVIDER_H_
 
-#include "../tracer/tracer.h"
 
-#include <kaction.h>
-#include <kactioncollection.h>
-#include <kapplication.h>
-#include <kurl.h>
-
-class KPhotoBook;
 class ImageViewer;
+class KPhotoBook;
+class Tracer;
+
+#include <kurl.h>
+class KAction;
+class KActionCollection;
+class KToggleAction;
+class KToolBarPopupAction;
+class KRecentFilesAction;
 
 
 /**
@@ -52,13 +54,9 @@ class ActionProvider
             // actions must not be deleted explicitely. the actioncollection manages all actions!
         }
 
-        void addRecentFile(KURL url) {
-            m_recentFiles->addURL(url);
-        }
+        void addRecentFile(KURL url);
         
-        void saveRecentFiles() {
-            m_recentFiles->saveEntries(kapp->config());
-        }
+        void saveRecentFiles() const;
         
     private:
         void setupFileActions();

@@ -20,6 +20,7 @@
 
 #include "datetimefilterdata.h"
 
+#include "../tracer/tracer.h"
 #include "../uitrees/treehelper.h"
 
 
@@ -169,7 +170,7 @@ void DateTimeFilterData::setFilterPattern(const QString& pattern)
 }
 
 
-const QString DateTimeFilterData::toString()
+const QString DateTimeFilterData::toString() const
 {
     switch (m_state) {
         case INVALID:
@@ -205,7 +206,7 @@ const QString DateTimeFilterData::toString()
 }
 
 
-const QString DateTimeFilterData::marshal()
+const QString DateTimeFilterData::marshal() const
 {
     switch (m_state) {
         case INVALID:

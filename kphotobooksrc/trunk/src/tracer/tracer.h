@@ -161,7 +161,8 @@ class Tracer
         /**
         * Returns the root tracer. This is the toplevel tracer instance.
         */
-        static Tracer* getRootTracer() {
+        static Tracer* getRootTracer()
+        {
             return s_rootTracer;
         }
     
@@ -169,7 +170,7 @@ class Tracer
         /**
         * Private constructor. Use getInstance(...) to get a tracer instance!
         */
-        Tracer(QString tracername, QString tracerpartname, QString classname);
+        Tracer(const QString& tracername, const QString& tracerpartname, const QString& classname);
     
         
     public:
@@ -196,7 +197,7 @@ class Tracer
         * @param recursive defines if the tracelevel is applied recusrively to all children (default is false).
         * @return true is the specified tracelevl was valid else false is returned.
         */
-        bool setTraceLevel(QString tracelevel, bool recursive = false);
+        bool setTraceLevel(const QString& tracelevel, bool recursive = false);
         
         /**
         * Returns the currently set tracelevel of this tracer instance.
@@ -204,56 +205,56 @@ class Tracer
         *
         * @return the currently set tracelevel.
         */
-        TraceLevel getTraceLevel()
+        TraceLevel getTraceLevel() const
         {
             return m_tracelevel;
         }
     
-        bool isDebugEnabled()
+        bool isDebugEnabled() const
         {
             return LEVEL_DEBUG >= m_tracelevel;
         }
-        bool isInvokedEnabled()
+        bool isInvokedEnabled() const
         {
             return LEVEL_INVOKED >= m_tracelevel;
         }
-        bool isInfoEnabled()
+        bool isInfoEnabled() const
         {
             return LEVEL_INFO >= m_tracelevel;
         }
-        bool isWarningEnabled()
+        bool isWarningEnabled() const
         {
             return LEVEL_WARNING >= m_tracelevel;
         }
-        bool isErrorEnabled()
+        bool isErrorEnabled() const
         {
             return LEVEL_ERROR >= m_tracelevel;
         }
-        bool isFatalEnabled()
+        bool isFatalEnabled() const
         {
             return true;
         }
-        bool isTraceEnabled(TraceLevel level)
+        bool isTraceEnabled(TraceLevel level) const
         {
             return level >= m_tracelevel;
         }
         
-        void debug(const char* method, const char* message, ...);    
-        void invoked(const char* method);
-        void invoked(const char* method, const char* message, ...);    
-        void info(const char* method, const char* message, ...);    
-        void warning(const char* method, const char* message, ...);    
-        void error(const char* method, const char* message, ...);    
-        void fatal(const char* method, const char* message, ...);    
-        void trace(TraceLevel level, const char* method, const char* message, ...);
+        void debug(const char* method, const char* message, ...) const;    
+        void invoked(const char* method) const;
+        void invoked(const char* method, const char* message, ...) const;    
+        void info(const char* method, const char* message, ...) const;    
+        void warning(const char* method, const char* message, ...) const;    
+        void error(const char* method, const char* message, ...) const;    
+        void fatal(const char* method, const char* message, ...) const;    
+        void trace(TraceLevel level, const char* method, const char* message, ...) const;
     
-        kdbgstream sdebug(const char* method);
-        kdbgstream sinvoked(const char* method);
-        kdbgstream sinfo(const char* method);
-        kdbgstream swarning(const char* method);
-        kdbgstream serror(const char* method);
-        kdbgstream sfatal(const char* method);
-        kdbgstream strace(TraceLevel level, const char* method);
+        kdbgstream sdebug(const char* method) const;
+        kdbgstream sinvoked(const char* method) const;
+        kdbgstream sinfo(const char* method) const;
+        kdbgstream swarning(const char* method) const;
+        kdbgstream serror(const char* method) const;
+        kdbgstream sfatal(const char* method) const;
+        kdbgstream strace(TraceLevel level, const char* method) const;
     
         /**
         * Prints the configuration of this tracer and calls this method on each child
@@ -262,14 +263,14 @@ class Tracer
         * 
         * @indention the indention to put before the text.
         */
-        void dump(QString indention = QString(""));
+        void dump(QString indention = QString("")) const;
         
         
     private:
         /**
         * Prepares the header for each trace-line: timestamp levelname [class::method] '
         */
-        inline QString prepareMessageHeader(TraceLevel level, const char* method);
+        inline QString prepareMessageHeader(TraceLevel level, const char* method) const;
         
         /**
         * Returns the child tracer with the given tracerpartname or 0 if no such
@@ -278,7 +279,7 @@ class Tracer
         * @param tracerpartname the last part of the child tracer to return.
         * @return the appropriate child tracer or 0.
         */
-        inline Tracer* getChild(QString tracerpartname);
+        inline Tracer* getChild(const QString& tracerpartname) const;
     
     
     private:

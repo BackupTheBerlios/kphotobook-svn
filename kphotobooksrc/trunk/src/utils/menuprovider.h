@@ -21,11 +21,12 @@
 #ifndef _MENUPROVIDER_H_
 #define _MENUPROVIDER_H_
 
-#include "../tracer/tracer.h"
-
-#include <kpopupmenu.h>
-
+class Tracer;
 class KPhotoBook;
+
+class KPopupMenu;
+
+class QString;
 
 
 /**
@@ -50,25 +51,16 @@ class MenuProvider
             // the menus will be deleted automatically as soon m_kphotobook is deleted
         }
 
-        KPopupMenu* contextMenuSourceDirTree();
-        KPopupMenu* contextMenuSourceDir();
-        KPopupMenu* contextMenuSubDir();
-        KPopupMenu* contextMenuTagTree();
-        KPopupMenu* contextMenuTagTreeItem();
-        KPopupMenu* contextMenuTagTreeItemLeaf();
-        KPopupMenu* contextMenuImageViewer();
+        KPopupMenu* contextMenuSourceDirTree() const;
+        KPopupMenu* contextMenuSourceDir() const;
+        KPopupMenu* contextMenuSubDir() const;
+        KPopupMenu* contextMenuTagTree() const;
+        KPopupMenu* contextMenuTagTreeItem() const;
+        KPopupMenu* contextMenuTagTreeItemLeaf() const;
+        KPopupMenu* contextMenuImageViewer() const;
 
     private:
-        KPopupMenu* foobar (KPopupMenu* menu, QString menuname)
-        {
-            if (menu) {
-                return menu;
-            }
-
-            tracer->swarning(__func__) << "menu with internal name '" << menuname << "' does not exist, could not be loaded!" << endl;
-            // we just return an empty context menu to avoid crashes!
-            return m_emptyContextMenu;
-        }
+        inline KPopupMenu* foobar(KPopupMenu* menu, const QString& menuname) const;
 
     private:
         KPhotoBook* m_kphotobook;

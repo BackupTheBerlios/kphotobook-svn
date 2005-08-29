@@ -27,6 +27,7 @@ class QString;
 class QStringList;
 template<class type> class QIntDict;
 
+
 /**
  * This class helps converting a dictionary to a stringlist and vice
  * versa to store the data in a config file.
