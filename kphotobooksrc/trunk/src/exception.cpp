@@ -21,4 +21,59 @@
 #include "exception.h"
 
 
+EngineException::EngineException(QString message) :
+    m_message(message),
+    m_detailMessage(QString::null)
+{}
+
+
+EngineException::EngineException(QString message, QString detailMessage) :
+    m_message(message),
+    m_detailMessage(detailMessage)
+{}
+
+
+EngineException::~EngineException()
+{
+    delete m_message;
+    delete m_detailMessage;
+}
+
+
+void EngineException::appendDetailMessage(const QString& detailMessage)
+{
+    if (m_detailMessage.isEmpty()) {
+        m_detailMessage = QString("").append(detailMessage);
+    } else {
+        m_detailMessage.append("\n").append(detailMessage);
+    }
+}
+
+
+QString EngineException::message() const
+{
+    if (m_message.isNull()) {
+        return QString("");
+    }
+    return m_message;
+}
+
+
+QString EngineException::detailMessage() const
+{
+    if (m_detailMessage.isNull()) {
+        return QString("");
+    }
+    return m_detailMessage;
+}
+
+
+QString EngineException::toString() const
+{
+    if (m_detailMessage.isEmpty()) {
+        return m_message;
+    } else {
+        return QString(m_message).append("\n").append(m_detailMessage);
+    }
+}
 

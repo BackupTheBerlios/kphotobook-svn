@@ -21,7 +21,7 @@
 #ifndef _CONSTANTS_H_
 #define _CONSTANTS_H_
 
-#include <qstring.h>
+class QString;
 
 
 /**
@@ -32,6 +32,7 @@
 class Constants
 {
     public:
+        static const QString STRING_FOOBAR;
         static const QString STRING_VALUE_TRUE;
         static const QString STRING_VALUE_FALSE;
         // icons
@@ -42,46 +43,47 @@ class Constants
         static const QString ICON_DELETE_TAG;
         static const QString ICON_TAG_FILTER_DESELECT;
         static const QString ICON_TAG_FILTER_RESET;
-    
+
         static const QString ICON_SOURCEDIR;
         static const QString ICON_ADD_SOURCEDIR;
         static const QString ICON_EDIT_SOURCEDIR;
         static const QString ICON_REMOVE_SOURCEDIR;
-    
+
         static const QString ICON_RESCAN_FILESYSTEM;
-    
+
         static const QString ICON_AUTOREFRESH_VIEW;
         static const QString ICON_REFRESH_VIEW;
         static const QString ICON_INCREASE_PREVIEWSIZE;
         static const QString ICON_DECREASE_PREVIEWSIZE;
-    
+
         static const QString ICON_INCLUDE_WHOLE_FOLDER;
         static const QString ICON_EXCLUDE_WHOLE_FOLDER;
         static const QString ICON_INVERT_FOLDER_SELECTION;
-    
+
         static const QString ICON_EXPAND_FOLDER;
         static const QString ICON_COLLAPSE_FOLDER;
-    
+
         static const QString ICON_SETTINGS_GENERAL;
         static const QString ICON_SETTINGS_TAG;
         static const QString ICON_SETTINGS_SOURCEDIR;
         static const QString ICON_SETTINGS_IMAGEPREVIEW;
         static const QString ICON_SETTINGS_FILEHANDLING;
         static const QString ICON_SETTINGS_TOOLS;
-    
+
         static const QString ICON_OPERATOR_AND;
         static const QString ICON_OPERATOR_OR;
-        
+
         static const QString ICON_RESTORE_TOOL_VIEWS;
-        
+
         static const QString ICON_TAG_LOCK;
         static const QString ICON_TAG_UNLOCK;
-        
+
         static const QString ICON_TAG_EXIF;
-    
+
         // file-extension
-        static const QString FILE_EXTENSION; /**< The default used fileextension for kphotobook files. */
-    
+        /** The default used fileextension for kphotobook files. */
+        static const QString FILE_EXTENSION;
+
         // constants for settings
         static const int SETTINGS_MIN_PREVIEW_SIZE;
         static const int SETTINGS_MAX_PREVIEW_SIZE;

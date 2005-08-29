@@ -20,9 +20,12 @@
 
 #include "constants.h"
 
+#include <qstring.h>
+
 
 const QString Constants::STRING_VALUE_TRUE = QString("true");
 const QString Constants::STRING_VALUE_FALSE = QString("false");
+
 
 //
 // icons
@@ -70,6 +73,7 @@ const QString Constants::ICON_TAG_LOCK = QString("kpb_tag_lock");
 const QString Constants::ICON_TAG_UNLOCK = QString("kpb_tag_unlock");
 
 const QString Constants::ICON_TAG_EXIF = QString("kpb_tag_exif");
+
 
 //
 // file-extension

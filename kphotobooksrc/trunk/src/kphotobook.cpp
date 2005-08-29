@@ -24,10 +24,12 @@
 #include "exception.h"
 #include "kphotobookview.h"
 
+
 #include "dialogs/dialogaddsourcedir.h"
 #include "dialogs/dialogmanagetag.h"
 #include "engine/engine.h"
 #include "engine/file.h"
+#include "engine/filternode.h"
 #include "engine/filternodeopand.h"
 #include "engine/filternodeopor.h"
 #include "engine/folder.h"
@@ -41,6 +43,7 @@
 #include "settings/settingssourcedirtree.h"
 #include "settings/settingstagtree.h"
 #include "settings/settingstools.h"
+#include "tracer/tracer.h"
 #include "uitrees/sourcedirtree.h"
 #include "uitrees/sourcedirtreenode.h"
 #include "uitrees/tagtree.h"
@@ -51,6 +54,8 @@
 #include "uitrees/tagtreenoderadiogroup.h"
 #include "uitrees/tagtreenodestring.h"
 #include "uitrees/tagtreenodetitle.h"
+#include "utils/actionprovider.h"
+#include "utils/menuprovider.h"
 
 #include <kaccel.h>
 #include <kapplication.h>
@@ -60,6 +65,7 @@
 #include <kedittoolbar.h>
 #include <kedittoolbar.h>
 #include <kfiledialog.h>
+#include <kfileiconview.h>
 #include <kfileitem.h>
 #include <kglobal.h>
 #include <kiconloader.h>
@@ -70,6 +76,7 @@
 #include <kmditoolviewaccessor.h>
 #include <kmenubar.h>
 #include <kmessagebox.h>
+#include <ksplashscreen.h>
 #include <kstatusbar.h>
 #include <kstdaccel.h>
 #include <ktip.h>
@@ -86,6 +93,7 @@
 #include <qpaintdevicemetrics.h>
 #include <qpainter.h>
 #include <qptrlist.h>
+#include <qtimer.h>
 #include <qsizepolicy.h>
 #include <qstringlist.h>
 
@@ -149,7 +157,7 @@ KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode) :
     applyZoomSetting();
     applyLockUnlockTaggingSettings();
     applyOperatorSetting();
-    
+
     // it is important to create the view after setting up context menus
     m_view = new KPhotoBookView(this);
 
@@ -225,6 +233,27 @@ void KPhotoBook::dirtyfy()
 {
     m_engine->dirtyfy();
     updateState();
+}
+
+
+void KPhotoBook::startTemporaryUnlockTagging()
+{
+    m_inTagtreeTemporaryUnlocking = true;
+
+    m_tagtreeWasLocked = Settings::tagTreeLocked();
+    Settings::setTagTreeLocked(false);
+    applyLockUnlockTaggingSettings();
+}
+
+
+void KPhotoBook::stopTemporaryUnlockTagging()
+{
+    if (m_inTagtreeTemporaryUnlocking) {
+    m_inTagtreeTemporaryUnlocking = false;
+
+    Settings::setTagTreeLocked(m_tagtreeWasLocked);
+    applyLockUnlockTaggingSettings();
+    }
 }
 
 
@@ -1433,7 +1462,7 @@ void KPhotoBook::setupToolWindowTagTree()
     m_actions->m_toggleLockUnlockTagging->plug(m_tagTreeToolBar);
 
     m_tagTree = new TagTree(tagTreePanel, this, "tagtree");
-    
+
 
     // set the icon
     QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_TAG, KIcon::Small, 16, true);
@@ -1596,7 +1625,7 @@ void KPhotoBook::applyLockUnlockTaggingSettings()
 void KPhotoBook::storeTreeState()
 {
     KConfig* config = KGlobal::config();
-    
+
     QString group = QString("TagTreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
     if (Settings::tagTreeRememberTree()) {
@@ -1605,7 +1634,7 @@ void KPhotoBook::storeTreeState()
         delete openNodes;
     }
     m_tagTree->saveLayout(config, group);
-    
+
     group = QString("SourceDirTreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
     if (Settings::sourceDirTreeRememberTree()) {
@@ -1623,7 +1652,7 @@ void KPhotoBook::storeTreeState()
 void KPhotoBook::loadTreeState()
 {
     KConfig* config = KGlobal::config();
-    
+
     QString group = QString("TagTreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
     m_tagTree->restoreLayout(config, group);
@@ -1647,7 +1676,7 @@ void KPhotoBook::loadTreeState()
 void KPhotoBook::storeFilter()
 {
     KConfig* config = KGlobal::config();
-    
+
     QString group = QString("TagTreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
     if (Settings::tagTreeRememberFilter()) {
@@ -1687,7 +1716,7 @@ void KPhotoBook::storeFilter()
 void KPhotoBook::loadFilter()
 {
     KConfig* config = KGlobal::config();
-    
+
     QString group = QString("TagTreeState:%1").arg(*(m_engine->uid()));
     config->setGroup(group);
     if (Settings::tagTreeRememberFilter()) {

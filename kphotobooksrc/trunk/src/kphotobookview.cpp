@@ -6,9 +6,11 @@
 
 #include "constants.h"
 #include "kphotobook.h"
+#include "dialogs/dialogimageviewer.h"
 #include "engine/engine.h"
 #include "engine/file.h"
 #include "settings/settings.h"
+#include "tracer/tracer.h"
 #include "uitrees/sourcedirtree.h"
 #include "uitrees/sourcedirtreenode.h"
 #include "uitrees/tagtree.h"
@@ -55,7 +57,7 @@ KPhotoBookView::KPhotoBookView(QWidget *parent) :
 
     // image viewer
     m_dlgImageViewer = new DialogImageViewer(this, m_fileView);
-                                
+
     // rest of fileview
     m_fileView->setResizeMode(KFileIconView::Adjust);
     m_fileView->setFont(Settings::imagePreviewFont());
@@ -125,10 +127,10 @@ void KPhotoBookView::updateFiles(QPtrList<KFileItem> *selectedFiles)
 }
 
 
-void KPhotoBookView::storeConfiguration()
+void KPhotoBookView::storeConfiguration() const
 {
     KConfig* config = KGlobal::config();
-    
+
     QString group = QString("ImageViewer:%1").arg(*(m_photobook->engine()->uid()));
     config->setGroup(group);
     config->writeEntry("DialogSize", m_dlgImageViewer->size());
@@ -141,7 +143,7 @@ void KPhotoBookView::storeConfiguration()
 void KPhotoBookView::loadConfiguration()
 {
     KConfig* config = KGlobal::config();
-    
+
     QString group = QString("ImageViewer:%1").arg(*(m_photobook->engine()->uid()));
     config->setGroup(group);
     QSize defaultSize = QSize(640, 480);
