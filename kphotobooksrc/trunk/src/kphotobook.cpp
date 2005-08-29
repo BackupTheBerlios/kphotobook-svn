@@ -55,6 +55,7 @@
 #include "uitrees/tagtreenodestring.h"
 #include "uitrees/tagtreenodetitle.h"
 #include "utils/actionprovider.h"
+#include "utils/confighelper.h"
 #include "utils/menuprovider.h"
 
 #include <kaccel.h>
@@ -1682,7 +1683,7 @@ void KPhotoBook::storeFilter()
     if (Settings::tagTreeRememberFilter()) {
         QIntDict<QString>* filterDict = m_tagTree->getFilter();
 
-        QStringList* filterList = intDict2stringList(filterDict);
+        QStringList* filterList = ConfigHelper::intDict2stringList(filterDict);
 
         config->writeEntry("Filter", *filterList);
 
@@ -1696,7 +1697,7 @@ void KPhotoBook::storeFilter()
     if (Settings::sourceDirTreeRememberFilter()) {
         QIntDict<QString>* filterDict = m_sourcedirTree->getFilter();
 
-        QStringList* filterList = intDict2stringList(filterDict);
+        QStringList* filterList = ConfigHelper::intDict2stringList(filterDict);
 
         config->writeEntry("Filter", *filterList);
 
@@ -1722,7 +1723,7 @@ void KPhotoBook::loadFilter()
     if (Settings::tagTreeRememberFilter()) {
         QStringList filterList = config->readListEntry("Filter");
 
-        QIntDict<QString>* filterDict = stringList2intDict(filterList);
+        QIntDict<QString>* filterDict = ConfigHelper::stringList2intDict(filterList);
 
         m_tagTree->applyFilter(filterDict);
 
@@ -1735,62 +1736,13 @@ void KPhotoBook::loadFilter()
     if (Settings::sourceDirTreeRememberFilter()) {
         QStringList filterList = config->readListEntry("Filter");
 
-        QIntDict<QString>* filterDict = stringList2intDict(filterList);
+        QIntDict<QString>* filterDict = ConfigHelper::stringList2intDict(filterList);
 
         m_sourcedirTree->applyFilter(filterDict);
 
         filterDict->setAutoDelete(true);
         delete filterDict;
     }
-}
-
-
-QStringList* KPhotoBook::intDict2stringList(QIntDict<QString>* intDict)
-{
-    QStringList* stringList = new QStringList();
-
-    QIntDictIterator<QString> it(*intDict);
-    for (; it.current(); ++it) {
-        QString entry = QString("%1:%2").arg(it.currentKey()).arg(*it.current());
-        stringList->append(entry);
-    }
-
-    return stringList;
-}
-
-
-QIntDict<QString>* KPhotoBook::stringList2intDict(QStringList stringList)
-{
-    QIntDict<QString>* filterDict = new QIntDict<QString>;
-
-    // loop over all entries in the stringlist
-    for (QStringList::Iterator it = stringList.begin(); it != stringList.end(); ++it) {
-
-        tracer->sdebug(__func__) << "Handling entry: '" << *it << "'" << endl;
-
-        // split the current entry into key and value and put them into the intdict
-        int delimitorPos = (*it).find(':');
-        if (delimitorPos > 0) {
-            QString keyStr = (*it).mid(0, delimitorPos);
-            QString value = (*it).mid(delimitorPos + 1);
-
-            tracer->sdebug(__func__) << "key-->value: '" << keyStr << "-->" << value << "'" << endl;
-
-            bool ok;
-            int key = keyStr.toInt(&ok);
-
-            if (ok) {
-                filterDict->insert(key, new QString(value));
-            } else {
-                tracer->swarning(__func__) << "Key '" << *it << "' is invalid! It is not a number. (Valid format: 'key:value')" << endl;
-            }
-
-        } else {
-            tracer->swarning(__func__) << "KeyValue pair '" << *it << "' is invalid! (Valid format: 'key:value')" << endl;
-        }
-    }
-
-    return filterDict;
 }
 
 
