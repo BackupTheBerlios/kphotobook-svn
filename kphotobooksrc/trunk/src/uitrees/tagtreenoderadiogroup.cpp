@@ -123,7 +123,7 @@ void TagTreeNodeRadioGroup::leftClicked(TagTree* tagTree, int column)
 }
 
 
-void TagTreeNodeRadioGroup::rightClicked(__attribute__((unused)) TagTree* tagTree, int column)
+void TagTreeNodeRadioGroup::rightClicked( TagTree* tagTree, int column)
 {
     tracer->invoked(__func__);
 

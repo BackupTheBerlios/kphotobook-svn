@@ -216,7 +216,7 @@ void KPhotoBookView::keyReleaseEvent(QKeyEvent *e)
 }
 
 
-void KPhotoBookView::focusOutEvent(__attribute__((unused)) QFocusEvent *e)
+void KPhotoBookView::focusOutEvent(QFocusEvent* /* e */)
 {
     m_photobook->stopTemporaryUnlockTagging();
 }

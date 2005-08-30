@@ -350,7 +350,7 @@ void TagTree::keyReleaseEvent(QKeyEvent *e)
 }
 
 
-void TagTree::focusOutEvent(__attribute__((unused)) QFocusEvent *e)
+void TagTree::focusOutEvent(QFocusEvent* /* e */)
 {
     m_photobook->stopTemporaryUnlockTagging();
 }
@@ -359,7 +359,7 @@ void TagTree::focusOutEvent(__attribute__((unused)) QFocusEvent *e)
 //
 // private slots
 //
-void TagTree::slotListViewDoubleClicked(QListViewItem* item, __attribute__((unused)) const QPoint& point, int column)
+void TagTree::slotListViewDoubleClicked(QListViewItem* item, const QPoint& /* point */, int column)
 {
     if (column == TagTree::COLUMN_TEXT) {
         setOpen(item, !isOpen(item));
@@ -367,7 +367,7 @@ void TagTree::slotListViewDoubleClicked(QListViewItem* item, __attribute__((unus
 }
 
 
-void TagTree::slotListViewClicked(int button, QListViewItem* item, __attribute__((unused)) const QPoint& point, int column)
+void TagTree::slotListViewClicked(int button, QListViewItem* item, const QPoint& /* point */, int column)
 {
     if (button == Qt::RightButton && item == 0) {
         // show contextMenu if right clicked on no item

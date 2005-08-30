@@ -103,7 +103,7 @@ void TagTreeNodeString::applyFilterString(QString filter)
 }
 
 
-void TagTreeNodeString::leftClicked(__attribute__((unused)) TagTree* tagTree, int column)
+void TagTreeNodeString::leftClicked(TagTree* /* tagTree */, int column)
 {
     switch (column) {
         case TagTree::COLUMN_TEXT:
@@ -137,7 +137,7 @@ void TagTreeNodeString::leftClicked(__attribute__((unused)) TagTree* tagTree, in
 
 
 ///@todo this derived method may be deleted by time, as it does nothing special
-void TagTreeNodeString::rightClicked(__attribute__((unused)) TagTree* tagTree, int column)
+void TagTreeNodeString::rightClicked(TagTree* tagTree, int column)
 {
     TagTreeNode::rightClicked(tagTree, column);
 }

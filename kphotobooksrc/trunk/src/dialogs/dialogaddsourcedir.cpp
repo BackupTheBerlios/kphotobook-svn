@@ -98,7 +98,7 @@ void DialogAddSourceDir::slotDirectoryButtonClicked()
     }
 }
 
-void DialogAddSourceDir::slotTextChanged(__attribute__((unused))const QString& text)
+void DialogAddSourceDir::slotTextChanged(const QString& /* text */)
 {
     QDir dir(m_currentDirectoryLineEdit->text());
 

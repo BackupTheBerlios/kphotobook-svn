@@ -350,7 +350,7 @@ void SourceDirTree::slotAddFolder(Folder* folder)
 //
 // private slots
 //
-void SourceDirTree::slotListViewDoubleClicked(QListViewItem* item, __attribute__((unused)) const QPoint& point, int column)
+void SourceDirTree::slotListViewDoubleClicked(QListViewItem* item, const QPoint& /* point */, int column)
 {
     if (column == SourceDirTree::COLUMN_TEXT) {
         setOpen(item, !isOpen(item));
@@ -358,7 +358,7 @@ void SourceDirTree::slotListViewDoubleClicked(QListViewItem* item, __attribute__
 }
 
 
-void SourceDirTree::slotListViewClicked(int button, QListViewItem* item, __attribute__((unused)) const QPoint& point, int column)
+void SourceDirTree::slotListViewClicked(int button, QListViewItem* item, const QPoint& /* point */, int column)
 {
     if (button == Qt::RightButton && item == 0) {
         // show contextMenu if right clicked on no item

@@ -146,7 +146,7 @@ void TagTreeNode::setOpenRecursive(bool open)
     }
 }
 
-void TagTreeNode::leftClicked(__attribute__((unused)) TagTree* tagTree, int column)
+void TagTreeNode::leftClicked(TagTree* /* tagTree */, int column)
 {
     int button = KMessageBox::Yes;
 
@@ -156,6 +156,10 @@ void TagTreeNode::leftClicked(__attribute__((unused)) TagTree* tagTree, int colu
         case TagTree::COLUMN_VALUE:
             break;
         case TagTree::COLUMN_FILTER: {
+            //if CTRL+SHIFT is pressed, unset all other nodes
+
+
+
             // change state of the filter: exclude -> ignore -> include -> exclude -> ...
             switch (m_filterState) {
                 case TagTreeNode::FILTERSTATE_EXCLUDE: {
@@ -187,7 +191,7 @@ void TagTreeNode::leftClicked(__attribute__((unused)) TagTree* tagTree, int colu
 }
 
 
-void TagTreeNode::rightClicked(__attribute__((unused)) TagTree* tagTree, __attribute__((unused)) int column)
+void TagTreeNode::rightClicked(TagTree* /* tagTree */, int column)
 {
     int button = KMessageBox::Yes;
 

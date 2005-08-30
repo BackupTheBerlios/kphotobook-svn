@@ -111,7 +111,7 @@ void TagTreeNodeDateTime::applyFilterString(QString filter)
 }
 
 
-void TagTreeNodeDateTime::leftClicked(__attribute__((unused)) TagTree* tagTree, int column)
+void TagTreeNodeDateTime::leftClicked(TagTree* /* tagTree */, int column)
 {
     tracer->invoked(__func__);
 

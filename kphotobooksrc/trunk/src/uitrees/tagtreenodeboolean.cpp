@@ -75,7 +75,7 @@ FilterNode* TagTreeNodeBoolean::filter()
 }
 
 
-void TagTreeNodeBoolean::leftClicked(__attribute__((unused)) TagTree* tagTree, int column)
+void TagTreeNodeBoolean::leftClicked(TagTree* tagTree, int column)
 {
     TagNodeBoolean* tagNode = dynamic_cast<TagNodeBoolean*>(m_tagNode);
 

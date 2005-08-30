@@ -164,7 +164,7 @@ void SourceDirTreeNode::applyFilterString(QString filter)
 }
 
 
-void SourceDirTreeNode::leftClicked(__attribute__((unused)) SourceDirTree* sourceDirTree, int column)
+void SourceDirTreeNode::leftClicked(SourceDirTree* /* sourceDirTree */, int column)
 {
     switch (column) {
         case SourceDirTree::COLUMN_TEXT:
@@ -183,7 +183,7 @@ void SourceDirTreeNode::leftClicked(__attribute__((unused)) SourceDirTree* sourc
 }
 
 
-void SourceDirTreeNode::rightClicked(__attribute__((unused)) SourceDirTree* sourceDirTree, int column)
+void SourceDirTreeNode::rightClicked(SourceDirTree* /* sourceDirTree */, int column)
 {
     switch (column) {
         case SourceDirTree::COLUMN_TEXT: {

@@ -424,7 +424,7 @@ void ImageViewer::keyPressEvent ( QKeyEvent * e )
 }
 
 
-void ImageViewer::contextMenuEvent ( __attribute__((unused)) QContextMenuEvent * e )
+void ImageViewer::contextMenuEvent ( QContextMenuEvent* /* e */ )
 {
     QPopupMenu* popup = new QPopupMenu(this);
 

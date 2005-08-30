@@ -46,8 +46,8 @@ Tracer* XmlParser::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlPa
 //
 // methods of content handler
 //
-bool XmlParser::startElement( __attribute__((unused)) const QString& namespaceURI, const QString& localName,
-                              __attribute__((unused)) const QString& qName,  const QXmlAttributes& atts)
+bool XmlParser::startElement( const QString& /* namespaceURI */, const QString& localName,
+                              const QString& /* qName */,  const QXmlAttributes& atts)
 {
     //
     // handle starttag 'kphotobook'
@@ -229,8 +229,8 @@ bool XmlParser::startElement( __attribute__((unused)) const QString& namespaceUR
 }
 
 
-bool XmlParser::endElement( __attribute__((unused)) const QString& namespaceURI,  const QString& localName,
-                            __attribute__((unused)) const QString& qName)
+bool XmlParser::endElement( const QString& /* namespaceURI */,  const QString& localName,
+                            const QString& /* qName */)
 {
     //
     // handle endtag 'kphotobook'
@@ -352,7 +352,7 @@ bool XmlParser::endElement( __attribute__((unused)) const QString& namespaceURI,
 }
 
 
-bool XmlParser::characters(__attribute__((unused)) const QString& ch)
+bool XmlParser::characters(const QString& /* ch */)
 {
     // we never have characters inside a container
     return true;

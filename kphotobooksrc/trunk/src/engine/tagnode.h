@@ -42,12 +42,12 @@ class File;
 class TagNode : public QObject
 {
     Q_OBJECT
-    
+
     private:
         static Tracer* tracer;
-    
+
     public:
-    
+
         enum Type {
             TYPE_INVALID = -1,
             TYPE_TITLE,
@@ -57,13 +57,13 @@ class TagNode : public QObject
             TYPE_RADIO,
             TYPE_DATETIME
         };
-    
+
     public:
         /**
         * Instantiates a concrete subclass of this class TagNode.
         */
         static TagNode* createInstance(TagNode::Type typeId, unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
-    
+
         /**
         * Returns the unequivocal string describing the type of the specified tagnode.
         */
@@ -86,7 +86,7 @@ class TagNode : public QObject
                     return QString::null;
             }
         }
-    
+
         /**
         * Returns the translated text describing the type of the specified tagnode.
         */
@@ -109,7 +109,7 @@ class TagNode : public QObject
                 return QString::null;
             }
         }
-    
+
         /**
         * Returns the type-id of the tagnode type with the specified type.
         * If the specified type is invalid, TYPE_INVALID is returned.
@@ -129,27 +129,26 @@ class TagNode : public QObject
             } else if (type == "datetime") {
                 return TagNode::TYPE_DATETIME;
             }
-    
+
             return TagNode::TYPE_INVALID;
         }
-    
-        virtual bool tagged(__attribute__((unused))File* file)
-        {
+
+        virtual bool tagged(File* /* file */) {
             return false;
         }
-    
+
     protected:
         TagNode(unsigned int id, const QString& text, const QString& comment, const QString& iconName, TagNode* parent = 0);
-    
+
     public:
         virtual ~TagNode();
-    
+
         void setParent(TagNode* parent);
         TagNode* parent()
         {
             return m_parent;
         }
-    
+
         QPtrList<TagNode>* children()
         {
             return m_children;
@@ -158,7 +157,7 @@ class TagNode : public QObject
         * Returns the child with the given text as text or 0l if no such child was found.
         */
         TagNode* child(QString text);
-    
+
         /**
         * Returns the unequivocal typeid representing the concrete type of this tagnode.
         */
@@ -166,7 +165,7 @@ class TagNode : public QObject
         {
             return m_typeId;
         }
-    
+
         /**
         * Returns the unequivocal string describing the concrete type of this tagnode.
         */
@@ -174,7 +173,7 @@ class TagNode : public QObject
         {
             return tagNodeType(m_typeId);
         }
-    
+
         /**
         * Returns the translated text describing the concrete type of this tagnode.
         */
@@ -182,22 +181,22 @@ class TagNode : public QObject
         {
             return tagNodeTypeName(m_typeId);
         }
-    
+
         unsigned int id()
         {
             return m_id;
         }
-    
+
         void setReadonly(bool readonly)
         {
             m_readonly = readonly;
         }
-    
+
         bool readonly()
         {
             return m_readonly;
         }
-    
+
         void setText(const QString& text)
         {
             delete m_text;
@@ -207,7 +206,7 @@ class TagNode : public QObject
         {
             return m_text;
         }
-    
+
         void setComment(const QString& comment)
         {
             delete m_comment;
@@ -217,7 +216,7 @@ class TagNode : public QObject
         {
             return m_comment;
         }
-    
+
         void setSecret(bool s)
         {
             m_bIsSecret = s;
@@ -226,35 +225,35 @@ class TagNode : public QObject
         {
             return m_bIsSecret;
         }
-    
+
         void setIconName(const QString& iconName);
         QString* iconName()
         {
             return m_iconName;
         }
-    
+
         /**
         * Appends the specified assoc to the list of associations for this tagnode.
         */
         void appendAssoc(FileTagNodeAssoc* assoc);
-    
+
         /**
         * Removes the specified assoc from the list of assocs.
         */
         void removeAssoc(FileTagNodeAssoc* assoc);
-    
+
         /**
         * Returns the association between this tagnode and the specified file, if there
         * exists one.
         */
         FileTagNodeAssoc* getAssocToFile(File* file);
-    
+
         /**
         * Tests if this tagnode or a tagnode below this tagnode has an association to the
         * specified file.
         */
         bool isLinkedToFile(File* file);
-    
+
         /**
         * Returns all associations this tagnode has to files.
         */
@@ -262,63 +261,63 @@ class TagNode : public QObject
         {
             return m_assocs;
         }
-    
+
         QString toString()
         {
             return QString("id: %1, name: >%2<").arg(m_id).arg(*m_text);
         }
-    
+
     signals:
         void changed();
-    
+
     protected:
         /**
         * The id of the type.
         */
         TagNode::Type m_typeId;
-    
+
         /**
         * The unique id of this tagnode.
         */
         unsigned int m_id;
-    
+
         /**
         * This field is true if the tag is readonly. The value of a readonly tag
         * cannot be changed. This is used mainly for EXIF-tags.
         * The default is false.
         */
         bool m_readonly;
-    
+
         /**
         * The text to display for this tagnode.
         */
         QString* m_text;
-    
+
         /**
         * The comment of this tagnode.
         */
         QString* m_comment;
-    
+
         /**
         * defines this node as node handled with special secrecy
         */
         bool m_bIsSecret;
-    
+
         /**
         * The name or the path of the icon to use.
         */
         QString* m_iconName;
-    
+
         /**
         * The parent of this tagnode. May be null.
         */
         TagNode* m_parent;
-    
+
         /**
         * The list of children.
         */
         QPtrList<TagNode>* m_children;
-    
+
         /**
         * The list of all associations this tagnode has a reference to.
         */
