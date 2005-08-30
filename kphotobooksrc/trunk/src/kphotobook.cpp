@@ -1410,7 +1410,9 @@ void KPhotoBook::slotExportSelectedFiles()
 ///@todo finish implementation of the imageImporter
 void KPhotoBook::slotImportImages()
 {
-    (new ImageImporter(this))->show();
+    ImageImporter* ii = new ImageImporter(this);
+    connect(ii, SIGNAL(newImagesImported( const QString& )), SLOT(slotRescanFilesystem()));
+    ii->show();
 }
 
 
