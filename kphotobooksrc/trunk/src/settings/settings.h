@@ -788,6 +788,25 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+      Set Should the filename regexp be casesensitive?
+    */
+    static
+    void setImageImporterFilenameIgnoreCase( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageImporterFilenameIgnoreCase" ) ))
+        self()->mImageImporterFilenameIgnoreCase = v;
+    }
+
+    /**
+      Get Should the filename regexp be casesensitive?
+    */
+    static
+    bool imageImporterFilenameIgnoreCase()
+    {
+      return self()->mImageImporterFilenameIgnoreCase;
+    }
+
+    /**
       Set SourceIncludeSubfolders
     */
     static
@@ -1080,6 +1099,7 @@ class Settings : public KConfigSkeleton
     // ImageImporter
     QString mImageImporterSourceFolder;
     QString mImageImporterSourceFilenameRegexp;
+    bool mImageImporterFilenameIgnoreCase;
     bool mImageImporterSourceIncludeSubfolders;
     bool mImageImporterSourceRemoveAfterTransfer;
     QString mImageImporterSourceDevice;

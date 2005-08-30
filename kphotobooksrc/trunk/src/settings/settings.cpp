@@ -222,6 +222,9 @@ Settings::Settings(  )
   KConfigSkeleton::ItemString  *itemImageImporterSourceFilenameRegexp;
   itemImageImporterSourceFilenameRegexp = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "SourceFilenameRegexp" ), mImageImporterSourceFilenameRegexp );
   addItem( itemImageImporterSourceFilenameRegexp, QString::fromLatin1( "ImageImporterSourceFilenameRegexp" ) );
+  KConfigSkeleton::ItemBool  *itemImageImporterFilenameIgnoreCase;
+  itemImageImporterFilenameIgnoreCase = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "FilenameIgnoreCase" ), mImageImporterFilenameIgnoreCase );
+  addItem( itemImageImporterFilenameIgnoreCase, QString::fromLatin1( "ImageImporterFilenameIgnoreCase" ) );
   KConfigSkeleton::ItemBool  *itemImageImporterSourceIncludeSubfolders;
   itemImageImporterSourceIncludeSubfolders = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "SourceIncludeSubfolders" ), mImageImporterSourceIncludeSubfolders, true );
   addItem( itemImageImporterSourceIncludeSubfolders, QString::fromLatin1( "ImageImporterSourceIncludeSubfolders" ) );

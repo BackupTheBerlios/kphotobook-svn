@@ -208,6 +208,9 @@
     <entry name="ImageImporterSourceFilenameRegexp" type="String" key="SourceFilenameRegexp">
       <label>Contains the Sourcefilename regexp setting of the ImageImporter.</label>
     </entry>
+    <entry name="ImageImporterFilenameIgnoreCase" type="Bool" key="FilenameIgnoreCase">
+      <label>Should the filename regexp be casesensitive?</label>
+    </entry>
     <entry name="ImageImporterSourceIncludeSubfolders" type="Bool" key="SourceIncludeSubfolders">
         <label></label>
         <default>true</default>
