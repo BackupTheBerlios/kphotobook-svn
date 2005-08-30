@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 5005 by Christian Hoenig                                *
+ *   Copyright (C) 2005 by Christian Hoenig                                *
  *   kphotobook@mail.hoenig.cc                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
