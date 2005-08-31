@@ -620,76 +620,114 @@ class Settings : public KConfigSkeleton
       Set Should the internal viewer use (slower) smooth scaling, or fast scaling algorithms?
     */
     static
-    void setToolsViewerUseSmoothScaling( bool v )
+    void setImageViewerUseSmoothScaling( bool v )
     {
-      if (!self()->isImmutable( QString::fromLatin1( "ToolsViewerUseSmoothScaling" ) ))
-        self()->mToolsViewerUseSmoothScaling = v;
+      if (!self()->isImmutable( QString::fromLatin1( "ImageViewerUseSmoothScaling" ) ))
+        self()->mImageViewerUseSmoothScaling = v;
     }
 
     /**
       Get Should the internal viewer use (slower) smooth scaling, or fast scaling algorithms?
     */
     static
-    bool toolsViewerUseSmoothScaling()
+    bool imageViewerUseSmoothScaling()
     {
-      return self()->mToolsViewerUseSmoothScaling;
+      return self()->mImageViewerUseSmoothScaling;
     }
 
     /**
       Set Should the image counter be shown in the image viewer?
     */
     static
-    void setToolsViewerShowImageCounter( bool v )
+    void setImageViewerShowImageCounter( bool v )
     {
-      if (!self()->isImmutable( QString::fromLatin1( "ToolsViewerShowImageCounter" ) ))
-        self()->mToolsViewerShowImageCounter = v;
+      if (!self()->isImmutable( QString::fromLatin1( "ImageViewerShowImageCounter" ) ))
+        self()->mImageViewerShowImageCounter = v;
     }
 
     /**
       Get Should the image counter be shown in the image viewer?
     */
     static
-    bool toolsViewerShowImageCounter()
+    bool imageViewerShowImageCounter()
     {
-      return self()->mToolsViewerShowImageCounter;
+      return self()->mImageViewerShowImageCounter;
     }
 
     /**
       Set Should fileinfos (name etc.) be shown in the image viewer?
     */
     static
-    void setToolsViewerShowFileInfos( bool v )
+    void setImageViewerShowFileInfos( bool v )
     {
-      if (!self()->isImmutable( QString::fromLatin1( "ToolsViewerShowFileInfos" ) ))
-        self()->mToolsViewerShowFileInfos = v;
+      if (!self()->isImmutable( QString::fromLatin1( "ImageViewerShowFileInfos" ) ))
+        self()->mImageViewerShowFileInfos = v;
     }
 
     /**
       Get Should fileinfos (name etc.) be shown in the image viewer?
     */
     static
-    bool toolsViewerShowFileInfos()
+    bool imageViewerShowFileInfos()
     {
-      return self()->mToolsViewerShowFileInfos;
+      return self()->mImageViewerShowFileInfos;
     }
 
     /**
       Set The color the overlay is drawn with in the image viewer.
     */
     static
-    void setToolsViewerOverlayColor( const QString & v )
+    void setImageViewerOverlayFGColor( const QString & v )
     {
-      if (!self()->isImmutable( QString::fromLatin1( "ToolsViewerOverlayColor" ) ))
-        self()->mToolsViewerOverlayColor = v;
+      if (!self()->isImmutable( QString::fromLatin1( "ImageViewerOverlayFGColor" ) ))
+        self()->mImageViewerOverlayFGColor = v;
     }
 
     /**
       Get The color the overlay is drawn with in the image viewer.
     */
     static
-    QString toolsViewerOverlayColor()
+    QString imageViewerOverlayFGColor()
     {
-      return self()->mToolsViewerOverlayColor;
+      return self()->mImageViewerOverlayFGColor;
+    }
+
+    /**
+      Set The color the overlay is drawn with in the image viewer.
+    */
+    static
+    void setImageViewerOverlayBGColor( const QString & v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageViewerOverlayBGColor" ) ))
+        self()->mImageViewerOverlayBGColor = v;
+    }
+
+    /**
+      Get The color the overlay is drawn with in the image viewer.
+    */
+    static
+    QString imageViewerOverlayBGColor()
+    {
+      return self()->mImageViewerOverlayBGColor;
+    }
+
+    /**
+      Set The tranclucency the overlay is overlayed.
+    */
+    static
+    void setImageViewerOverlayTranclucency( int v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageViewerOverlayTranclucency" ) ))
+        self()->mImageViewerOverlayTranclucency = v;
+    }
+
+    /**
+      Get The tranclucency the overlay is overlayed.
+    */
+    static
+    int imageViewerOverlayTranclucency()
+    {
+      return self()->mImageViewerOverlayTranclucency;
     }
 
     /**
@@ -1086,10 +1124,14 @@ class Settings : public KConfigSkeleton
     bool mToolsUseInternalImageViewer;
     QString mToolsDefaultExternalTool;
     QStringList mToolsExternalTools;
-    bool mToolsViewerUseSmoothScaling;
-    bool mToolsViewerShowImageCounter;
-    bool mToolsViewerShowFileInfos;
-    QString mToolsViewerOverlayColor;
+
+    // ImageViewer
+    bool mImageViewerUseSmoothScaling;
+    bool mImageViewerShowImageCounter;
+    bool mImageViewerShowFileInfos;
+    QString mImageViewerOverlayFGColor;
+    QString mImageViewerOverlayBGColor;
+    int mImageViewerOverlayTranclucency;
 
     // FileSystem
     QString mFileSystemLastOpenedFile;

@@ -43,6 +43,7 @@
 #include "settings/settingssourcedirtree.h"
 #include "settings/settingstagtree.h"
 #include "settings/settingstools.h"
+#include "settings/settingsimageviewer.h"
 #include "tracer/tracer.h"
 #include "uitrees/sourcedirtree.h"
 #include "uitrees/sourcedirtreenode.h"
@@ -122,6 +123,7 @@ KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode) :
 
     m_settingsGeneral(0),
     m_settingsImagePreview(0),
+    m_settingsImageViewer(0),
     m_settingsTagTree(0),
     m_settingsSourceDirTree(0),
     m_settingsFileHandling(0),
@@ -759,6 +761,9 @@ void KPhotoBook::slotOptionsPreferences()
 
     m_settingsImagePreview = new SettingsImagePreview(0, "SettingsImagePreview");
     dialog->addPage(m_settingsImagePreview, i18n("ImagePreview"), Constants::ICON_SETTINGS_IMAGEPREVIEW);
+
+    m_settingsImageViewer = new SettingsImageViewer(0, "SettingsImageViewer");
+    dialog->addPage(m_settingsImageViewer, i18n("ImageViewer"), Constants::ICON_SETTINGS_IMAGEVIEWER);
 
     m_settingsFileHandling = new SettingsFileHandling(0, "SettingsFileHandling");
     m_settingsFileHandling->kcfg_FileFilterFileToHandle->insertStringList(Settings::fileFilterFileToHandle());

@@ -171,21 +171,32 @@
       <label>Contains the list of tools an image can be opened with.</label>
       <default>kuickshow</default>
     </entry>
-    <entry name="ToolsViewerUseSmoothScaling" type="Bool" key="ViewerUseSmoothScaling">
+  </group>
+  
+  <group name="ImageViewer">
+    <entry name="ImageViewerUseSmoothScaling" type="Bool" key="ViewerUseSmoothScaling">
         <label>Should the internal viewer use (slower) smooth scaling, or fast scaling algorithms?</label>
         <default>false</default>
     </entry>
-    <entry name="ToolsViewerShowImageCounter" type="Bool" key="ViewerShowImageCounter">
+    <entry name="ImageViewerShowImageCounter" type="Bool" key="ViewerShowImageCounter">
         <label>Should the image counter be shown in the image viewer?</label>
         <default>true</default>
     </entry>
-    <entry name="ToolsViewerShowFileInfos" type="Bool" key="ViewerShowFileInfos">
+    <entry name="ImageViewerShowFileInfos" type="Bool" key="ViewerShowFileInfos">
         <label>Should fileinfos (name etc.) be shown in the image viewer?</label>
         <default>true</default>
     </entry>
-    <entry name="ToolsViewerOverlayColor" type="String" key="ViewerOverlayColor">
+    <entry name="ImageViewerOverlayFGColor" type="String" key="ViewerOverlayFGColor">
         <label>The color the overlay is drawn with in the image viewer.</label>
         <default>#FFEB10</default>
+    </entry>
+    <entry name="ImageViewerOverlayBGColor" type="String" key="ViewerOverlayBGColor">
+        <label>The color the overlay is drawn with in the image viewer.</label>
+        <default>#FFEB10</default>
+    </entry>
+    <entry name="ImageViewerOverlayTranclucency" type="Int" key="ViewerOverlayTranclucency">
+        <label>The tranclucency the overlay is overlayed.</label>
+        <default>75</default>
     </entry>
   </group>
 

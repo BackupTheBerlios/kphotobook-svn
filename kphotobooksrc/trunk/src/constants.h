@@ -67,6 +67,7 @@ class Constants
         static const QString ICON_SETTINGS_TAG;
         static const QString ICON_SETTINGS_SOURCEDIR;
         static const QString ICON_SETTINGS_IMAGEPREVIEW;
+        static const QString ICON_SETTINGS_IMAGEVIEWER;
         static const QString ICON_SETTINGS_FILEHANDLING;
         static const QString ICON_SETTINGS_TOOLS;
 

@@ -304,9 +304,10 @@ void TimeRuler::paintEvent(QPaintEvent* e)
         } else {
 
             if (m_selectedYear > 0) {
+                ///@todo don't use Settings::toolsViewerOverlayFGColor() here!
                 drawBeam(&painter,
                          m_lstDates.count(m_selectedYear, m_selectedMonth) * 100/ m_lstDates.maxMonth(),
-                         m_selectedYear, m_selectedMonth, true, QColor(Settings::toolsViewerOverlayColor()));
+                         m_selectedYear, m_selectedMonth, true, QColor(Settings::imageViewerOverlayFGColor()));
             }
 
             if (m_mouseOverYear > 0) {
@@ -687,6 +688,6 @@ int DateBinder::maxDay()
             m_maxDay = cur;
         }
     }
-    
+
     return m_maxDay;
 }

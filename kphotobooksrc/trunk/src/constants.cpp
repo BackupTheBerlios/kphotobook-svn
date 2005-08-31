@@ -61,6 +61,8 @@ const QString Constants::ICON_SETTINGS_GENERAL = QString("kpb_folder_home");
 const QString Constants::ICON_SETTINGS_TAG = QString("kpb_tag");
 const QString Constants::ICON_SETTINGS_SOURCEDIR = QString("kpb_folder");
 const QString Constants::ICON_SETTINGS_IMAGEPREVIEW = QString("kpb_view_refresh");
+///@todo add an icon for the imageviewersettings
+const QString Constants::ICON_SETTINGS_IMAGEVIEWER= QString("kpb_view_refresh");
 const QString Constants::ICON_SETTINGS_FILEHANDLING = QString("kpb_folder_txt");
 const QString Constants::ICON_SETTINGS_TOOLS = QString("kpb_kfind");
 

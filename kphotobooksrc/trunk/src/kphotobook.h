@@ -33,6 +33,7 @@ class SettingsGeneral;
 class SettingsTagTree;
 class SettingsSourceDirTree;
 class SettingsImagePreview;
+class SettingsImageViewer;
 class SettingsFileHandling;
 class SettingsTools;
 class Folder;
@@ -365,6 +366,7 @@ class KPhotoBook : public KMdiMainFrm
         // settings pages
         SettingsGeneral* m_settingsGeneral;
         SettingsImagePreview* m_settingsImagePreview;
+        SettingsImageViewer* m_settingsImageViewer;
         SettingsTagTree* m_settingsTagTree;
         SettingsSourceDirTree* m_settingsSourceDirTree;
         SettingsFileHandling* m_settingsFileHandling;

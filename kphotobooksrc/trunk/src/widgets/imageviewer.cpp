@@ -249,9 +249,9 @@ void ImageViewer::slotSlideshowTimerFired()
 
 void ImageViewer::slotToggleSmoothScaling()
 {
-    bool b = !Settings::toolsViewerUseSmoothScaling();
+    bool b = !Settings::imageViewerUseSmoothScaling();
 
-    Settings::setToolsViewerUseSmoothScaling(b);
+    Settings::setImageViewerUseSmoothScaling(b);
 
     m_curImage->setSmoothScale(b);
     m_prvImage->setSmoothScale(b);
@@ -261,9 +261,9 @@ void ImageViewer::slotToggleSmoothScaling()
 
 void ImageViewer::slotToggleShowImageCounter()
 {
-    bool b = !Settings::toolsViewerShowImageCounter();
+    bool b = !Settings::imageViewerShowImageCounter();
 
-    Settings::setToolsViewerShowImageCounter( b );
+    Settings::setImageViewerShowImageCounter( b );
 
     if (b) {
         generateImageCounterOverlay();
@@ -277,9 +277,9 @@ void ImageViewer::slotToggleShowImageCounter()
 
 void ImageViewer::slotToggleShowInfoOverlay()
 {
-    bool b = !Settings::toolsViewerShowFileInfos();
+    bool b = !Settings::imageViewerShowFileInfos();
 
-    Settings::setToolsViewerShowFileInfos( b );
+    Settings::setImageViewerShowFileInfos( b );
 
     if (b) {
         generateInfoOverlay();
@@ -467,13 +467,13 @@ void ImageViewer::contextMenuEvent ( QContextMenuEvent* /* e */ )
     popup->insertSeparator();
 
     id = popup->insertItem(i18n("Use SmoothScaling"), this, SLOT(slotToggleSmoothScaling()));
-    popup->setItemChecked(id, Settings::toolsViewerUseSmoothScaling());
+    popup->setItemChecked(id, Settings::imageViewerUseSmoothScaling());
 
     id = popup->insertItem(i18n("Show Image Counter"), this, SLOT(slotToggleShowImageCounter()));
-    popup->setItemChecked(id, Settings::toolsViewerShowImageCounter());
+    popup->setItemChecked(id, Settings::imageViewerShowImageCounter());
 
     id = popup->insertItem(i18n("Show Image Infos"), this, SLOT(slotToggleShowInfoOverlay()));
-    popup->setItemChecked(id, Settings::toolsViewerShowFileInfos());
+    popup->setItemChecked(id, Settings::imageViewerShowFileInfos());
 
     popup->insertSeparator();
 
@@ -492,7 +492,7 @@ void ImageViewer::contextMenuEvent ( QContextMenuEvent* /* e */ )
 void ImageViewer::generateImageCounterOverlay()
 {
     //if we don't show it, we dont generate it!
-    if (!Settings::toolsViewerShowImageCounter()) {
+    if (!Settings::imageViewerShowImageCounter()) {
         m_imageCounterOverlay.resize(0,0);
         return ;
     }
@@ -573,7 +573,7 @@ void ImageViewer::generateImageCounterOverlay()
     QImage image( doublePixmap.convertToImage().smoothScale( side, side));
     image.setAlphaBuffer( true );
 
-    QColor color(Settings::toolsViewerOverlayColor());
+    QColor color(Settings::imageViewerOverlayFGColor());
     int red = color.red(), green = color.green(), blue = color.blue();
     int pixels = image.width() * image.height();
 
@@ -590,7 +590,7 @@ void ImageViewer::generateImageCounterOverlay()
 void ImageViewer::generateInfoOverlay()
 {
     //if we don't show it, we don't generate it!
-    if (!Settings::toolsViewerShowFileInfos()) {
+    if (!Settings::imageViewerShowFileInfos()) {
         m_infoOverlay.resize(0,0);
         return;
     }
@@ -611,36 +611,52 @@ void ImageViewer::generateInfoOverlay()
 
     QSize size(srt.widthUsed(), srt.height());
 
-    // the basic pixmap
+
+
+    //first initialize the alpha channels
     QPixmap pm(size);
     pm.fill(Qt::black);
-
     QPainter pmp(&pm);
 
-    //draw the frame
-    pmp.setBrush(0x55);
+    pmp.setBrush((int)((100 - Settings::imageViewerOverlayTranclucency()) * 2.55));
     pmp.setPen(0x88);
+
+    //draw the frame
     pmp.drawRoundRect(0,0, pm.width(), pm.height(), (8 * 200) / pm.width(), (8 * 200) / pm.height());
 
-    //the draw the text
+    //draw the text the first time (to have the alpha mask)
     srt.draw(&pmp, 0, 0, pm.rect(), colorGroup());
 
     pmp.end();
 
-    QImage image( pm.convertToImage());
-    image.setAlphaBuffer( true );
+    {
+        QImage image( pm.convertToImage() );
+        image.setAlphaBuffer( true );
 
-    QColor color(Settings::toolsViewerOverlayColor());
-    int red = color.red(), green = color.green(), blue = color.blue();
-    int pixels = image.width() * image.height();
+        QColor color(Settings::imageViewerOverlayBGColor());
+        int r = color.red();
+        int g = color.green();
+        int b = color.blue();
 
-    unsigned int * data = (unsigned int *)image.bits();
-    for( int i = 0; i < pixels; ++i ) {
-        data[i] = qRgba( red, green, blue, data[i] & 0xFF );
+        int pixels = image.width() * image.height();
+        unsigned int* data   = (unsigned int *)image.bits();
+        for( int i = 0; i < pixels; ++i ) {
+            data[i] = qRgba( r, g, b, data[i] & 0xFF );
+        }
+
+        //finally save it
+        m_infoOverlay.convertFromImage( image );
     }
 
-    //finally save it
-    m_infoOverlay.convertFromImage( image );
+    QPainter p(&m_infoOverlay);
+
+    QColorGroup cg = colorGroup();
+    cg.setColor( QColorGroup::Text, QColor(Settings::imageViewerOverlayFGColor()) );
+
+    //now finally draw the text
+    srt.draw(&p, 0, 0, m_infoOverlay.rect(), cg);
+
+    p.end();
 }
 
 

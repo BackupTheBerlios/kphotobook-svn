@@ -189,18 +189,27 @@ Settings::Settings(  )
   KConfigSkeleton::ItemStringList  *itemToolsExternalTools;
   itemToolsExternalTools = new KConfigSkeleton::ItemStringList( currentGroup(), QString::fromLatin1( "ExternalTools" ), mToolsExternalTools, defaultToolsExternalTools );
   addItem( itemToolsExternalTools, QString::fromLatin1( "ToolsExternalTools" ) );
-  KConfigSkeleton::ItemBool  *itemToolsViewerUseSmoothScaling;
-  itemToolsViewerUseSmoothScaling = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerUseSmoothScaling" ), mToolsViewerUseSmoothScaling, false );
-  addItem( itemToolsViewerUseSmoothScaling, QString::fromLatin1( "ToolsViewerUseSmoothScaling" ) );
-  KConfigSkeleton::ItemBool  *itemToolsViewerShowImageCounter;
-  itemToolsViewerShowImageCounter = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerShowImageCounter" ), mToolsViewerShowImageCounter, true );
-  addItem( itemToolsViewerShowImageCounter, QString::fromLatin1( "ToolsViewerShowImageCounter" ) );
-  KConfigSkeleton::ItemBool  *itemToolsViewerShowFileInfos;
-  itemToolsViewerShowFileInfos = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerShowFileInfos" ), mToolsViewerShowFileInfos, true );
-  addItem( itemToolsViewerShowFileInfos, QString::fromLatin1( "ToolsViewerShowFileInfos" ) );
-  KConfigSkeleton::ItemString  *itemToolsViewerOverlayColor;
-  itemToolsViewerOverlayColor = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "ViewerOverlayColor" ), mToolsViewerOverlayColor, QString::fromLatin1( "#FFEB10" ) );
-  addItem( itemToolsViewerOverlayColor, QString::fromLatin1( "ToolsViewerOverlayColor" ) );
+
+  setCurrentGroup( QString::fromLatin1( "ImageViewer" ) );
+
+  KConfigSkeleton::ItemBool  *itemImageViewerUseSmoothScaling;
+  itemImageViewerUseSmoothScaling = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerUseSmoothScaling" ), mImageViewerUseSmoothScaling, false );
+  addItem( itemImageViewerUseSmoothScaling, QString::fromLatin1( "ImageViewerUseSmoothScaling" ) );
+  KConfigSkeleton::ItemBool  *itemImageViewerShowImageCounter;
+  itemImageViewerShowImageCounter = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerShowImageCounter" ), mImageViewerShowImageCounter, true );
+  addItem( itemImageViewerShowImageCounter, QString::fromLatin1( "ImageViewerShowImageCounter" ) );
+  KConfigSkeleton::ItemBool  *itemImageViewerShowFileInfos;
+  itemImageViewerShowFileInfos = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerShowFileInfos" ), mImageViewerShowFileInfos, true );
+  addItem( itemImageViewerShowFileInfos, QString::fromLatin1( "ImageViewerShowFileInfos" ) );
+  KConfigSkeleton::ItemString  *itemImageViewerOverlayFGColor;
+  itemImageViewerOverlayFGColor = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "ViewerOverlayFGColor" ), mImageViewerOverlayFGColor, QString::fromLatin1( "#FFEB10" ) );
+  addItem( itemImageViewerOverlayFGColor, QString::fromLatin1( "ImageViewerOverlayFGColor" ) );
+  KConfigSkeleton::ItemString  *itemImageViewerOverlayBGColor;
+  itemImageViewerOverlayBGColor = new KConfigSkeleton::ItemString( currentGroup(), QString::fromLatin1( "ViewerOverlayBGColor" ), mImageViewerOverlayBGColor, QString::fromLatin1( "#FFEB10" ) );
+  addItem( itemImageViewerOverlayBGColor, QString::fromLatin1( "ImageViewerOverlayBGColor" ) );
+  KConfigSkeleton::ItemInt  *itemImageViewerOverlayTranclucency;
+  itemImageViewerOverlayTranclucency = new KConfigSkeleton::ItemInt( currentGroup(), QString::fromLatin1( "ViewerOverlayTranclucency" ), mImageViewerOverlayTranclucency, 75 );
+  addItem( itemImageViewerOverlayTranclucency, QString::fromLatin1( "ImageViewerOverlayTranclucency" ) );
 
   setCurrentGroup( QString::fromLatin1( "FileSystem" ) );
 
