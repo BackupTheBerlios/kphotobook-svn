@@ -20,13 +20,13 @@
 
 #include "datetimewidget.h"
 
+#include "../tracer/tracer.h"
+
 #include <kdialogbase.h>
 #include <kdatepicker.h>
-#include <kglobal.h>
 #include <ktoolbarbutton.h>
 #include <klocale.h>
 #include <klineedit.h>
-
 
 #include <qlayout.h>
 #include <qlabel.h>
@@ -132,6 +132,21 @@ void DateTimeWidget::initUI(const QDateTime& dateTime)
     if (dateTime.isValid() && dateTime.time().isValid()) {
         m_timeLine->setText(m_locale->formatTime(dateTime.time(), true));
     }
+}
+
+
+QDateTime DateTimeWidget::dateTime() const
+{
+    if (isDateTimeValid()) {
+        if (m_chosenDate && m_chosenTime) {
+            return QDateTime(*m_chosenDate, *m_chosenTime);
+        }
+        if (m_chosenDate) {
+            return QDateTime(*m_chosenDate);
+        }
+    }
+
+    return QDateTime();
 }
 
 

@@ -21,14 +21,14 @@
 #ifndef DATETIMEWIDGET_H
 #define DATETIMEWIDGET_H
 
-#include "../tracer/tracer.h"
-
-#include <qdatetime.h>
-#include <qstring.h>
-#include <qwidget.h>
+class Tracer;
 
 class KLineEdit;
 class KLocale;
+
+#include <qdatetime.h>
+#include <qwidget.h>
+class QString;
 
 
 class DateTimeWidget : public QWidget
@@ -56,14 +56,14 @@ class DateTimeWidget : public QWidget
         /**
          * Returns the currently chosen date. If the date is invalid or not set, an undefined date is returned.
          */
-        QDate date()
+        QDate date() const
         {
             return m_chosenDate ? QDate(*m_chosenDate) : QDate();
         }
         /**
          * Returns true if no date is set. The QDate returned by @link date() is undefined if no date is set.
          */
-        bool noDateSet()
+        bool noDateSet() const
         {
             return !m_chosenDate;
         }
@@ -71,14 +71,14 @@ class DateTimeWidget : public QWidget
         /**
          * Returns the currently chosen time. If the time is invalid or not set, an undefined time.
          */
-        QTime time()
+        QTime time() const
         {
             return m_chosenTime ? QTime(*m_chosenTime) : QTime();
         }
         /**
          * Returns true if no time is set. The QTime returned by @link time() is undefined if no time is set.
          */
-        bool noTimeSet()
+        bool noTimeSet() const
         {
             return !m_chosenTime;
         }
@@ -86,26 +86,14 @@ class DateTimeWidget : public QWidget
         /**
          * Returns the currently chosen date and time. If the date or the time is invalid an invalid datetime is returned.
          */
-        QDateTime dateTime()
-        {
-            if (isDateTimeValid()) {
-                if (m_chosenDate && m_chosenTime) {
-                    return QDateTime(*m_chosenDate, *m_chosenTime);
-                }
-                if (m_chosenDate) {
-                    return QDateTime(*m_chosenDate);
-                }
-            }
-
-            return QDateTime();
-        }
+        QDateTime dateTime() const;
 
         /**
          * Returns true if the resulting QDateTime would be valid.
          * - Both date and time must be valid.
          * - if the time is set, the date must also be set.
          */
-        bool isDateTimeValid()
+        bool isDateTimeValid() const
         {
             return (m_chosenDateIsValid && m_chosenTimeIsValid) && !(!m_chosenDate && m_chosenTime);
         }
