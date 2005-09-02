@@ -22,6 +22,7 @@
 
 #include "../engine/engine.h"
 #include "../engine/file.h"
+#include "../engine/filesystemscanner.h"
 #include "../engine/filetagnodeassocboolean.h"
 #include "../engine/filetagnodeassocdatetime.h"
 #include "../engine/filetagnodeassocradio.h"
@@ -34,6 +35,7 @@
 #include "../engine/tagnodestring.h"
 #include "../engine/tagnodetitle.h"
 
+#include <qdir.h>
 #include <qfileinfo.h>
 #include <qpixmap.h>
 

@@ -26,6 +26,7 @@
 #include "../engine/folder.h"
 #include "../engine/tagnode.h"
 
+#include <qdir.h>
 #include <qfileinfo.h>
 #include <qregexp.h>
 

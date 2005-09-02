@@ -32,6 +32,7 @@
 #include <klocale.h>
 
 #include <qcursor.h>
+#include <qdir.h>
 #include <qfont.h>
 #include <qpainter.h>
 #include <qpixmap.h>

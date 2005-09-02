@@ -21,17 +21,17 @@
 #ifndef FILE_H
 #define FILE_H
 
-#include "../tracer/tracer.h"
-
-#include <kfileitem.h>
-
-#include <qfileinfo.h>
-#include <qptrlist.h>
-
 class Engine;
 class FileTagNodeAssoc;
 class Folder;
 class TagNode;
+class Tracer;
+
+#include <kfileitem.h>
+
+class QFileInfo;
+template<class type> class QPtrListStdIterator;
+
 
 
 /**
@@ -43,7 +43,7 @@ class File : public KFileItem
 {
     private:
         static Tracer* tracer;
-    
+
     public:
         /**
         * This constructor is used to instantiate a File-object representing
@@ -52,95 +52,96 @@ class File : public KFileItem
         * The parameter fileInfo must not be null! If it is, a NullPointer occurs.
         */
         File(Engine* engine, Folder* sourceDir, QFileInfo* fileInfo, int rotate = 0);
-    
+
         ~File();
-    
+
         /**
         * Return the folder this file belongs to.
         */
-        Folder* sourceDir()
+        Folder* sourceDir() const
         {
             return m_sourceDir;
         }
-    
+
         /**
         * Returns the QFileInfo specified during instantiating this object.
         */
-        QFileInfo* fileInfo()
+        QFileInfo* fileInfo() const
         {
             return m_fileInfo;
         }
-    
+
         void setRotate(int degrees)
         {
             m_rotate = degrees;
         }
-    
-        int rotate()
+
+        int rotate() const
         {
             return m_rotate;
         }
-    
+
         void setFound(bool found)
         {
             m_found = found;
         }
-        bool found()
+        bool found() const
         {
             return m_found;
         }
-    
+
         /**
         * Appends the specified assoc to the list of associations for this file.
         */
         void appendAssoc(FileTagNodeAssoc* assoc);
-    
+
         /**
         * Removes the specified assoc from the list of assocs.
         */
         void removeAssoc(FileTagNodeAssoc* assoc);
-    
+
         /**
         * Returns the association between this file and the specified tagNode, if there
         * exists one.
         */
-        FileTagNodeAssoc* getAssoc(TagNode* tagNode);
-    
+        FileTagNodeAssoc* getAssoc(TagNode* tagNode) const;
+
         /**
         * Returns all associations this file has to tagNodes.
         */
-        QPtrList<FileTagNodeAssoc>* assocs() {
+        QPtrList<FileTagNodeAssoc>* assocs() const
+        {
             return m_assocs;
         }
-    
+
     private:
         /**
         * The engine we belong to.
         */
         Engine* m_engine;
-    
+
         /**
         * The folder we belong too.
         */
         Folder* m_sourceDir;
-    
+
         /**
         * The represented file.
         */
         QFileInfo* m_fileInfo;
-    
+
         /**
         * The degrees to rotate the image with.
         * This is the information read from the xml file, NOT from EXIF.
         */
         int m_rotate;
-    
+
         /**
         * Indicates if this file existed while the startup or the last rescan
         * of the filesystem;
         */
         bool m_found;
-    
+
         /**
         * The list of all associations this file has a reference to.
         */

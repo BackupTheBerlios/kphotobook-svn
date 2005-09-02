@@ -21,13 +21,12 @@
 #ifndef FOLDER_H
 #define FOLDER_H
 
-#include "../tracer/tracer.h"
-
-#include <qdir.h>
-#include <qobject.h>
-#include <qptrlist.h>
-
 class File;
+class Tracer;
+
+#include <qobject.h>
+class QDir;
+template<class type> class QPtrList;
 
 
 /**
@@ -41,81 +40,70 @@ class Folder : public QObject
 
     private:
         static Tracer* tracer;
-    
+
     public:
         Folder(unsigned int id, QDir* dir, bool recursive);
-    
+
         ~Folder();
-    
+
         void setParent(Folder* parent);
-    
-        Folder* parent()
+
+        Folder* parent() const
         {
             return m_parent;
         }
-    
-        QPtrList<Folder>* children()
+
+        QPtrList<Folder>* children() const
         {
             return m_children;
         }
-    
-        unsigned int id()
+
+        unsigned int id() const
         {
             return m_id;
         }
-    
-        QDir* dir()
+
+        QDir* dir() const
         {
             return m_dir;
         }
-    
-        bool recursive()
+
+        bool recursive() const
         {
             return m_recursive;
         }
-    
+
         void setFound(bool found)
         {
             m_found = found;
         }
-        bool found()
+        bool found() const
         {
             return m_found;
         }
-    
-        void appendFile(File* file)
-        {
-            m_files->append(file);
-        }
-        QPtrList<File>* files()
+
+        void appendFile(File* file);
+        void removeFile(File* file);
+        QPtrList<File>* files() const
         {
             return m_files;
         }
-        void removeFile(File* file)
-        {
-            if (!m_deleteInProgress) {
-                m_files->remove(file);
-            }
-        }
-    
+
         void setInclude(bool include)
         {
             m_include = include;
         }
-        bool include()
+        bool include() const
         {
             return m_include;
         }
-    
-        QString toString()
-        {
-            return QString("id: %1, folder: >%2<, recursive: %3").arg(m_id).arg(m_dir->absPath()).arg(m_recursive);
-        }
-    
+
+        QString toString() const;
+
     signals:
         void signalSelectedChanged(bool selected);
-    
-    
+
+
     private:
         /**
         * This member will be set to true when the destructor was invoked.
@@ -123,46 +111,46 @@ class Folder : public QObject
         * while destructing this object.
         */
         bool m_deleteInProgress;
-    
+
         /**
         * The unique id of this folder.
         */
         unsigned int m_id;
-    
+
         /**
         * The directory representing this folder.
         */
         QDir* m_dir;
-    
+
         /**
         * True if the files in the subfolders of m_dir belong to this
         * folder too.
         */
         bool m_recursive;
-    
+
         /**
         * Indicactes if this folder existed while startup oder the last rescan
         * of the filesystem;
         */
         bool m_found;
-    
+
         /**
         * The parent of this folder.
         * If the parent is not null, this folder is not added be the user explicitely.
         * But it was added because the topmost parent was added recursively.
         */
         Folder* m_parent;
-    
+
         /**
         * The list of all implicitely added subdirectories.
         */
         QPtrList<Folder>* m_children;
-    
+
         /**
         * The list of all files in this folder.
         */
         QPtrList<File>* m_files;
-    
+
         /**
         * Determines if the files in this folder are displayed...
         */

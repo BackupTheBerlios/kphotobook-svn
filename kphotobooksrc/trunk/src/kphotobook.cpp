@@ -29,6 +29,7 @@
 #include "dialogs/dialogmanagetag.h"
 #include "engine/engine.h"
 #include "engine/file.h"
+#include "engine/filesystemscanner.h"
 #include "engine/filternode.h"
 #include "engine/filternodeopand.h"
 #include "engine/filternodeopor.h"

@@ -21,25 +21,21 @@
 #ifndef _ENGINE_H_
 #define _ENGINE_H_
 
-#include "filesystemscanner.h"
-#include "filternode.h"
 #include "tagnode.h"
-#include "tagnodetitle.h"
-#include "../tracer/tracer.h"
 #include "../exception.h"
+class File;
+class FileSystemScanner;
+class FilterNode;
+class Folder;
+class TagNodeTitle;
+class Tracer;
 
 #include <qobject.h>
-#include <qdict.h>
-#include <qdir.h>
-#include <qfileinfo.h>
-#include <qintdict.h>
-#include <qptrlist.h>
 #include <qstring.h>
-
-class Folder;
-class File;
-class TagNode;
-
+class QFileInfo;
+template<class type> class QDict;
+template<class type> class QIntDict;
+template<class type> class QPtrList;
 
 /**
  * The engine managing all folders, tags and files/images.
@@ -67,7 +63,7 @@ class Engine : public QObject
         /**
         * Returns the FileSystemScanner for this engine.
         */
-        FileSystemScanner* fileSystemScanner()
+        FileSystemScanner* fileSystemScanner() const
         {
             return m_fileSystemScanner;
         }
@@ -76,7 +72,7 @@ class Engine : public QObject
         {
             m_dirty = true;
         }
-        bool dirty()
+        bool dirty() const
         {
             return m_dirty;
         }
@@ -84,12 +80,12 @@ class Engine : public QObject
         /**
         * Returns true if the current database has been saved already at least once.
         */
-        bool alreadySavedOnce()
+        bool alreadySavedOnce() const
         {
             return m_uid != 0;
         }
 
-        const QFileInfo* fileinfo()
+        const QFileInfo* fileinfo() const
         {
             return m_fileinfo;
         }
@@ -98,12 +94,9 @@ class Engine : public QObject
         * Returns the current opened file or an empty string if the
         * was never saved.
         */
-        QString currentURL()
-        {
-            return m_fileinfo ? m_fileinfo->absFilePath() : "";
-        }
+        QString currentURL() const;
 
-        const QString* uid()
+        const QString* uid() const
         {
             return m_uid;
         }
@@ -111,7 +104,7 @@ class Engine : public QObject
         /**
         * Returns the total number of files managed by the engine.
         */
-        int totalNumberOfFiles()
+        int totalNumberOfFiles() const
         {
             return m_fileList->count();
         }
@@ -119,7 +112,7 @@ class Engine : public QObject
         /**
         * Returns the number of files selected by the last specified filter.
         */
-        int filteredNumberOfFiles()
+        int filteredNumberOfFiles() const
         {
             return m_fileList2display->count();
         }
@@ -127,7 +120,7 @@ class Engine : public QObject
         /**
         * Returns all currently added source directories handled by this engine.
         */
-        QPtrList<Folder>* sourceDirs()
+        QPtrList<Folder>* sourceDirs() const
         {
             return m_sourceDirs;
         }
@@ -135,7 +128,7 @@ class Engine : public QObject
         /**
         * returns all possible tags of all files
         */
-        QPtrList<TagNode>* tagForest()
+        QPtrList<TagNode>* tagForest() const
         {
             return m_tagForest;
         }
@@ -163,12 +156,12 @@ class Engine : public QObject
         *
         * @param ignoreExifTag If true it is not tested if the specified tag is named 'EXIF'.
         */
-        bool isTagTextValid(TagNode* parent, QString& text, bool ignoreExifTag = false);
+        bool isTagTextValid(TagNode* parent, QString& text, bool ignoreExifTag = false) const;
 
         /**
         * Returns the tagnode representing the EXIF title.
         */
-        TagNodeTitle* exifTagNodeTitle()
+        TagNodeTitle* exifTagNodeTitle() const
         {
             return m_exifTitleTag;
         }

@@ -24,6 +24,10 @@
 #include "folder.h"
 #include "tagnode.h"
 #include "filetagnodeassoc.h"
+#include "../tracer/tracer.h"
+
+#include <qfileinfo.h>
+#include <qptrlist.h>
 
 
 Tracer* File::tracer = Tracer::getInstance("kde.kphotobook.engine", "File");
@@ -77,7 +81,7 @@ void File::removeAssoc(FileTagNodeAssoc* assoc)
 }
 
 
-FileTagNodeAssoc* File::getAssoc(TagNode* tagNode)
+FileTagNodeAssoc* File::getAssoc(TagNode* tagNode) const
 {
     FileTagNodeAssoc* currentAssoc;
     for (currentAssoc = m_assocs->first(); currentAssoc; currentAssoc = m_assocs->next()) {

@@ -33,6 +33,7 @@
 #include <kstdaccel.h>
 
 #include <qcursor.h>
+#include <qdir.h>
 #include <qheader.h>
 #include <qobjectlist.h>
 #include <qwidget.h>

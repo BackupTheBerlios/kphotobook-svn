@@ -21,22 +21,26 @@
 #include "engine.h"
 
 #include "file.h"
+#include "filesystemscanner.h"
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocboolean.h"
+#include "filternode.h"
 #include "folder.h"
-#include "tagnode.h"
 #include "tagnodeboolean.h"
 #include "tagnodetitle.h"
 #include "../backend/xmlparser.h"
 #include "../backend/xmlwriter.h"
 #include "../constants.h"
 #include "../settings/settings.h"
+#include "../tracer/tracer.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
 
 #include <qdatetime.h>
+#include <qdir.h>
+#include <qfileinfo.h>
 #include <qintdict.h>
 #include <qptrlist.h>
 #include <qregexp.h>
@@ -52,24 +56,24 @@ Engine::Engine() :
     m_dirty(false),
     m_fileinfo(0),
     m_uid(0),
-    
+
     m_fileSystemScanner(new FileSystemScanner(this)),
-    
+
     m_nextSourceDirId(1),
     m_sourceDirDict(new QIntDict<Folder>()),
     m_sourceDirs(new QPtrList<Folder>()),
-    
+
     m_nextTagNodeId(1),
     m_tagNodeDict(new QIntDict<TagNode>()),
     m_tagForest(new QPtrList<TagNode>()),
     m_exifTitleTag(0),
-            
+
     m_fileDict(new QDict<File>()),
     m_fileList(new QPtrList<File>()),
     m_fileList2display(new QPtrList<File>())
 {
     tracer->sinvoked(__func__) << "empty engine" << endl;
-    
+
     // create the EXIF tagnode
     createExifTagNode();
 }
@@ -79,18 +83,18 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*) :
     m_dirty(false),
     m_fileinfo(new QFileInfo(fileinfo)),
     m_uid(0),
-    
+
     m_fileSystemScanner(new FileSystemScanner(this)),
-    
+
     m_nextSourceDirId(1),
     m_sourceDirDict(new QIntDict<Folder>()),
     m_sourceDirs(new QPtrList<Folder>()),
-    
+
     m_nextTagNodeId(1),
     m_tagNodeDict(new QIntDict<TagNode>()),
     m_tagForest(new QPtrList<TagNode>()),
     m_exifTitleTag(0),
-            
+
     m_fileDict(new QDict<File>()),
     m_fileList(new QPtrList<File>()),
     m_fileList2display(new QPtrList<File>())
@@ -176,6 +180,12 @@ Engine::~Engine()
 }
 
 
+QString Engine::currentURL() const
+{
+    return m_fileinfo ? m_fileinfo->absFilePath() : "";
+}
+
+
 TagNode* Engine::createTag(TagNode* parent, TagNode::Type type, const QString& text, const QString& comment, const QString& iconName)
 {
     tracer->sinvoked(__func__) << "with type: " << type  << ", text: " << text << ", comment: " << comment << ", icon: " << iconName << endl;
@@ -194,7 +204,7 @@ TagNode* Engine::createTag(TagNode* parent, TagNode::Type type, const QString& t
     m_dirty = true;
 
     emit(newTagNode(tagNode));
-    
+
     return tagNode;
 }
 
@@ -239,7 +249,7 @@ void Engine::removeTag(TagNode* tag)
 }
 
 
-bool Engine::isTagTextValid(TagNode* parent, QString& text, bool ignoreExifTag)
+bool Engine::isTagTextValid(TagNode* parent, QString& text, bool ignoreExifTag) const
 {
     // a maintag must not be named 'EXIF' (if ignoreExifTag is false)
     if (!ignoreExifTag && parent == 0 && text.upper() == "EXIF") {

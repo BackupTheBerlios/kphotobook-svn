@@ -22,14 +22,15 @@
 #define _FILESYSTEMSCANNER_H_
 
 #include "../exception.h"
-#include "../tracer/tracer.h"
-
-#include <qdir.h>
-#include <qptrlist.h>
-
 class Engine;
 class File;
 class Folder;
+class Tracer;
+
+#include <qstring.h>
+class QDateTime;
+class QDir;
+template<class type> class QPtrList;
 
 
 /**
@@ -42,10 +43,10 @@ class FileSystemScanner
 {
     private:
         static Tracer* tracer;
-    
+
     public:
         FileSystemScanner(Engine* engine);
-        
+
         ~FileSystemScanner();
 
         /**
@@ -60,14 +61,14 @@ class FileSystemScanner
          * The EXIF data of all files (already added or new) is read and stored in the database.
          */
         void rescanWithEXIF();
-    
+
         /**
         * Adds the specified sourcefolder and all images in it to the engine.
         * If recursive is true, all folders below the given folder are added too.
         * If the sourcefolder cannot be added, an EngineException is thrown.
         */
         Folder* addSourceFolder(QDir* folder, bool recursive) throw(EngineException*);
-    
+
         /**
         * Removes the specified sourceFolder and deletes all files and associations below this sourceFolder.
         */
@@ -77,7 +78,7 @@ class FileSystemScanner
          * Tests if the given folder is addable. If it is not addable an exception with an
          * appropriate message is thrown.
          */
-        void testIfFolderIsAddable(QDir* folder, bool recursive) throw(EngineException*);
+        void testIfFolderIsAddable(QDir* folder, bool recursive) const throw(EngineException*);
 
     private:
         void rescanSourceFolders(QPtrList<Folder>* sourceDirs, bool forceEXIF);
@@ -99,7 +100,7 @@ class FileSystemScanner
 
     private:
         Engine* m_engine;
-    
+
         /**
          * This list is used for (pre)detecting loops while adding folders recursively.
          * The list is cleared always before the sourcefolders are rescanned.

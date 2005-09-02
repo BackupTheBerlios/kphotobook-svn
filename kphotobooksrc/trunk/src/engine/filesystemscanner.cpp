@@ -21,26 +21,29 @@
 #include "filesystemscanner.h"
 
 #include "engine.h"
+#include "file.h"
 #include "filetagnodeassoc.h"
 #include "filetagnodeassocdatetime.h"
 #include "filetagnodeassocstring.h"
 #include "folder.h"
 #include "tagnodedatetime.h"
 #include "tagnodestring.h"
+#include "tagnodetitle.h"
 #include "../settings/settings.h"
+#include "../tracer/tracer.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
 
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qxml.h>
 #include <qdatetime.h>
+#include <qdir.h>
 #include <qintdict.h>
 #include <qptrlist.h>
 #include <qregexp.h>
-#include <qdatetime.h>
+#include <qstring.h>
+#include <qstringlist.h>
+#include <qxml.h>
 
 #include <libexif/exif-data.h>
 #include <libexif/exif-ifd.h>
@@ -141,7 +144,7 @@ void FileSystemScanner::removeSourceFolder(Folder* sourceFolder)
 }
 
 
-void FileSystemScanner::testIfFolderIsAddable(QDir* folder, bool recursive) throw(EngineException*)
+void FileSystemScanner::testIfFolderIsAddable(QDir* folder, bool recursive) const throw(EngineException*)
 {
     tracer->sinvoked(__func__) << folder->absPath() << ", recursive: " << recursive << "..." << endl;
 
@@ -186,7 +189,7 @@ void FileSystemScanner::testIfFolderIsAddable(QDir* folder, bool recursive) thro
             }
         }
     }
-    
+
     tracer->debug(__func__, "ended");
 }
 
@@ -236,7 +239,7 @@ void FileSystemScanner::rescanSourceFolder(Folder* sourceFolder, bool forceEXIF)
         tracer->swarning(__func__) << "sourcefolder: " << sourceFolder->id() << ": " << sourceFolder->dir()->absPath()
                 << " does no longer exist --> ignoring it!!!" << endl;
     }
-    
+
     // get a list with all files in the current sourcefolder
     const QFileInfoList* filelist = sourceFolder->dir()->entryInfoList(QDir::Files);
     if (filelist) {
@@ -375,10 +378,10 @@ void FileSystemScanner::readEXIF(File* file)
 
     int maxDataLength = 255;
     char* charData = new char[maxDataLength];
-    
+
     ExifData* exifData = exif_data_new_from_file(file->fileInfo()->absFilePath().ascii());
 //    exif_data_dump(exifData);
-    
+
     for (int i = 0; i < EXIF_IFD_COUNT; i++) {
         ExifContent* content = exifData->ifd[i];
 
@@ -394,7 +397,7 @@ void FileSystemScanner::readEXIF(File* file)
 
                 exif_entry_get_value(entry, charData, maxDataLength);
                 QString data = QString(charData);
-                
+
                 QString description = QString(exif_tag_get_description(entry->tag));
 //                tracer->sdebug(__func__) << "    - " << title << " / " << name << " = " << data << " (" << description << ")" << endl;
 
@@ -487,7 +490,7 @@ QDateTime FileSystemScanner::readExifDateTime(const QString& data)
     }
 
     QDateTime dateTime = QDateTime(QDate(year, month, day), QTime(hour, minute, second));
-    
+
     return dateTime;
 }
 

@@ -795,7 +795,7 @@ void ImageImporter::importFiles(QFileInfoList* lstFiles, const QString& baseFold
 
         QFileInfo toFile(sfd.absPath() + "/" + fn);
         if (toFile.exists()) {
-            dlgStatus->appendErrorMessage(QString(i18n("Image \'%1\; already exists, not imported!"))
+            dlgStatus->appendErrorMessage(QString(i18n("Image \'%1\' already exists, not imported!"))
                                           .arg(fi->absFilePath()));
             continue;
         }

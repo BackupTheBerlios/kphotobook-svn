@@ -21,6 +21,10 @@
 #include "folder.h"
 
 #include "file.h"
+#include "../tracer/tracer.h"
+
+#include <qdir.h>
+#include <qptrlist.h>
 
 
 Tracer* Folder::tracer = Tracer::getInstance("kde.kphotobook.engine", "Folder");
@@ -85,5 +89,26 @@ void Folder::setParent(Folder* parent)
     // add this folder as child of the parent
     parent->m_children->append(this);
 }
+
+
+void Folder::appendFile(File* file)
+{
+    m_files->append(file);
+}
+
+
+void Folder::removeFile(File* file)
+{
+    if (!m_deleteInProgress) {
+        m_files->remove(file);
+    }
+}
+
+
+QString Folder::toString() const
+{
+    return QString("id: %1, folder: >%2<, recursive: %3").arg(m_id).arg(m_dir->absPath()).arg(m_recursive);
+}
+
 
 #include "folder.moc"
