@@ -20,6 +20,8 @@
 
 #include "tracer.h"
 
+#include <qdatetime.h>
+#include <qptrlist.h>
 #include <qstringlist.h>
 
 #include <cstdarg> // used for va_list, va_start, va_end

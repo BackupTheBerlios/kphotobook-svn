@@ -88,6 +88,7 @@
 #include <kurldrag.h>
 #include <kurlrequesterdlg.h>
 
+#include <qcheckbox.h>
 #include <qdragobject.h>
 #include <qfileinfo.h>
 #include <qheader.h>

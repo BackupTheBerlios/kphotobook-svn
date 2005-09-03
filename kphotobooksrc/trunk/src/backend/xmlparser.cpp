@@ -34,15 +34,25 @@
 #include "../engine/tagnoderadio.h"
 #include "../engine/tagnodestring.h"
 #include "../engine/tagnodetitle.h"
+#include "../tracer/tracer.h"
 
 #include <qdir.h>
 #include <qfileinfo.h>
+#include <qintdict.h>
 #include <qpixmap.h>
 
 #include <typeinfo>
 
 
 Tracer* XmlParser::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlParser");
+
+
+XmlParser::~XmlParser()
+{
+    delete m_tagNodesOfCurrentFile;
+            // we do not delete the exception 'm_exception'
+            // this exception will be thrown later and must be deleted be the catcher of the exception!
+}
 
 
 //

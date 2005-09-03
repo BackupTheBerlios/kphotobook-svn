@@ -23,16 +23,16 @@
 
 #include "../kphotobook.h"
 
-#include <kcombobox.h>
 #include <kdialogbase.h>
-#include <klineedit.h>
-
-#include <qcheckbox.h>
-#include <qpushbutton.h>
-#include <qstring.h>
-#include <qvaluelist.h>
-
+class KComboBox;
+class KlineEdit;
 class TagTreeNode;
+
+#include <qstring.h>
+class QCheckBox;
+class QPushButton;
+template<class type> class QValueList;
+
 
 
 /**
@@ -55,27 +55,11 @@ class DialogManageTag : public KDialogBase
     
         ~DialogManageTag();
     
-        TagNode::Type tagType();
-    
-        QString tagName()
-        {
-            return m_nameLineEdit->text();
-        }
-    
-        QString tagComment()
-        {
-            return m_commentLineEdit->text();
-        }
-    
-        QString tagIcon()
-        {
-            return m_iconLineEdit->text();
-        }
-    
-        bool tagSecret()
-        {
-            return m_chkSecret->isChecked();
-        }
+        TagNode::Type tagType() const;
+        QString tagName() const;
+        QString tagComment() const;
+        QString tagIcon() const;
+        bool tagSecret() const;
     
     
     private slots:

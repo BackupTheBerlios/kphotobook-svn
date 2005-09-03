@@ -20,15 +20,24 @@
 
 #include "dialogdatetimefilter.h"
 
+#include "../tracer/tracer.h"
+#include "../utils/datetimefilterdata.h"
+#include "../widgets/datetimewidget.h"
+#include "../widgets/timeruler.h"
+
+#include <kdatepicker.h>
 #include <kfiledialog.h>
 #include <kiconloader.h>
 #include <klocale.h>
+#include <ktabwidget.h>
 
+#include <qcheckbox.h>
 #include <qdatetime.h>
 #include <qgroupbox.h>
 #include <qiconset.h>
 #include <qlayout.h>
 #include <qlabel.h>
+#include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qwidget.h>
 

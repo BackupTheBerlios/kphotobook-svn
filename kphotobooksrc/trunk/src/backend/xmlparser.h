@@ -24,23 +24,22 @@
 
 #include "xmlconstants.h"
 #include "../exception.h"
-#include "../tracer/tracer.h"
-
-#include <qintdict.h>
-#include <qptrstack.h>
-#include <qstring.h>
-#include <qxml.h>
-
 class Engine;
 class File;
 class Folder;
 class TagNode;
+class Tracer;
+
+#include <qptrstack.h>
+#include <qstring.h>
+#include <qxml.h>
+template<class type> class QIntDict;
 
 
 /**
  * The handler for parsing the KphotoBook xml file.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: xmlparser.h 484 2005-08-28 19:21:48Z starcube $
  */
 class XmlParser : public QXmlDefaultHandler, public XmlConstants
 {
@@ -72,12 +71,7 @@ class XmlParser : public QXmlDefaultHandler, public XmlConstants
             m_exception(0) {
         }
     
-        ~XmlParser()
-        {
-            delete m_tagNodesOfCurrentFile;
-            // we do not delete the exception 'm_exception'
-            // this exception will be thrown later and must be deleted be the catcher of the exception!
-        }
+        ~XmlParser();
     
         // content handler methods
         bool startElement(const QString& namespaceURI, const QString& localName, const QString& qName, const QXmlAttributes& atts);

@@ -20,6 +20,9 @@
 
 #include "dialogdatetimechooser.h"
 
+#include "../widgets/datetimewidget.h"
+#include "../tracer/tracer.h"
+
 #include <kfiledialog.h>
 #include <kglobal.h>
 #include <kiconloader.h>
@@ -62,6 +65,16 @@ DialogDateTimeChooser::DialogDateTimeChooser(QWidget* parent, const char* name, 
 
 DialogDateTimeChooser::~DialogDateTimeChooser()
 {
+}
+
+
+QDateTime DialogDateTimeChooser::dateTime() const {
+    return dateTimeWidget->dateTime();
+}
+
+
+bool DialogDateTimeChooser::noDateTimeSet() const {
+    return dateTimeWidget->noDateSet();
 }
 
 

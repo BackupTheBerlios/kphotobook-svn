@@ -23,23 +23,22 @@
 
 #include "xmlconstants.h"
 #include "../exception.h"
-#include "../tracer/tracer.h"
-
-#include <qfile.h>
-#include <qstring.h>
-
 class Engine;
 class File;
 class Folder;
 class TagNode;
 class FileTagNodeAssoc;
 class QTextStream;
+class Tracer;
+
+#include <qstring.h>
+class QFile;
 
 
 /**
  * This class is writing the xml-file containing all needed data of the engine.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: xmlwriter.h 484 2005-08-28 19:21:48Z starcube $
  */
 class XmlWriter : public XmlConstants
 {
@@ -50,12 +49,10 @@ class XmlWriter : public XmlConstants
         XmlWriter(Engine* engine) :
             XmlConstants(),
             m_engine(engine)
-        {
-        }
+        {}
     
         ~XmlWriter()
-        {
-        }
+        {}
     
         void store(QFile* file) throw(PersistingException*);
     

@@ -26,16 +26,21 @@
 #include "../settings/settings.h"
 #include "../uitrees/tagtreenode.h"
 
+#include <kcombobox.h>
 #include <kglobal.h>
 #include <kicondialog.h>
 #include <kiconloader.h>
+#include <klineedit.h>
 #include <klocale.h>
 
+#include <qcheckbox.h>
 #include <qfile.h>
 #include <qgroupbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
+#include <qpushbutton.h>
 #include <qsizepolicy.h>
+#include <qvaluelist.h>
 #include <qwhatsthis.h>
 
 
@@ -243,9 +248,33 @@ DialogManageTag::~DialogManageTag()
 }
 
 
-TagNode::Type DialogManageTag::tagType()
+TagNode::Type DialogManageTag::tagType() const
 {
     return (*m_typeComboBoxEntries)[m_typeComboBox->currentItem()];
+}
+
+
+QString DialogManageTag::tagName() const
+{
+    return m_nameLineEdit->text();
+}
+    
+
+QString DialogManageTag::tagComment() const
+{
+    return m_commentLineEdit->text();
+}
+    
+
+QString DialogManageTag::tagIcon() const
+{
+    return m_iconLineEdit->text();
+}
+    
+    
+bool DialogManageTag::tagSecret() const
+{
+    return m_chkSecret->isChecked();
 }
 
 

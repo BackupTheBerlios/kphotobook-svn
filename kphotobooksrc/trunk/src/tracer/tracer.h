@@ -23,9 +23,8 @@
 
 #include <kdebug.h> // we need the kdbgstream
 
-#include <qdatetime.h>
-#include <qptrlist.h>
 #include <qstring.h>
+template<class type> class QPtrList;
 
 
 /**

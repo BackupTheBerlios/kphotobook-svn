@@ -25,8 +25,10 @@
 #include "../engine/filetagnodeassoc.h"
 #include "../engine/folder.h"
 #include "../engine/tagnode.h"
+#include "../tracer/tracer.h"
 
 #include <qdir.h>
+#include <qfile.h>
 #include <qfileinfo.h>
 #include <qregexp.h>
 

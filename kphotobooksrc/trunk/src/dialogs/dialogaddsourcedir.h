@@ -22,16 +22,16 @@
 #define DIALOGADDSOURCEDIR_H
 
 #include <kdialogbase.h>
-#include <klineedit.h>
+class KLineEdit;
 
-#include <qcheckbox.h>
-#include <qdir.h>
+class QCheckBox;
+class QDir;
 
 
 /**
  * Dialog for adding a source directory.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: dialogaddsourcedir.h 435 2005-08-02 20:36:17Z starcube $
  */
 class DialogAddSourceDir : public KDialogBase
 {
@@ -42,15 +42,9 @@ class DialogAddSourceDir : public KDialogBase
     
         ~DialogAddSourceDir();
     
-        QDir* directory()
-        {
-            return new QDir(m_currentDirectoryLineEdit->text());
-        }
+        QDir* directory() const;
     
-        bool recursive()
-        {
-            return m_recursiveCheckBox->state();
-        }
+        bool recursive() const;
     
     private slots:
         void slotDirectoryButtonClicked();

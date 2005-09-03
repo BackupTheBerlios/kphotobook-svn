@@ -27,7 +27,7 @@
 /**
  * Constants used by the xml parser and writer.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: xmlconstants.h 476 2005-08-20 15:07:38Z chtom $
  */
 class XmlConstants
 {
@@ -67,12 +67,10 @@ class XmlConstants
     
     public:
         XmlConstants()
-        {
-        }
+        {}
     
         ~XmlConstants()
-        {
-        }
+        {}
 };
 
 #endif

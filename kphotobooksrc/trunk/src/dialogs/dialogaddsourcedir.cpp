@@ -25,8 +25,11 @@
 #include <kfiledialog.h>
 #include <kglobal.h>
 #include <kiconloader.h>
+#include <klineedit.h>
 #include <klocale.h>
 
+#include <qcheckbox.h>
+#include <qdir.h>
 #include <qiconset.h>
 #include <qlabel.h>
 #include <qlayout.h>
@@ -87,6 +90,19 @@ DialogAddSourceDir::~DialogAddSourceDir()
         Settings::setFileSystemLastAddedSourcedir(m_currentDirectoryLineEdit->text());
     }
 }
+
+
+QDir* DialogAddSourceDir::directory() const
+{
+    return new QDir(m_currentDirectoryLineEdit->text());
+}
+
+
+bool DialogAddSourceDir::recursive() const
+{
+    return m_recursiveCheckBox->state();
+}
+
 
 void DialogAddSourceDir::slotDirectoryButtonClicked()
 {

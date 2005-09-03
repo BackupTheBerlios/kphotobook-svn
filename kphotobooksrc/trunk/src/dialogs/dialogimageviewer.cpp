@@ -20,6 +20,9 @@
 
 #include "dialogimageviewer.h"
 
+#include "../engine/file.h"
+#include "../widgets/imageviewer.h"
+
 #include <qlayout.h>
 
 

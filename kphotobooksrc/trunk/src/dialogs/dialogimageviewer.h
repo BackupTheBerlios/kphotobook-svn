@@ -22,13 +22,12 @@
 #ifndef DIALOGIMAGEVIEWER_H
 #define DIALOGIMAGEVIEWER_H
 
-#include "../engine/file.h"
-#include "../widgets/imageviewer.h"
-
-#include <kdialog.h>
-
+class File;
+class ImageViewer;
 class KPhotoBook;
 class KFileIconView;
+
+#include <kdialog.h>
 
 
 class DialogImageViewer : public KDialog

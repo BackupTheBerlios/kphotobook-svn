@@ -21,17 +21,17 @@
 #ifndef DIALOGDATETIMEFILTER_H
 #define DIALOGDATETIMEFILTER_H
 
-#include "../tracer/tracer.h"
-#include "../utils/datetimefilterdata.h"
-#include "../widgets/datetimewidget.h"
-#include "../widgets/timeruler.h"
+class DateTimeFilterData;
+class DateTimeWidget;
+class TimeRuler;
+class Tracer;
 
-#include <kdatepicker.h>
 #include <kdialogbase.h>
-#include <ktabwidget.h>
+class KDatePicker;
+class KTabWidget;
 
-#include <qcheckbox.h>
-#include <qlineedit.h> 
+class QCheckBox;
+class QLineEdit;
 
 
 /**

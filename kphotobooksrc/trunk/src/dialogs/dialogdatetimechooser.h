@@ -21,8 +21,8 @@
 #ifndef DIALOGDATETIMECHOOSER_H
 #define DIALOGDATETIMECHOOSER_H
 
-#include "../widgets/datetimewidget.h"
-#include "../tracer/tracer.h"
+class DateTimeWidget;
+class Tracer;
 
 #include <kdialogbase.h>
 
@@ -49,13 +49,9 @@ class DialogDateTimeChooser : public KDialogBase
          * Returns the chosen datetime.
          * If null is returned and {@link isDateTimeValid} returns true, no date is chosen.
          */
-        QDateTime dateTime() {
-            return dateTimeWidget->dateTime();
-        }
+        QDateTime dateTime() const;
 
-        bool noDateTimeSet() {
-            return dateTimeWidget->noDateSet();
-        }
+        bool noDateTimeSet() const;
     
     private:
         DateTimeWidget* dateTimeWidget;  
