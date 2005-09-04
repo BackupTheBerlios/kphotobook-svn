@@ -141,11 +141,13 @@ void ImageImporter::initGUI() {
     m_grpSourceLayout->addWidget( new QLabel(m_txtSourceFilename, i18n("Filename:"), m_grpSource, "lblSourceFilename" ), 3, 0 );
     m_grpSourceLayout->addMultiCellWidget( m_txtSourceFilename, 3, 3, 1, 2 );
     QWhatsThis::add(m_txtSourceFilename, i18n( "Contains a Regular Expression to match the files you want to import."
-                                               "You can use captures here '()'. These will replace $1, $2, etc... in the output names." ));
+                                               "You can use captures here '()'. These will replace $0 and $1, $2, etc... "
+                                               "in the output names." ));
 
 
     m_chkIgnoreCase = new QCheckBox("Ignore case", m_grpSource);
     m_grpSourceLayout->addWidget( m_chkIgnoreCase, 4, 1 );
+    QWhatsThis::add( m_chkIgnoreCase, i18n( "Toggles, whether the filename-regexp should be matched case sensitive or not" ) );
 
     line = new QFrame( m_grpSource, "lineSource2" );
     line->setFrameShape( QFrame::HLine );
@@ -164,7 +166,7 @@ void ImageImporter::initGUI() {
     m_chkSrcRemoveFilesFromSrc->setText( i18n( "Remove successfully transfered files from given source (i.e. move the files)" ) );
     m_chkSrcRemoveFilesFromSrc->setChecked( true );
     m_grpSourceLayout->addMultiCellWidget( m_chkSrcRemoveFilesFromSrc, 7, 7, 1, 2 );
-    QWhatsThis::add(m_chkSrcRemoveFilesFromSrc, i18n( "If you want the successfully imported images to be removed from the source, check this." ));
+    QWhatsThis::add(m_chkSrcRemoveFilesFromSrc, i18n( "If you want the imported images to be removed from the source, check this." ));
 
     m_ImageImporterLayout->addWidget( m_grpSource );
 
@@ -179,6 +181,7 @@ void ImageImporter::initGUI() {
     m_groupArchive->layout()->setMargin( 11 );
     m_groupArchiveLayout = new QGridLayout( m_groupArchive->layout() );
     m_groupArchiveLayout->setAlignment( Qt::AlignTop );
+    QWhatsThis::add( m_groupArchive, i18n( "If you want to create a copy of your original images (for security reasons), select this option." ) );
 
     m_txtArchiveBaseFolder = new QLineEdit( m_groupArchive, "txtArchiveBaseFolder" );
     connect(m_txtArchiveBaseFolder, SIGNAL(textChanged(const QString& )), SLOT(slotUpdateArchiveExample()));
@@ -187,23 +190,26 @@ void ImageImporter::initGUI() {
     QPushButton* btn = new QPushButton(i18n( "..." ), m_groupArchive, "btnArhiveBaseFolder" );
     m_groupArchiveLayout->addWidget( btn, 0, 2 );
     connect(btn, SIGNAL(clicked()), this, SLOT(slotBtnArchiveBaseFolder()));
+    QWhatsThis::add( m_txtArchiveBaseFolder, i18n( "This is the base folder, all your archived images will be copied to." ) );
 
     m_txtArchiveSubfolders = new QLineEdit( m_groupArchive, "txtArchiveSubfolders" );
     connect(m_txtArchiveSubfolders, SIGNAL(textChanged(const QString& )), SLOT(slotUpdateArchiveExample()));
     m_groupArchiveLayout->addWidget( m_txtArchiveSubfolders, 1, 1 );
     m_groupArchiveLayout->addWidget( new QLabel(m_txtArchiveSubfolders, i18n( "Subfolders" ), m_groupArchive, "blbArchiveSubfolders" ), 1, 0 );
-    QWhatsThis::add(m_txtArchiveSubfolders, helpText("Set the name of the subfolders of your archived images."));
+    QWhatsThis::add(m_txtArchiveSubfolders, helpText("For every image a subfolder is created in the base folder."));
 
     m_txtArchiveFilename = new QLineEdit( m_groupArchive, "txtArchiveFilename" );
     connect(m_txtArchiveFilename, SIGNAL(textChanged(const QString& )), SLOT(slotUpdateArchiveExample()));
     m_groupArchiveLayout->addWidget( m_txtArchiveFilename, 2, 1 );
     m_groupArchiveLayout->addWidget( new QLabel(m_txtArchiveFilename, i18n( "File RegExp" ), m_groupArchive, "lblArchiveFilename" ), 2, 0 );
-    QWhatsThis::add(m_txtArchiveFilename, helpText("Set the name of your archived images."));
+    QWhatsThis::add(m_txtArchiveFilename, helpText("This is the name of archived image in the subfolder."));
 
     m_chkArchiveLowercase = new QCheckBox( m_groupArchive, "chkArchiveLowercase" );
     m_chkArchiveLowercase->setText( i18n( "lowercase filenames" ) );
     m_chkArchiveLowercase->setChecked( true );
     m_groupArchiveLayout->addMultiCellWidget( m_chkArchiveLowercase, 3, 3, 1, 2 );
+    QWhatsThis::add(m_chkArchiveLowercase, i18n( "Should your images be translated to lowercase finally?" ));
+
 
     line = new QFrame( m_groupArchive, "lineArchive" );
     line->setFrameShape( QFrame::HLine );
@@ -254,6 +260,7 @@ void ImageImporter::initGUI() {
     m_chkDestLowercase->setText( i18n( "lowercase filenames" ) );
     m_chkDestLowercase->setChecked( true );
     m_groupDestLayout->addMultiCellWidget( m_chkDestLowercase, 3, 3, 1, 2 );
+    QWhatsThis::add(m_chkDestLowercase, i18n( "Should your images be translated to lowercase finally?" ));
 
     line = new QFrame( m_groupDest, "lineDest" );
     line->setFrameShape( QFrame::HLine );
@@ -609,7 +616,8 @@ void ImageImporter::slotUpdateDestExample() {
 QString ImageImporter::helpText(const QString& txt) {
 
     return QString(i18n("%1<br>"
-                        "Replaced will be (if sufficient source is avaiable):<br>"
+                        "<br>"
+                        "The following replacements will be made (if sufficient information is avaiable):<br>"
                         "<b>$year</b>  replaced by the <i>year</i> the image was taken (src: exif)<br>"
                         "<b>$month</b> replaced by the <i>month</i> the image was taken (src: exif)<br>"
                         "<b>$day</b>   replaced by the <i>day</i> the image was taken (src: exif)<br>"
@@ -757,7 +765,7 @@ void ImageImporter::importFiles(QFileInfoList* lstFiles, const QString& baseFold
     //check if the basedir exists
     QDir bfd(baseFolder);
     if (!bfd.exists()) {
-        if (!mkdir(bfd.absPath())) {
+        if (!ImageImporter::mkpath(bfd.absPath())) {
             dlgStatus->appendErrorMessage(i18n("Could not create base path!"));
             dlgStatus->setCurrentMode(DlgImageImporterStatus::ModeAbort, i18n("Aborted!"));
             return;
@@ -786,7 +794,7 @@ void ImageImporter::importFiles(QFileInfoList* lstFiles, const QString& baseFold
         //now check if the directories exists ... or create them...
         QDir sfd(bfd.absPath() + "/" + sf);
         if (!sfd.exists()) {
-            if (!mkdir(sfd.absPath())) {
+            if (!ImageImporter::mkpath(sfd.absPath())) {
                 dlgStatus->appendErrorMessage(QString(i18n("Could not create subfolder for image \'%1\'"))
                                               .arg(fi->absFilePath()));
                 continue;
@@ -801,9 +809,9 @@ void ImageImporter::importFiles(QFileInfoList* lstFiles, const QString& baseFold
         }
 
         if (moveFiles) {
-            move_file( fi->absFilePath(), toFile.absFilePath() );
+            ImageImporter::move_file( fi->absFilePath(), toFile.absFilePath() );
         } else {
-            copy_file( fi->absFilePath(), toFile.absFilePath() );
+            ImageImporter::copy_file( fi->absFilePath(), toFile.absFilePath() );
         }
 
         if (dlgStatus->wasCanceled()) {
@@ -817,18 +825,34 @@ void ImageImporter::importFiles(QFileInfoList* lstFiles, const QString& baseFold
 
 
 
-///@todo change this implementation to something nativ, not using system()
-bool ImageImporter::mkdir(QDir dir, bool parents)
-{
-    QString call = QString("mkdir \"%1\" \"%2\"").arg(parents ? "-p" : "").arg(dir.path());
-    system(call);
 
-    return dir.exists();
+// taken (and slightly modified) from qt-4.0.1 "corelib/io/qfsfileengine_unix.cpp"
+bool ImageImporter::mkpath(QString dirName)
+{
+    dirName = QDir::cleanDirPath(dirName);
+    for(int oldslash = -1, slash = 0; slash != -1; oldslash = slash) {
+        slash = dirName.find(QDir::separator(), oldslash+1);
+        if(slash == -1) {
+            if(oldslash == (int)dirName.length())
+                break;
+            slash = dirName.length();
+        }
+        if(slash) {
+            QByteArray chunk = QFile::encodeName(dirName.left(slash));
+
+            if (!QDir(chunk).exists()) {
+                if (!QDir(chunk).mkdir( chunk, true ) ) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 }
 
 
 ///@todo change this implementation to something nativ, not using system()
-bool ImageImporter::move_file(QString src, QString dest)
+bool ImageImporter::move_file(const QString& src, const QString& dest)
 {
     QString call = QString("mv \"%1\" \"%2\"").arg(src).arg(dest);
     system(call);
@@ -840,7 +864,7 @@ bool ImageImporter::move_file(QString src, QString dest)
 
 
 ///@todo change this implementation to something nativ, not using system()
-bool ImageImporter::copy_file(QString src, QString dest)
+bool ImageImporter::copy_file(const QString& src, const QString& dest)
 {
     QString call = QString("cp \"%1\" \"%2\"").arg(src).arg(dest);
     system(call);
@@ -961,7 +985,4 @@ QString ImageImporter::getEntry(ExifContent* c, ExifTag tag)
 //
 //     return retval;
 // }
-
-
-
 

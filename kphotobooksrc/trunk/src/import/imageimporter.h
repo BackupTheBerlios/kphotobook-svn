@@ -104,9 +104,9 @@ private:
 
     QDateTime toQDateTime(const QString& data);
 
-    bool mkdir(QDir dir, bool parents = true);
-    bool move_file(QString src, QString dest);
-    bool copy_file(QString src, QString dest);
+    static bool mkpath(QString dirName);
+    static bool move_file(const QString& src, const QString& dest);
+    static bool copy_file(const QString& src, const QString& dest);
 
 private:
 
