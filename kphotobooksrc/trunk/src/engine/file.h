@@ -33,11 +33,10 @@ class QFileInfo;
 template<class type> class QPtrListStdIterator;
 
 
-
 /**
  * Represents a file/image.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: file.h 499 2005-09-02 11:48:32Z starcube $
  */
 class File : public KFileItem
 {

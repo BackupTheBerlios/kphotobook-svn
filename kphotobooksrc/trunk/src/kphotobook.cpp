@@ -23,8 +23,6 @@
 #include "constants.h"
 #include "exception.h"
 #include "kphotobookview.h"
-
-
 #include "dialogs/dialogaddsourcedir.h"
 #include "dialogs/dialogmanagetag.h"
 #include "engine/engine.h"
