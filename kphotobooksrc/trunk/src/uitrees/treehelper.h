@@ -22,16 +22,15 @@
 #define TREEHELPER_H
 
 #include <qdatetime.h>
-#include <qpainter.h>
 #include <qpalette.h>
-#include <qrect.h>
+class QPainter;
 
 
 /**
  * Static helper class for KListView (Tree) subclasses.
  * This class is not instantiable and contains static helper methods only.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: treehelper.h 467 2005-08-12 10:51:23Z starcube $
  */
 class TreeHelper
 {

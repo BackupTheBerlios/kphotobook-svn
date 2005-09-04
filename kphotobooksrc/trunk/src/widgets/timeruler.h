@@ -21,15 +21,17 @@
 #ifndef TIMERULER_H
 #define TIMERULER_H
 
-#include "../tracer/tracer.h"
+class Tracer;
 
 #include <qpixmap.h>
 #include <qwidget.h>
 
+#include <qdatetime.h>
+class QTimer;
+
 #include <list>
 #include <vector>
 
-class QTimer;
 
 using namespace std;
 
@@ -89,7 +91,6 @@ class TimeRuler : public QWidget
     
     private:
         static Tracer* tracer;
-    
     
     public:
         TimeRuler(QWidget* parent = 0);

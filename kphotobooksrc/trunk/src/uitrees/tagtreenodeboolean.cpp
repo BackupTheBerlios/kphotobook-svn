@@ -50,7 +50,7 @@ TagTreeNodeBoolean::~TagTreeNodeBoolean()
 }
 
 
-FilterNode* TagTreeNodeBoolean::filter()
+FilterNode* TagTreeNodeBoolean::filter() const
 {
     TagNodeBoolean* tagNode = dynamic_cast<TagNodeBoolean*>(m_tagNode);
 

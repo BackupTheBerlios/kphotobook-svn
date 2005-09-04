@@ -22,11 +22,11 @@
 #define TAGTREENODESTRING_H
 
 #include "tagtreenode.h"
-#include "../tracer/tracer.h"
-
-#include <kfileitem.h>
-
 class TagNodeString;
+class Tracer;
+
+struct KFileItem;
+typedef QPtrList<KFileItem> KFileItemList;
 
 
 /**
@@ -45,15 +45,15 @@ class TagTreeNodeString : public TagTreeNode
 
         virtual ~TagTreeNodeString();
 
-        void setFilterValue(QString filterValue) {
-
+        void setFilterValue(QString filterValue)
+        {
             m_filterValue = filterValue;
         }
 
         /**
         * Returns an FilterNode used to describe this filter.
         */
-        virtual FilterNode* filter();
+        virtual FilterNode* filter() const;
 
         /**
         * Sets the filter to find images without this tag set.
@@ -69,7 +69,8 @@ class TagTreeNodeString : public TagTreeNode
         * Returns the currently set filter as string representation.
         * This value is used to store in the database.
         */
-        virtual QString filterString() {
+        virtual QString filterString() const
+        {
             return m_filterValue;
         }
 

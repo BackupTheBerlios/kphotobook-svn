@@ -21,29 +21,25 @@
 #ifndef _TAGTREENODE_H_
 #define _TAGTREENODE_H_
 
-#include "../engine/filternode.h"
-#include "../engine/tagnode.h"
-#include "../tracer/tracer.h"
-
-#include <klistview.h>
-#include <kpopupmenu.h>
-
-#include <qpainter.h>
-#include <qpalette.h>
-#include <qpixmap.h>
-#include <qrect.h>
-#include <qstring.h>
-
+class FilterNode;
 class KPhotoBook;
+class TagNode;
 class TagTree;
 class TagTreeNode;
+class Tracer;
+
+#include <klistview.h>
+class KPopupMenu;
+
+#include <qstring.h>
+class QPainter;
 
 
 /**
  * Superclass of all nodes to display in the tagtree.
  * It is a subclass of KListViewItem with some extensions.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: tagtreenode.h 465 2005-08-10 11:57:32Z starcube $
  */
 class TagTreeNode : public KListViewItem
 {
@@ -84,8 +80,7 @@ class TagTreeNode : public KListViewItem
         TagTreeNode(TagTreeNode* parent,  KPhotoBook* photobook, TagNode* tagNode, KPopupMenu* contextMenu = 0);
 
         virtual ~TagTreeNode()
-        {
-        }
+        {}
 
         /**
          * Refreshes the displayed icon and text.
@@ -94,12 +89,12 @@ class TagTreeNode : public KListViewItem
          */
         void refresh();
 
-        KPopupMenu* contextMenu()
+        KPopupMenu* contextMenu() const
         {
             return m_contextMenu;
         }
 
-        virtual TagNode* tagNode()
+        virtual TagNode* tagNode() const
         {
             return m_tagNode;
         }
@@ -107,7 +102,7 @@ class TagTreeNode : public KListViewItem
         /**
          * Returns an FilterNode used to describe this filter.
          */
-        virtual FilterNode* filter()
+        virtual FilterNode* filter() const
         {
             return 0;
         }
@@ -142,12 +137,12 @@ class TagTreeNode : public KListViewItem
          * Returns the currently set filter as string representation.
          * This value is used to store in the database.
          */
-        virtual QString filterString();
+        virtual QString filterString() const;
 
         /**
          * returns the current state of the filternode
          */
-        virtual TagTreeNode::FilterState filterState()
+        virtual TagTreeNode::FilterState filterState() const
         {
             return m_filterState;
         }
@@ -186,17 +181,17 @@ class TagTreeNode : public KListViewItem
         /**
          * Returns the text to be shown in the tooltip on column 'text' of this node.
          */
-        virtual QString toolTipText();
+        virtual QString toolTipText() const;
 
         /**
          * Returns the text to be shown in the tooltip on column 'value' of this node.
          */
-        virtual QString toolTipValue();
+        virtual QString toolTipValue() const;
 
         /**
          * Returns the text to be shown in the tooltip on column 'filter' of this node.
          */
-        virtual QString toolTipFilter();
+        virtual QString toolTipFilter() const;
 
         /**
          * updates the internal tagMatch state.
@@ -212,7 +207,7 @@ class TagTreeNode : public KListViewItem
          * recursively asks all my children, if the are Tagged within the current selected images.
          * this also returns true, if a MIXTAGGED state is found, as this is also 'tagged'
          */
-        virtual bool recursiveFindTagged();
+        virtual bool recursiveFindTagged() const;
 
     protected:
 

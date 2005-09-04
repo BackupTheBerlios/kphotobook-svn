@@ -27,7 +27,9 @@
 #include "../settings/settings.h"
 #include "../uitrees/sourcedirtreenode.h"
 #include "../utils/menuprovider.h"
+#include "../tracer/tracer.h"
 
+#include <kfileitem.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kstdaccel.h>
@@ -35,6 +37,7 @@
 #include <qcursor.h>
 #include <qdir.h>
 #include <qheader.h>
+#include <qintdict.h>
 #include <qobjectlist.h>
 #include <qwidget.h>
 
@@ -75,6 +78,12 @@ SourceDirTree::SourceDirTree( QWidget* parent, KPhotoBook* photobook, const char
                      this, SLOT(slotListViewClicked(int, QListViewItem*, const QPoint&, int)));
     QObject::connect(this, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)),
                      this, SLOT(slotListViewDoubleClicked(QListViewItem*, const QPoint&, int)));
+}
+
+
+SourceDirTree::~SourceDirTree()
+{
+    delete m_sourceDirNodeDict;
 }
 
 

@@ -23,20 +23,24 @@
 #include "tagtree.h"
 #include "treehelper.h"
 #include "../engine/file.h"
+#include "../engine/filternode.h"
 #include "../engine/tagnode.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
 #include "../settings/settings.h"
+#include "../tracer/tracer.h"
 
 #include <kfileiconview.h>
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kmessagebox.h>
+#include <kpopupmenu.h>
 
 #include <qcheckbox.h>
 #include <qcursor.h>
 #include <qlistview.h>
+#include <qpainter.h>
 #include <qstyle.h>
 
 
@@ -71,7 +75,7 @@ TagTreeNode::TagTreeNode(TagTreeNode* parent, KPhotoBook* photobook, TagNode* ta
 }
 
 
-QString TagTreeNode::filterString()
+QString TagTreeNode::filterString() const
 {
     QString filter;
 
@@ -258,19 +262,19 @@ void TagTreeNode::paintCell(QPainter* p, const QColorGroup& cg, int column, int 
 }
 
 
-QString TagTreeNode::toolTipText()
+QString TagTreeNode::toolTipText() const
 {
     return *(m_tagNode->comment());
 }
 
 
-QString TagTreeNode::toolTipValue()
+QString TagTreeNode::toolTipValue() const
 {
     return text(TagTree::COLUMN_VALUE);
 }
 
 
-QString TagTreeNode::toolTipFilter()
+QString TagTreeNode::toolTipFilter() const
 {
     return text(TagTree::COLUMN_FILTER);
 }
@@ -320,7 +324,7 @@ TagTreeNode::MatchType TagTreeNode::findTagMatch()
 }
 
 
-bool TagTreeNode::recursiveFindTagged()
+bool TagTreeNode::recursiveFindTagged() const
 {
     // do WE have a positive match?...
     if (m_tagCurrentMatch == TagTreeNode::TAGGED | m_tagCurrentMatch == TagTreeNode::MIXTAGGED) {

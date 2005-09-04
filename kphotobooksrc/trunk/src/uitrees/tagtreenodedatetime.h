@@ -22,12 +22,15 @@
 #define TAGTREENODEDATETIME_H
 
 #include "tagtreenode.h"
-#include "../utils/datetimefilterdata.h"
-
-#include <kfileitem.h>
-
+class DateTimeFilterData;
 class DialogDateTimeFilter;
 class TagNodeDateTime;
+class Tracer;
+
+class KFileItem;
+typedef QPtrList<KFileItem> KFileItemList;
+
+class QDateTime;
 
 
 /**
@@ -46,16 +49,12 @@ class TagTreeNodeDateTime : public TagTreeNode
 
         virtual ~TagTreeNodeDateTime();
 
-        void setFilterValue(QString filterValue)
-        {
-            delete m_data;
-            m_data = new DateTimeFilterData(filterValue);
-        }
+        void setFilterValue(QString filterValue);
 
         /**
         * Returns an FilterNode used to describe this filter.
         */
-        virtual FilterNode* filter();
+        virtual FilterNode* filter() const;
 
         /**
         * Sets the filter to find images without this tag set.
@@ -71,7 +70,7 @@ class TagTreeNodeDateTime : public TagTreeNode
         * Returns the currently set filter as string representation.
         * This value is used to store in the database.
         */
-        virtual QString filterString();
+        virtual QString filterString() const;
 
         /**
         * Applies the filter returned by getFilter().

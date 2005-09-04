@@ -21,6 +21,7 @@
 #include "timeruler.h"
 
 #include "../settings/settings.h"
+#include "../tracer/tracer.h"
 
 #include <kapplication.h>
 

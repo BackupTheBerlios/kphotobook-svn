@@ -21,28 +21,26 @@
 #ifndef SOURCEDIRTREE_H
 #define SOURCEDIRTREE_H
 
-#include "../tracer/tracer.h"
-
-#include <kfileitem.h>
-#include <klistview.h>
-#include <kpopupmenu.h>
-
-#include <qintdict.h>
-#include <qlistview.h>
-#include <qpoint.h>
-#include <qptrlist.h>
-#include <qstring.h>
-
 class File;
 class KPhotoBook;
 class Folder;
 class SourceDirTreeNode;
+class Tracer;
+
+class QString;
+class QListViewItem;
+template<class type> class QIntDict;
+template<class type> class QPtrList;
+
+#include <klistview.h>
+class KFileItem;
+typedef QPtrList<KFileItem> KFileItemList;
 
 
 /**
  * The SourceDirTree (can display checkboxes in the columns).
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: sourcedirtree.h 484 2005-08-28 19:21:48Z starcube $
  */
 class SourceDirTree : public KListView
 {
@@ -58,10 +56,7 @@ class SourceDirTree : public KListView
     
         SourceDirTree(QWidget* parent, KPhotoBook* photobook, const char* name);
         
-        ~SourceDirTree()
-        {
-            delete m_sourceDirNodeDict;
-        }
+        ~SourceDirTree();
     
         void expandCurrent(bool recursive = true);
         void collapseCurrent(bool recursive = true);

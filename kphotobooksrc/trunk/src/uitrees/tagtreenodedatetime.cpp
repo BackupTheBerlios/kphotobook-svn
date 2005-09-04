@@ -31,6 +31,7 @@
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
 #include "../settings/settings.h"
+#include "../utils/datetimefilterdata.h"
 
 #include <kdatepicker.h>
 #include <kdatetimewidget.h>
@@ -62,7 +63,14 @@ TagTreeNodeDateTime::~TagTreeNodeDateTime()
 }
 
 
-FilterNode* TagTreeNodeDateTime::filter()
+void TagTreeNodeDateTime::setFilterValue(QString filterValue)
+{
+    delete m_data;
+    m_data = new DateTimeFilterData(filterValue);
+}
+
+
+FilterNode* TagTreeNodeDateTime::filter() const
 {
     if (m_data->getState() == DateTimeFilterData::INVALID ||
         m_data->getState() == DateTimeFilterData::NO_FILTER_SET) {
@@ -94,7 +102,7 @@ void TagTreeNodeDateTime::resetFilter()
 }
 
 
-QString TagTreeNodeDateTime::filterString()
+QString TagTreeNodeDateTime::filterString() const
 {
     tracer->invoked(__func__);
 

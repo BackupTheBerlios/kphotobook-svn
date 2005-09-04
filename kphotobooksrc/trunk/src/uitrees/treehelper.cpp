@@ -25,7 +25,9 @@
 #include <klocale.h>
 
 #include <qcheckbox.h>
+#include <qpainter.h>
 #include <qradiobutton.h>
+#include <qrect.h>
 #include <qstyle.h>
 
 

@@ -29,8 +29,10 @@
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
 #include "../settings/settings.h"
+#include "../tracer/tracer.h"
 
 #include <kfileiconview.h>
+#include <kfileitem.h>
 
 
 Tracer* TagTreeNodeString::tracer = Tracer::getInstance("kde.kphotobook.uitrees", "TagTreeNodeSTring");
@@ -65,7 +67,7 @@ TagTreeNodeString::~TagTreeNodeString()
 }
 
 
-FilterNode* TagTreeNodeString::filter()
+FilterNode* TagTreeNodeString::filter() const
 {
     if (m_filterValue.isEmpty()) {
         return 0;

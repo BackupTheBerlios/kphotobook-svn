@@ -21,23 +21,21 @@
 #ifndef SOURCEDIRTREENODE_H
 #define SOURCEDIRTREENODE_H
 
-#include "../tracer/tracer.h"
-
-#include <klistview.h>
-#include <kpopupmenu.h>
-
-#include <qpixmap.h>
-#include <qstring.h>
-
 class KPhotoBook;
 class SourceDirTree;
 class Folder;
+class Tracer;
+
+#include <klistview.h>
+class KPopupMenu;
+
+#include <qstring.h>
 
 
 /**
  * Specialized KListViewItem representing a Folder to be used in the SourceDirTree.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: sourcedirtreenode.h 484 2005-08-28 19:21:48Z starcube $
  */
 class SourceDirTreeNode : public KListViewItem
 {

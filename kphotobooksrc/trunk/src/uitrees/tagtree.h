@@ -21,23 +21,18 @@
 #ifndef _TAGTREE_H_
 #define _TAGTREE_H_
 
-#include "../tracer/tracer.h"
-
-#include <klistview.h>
-#include <kpopupmenu.h>
-
-#include <qintdict.h>
-#include <qlistview.h>
-#include <qnamespace.h>
-#include <qpoint.h>
-#include <qptrlist.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qtooltip.h>
-
 class TagNode;
 class TagTreeNode;
 class KPhotoBook;
+class Tracer;
+
+#include <klistview.h>
+
+#include <qstring.h>
+#include <qtooltip.h>
+class QStringList;
+template<class type> class QIntDict;
+
 
 
 /**
@@ -63,7 +58,7 @@ class TreeToolTip : public QToolTip
 /**
  * The tagtree (can display checkboxes in the columns).
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: tagtree.h 483 2005-08-28 17:06:22Z starcube $
  */
 class TagTree : public KListView
 {
@@ -80,8 +75,7 @@ class TagTree : public KListView
         TagTree(QWidget* parent, KPhotoBook* photobook, const char* name);
         
         ~TagTree()
-        {
-        }
+        {}
     
         void expandCurrent(bool recursive = true);
         void collapseCurrent(bool recursive = true);

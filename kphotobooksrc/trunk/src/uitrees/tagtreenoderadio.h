@@ -22,8 +22,8 @@
 #define TAGTREENODERADIO_H
 
 #include "tagtreenode.h"
-
 class TagNodeRadio;
+class Tracer;
 
 
 /**
@@ -45,7 +45,7 @@ class TagTreeNodeRadio : public TagTreeNode
         /**
         * Returns an FilterNode used to describe this filter.
         */
-        FilterNode* subfilter();
+        FilterNode* subfilter() const;
     
         virtual void leftClicked(TagTree* tagTree, int column);
         virtual void rightClicked(TagTree* tagTree, int column);

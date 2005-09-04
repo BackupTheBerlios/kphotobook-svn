@@ -29,7 +29,7 @@ class TagNodeBoolean;
 /**
  * Concrete tagtreenode for displaying a boolean tagnode.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: tagtreenodeboolean.h 435 2005-08-02 20:36:17Z starcube $
  */
 class TagTreeNodeBoolean : public TagTreeNode
 {
@@ -42,7 +42,7 @@ class TagTreeNodeBoolean : public TagTreeNode
         /**
         * Returns an FilterNode used to describe this filter.
         */
-        virtual FilterNode* filter();
+        virtual FilterNode* filter() const;
     
         virtual void leftClicked(TagTree* tagTree, int column);
         virtual void rightClicked(TagTree* tagTree, int column);

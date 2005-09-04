@@ -21,12 +21,10 @@
 #ifndef TAGTREENODERADIOGROUP_H
 #define TAGTREENODERADIOGROUP_H
 
-#include "../tracer/tracer.h"
-
 #include "tagtreenode.h"
-#include "tagtreenoderadio.h"
-
 class TagNodeRadioGroup;
+class TagTreeNodeRadio;
+class Tracer;
 
 
 /**
@@ -48,7 +46,7 @@ class TagTreeNodeRadioGroup : public TagTreeNode
         /**
         * Returns an FilterNode used to describe this filter.
         */
-        virtual FilterNode* filter();
+        virtual FilterNode* filter() const;
     
         virtual void leftClicked( TagTree* tagTree, int column);
         virtual void rightClicked(TagTree* tagTree, int column);

@@ -21,6 +21,7 @@
 #include "imageviewer.h"
 
 #include "../dialogs/dialogimageviewer.h"
+#include "../engine/file.h"
 #include "../settings/settings.h"
 #include "../tracer/tracer.h"
 

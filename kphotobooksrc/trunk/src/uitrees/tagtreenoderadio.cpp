@@ -56,7 +56,7 @@ TagTreeNodeRadio::~TagTreeNodeRadio()
 }
 
 
-FilterNode* TagTreeNodeRadio::subfilter()
+FilterNode* TagTreeNodeRadio::subfilter() const
 {
     tracer->invoked(__func__);
 

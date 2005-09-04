@@ -22,18 +22,16 @@
 #define _IMAGEVIEWER_H_
 
 #include "ptrringbuffer.h"
-#include "../engine/file.h"
-#include "../tracer/tracer.h"
+class File;
+class KFileIconView;
+class Tracer;
 
 #include <qimage.h>
 #include <qwidget.h>
-
 class QLabel;
-class QTimer;
 class QMenuBar;
 class QPopupMenu;
-class File;
-class KFileIconView;
+class QTimer;
 
 
 class XImage

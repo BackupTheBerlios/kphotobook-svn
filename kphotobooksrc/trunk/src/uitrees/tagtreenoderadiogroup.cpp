@@ -22,6 +22,7 @@
 
 
 #include "tagtree.h"
+#include "tagtreenoderadio.h"
 #include "treehelper.h"
 #include "../engine/file.h"
 #include "../engine/filternodeopor.h"
@@ -31,6 +32,7 @@
 #include "../engine/tagnoderadiogroup.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
+#include "../tracer/tracer.h"
 
 #include <kfileiconview.h>
 #include <kfileitem.h>
@@ -56,7 +58,7 @@ TagTreeNodeRadioGroup::~TagTreeNodeRadioGroup()
 }
 
 
-FilterNode* TagTreeNodeRadioGroup::filter()
+FilterNode* TagTreeNodeRadioGroup::filter() const
 {
     tracer->invoked(__func__);
 

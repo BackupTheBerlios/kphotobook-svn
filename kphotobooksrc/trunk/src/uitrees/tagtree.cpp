@@ -39,6 +39,7 @@
 #include "../kphotobook.h"
 #include "../settings/settings.h"
 #include "../utils/menuprovider.h"
+#include "../tracer/tracer.h"
 
 #include <kiconloader.h>
 #include <klocale.h>
@@ -46,6 +47,7 @@
 
 #include <qcursor.h>
 #include <qheader.h>
+#include <qintdict.h>
 #include <qobjectlist.h>
 #include <qwidget.h>
 

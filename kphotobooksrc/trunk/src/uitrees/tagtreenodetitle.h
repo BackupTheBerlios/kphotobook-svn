@@ -22,14 +22,13 @@
 #define TAGTREENODETITLE_H
 
 #include "tagtreenode.h"
-
 class TagNodeTitle;
 
 
 /**
  * Concrete tagtreenode for displaying a title.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: tagtreenodetitle.h 435 2005-08-02 20:36:17Z starcube $
  */
 class TagTreeNodeTitle : public TagTreeNode
 {

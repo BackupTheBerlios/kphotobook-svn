@@ -40,8 +40,6 @@ DialogImageViewer::DialogImageViewer(QWidget* parent, KFileIconView* fileView) :
 DialogImageViewer::~DialogImageViewer()
 {
     delete m_imageViewer;
-
-    kdDebug() << "~DialogImageViewer()" << endl;
 }
 
 

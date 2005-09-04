@@ -26,10 +26,12 @@
 #include "../engine/folder.h"
 #include "../kphotobook.h"
 #include "../settings/settings.h"
+#include "../tracer/tracer.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
+#include <kpopupmenu.h>
 
 #include <qcursor.h>
 #include <qdir.h>
