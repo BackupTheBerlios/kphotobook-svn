@@ -22,6 +22,7 @@
 
 #include "file.h"
 #include "tagnodestring.h"
+#include "../tracer/tracer.h"
 
 #include <typeinfo>
 
@@ -36,7 +37,25 @@ FileTagNodeAssocString::FileTagNodeAssocString(File* file, TagNodeString* tagNod
 }
 
 
-TagNodeString* FileTagNodeAssocString::tagNodeString()
+TagNodeString* FileTagNodeAssocString::tagNodeString() const
 {
     return dynamic_cast<TagNodeString*>(m_tagNode);
+}
+
+
+bool FileTagNodeAssocString::equals(QString* value) const
+{
+    return (valueAsString() == *value);
+}
+
+
+bool FileTagNodeAssocString::greaterThan(QString* value) const
+{
+    return (valueAsString() != *value);
+}
+
+
+bool FileTagNodeAssocString::lesserThan(QString* value) const
+{
+    return (valueAsString() != *value);
 }

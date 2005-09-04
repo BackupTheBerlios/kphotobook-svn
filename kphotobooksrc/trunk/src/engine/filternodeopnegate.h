@@ -21,11 +21,9 @@
 #ifndef FILTERNODEOPNEGATE_H
 #define FILTERNODEOPNEGATE_H
 
-#include "../tracer/tracer.h"
 #include "filternode.h"
-#include "file.h"
-
-#include <qobject.h>
+class File;
+class Tracer;
 
 
 /**
@@ -56,7 +54,7 @@ class FilterNodeOpNegate : public FilterNode
         *
         * @indention the indention to put before the text.
         */
-        virtual void dump(QString indention = QString(""));
+        virtual void dump(QString indention = QString("")) const;
 };
 
 #endif

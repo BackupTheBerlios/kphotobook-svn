@@ -22,20 +22,18 @@
 #define FILETAGNODEASSOCBOOLEAN_H
 
 #include "filetagnodeassoc.h"
-#include "../constants.h"
-#include "../tracer/tracer.h"
-
-#include <qstring.h>
-
 class File;
 class TagNodeBoolean;
+class Tracer;
+
+#include <qstring.h>
 
 
 /**
  * Concrete class representing the association between a file and a TagNodeBoolean.
  * This associations contains a reference to the tagnode and the state of the association.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: filetagnodeassocboolean.h 435 2005-08-02 20:36:17Z starcube $
  */
 class FileTagNodeAssocBoolean : public FileTagNodeAssoc
 {
@@ -61,7 +59,7 @@ class FileTagNodeAssocBoolean : public FileTagNodeAssoc
             m_value = value;
         }
     
-        bool value()
+        bool value() const
         {
             return m_value;
         }
@@ -69,28 +67,16 @@ class FileTagNodeAssocBoolean : public FileTagNodeAssoc
         /**
         * A boolean association must be dumped only, if the assoc is true.
         */
-        virtual bool mustDump()
+        virtual bool mustDump() const
         {
             return m_value;
         }
     
-        virtual QString valueAsString()
-        {
-            return (m_value ? Constants::STRING_VALUE_TRUE : Constants::STRING_VALUE_FALSE);
-        }
+        virtual QString valueAsString() const;
     
-        bool equals(QString* value)
-        {
-            return (valueAsString() == *value);
-        }
-        bool greaterThan(QString* value)
-        {
-            return (valueAsString() != *value);
-        }
-        bool lesserThan(QString* value)
-        {
-            return (valueAsString() != *value);
-        }
+        bool equals(QString* value) const;
+        bool greaterThan(QString* value) const;
+        bool lesserThan(QString* value) const;
     
     private:
         /**

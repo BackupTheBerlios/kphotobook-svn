@@ -22,6 +22,7 @@
 
 #include "tagtree.h"
 #include "treehelper.h"
+#include "../engine/file.h"
 #include "../engine/tagnode.h"
 #include "../kphotobook.h"
 #include "../kphotobookview.h"
@@ -30,6 +31,7 @@
 #include <kfileiconview.h>
 #include <kglobal.h>
 #include <kiconloader.h>
+#include <klocale.h>
 #include <kmessagebox.h>
 
 #include <qcheckbox.h>

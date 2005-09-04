@@ -22,13 +22,11 @@
 #define FILETAGNODEASSOCRADIO_H
 
 #include "filetagnodeassoc.h"
-#include "../constants.h"
-#include "../tracer/tracer.h"
-
-#include <qstring.h>
-
 class File;
 class TagNodeRadio;
+class Tracer;
+
+#include <qstring.h>
 
 
 /**
@@ -54,14 +52,14 @@ class FileTagNodeAssocRadio : public FileTagNodeAssoc
         /**
         * Returns the tagNode associated with this association.
         */
-        TagNodeRadio* tagNode();
+        TagNodeRadio* tagNode() const;
     
         void setValue(bool value)
         {
             m_value = value;
         }
     
-        bool value()
+        bool value() const
         {
             return m_value;
         }
@@ -69,28 +67,16 @@ class FileTagNodeAssocRadio : public FileTagNodeAssoc
         /**
         * A boolean association must be dumped only, if the assoc is true.
         */
-        virtual bool mustDump()
+        virtual bool mustDump() const
         {
             return m_value;
         }
     
-        virtual QString valueAsString()
-        {    
-            return (m_value ? Constants::STRING_VALUE_TRUE : Constants::STRING_VALUE_FALSE);
-        }
+        virtual QString valueAsString() const;
     
-        bool equals(QString* value)
-        {
-            return (valueAsString() == *value);
-        }
-        bool greaterThan(QString* value)
-        {
-            return (valueAsString() != *value);
-        }
-        bool lesserThan(QString* value)
-        {
-            return (valueAsString() != *value);
-        }
+        bool equals(QString* value) const;
+        bool greaterThan(QString* value) const;
+        bool lesserThan(QString* value) const;
     
     private:
         /**

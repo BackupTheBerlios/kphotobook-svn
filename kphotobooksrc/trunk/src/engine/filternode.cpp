@@ -20,6 +20,11 @@
 
 #include "filternode.h"
 
+#include "file.h"
+#include "../tracer/tracer.h"
+
+#include <qptrlist.h>
+
 
 Tracer* FilterNode::dumper = Tracer::getInstance("kde.kphotobook.engine", "FilterNode");
 
@@ -47,6 +52,12 @@ void FilterNode::addChild(FilterNode* child)
         child->m_parent = this;
         m_children->append(child);
     }
+}
+
+
+bool FilterNode::childrenCount() const
+{
+    return m_children->count();
 }
 
 

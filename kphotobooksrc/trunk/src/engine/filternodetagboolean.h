@@ -21,11 +21,9 @@
 #ifndef FILTERNODETAGBOOLEAN_H
 #define FILTERNODETAGBOOLEAN_H
 
-#include "file.h"
 #include "filternode.h"
-#include "tagnodeboolean.h"
-
-#include <qobject.h>
+class File;
+class TagNodeBoolean;
 
 
 /**
@@ -54,7 +52,7 @@ class FilterNodeTagBoolean : public FilterNode
         *
         * @indention the indention to put before the text.
         */
-        virtual void dump(QString indention = QString(""));
+        virtual void dump(QString indention = QString("")) const;
     
     private:
         TagNodeBoolean* m_tagNodeBoolean;

@@ -24,6 +24,7 @@
 #include "filetagnodeassocdatetime.h"
 
 #include <kglobal.h>
+#include <klocale.h>
 
 #include <qregexp.h>
 

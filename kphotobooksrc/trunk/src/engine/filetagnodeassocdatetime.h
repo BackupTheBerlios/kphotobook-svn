@@ -22,12 +22,11 @@
 #define FILETAGNODEASSOCDATETIME_H
 
 #include "filetagnodeassoc.h"
-#include "../tracer/tracer.h"
-
-#include <qdatetime.h>
-
 class File;
 class TagNodeDateTime;
+class Tracer;
+
+#include <qdatetime.h>
 
 
 /**
@@ -53,14 +52,14 @@ class FileTagNodeAssocDateTime : public FileTagNodeAssoc
         /**
         * Returns the tagNode associated with this association.
         */
-        TagNodeDateTime* tagNodeDateTime();
+        TagNodeDateTime* tagNodeDateTime() const;
     
         void setValue(QDateTime value)
         {
             m_value = value;
         }
     
-        QDateTime value()
+        QDateTime value() const
         {
             return m_value;
         }
@@ -68,46 +67,20 @@ class FileTagNodeAssocDateTime : public FileTagNodeAssoc
         /**
         * A string association must be dumped only, if the value is not empty.
         */
-        virtual bool mustDump()
+        virtual bool mustDump() const
         {
             return m_value.isValid();
         }
     
-        virtual QString valueAsString()
+        virtual QString valueAsString() const
         {
             return m_value.toString(Qt::ISODate);
         }
     
-        bool equals(QString* value)
-        {
-            QDateTime other = QDateTime::fromString(*value, Qt::ISODate);
-            if (!other.isValid()) {
-                return false;
-            }
-            
-            return (m_value == other);
-        }
+        bool equals(QString* value) const;
+        bool greaterThan(QString* value) const;
+        bool lesserThan(QString* value) const;
         
-        bool greaterThan(QString* value)
-        {
-            QDateTime other = QDateTime::fromString(*value, Qt::ISODate);
-            if (!other.isValid()) {
-                return false;
-            }
-            
-            return (m_value > other);
-        }
-        
-        bool lesserThan(QString* value)
-        {
-            QDateTime other = QDateTime::fromString(*value, Qt::ISODate);
-            if (!other.isValid()) {
-                return false;
-            }
-            
-            return (m_value < other);
-        }
-    
     private:
         /**
         * The value of this association.

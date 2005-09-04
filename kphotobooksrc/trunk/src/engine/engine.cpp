@@ -186,6 +186,18 @@ QString Engine::currentURL() const
 }
 
 
+int Engine::totalNumberOfFiles() const
+{
+    return m_fileList->count();
+}
+
+
+int Engine::filteredNumberOfFiles() const
+{
+    return m_fileList2display->count();
+}
+
+
 TagNode* Engine::createTag(TagNode* parent, TagNode::Type type, const QString& text, const QString& comment, const QString& iconName)
 {
     tracer->sinvoked(__func__) << "with type: " << type  << ", text: " << text << ", comment: " << comment << ", icon: " << iconName << endl;

@@ -20,6 +20,9 @@
 
 #include "filternodetagradio.h"
 
+#include "file.h"
+#include "tagnoderadio.h"
+
 
 FilterNodeTagRadio::FilterNodeTagRadio(FilterNode* parent, TagNodeRadio* tagNodeRadio, bool value) :
     FilterNode(parent),
@@ -48,7 +51,7 @@ bool FilterNodeTagRadio::evaluate(File* file) throw(FilterException*)
 }
 
 
-void FilterNodeTagRadio::dump(QString indention)
+void FilterNodeTagRadio::dump(QString indention) const
 {
     dumper->sdebug("dump") << indention << *m_tagNodeRadio->text() << (m_value ? " = true" : " = false") << endl;
 }

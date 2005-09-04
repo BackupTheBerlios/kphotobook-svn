@@ -20,6 +20,9 @@
 
 #include "filternodeopand.h"
 
+#include "file.h"
+#include "../tracer/tracer.h"
+
 
 Tracer* FilterNodeOpAnd::tracer = Tracer::getInstance("kde.kphotobook.engine", "FilterNodeOpAnd");
 
@@ -50,7 +53,7 @@ bool FilterNodeOpAnd::evaluate(File* file) throw(FilterException*)
 }
 
 
-void FilterNodeOpAnd::dump(QString indention)
+void FilterNodeOpAnd::dump(QString indention) const
 {
     dumper->sdebug("dump") << indention << "&&" << endl;
 

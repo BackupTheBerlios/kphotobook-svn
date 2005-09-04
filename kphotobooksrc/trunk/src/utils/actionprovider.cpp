@@ -27,6 +27,7 @@
 #include <kaction.h>
 #include <kactioncollection.h>
 #include <kapplication.h>
+#include <klocale.h>
 #include <kstdaccel.h>
 #include <kstdaction.h>
 

@@ -22,12 +22,11 @@
 #define FILETAGNODEASSOCSTRING_H
 
 #include "filetagnodeassoc.h"
-#include "../tracer/tracer.h"
-
-#include <qstring.h>
-
 class File;
 class TagNodeString;
+class Tracer;
+
+#include <qstring.h>
 
 
 /**
@@ -52,14 +51,14 @@ class FileTagNodeAssocString : public FileTagNodeAssoc
         /**
         * Returns the tagNode associated with this association.
         */
-        TagNodeString* tagNodeString();
+        TagNodeString* tagNodeString() const;
     
         void setValue(QString value)
         {
             m_value = value;
         }
     
-        QString value()
+        QString value() const
         {
             return m_value;
         }
@@ -67,28 +66,19 @@ class FileTagNodeAssocString : public FileTagNodeAssoc
         /**
         * A string association must be dumped only, if the value is not empty.
         */
-        virtual bool mustDump()
+        virtual bool mustDump() const
         {
             return !m_value.isEmpty();
         }
     
-        virtual QString valueAsString()
+        virtual QString valueAsString() const
         {
             return m_value;
         }
     
-        bool equals(QString* value)
-        {
-            return (valueAsString() == *value);
-        }
-        bool greaterThan(QString* value)
-        {
-            return (valueAsString() != *value);
-        }
-        bool lesserThan(QString* value)
-        {
-            return (valueAsString() != *value);
-        }
+        bool equals(QString* value) const;
+        bool greaterThan(QString* value) const;
+        bool lesserThan(QString* value) const;
     
     private:
         /**

@@ -22,6 +22,7 @@
 
 #include "file.h"
 #include "tagnodedatetime.h"
+#include "../tracer/tracer.h"
 
 #include <typeinfo>
 
@@ -44,7 +45,40 @@ FileTagNodeAssocDateTime::FileTagNodeAssocDateTime(File* file, TagNodeDateTime* 
 }
 
 
-TagNodeDateTime* FileTagNodeAssocDateTime::tagNodeDateTime()
+TagNodeDateTime* FileTagNodeAssocDateTime::tagNodeDateTime() const
 {
     return dynamic_cast<TagNodeDateTime*>(m_tagNode);
+}
+
+
+bool FileTagNodeAssocDateTime::equals(QString* value) const
+{
+    QDateTime other = QDateTime::fromString(*value, Qt::ISODate);
+    if (!other.isValid()) {
+        return false;
+    }
+            
+    return (m_value == other);
+}
+        
+
+bool FileTagNodeAssocDateTime::greaterThan(QString* value) const
+{
+    QDateTime other = QDateTime::fromString(*value, Qt::ISODate);
+    if (!other.isValid()) {
+        return false;
+    }
+            
+    return (m_value > other);
+}
+        
+
+bool FileTagNodeAssocDateTime::lesserThan(QString* value) const
+{
+    QDateTime other = QDateTime::fromString(*value, Qt::ISODate);
+    if (!other.isValid()) {
+        return false;
+    }
+            
+    return (m_value < other);
 }

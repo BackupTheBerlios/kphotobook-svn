@@ -20,6 +20,9 @@
 
 #include "filternodetagstring.h"
 
+#include "file.h"
+#include "tagnodestring.h"
+
 
 FilterNodeTagString::FilterNodeTagString(FilterNode* parent, TagNodeString* tagNodeString, QString pattern) :
     FilterNode(parent),
@@ -48,7 +51,7 @@ bool FilterNodeTagString::evaluate(File* file) throw(FilterException*)
 }
 
 
-void FilterNodeTagString::dump(QString indention)
+void FilterNodeTagString::dump(QString indention) const
 {
     dumper->sdebug("dump") << indention << *m_tagNodeString->text() << " = " << m_pattern << endl;
 }

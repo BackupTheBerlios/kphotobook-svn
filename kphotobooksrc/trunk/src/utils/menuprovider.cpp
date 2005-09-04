@@ -23,6 +23,7 @@
 #include "../kphotobook.h"
 #include "../tracer/tracer.h"
 
+#include <klocale.h>
 #include <kpopupmenu.h>
 #include <kxmlguifactory.h>
 

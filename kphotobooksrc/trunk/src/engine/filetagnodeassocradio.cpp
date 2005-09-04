@@ -22,6 +22,8 @@
 
 #include "file.h"
 #include "tagnoderadio.h"
+#include "../constants.h"
+#include "../tracer/tracer.h"
 
 #include <typeinfo>
 
@@ -43,7 +45,32 @@ FileTagNodeAssocRadio::FileTagNodeAssocRadio(File* file, TagNodeRadio* tagNode, 
 }
 
 
-TagNodeRadio* FileTagNodeAssocRadio::tagNode()
+TagNodeRadio* FileTagNodeAssocRadio::tagNode() const
 {
     return dynamic_cast<TagNodeRadio*>(m_tagNode);
 }
+
+
+QString FileTagNodeAssocRadio::valueAsString() const
+{
+    return (m_value ? Constants::STRING_VALUE_TRUE : Constants::STRING_VALUE_FALSE);
+}
+    
+
+bool FileTagNodeAssocRadio::equals(QString* value) const
+{
+    return (valueAsString() == *value);
+}
+
+
+bool FileTagNodeAssocRadio::greaterThan(QString* value) const
+{
+    return (valueAsString() != *value);
+}
+        
+
+bool FileTagNodeAssocRadio::lesserThan(QString* value) const
+{
+    return (valueAsString() != *value);
+}
+

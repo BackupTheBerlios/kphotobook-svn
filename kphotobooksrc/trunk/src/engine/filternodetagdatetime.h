@@ -21,13 +21,10 @@
 #ifndef FILTERNODETAGDATETIME_H
 #define FILTERNODETAGDATETIME_H
 
-#include "file.h"
 #include "filternode.h"
-#include "tagnodedatetime.h"
-#include "../utils/datetimefilterdata.h"
-
-#include <qobject.h>
-#include <qstring.h>
+class DateTimeFilterData;
+class File;
+class TagNodeDateTime;
 
 
 /**
@@ -56,7 +53,7 @@ class FilterNodeTagDateTime : public FilterNode
         *
         * @indention the indention to put before the text.
         */
-        virtual void dump(QString indention = QString(""));
+        virtual void dump(QString indention = QString("")) const;
     
     private:
         TagNodeDateTime* m_tagNodeDateTime;

@@ -21,11 +21,10 @@
 #ifndef FILTERNODETAGSTRING_H
 #define FILTERNODETAGSTRING_H
 
-#include "file.h"
 #include "filternode.h"
-#include "tagnodestring.h"
+class File;
+class TagNodeString;
 
-#include <qobject.h>
 #include <qstring.h>
 
 
@@ -55,7 +54,7 @@ class FilterNodeTagString : public FilterNode
         *
         * @indention the indention to put before the text.
         */
-        virtual void dump(QString indention = QString(""));
+        virtual void dump(QString indention = QString("")) const;
     
     private:
         TagNodeString* m_tagNodeString;

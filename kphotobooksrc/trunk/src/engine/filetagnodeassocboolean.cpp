@@ -22,6 +22,8 @@
 
 #include "file.h"
 #include "tagnodeboolean.h"
+#include "../constants.h"
+#include "../tracer/tracer.h"
 
 #include <typeinfo>
 
@@ -46,4 +48,28 @@ FileTagNodeAssocBoolean::FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tag
 TagNodeBoolean* FileTagNodeAssocBoolean::tagNodeBoolean()
 {
     return dynamic_cast<TagNodeBoolean*>(m_tagNode);
+}
+
+
+QString FileTagNodeAssocBoolean::valueAsString() const
+{
+    return (m_value ? Constants::STRING_VALUE_TRUE : Constants::STRING_VALUE_FALSE);
+}    
+
+
+bool FileTagNodeAssocBoolean::equals(QString* value) const
+{
+    return (valueAsString() == *value);
+}
+
+
+bool FileTagNodeAssocBoolean::greaterThan(QString* value) const
+{
+    return (valueAsString() != *value);
+}
+
+
+bool FileTagNodeAssocBoolean::lesserThan(QString* value) const
+{
+    return (valueAsString() != *value);
 }

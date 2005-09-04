@@ -21,10 +21,10 @@
 #ifndef FILTERNODEOPOR_H
 #define FILTERNODEOPOR_H
 
-#include "file.h"
 #include "filternode.h"
+class File;
+class Tracer;
 
-#include <qobject.h>
 
 /**
  *
@@ -33,6 +33,9 @@
 class FilterNodeOpOr : public FilterNode
 {
     Q_OBJECT
+    
+    private:
+        static Tracer* tracer;
     
     public:
         FilterNodeOpOr(FilterNode* parent = 0);
@@ -51,7 +54,7 @@ class FilterNodeOpOr : public FilterNode
         *
         * @indention the indention to put before the text.
         */
-        virtual void dump(QString indention = QString(""));
+        virtual void dump(QString indention = QString("")) const;
 };
 
 #endif

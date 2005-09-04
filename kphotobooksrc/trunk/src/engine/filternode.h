@@ -21,12 +21,12 @@
 #ifndef FILTERNODE_H
 #define FILTERNODE_H
 
-#include "file.h"
 #include "../exception.h"
-#include "../tracer/tracer.h"
+class File;
+class Tracer;
 
 #include <qobject.h>
-#include <qptrlist.h>
+template<class type> class QPtrList;
 
 
 /**
@@ -56,10 +56,7 @@ class FilterNode : public QObject
         /**
         * Returns the number of children this FilterNode has.
         */
-        bool childrenCount()
-        {
-            return m_children->count();
-        }
+        bool childrenCount() const;
         
         /**
         * Evaluates if this subtree or leafnode matches the given file.
@@ -73,7 +70,7 @@ class FilterNode : public QObject
         *
         * @indention the indention to put before the text.
         */
-        virtual void dump(QString indention = QString("")) = 0;
+        virtual void dump(QString indention = QString("")) const = 0;
     
     protected:
         /**

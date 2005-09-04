@@ -40,7 +40,7 @@ template<class type> class QPtrList;
 /**
  * The engine managing all folders, tags and files/images.
  *
- * CVS-ID $Id$
+ * CVS-ID $Id: engine.h 499 2005-09-02 11:48:32Z starcube $
  */
 class Engine : public QObject
 {
@@ -104,18 +104,12 @@ class Engine : public QObject
         /**
         * Returns the total number of files managed by the engine.
         */
-        int totalNumberOfFiles() const
-        {
-            return m_fileList->count();
-        }
+        int totalNumberOfFiles() const;
 
         /**
         * Returns the number of files selected by the last specified filter.
         */
-        int filteredNumberOfFiles() const
-        {
-            return m_fileList2display->count();
-        }
+        int filteredNumberOfFiles() const;
 
         /**
         * Returns all currently added source directories handled by this engine.

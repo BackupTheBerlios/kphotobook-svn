@@ -20,6 +20,9 @@
 
 #include "filternodeopnegate.h"
 
+#include "file.h"
+#include "../tracer/tracer.h"
+
 
 Tracer* FilterNodeOpNegate::tracer = Tracer::getInstance("kde.kphotobook.engine", "FilterNodeOpNegate");
 
@@ -54,7 +57,7 @@ bool FilterNodeOpNegate::evaluate(File* file) throw(FilterException*)
 }
 
 
-void FilterNodeOpNegate::dump(QString indention)
+void FilterNodeOpNegate::dump(QString indention) const
 {
     dumper->sdebug("dump") << indention << "!" << endl;
 

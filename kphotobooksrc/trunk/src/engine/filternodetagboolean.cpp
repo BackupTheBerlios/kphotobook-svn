@@ -20,6 +20,9 @@
 
 #include "filternodetagboolean.h"
 
+#include "file.h"
+#include "tagnodeboolean.h"
+
 
 FilterNodeTagBoolean::FilterNodeTagBoolean(FilterNode* parent, TagNodeBoolean* tagNodeBoolean, bool value) :
     FilterNode(parent),
@@ -48,7 +51,7 @@ bool FilterNodeTagBoolean::evaluate(File* file) throw(FilterException*)
 }
 
 
-void FilterNodeTagBoolean::dump(QString indention)
+void FilterNodeTagBoolean::dump(QString indention) const
 {
     dumper->sdebug("dump") << indention << *m_tagNodeBoolean->text() << (m_value ? " = true" : " = false") << endl;
 }

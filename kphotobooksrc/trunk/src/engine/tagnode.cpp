@@ -29,11 +29,15 @@
 #include "tagnoderadio.h"
 #include "tagnodestring.h"
 #include "tagnodetitle.h"
+#include "../tracer/tracer.h"
 
 #include <kglobal.h>
 #include <kiconloader.h>
+#include <klocale.h>
 
 #include <qiconset.h>
+#include <qpixmap.h>
+#include <qptrlist.h>
 
 #include <typeinfo>
 
@@ -81,6 +85,68 @@ TagNode* TagNode::createInstance(TagNode::Type typeId, unsigned int id, const QS
     newTagNode->m_typeId = typeId;
 
     return newTagNode;
+}
+
+
+QString TagNode::tagNodeType( TagNode::Type typeId )
+{
+    switch ( typeId ) {
+        case TagNode::TYPE_TITLE:
+            return "title";
+        case TagNode::TYPE_BOOLEAN:
+            return "boolean";
+        case TagNode::TYPE_STRING:
+            return "string";
+        case TagNode::TYPE_RADIOGROUP:
+            return "radiogroup";
+        case TagNode::TYPE_RADIO:
+            return "radio";
+        case TagNode::TYPE_DATETIME:
+            return "datetime";
+        default:
+            return QString::null;
+    }
+}
+
+
+QString TagNode::tagNodeTypeName(TagNode::Type typeId)
+{
+    switch(typeId) {
+        case TagNode::TYPE_TITLE:
+            return i18n("tagNodeTypeName", "title");
+        case TagNode::TYPE_BOOLEAN:
+            return i18n("tagNodeTypeName", "boolean");
+        case TagNode::TYPE_STRING:
+            return i18n("tagNodeTypeName", "string");
+        case TagNode::TYPE_RADIOGROUP:
+            return i18n("tagNodeTypeName", "radiogroup");
+        case TagNode::TYPE_RADIO:
+            return i18n("tagNodeTypeName", "radio");
+        case TagNode::TYPE_DATETIME:
+            return i18n("tagNodeTypeName", "datetime");
+        default:
+            return QString::null;
+    }
+}
+
+        
+TagNode::Type TagNode::tagNodeTypeId(const QString& type)
+{
+    if (type == "title") {
+        return TagNode::TYPE_TITLE;
+    } else if (type == "boolean") {
+        return TagNode::TYPE_BOOLEAN;
+    } else if (type == "string") {
+        return TagNode::TYPE_STRING;
+    } else if (type == "radiogroup") {
+        return TagNode::TYPE_RADIOGROUP;
+    } else if (type == "radio") {
+        return TagNode::TYPE_RADIO;
+    } else if (type == "datetime") {
+        return TagNode::TYPE_DATETIME;
+    }
+
+    return TagNode::TYPE_INVALID;
 }
 
 
@@ -161,7 +227,7 @@ void TagNode::setParent(TagNode* parent)
 }
 
 
-TagNode* TagNode::child(QString text)
+TagNode* TagNode::child(QString text) const
 {
     if (m_children) {
         TagNode* child = 0;
@@ -199,7 +265,7 @@ void TagNode::removeAssoc(FileTagNodeAssoc* assoc)
 }
 
 
-FileTagNodeAssoc* TagNode::getAssocToFile(File* file)
+FileTagNodeAssoc* TagNode::getAssocToFile(File* file) const
 {
     FileTagNodeAssoc* currentAssoc;
     for ( currentAssoc = m_assocs->first(); currentAssoc; currentAssoc = m_assocs->next() ) {
@@ -213,7 +279,7 @@ FileTagNodeAssoc* TagNode::getAssocToFile(File* file)
 }
 
 
-bool TagNode::isLinkedToFile(File* file)
+bool TagNode::isLinkedToFile(File* file) const
 {
     FileTagNodeAssoc* fileTagNodeAssoc = getAssocToFile(file);
     if (fileTagNodeAssoc != 0) {

@@ -20,6 +20,10 @@
 
 #include "filternodetagdatetime.h"
 
+#include "file.h"
+#include "tagnodedatetime.h"
+#include "../utils/datetimefilterdata.h"
+
 
 FilterNodeTagDateTime::FilterNodeTagDateTime(FilterNode* parent, TagNodeDateTime* tagNodeDateTime, DateTimeFilterData* data) :
     FilterNode(parent),
@@ -73,7 +77,7 @@ bool FilterNodeTagDateTime::evaluate(File* file) throw(FilterException*)
 }
 
 
-void FilterNodeTagDateTime::dump(QString indention)
+void FilterNodeTagDateTime::dump(QString indention) const
 {
     switch (m_data->getState()) {
         case DateTimeFilterData::INVALID:
