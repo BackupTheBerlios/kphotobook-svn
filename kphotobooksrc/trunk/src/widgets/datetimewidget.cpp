@@ -209,7 +209,7 @@ void DateTimeWidget::slotPickDate()
 }
 
 
-void DateTimeWidget::slotPickerDateChanged(const QDate& date)
+void DateTimeWidget::slotPickerDateChanged(QDate date)
 {
     delete m_chosenDate;
     m_chosenDate = new QDate(date);

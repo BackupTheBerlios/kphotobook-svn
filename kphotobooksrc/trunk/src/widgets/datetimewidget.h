@@ -130,7 +130,7 @@ class DateTimeWidget : public QWidget
 
     private slots:
         void slotPickDate();
-        void slotPickerDateChanged(const QDate&);
+        void slotPickerDateChanged(QDate);
         void slotPickerOk();
 
         void slotDateChanged(const QString&);
