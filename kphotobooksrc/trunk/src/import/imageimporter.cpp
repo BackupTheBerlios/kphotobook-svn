@@ -63,7 +63,7 @@
 
 
 ///@fixme check why this sigsegvs
-//Tracer* ImageImporter::tracer = Tracer::getInstance("kde.kphotobook.import", "ImageImporter");
+Tracer* ImageImporter::tracer = Tracer::getInstance("kde.kphotobook.import", "ImageImporter");
 
 /*
  *  Constructs a ImageImporter as a child of 'parent', with the
@@ -234,13 +234,17 @@ void ImageImporter::initGUI() {
     m_groupDestLayout->setAlignment( Qt::AlignTop );
 
     m_cmbDestBasefolder = new QComboBox( m_groupDest, "txtDestBasefolder" );
-    m_cmbDestBasefolder->setEditable( true );
+//     m_cmbDestBasefolder->setEditable( true );
     m_cmbDestBasefolder->setDuplicatesEnabled( false );
     connect(m_cmbDestBasefolder, SIGNAL(highlighted(int)), SLOT(slotUpdateDestExample()));
     m_groupDestLayout->addWidget( m_cmbDestBasefolder, 0, 1 );
     m_groupDestLayout->addWidget( new QLabel(m_cmbDestBasefolder, i18n( "Base Folder" ), m_groupDest, "lblDestBaseFolder" ), 0, 0 );
     btn = new QPushButton(i18n( "..." ), m_groupDest, "btnDestBaseFolder" );
     m_groupDestLayout->addWidget( btn, 0, 2 );
+    //this is a temporary hack: it is intended, that someday the user can select an arbitrary folder to copy the images to,
+    // which finally is added to the album. But currently the user only can select from folders here, which are already contained in
+    // the album.
+    btn->hide();
     connect(btn, SIGNAL(clicked()), SLOT(slotBtnDestBaseFolder()));
 
 
@@ -327,14 +331,16 @@ void ImageImporter::initData() {
 
     //add all dirs from the album to the list of target folders
     Folder* sourceDir;
-    for ( sourceDir = m_photobook->engine()->sourceDirs()->first();
+    for (
+          sourceDir = m_photobook->engine()->sourceDirs()->first();
           sourceDir;
-          sourceDir = m_photobook->engine()->sourceDirs()->next() )
+          sourceDir = m_photobook->engine()->sourceDirs()->next()
+        )
     {
         m_cmbDestBasefolder->insertItem(sourceDir->dir()->absPath());
     }
 
-    m_cmbDestBasefolder->insertItem(Settings::imageImporterDestBaseFolder());
+    //m_cmbDestBasefolder->insertItem(Settings::imageImporterDestBaseFolder());
     m_cmbDestBasefolder->setCurrentText(Settings::imageImporterDestBaseFolder());
     m_txtDestSubfolders->setText(Settings::imageImporterDestSubfolders());
     m_txtDestFilename->setText(Settings::imageImporterDestFilenames());
@@ -884,7 +890,7 @@ bool ImageImporter::copy_file(const QString& src, const QString& dest)
 
 
 
-
+///@todo create a dedicated EXIF class
 QString ImageImporter::getExifData(const QString& filename, ExifTag tag)
 {
     ExifData* ed = exif_data_new_from_file(filename.ascii());
@@ -921,6 +927,7 @@ QString ImageImporter::getExifData(const QString& filename, ExifTag tag)
 }
 
 
+///@todo create a dedicated EXIF class
 QString ImageImporter::getEntry(ExifContent* c, ExifTag tag)
 {
 
@@ -936,53 +943,3 @@ QString ImageImporter::getEntry(ExifContent* c, ExifTag tag)
 
     return retval;
 }
-
-
-
-
-
-
-// QString ImageImporter::getExifData(const QString& filename, ExifTag tag)
-// {
-//     QString retval = QString();
-//
-//     static QString EXIFIFD_NAME_EXIF = exif_ifd_get_name(EXIF_IFD_EXIF);
-//
-//     int maxDataLength = 255;
-//     char* charData = new char[maxDataLength];
-//
-//     ExifData* exifData = exif_data_new_from_file(filename.ascii());
-// //    exif_data_dump(exifData);
-//
-//     for (int i = 0; i < EXIF_IFD_COUNT; i++) {
-//         ExifContent* content = exifData->ifd[i];
-//
-//         QString group = QString(exif_ifd_get_name((ExifIfd) i));
-//         if (group != EXIFIFD_NAME_EXIF) {
-//             continue;
-//         }
-//         ///@todo check, if we can access the tagdata directly without iterating over it
-//         for (unsigned int e = 0; e < content->count; e++)
-//         {
-//             ExifEntry* entry = content->entries[e];
-//
-//             if (entry->tag != tag) {
-//                 continue;
-//             }
-//
-// //             QString title = QString(exif_tag_get_title(entry->tag));
-// //             QString name  = QString(exif_tag_get_name(entry->tag));
-// //             QString description = QString(exif_tag_get_description(entry->tag));
-//
-//             exif_entry_get_value(entry, charData, maxDataLength);
-//             retval = QString(charData);
-//             break;
-//         }
-//     }
-//
-//     exif_data_free(exifData);
-//     delete charData;
-//
-//     return retval;
-// }
-
