@@ -495,6 +495,7 @@ void ImageViewer::generateImageCounterOverlay()
     //if we don't show it, we dont generate it!
     if (!Settings::imageViewerShowImageCounter()) {
         m_imageCounterOverlay.resize(0,0);
+        m_imageCounterOverlayBG.resize(0,0);
         return ;
     }
 
@@ -585,6 +586,14 @@ void ImageViewer::generateImageCounterOverlay()
 
     //then save it for the next time
     m_imageCounterOverlay.convertFromImage( image );
+
+    //after that, create the background imageviewer
+    if (Settings::imageViewerShowCounterOverlayBG()) {
+        createOverlayBackground(&m_imageCounterOverlayBG,
+                                QSize(m_imageCounterOverlay.width()+20,m_imageCounterOverlay.height()+20));
+    } else if (!m_imageCounterOverlayBG.isNull()) {
+        m_imageCounterOverlayBG.resize(0,0);
+    }
 }
 
 
@@ -593,6 +602,7 @@ void ImageViewer::generateInfoOverlay()
     //if we don't show it, we don't generate it!
     if (!Settings::imageViewerShowFileInfos()) {
         m_infoOverlay.resize(0,0);
+        m_infoOverlayBG.resize(0,0);
         return;
     }
 
@@ -612,9 +622,50 @@ void ImageViewer::generateInfoOverlay()
 
     QSize size(srt.widthUsed(), srt.height());
 
+    // the basic pixmap
+    QPixmap pm(size);
+    pm.fill(Qt::black);
+
+    QPainter pmp(&pm);
+
+    //the draw the text
+    srt.draw(&pmp, 0, 0, pm.rect(), colorGroup());
+
+    pmp.end();
+
+    QImage image( pm.convertToImage());
+    image.setAlphaBuffer( true );
+
+    QColor color(Settings::imageViewerOverlayFGColor());
+    int red = color.red();
+    int green = color.green();
+    int blue = color.blue();
+    int pixels = image.width() * image.height();
+
+    unsigned int * data = (unsigned int *)image.bits();
+    for( int i = 0; i < pixels; ++i ) {
+        data[i] = qRgba( red, green, blue, data[i] & 0xFF );
+    }
+
+    //finally save it
+    m_infoOverlay.convertFromImage( image );
+
+    //after that, create the background image
+    if (Settings::imageViewerShowInfoOverlayBG()) {
+        createOverlayBackground(&m_infoOverlayBG,
+                                QSize(m_infoOverlay.width(),m_infoOverlay.height()));
+    } else if (!m_infoOverlayBG.isNull()) {
+        m_infoOverlayBG.resize(0,0);
+    }
+}
 
 
-    //first initialize the alpha channels
+void ImageViewer::createOverlayBackground(QPixmap* targetPM, QSize size)
+{
+    if (!targetPM) {
+        return;
+    }
+
     QPixmap pm(size);
     pm.fill(Qt::black);
     QPainter pmp(&pm);
@@ -625,39 +676,23 @@ void ImageViewer::generateInfoOverlay()
     //draw the frame
     pmp.drawRoundRect(0,0, pm.width(), pm.height(), (8 * 200) / pm.width(), (8 * 200) / pm.height());
 
-    //draw the text the first time (to have the alpha mask)
-    srt.draw(&pmp, 0, 0, pm.rect(), colorGroup());
-
     pmp.end();
 
-    {
-        QImage image( pm.convertToImage() );
-        image.setAlphaBuffer( true );
+    QImage image( pm.convertToImage() );
+    image.setAlphaBuffer( true );
 
-        QColor color(Settings::imageViewerOverlayBGColor());
-        int r = color.red();
-        int g = color.green();
-        int b = color.blue();
+    QColor color(Settings::imageViewerOverlayBGColor());
+    int r = color.red();
+    int g = color.green();
+    int b = color.blue();
 
-        int pixels = image.width() * image.height();
-        unsigned int* data   = (unsigned int *)image.bits();
-        for( int i = 0; i < pixels; ++i ) {
-            data[i] = qRgba( r, g, b, data[i] & 0xFF );
-        }
-
-        //finally save it
-        m_infoOverlay.convertFromImage( image );
+    int pixels = image.width() * image.height();
+    unsigned int* data   = (unsigned int *)image.bits();
+    for( int i = 0; i < pixels; ++i ) {
+        data[i] = qRgba( r, g, b, data[i] & 0xFF );
     }
 
-    QPainter p(&m_infoOverlay);
-
-    QColorGroup cg = colorGroup();
-    cg.setColor( QColorGroup::Text, QColor(Settings::imageViewerOverlayFGColor()) );
-
-    //now finally draw the text
-    srt.draw(&p, 0, 0, m_infoOverlay.rect(), cg);
-
-    p.end();
+    targetPM->convertFromImage( image );
 }
 
 
@@ -737,8 +772,16 @@ void ImageViewer::paintEvent( QPaintEvent *e )
 
     painter.drawPixmap(x, y, *m_curImage->scaled());
 
+
+    if (!m_imageCounterOverlayBG.isNull()) {
+        painter.drawPixmap(w - m_imageCounterOverlayBG.width() - 10, 10, m_imageCounterOverlayBG);
+    }
     if (!m_imageCounterOverlay.isNull()) {
-        painter.drawPixmap(w - m_imageCounterOverlay.width() - 10, 10, m_imageCounterOverlay);
+        painter.drawPixmap(w - m_imageCounterOverlay.width() - 20, 20, m_imageCounterOverlay);
+    }
+
+    if (!m_infoOverlayBG.isNull()) {
+        painter.drawPixmap(10, h - m_infoOverlayBG.height() - 10, m_infoOverlayBG);
     }
     if (!m_infoOverlay.isNull()) {
         painter.drawPixmap(10, h - m_infoOverlay.height() - 10, m_infoOverlay);

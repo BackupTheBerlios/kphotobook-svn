@@ -38,47 +38,47 @@ class XImage
 {
     private:
         static Tracer* tracer;
-    
+
     public:
         XImage(int maxWidth = -1, int maxHeight = -1);
         virtual ~XImage();
-    
+
         void     setFile(File* file);
         File*    file() { return m_file; };
-    
+
         void     free();
-    
+
         QPixmap* scaled()                { return &m_scaled; };
-    
+
         void     setSmoothScale(bool);
-    
+
         void     setMaxDimensions(int maxWidth, int maxHeight);
-    
+
         bool     isValid();
         bool     workLeft();
-    
+
         bool     doWork(bool forceFull = false);
         void     scale(int desiredWidth, int desiredHeight, bool forceDoWork = false);
-    
-    
+
+
     private:
         bool     loadImage();
         bool     convertImage();
         bool     scaleImage();
-    
+
         bool     m_smoothScale;
-    
+
         int      m_maxWidth;
         int      m_maxHeight;
         int      m_desiredWidth;
         int      m_desiredHeight;
-    
+
         File*    m_file;
-    
+
         QImage   m_image;
         QPixmap  m_pixmap;
         QPixmap  m_scaled;
-    
+
         int      m_alloc_context;
 };
 
@@ -86,71 +86,75 @@ class XImage
 class ImageViewer : public QWidget
 {
     Q_OBJECT
-    
+
     private:
         static Tracer* tracer;
-    
+
     public:
         ImageViewer( QWidget *parent, KFileIconView* fileView, const char *name=0);
         virtual ~ImageViewer();
-    
+
         void  updateImageList();
         void  show(File* selectedFile);
-    
+
         void  free();
-    
+
     signals:
         void signalEnterPressed();
-    
+
     protected:
         void  paintEvent( QPaintEvent  * e);
         void  resizeEvent( QResizeEvent * e);
         void  wheelEvent ( QWheelEvent  * e );
         void  keyPressEvent ( QKeyEvent * e );
-    
+
         void  contextMenuEvent ( QContextMenuEvent * e );
-    
-    
+
+
     private slots:
         void  slotShowNextImage();
         void  slotShowPrevImage();
-    
+
         void  slotWorkTimerFired();
         void  slotSlideshowTimerFired();
-    
+
         void  slotToggleSmoothScaling();
         void  slotToggleShowImageCounter();
         void  slotToggleShowInfoOverlay();
-    
+
         void  slotStartSlideshow(int secs);
         void  slotClose();
-    
+
     private:
         void  generateImageCounterOverlay();
         void  generateInfoOverlay();
-    
+
+        void createOverlayBackground(QPixmap* targetPM, QSize size);
+
         void  buildPtrList(KFileIconView* view, PtrRingBuffer<File>& ringbuffer);
-    
+
         int   m_screenWidth;
         int   m_screenHeight;
-    
+
         QTimer*  m_workTimer;
         QTimer*  m_timerSlideshow;
-    
+
         KFileIconView*      m_fileView;
         PtrRingBuffer<File> m_lstImages;
-    
+
         XImage*  m_curImage;
         XImage*  m_nxtImage;
         XImage*  m_prvImage;
-    
+
         XImage   m_imageData1;
         XImage   m_imageData2;
         XImage   m_imageData3;
-    
+
         QPixmap  m_imageCounterOverlay;
+        QPixmap  m_imageCounterOverlayBG;
         QPixmap  m_infoOverlay;
-    
+        QPixmap  m_infoOverlayBG;
+
         QPixmap m_bgPixmap;
 };
 

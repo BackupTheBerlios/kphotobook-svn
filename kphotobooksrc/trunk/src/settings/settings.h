@@ -731,6 +731,44 @@ class Settings : public KConfigSkeleton
     }
 
     /**
+      Set Should there be a background behind the counteroverlay?
+    */
+    static
+    void setImageViewerShowCounterOverlayBG( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageViewerShowCounterOverlayBG" ) ))
+        self()->mImageViewerShowCounterOverlayBG = v;
+    }
+
+    /**
+      Get Should there be a background behind the counteroverlay?
+    */
+    static
+    bool imageViewerShowCounterOverlayBG()
+    {
+      return self()->mImageViewerShowCounterOverlayBG;
+    }
+
+    /**
+      Set Should there be a background behind the info overlay?
+    */
+    static
+    void setImageViewerShowInfoOverlayBG( bool v )
+    {
+      if (!self()->isImmutable( QString::fromLatin1( "ImageViewerShowInfoOverlayBG" ) ))
+        self()->mImageViewerShowInfoOverlayBG = v;
+    }
+
+    /**
+      Get Should there be a background behind the info overlay?
+    */
+    static
+    bool imageViewerShowInfoOverlayBG()
+    {
+      return self()->mImageViewerShowInfoOverlayBG;
+    }
+
+    /**
       Set Contains the last opened kphotobook file.
     */
     static
@@ -1132,6 +1170,8 @@ class Settings : public KConfigSkeleton
     QString mImageViewerOverlayFGColor;
     QString mImageViewerOverlayBGColor;
     int mImageViewerOverlayTranclucency;
+    bool mImageViewerShowCounterOverlayBG;
+    bool mImageViewerShowInfoOverlayBG;
 
     // FileSystem
     QString mFileSystemLastOpenedFile;

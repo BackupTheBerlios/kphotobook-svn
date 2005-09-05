@@ -198,6 +198,14 @@
         <label>The tranclucency the overlay is overlayed.</label>
         <default>75</default>
     </entry>
+    <entry name="ImageViewerShowCounterOverlayBG" type="Bool" key="ViewerShowCounterOverlayBG">
+        <label>Should there be a background behind the counteroverlay?</label>
+        <default>false</default>
+    </entry>
+    <entry name="ImageViewerShowInfoOverlayBG" type="Bool" key="ViewerShowInfoOverlayBG">
+        <label>Should there be a background behind the info overlay?</label>
+        <default>true</default>
+    </entry>
   </group>
 
   <group name="FileSystem">

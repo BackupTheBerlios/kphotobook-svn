@@ -101,7 +101,7 @@
                         <cstring>groupBox2</cstring>
                     </property>
                     <property name="title">
-                        <string>Overlay</string>
+                        <string>Overlays</string>
                     </property>
                     <grid>
                         <property name="name">
@@ -203,6 +203,54 @@
                                 <number>100</number>
                             </property>
                         </widget>
+                        <widget class="QGroupBox" row="3" column="0" rowspan="1" colspan="3">
+                            <property name="name">
+                                <cstring>groupBox3</cstring>
+                            </property>
+                            <property name="title">
+                                <string>Counter overlay</string>
+                            </property>
+                            <vbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QCheckBox">
+                                    <property name="name">
+                                        <cstring>kcfg_ImageViewerShowCounterOverlayBG</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>show &amp;background</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string>Alt+B</string>
+                                    </property>
+                                </widget>
+                            </vbox>
+                        </widget>
+                        <widget class="QGroupBox" row="4" column="0" rowspan="1" colspan="3">
+                            <property name="name">
+                                <cstring>groupBox3_2</cstring>
+                            </property>
+                            <property name="title">
+                                <string>Info overlay</string>
+                            </property>
+                            <vbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QCheckBox">
+                                    <property name="name">
+                                        <cstring>kcfg_ImageViewerShowInfoOverlayBG</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>show bac&amp;kground</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string>Alt+K</string>
+                                    </property>
+                                </widget>
+                            </vbox>
+                        </widget>
                     </grid>
                 </widget>
                 <spacer>
@@ -218,7 +266,7 @@
                     <property name="sizeHint">
                         <size>
                             <width>16</width>
-                            <height>149</height>
+                            <height>32</height>
                         </size>
                     </property>
                 </spacer>

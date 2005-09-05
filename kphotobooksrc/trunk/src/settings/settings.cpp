@@ -210,6 +210,12 @@ Settings::Settings(  )
   KConfigSkeleton::ItemInt  *itemImageViewerOverlayTranclucency;
   itemImageViewerOverlayTranclucency = new KConfigSkeleton::ItemInt( currentGroup(), QString::fromLatin1( "ViewerOverlayTranclucency" ), mImageViewerOverlayTranclucency, 75 );
   addItem( itemImageViewerOverlayTranclucency, QString::fromLatin1( "ImageViewerOverlayTranclucency" ) );
+  KConfigSkeleton::ItemBool  *itemImageViewerShowCounterOverlayBG;
+  itemImageViewerShowCounterOverlayBG = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerShowCounterOverlayBG" ), mImageViewerShowCounterOverlayBG, false );
+  addItem( itemImageViewerShowCounterOverlayBG, QString::fromLatin1( "ImageViewerShowCounterOverlayBG" ) );
+  KConfigSkeleton::ItemBool  *itemImageViewerShowInfoOverlayBG;
+  itemImageViewerShowInfoOverlayBG = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "ViewerShowInfoOverlayBG" ), mImageViewerShowInfoOverlayBG, true );
+  addItem( itemImageViewerShowInfoOverlayBG, QString::fromLatin1( "ImageViewerShowInfoOverlayBG" ) );
 
   setCurrentGroup( QString::fromLatin1( "FileSystem" ) );
 
