@@ -71,12 +71,12 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
     QWidget* mainPanel = new QWidget(this, "mainPanel");
     setMainWidget(mainPanel);
     QVBoxLayout* mainPanelLayout = new QVBoxLayout(mainPanel, 0, 5, "mainPanelLayout");
-    mainPanelLayout->setAutoAdd(true);
 
     // parent
     if (mode == MODE_CREATE_TAG && parentNode) {
         // newTagGroup
         QGroupBox* parentTagGroup = new QGroupBox(i18n("Parent tag"), mainPanel, "parentTagGroup");
+        mainPanelLayout->add(parentTagGroup);
         QGridLayout* parentTagGroupLayout = new QGridLayout(parentTagGroup, 5, 3, 20, 5, "parentTagGroupLayout");
 
         parentTagGroupLayout->setRowSpacing(0, 10);
@@ -140,6 +140,7 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
 
     // newTagGroup
     QGroupBox* newTagGroup = new QGroupBox(mode == MODE_CREATE_TAG ? i18n("New tag") : i18n("Edit tag"), mainPanel, "newTagGroup");
+    mainPanelLayout->add(newTagGroup);
     QGridLayout* newTagGroupLayout = new QGridLayout(newTagGroup, 5, 3, 20, 5, "newTagGroupLayout");
 
     newTagGroupLayout->setRowSpacing(0, 10);
@@ -223,8 +224,7 @@ DialogManageTag::DialogManageTag(QWidget *parent, Mode mode, TagTreeNode* parent
     QWhatsThis::add(m_chkSecret, secretWhatsThis);
 
     // spacer
-    QWidget* spacer = new QWidget(mainPanel, "spacer");
-    spacer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    mainPanelLayout->addStretch(1);
 
     if (mode == MODE_EDIT_TAG) {
         // set the texts
@@ -258,20 +258,20 @@ QString DialogManageTag::tagName() const
 {
     return m_nameLineEdit->text();
 }
-    
+
 
 QString DialogManageTag::tagComment() const
 {
     return m_commentLineEdit->text();
 }
-    
+
 
 QString DialogManageTag::tagIcon() const
 {
     return m_iconLineEdit->text();
 }
-    
-    
+
+
 bool DialogManageTag::tagSecret() const
 {
     return m_chkSecret->isChecked();

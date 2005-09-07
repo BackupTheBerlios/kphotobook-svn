@@ -176,11 +176,12 @@ QWidget* DialogDateTimeFilter::buildSinglePanel()
 {
     m_singlePanel = new QWidget(this, "singlePanel");
     QVBoxLayout* singlePanelLayout = new QVBoxLayout(m_singlePanel, 5, 5, "singlePanelLayout");
-    singlePanelLayout->setAutoAdd(true);
 
     m_timeRuler = new TimeRuler(m_singlePanel);
+    singlePanelLayout->add(m_timeRuler);
     connect(m_timeRuler, SIGNAL(selectionChanged(int, int)), this, SLOT(slotDateSelectionChanged(int, int)));
     m_dateTable = new KDatePicker(m_singlePanel);
+    singlePanelLayout->add(m_dateTable);
     connect(m_dateTable, SIGNAL(dateChanged(QDate)), m_timeRuler, SLOT(slotSetSelected(const QDate&, bool)));
 
     return m_singlePanel;
@@ -191,18 +192,19 @@ QWidget* DialogDateTimeFilter::buildRangePanel()
 {
     m_rangePanel = new QWidget(this, "rangePanel");
     QVBoxLayout* rangePanelLayout = new QVBoxLayout(m_rangePanel, 0, 5, "rangePanelLayout");
-    rangePanelLayout->setAutoAdd(true);
     rangePanelLayout->setMargin(10);
 
     // from datetime
     QGroupBox* m_fromDateTimeGroup = new QGroupBox(i18n("From"), m_rangePanel, "m_fromDateTimeGroup");
     m_fromDateTimeGroup->setColumns(1);
+    rangePanelLayout->add(m_fromDateTimeGroup);
     m_fromDateTime = new DateTimeWidget(m_fromDateTimeGroup);
     connect(m_fromDateTime, SIGNAL(dateTimeValid(bool)), this, SLOT(slotValidate()));
 
     // to datetime
     QGroupBox* m_toDateTimeGroup = new QGroupBox(i18n("To"), m_rangePanel, "m_toDateTimeGroup");
     m_toDateTimeGroup->setColumns(1);
+    rangePanelLayout->add(m_toDateTimeGroup);
     m_toDateTime = new DateTimeWidget(m_toDateTimeGroup);
     connect(m_toDateTime, SIGNAL(dateTimeValid(bool)), this, SLOT(slotValidate()));
 
@@ -214,16 +216,17 @@ QWidget* DialogDateTimeFilter::buildPatternPanel()
 {
     m_patternPanel = new QWidget(this, "patternPanel");
     QVBoxLayout* patternPanelLayout = new QVBoxLayout(m_patternPanel, 0, 5, "patternPanelLayout");
-    patternPanelLayout->setAutoAdd(true);
     patternPanelLayout->setMargin(10);
 
     QGroupBox* patternFieldGroup = new QGroupBox(i18n("Pattern"), m_patternPanel, "patternFieldGroup");
     patternFieldGroup->setColumns(1);
+    patternPanelLayout->add(patternFieldGroup);
     m_pattern = new QLineEdit(patternFieldGroup, "m_pattern");
     m_pattern->setFocus();
     connect(m_pattern, SIGNAL(textChanged(const QString&)), this, SLOT(slotValidate()));
 
     QGroupBox* patternUsageGroup = new QGroupBox(i18n("Usage"), m_patternPanel, "patternUsageGroup");
+    patternPanelLayout->add(patternUsageGroup);
     patternUsageGroup->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     patternUsageGroup->setColumns(1);
 

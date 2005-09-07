@@ -44,36 +44,38 @@ DialogAddSourceDir::DialogAddSourceDir(QWidget* parent, const char* name) :
     QWidget* mainPanel = new QWidget(this, "mainPanel");
     setMainWidget(mainPanel);
     QVBoxLayout* mainPanelLayout = new QVBoxLayout(mainPanel, 0, 5, "mainPanelLayout");
-    mainPanelLayout->setAutoAdd(true);
 
     // append the directory panel
     QWidget* dirPanel = new QWidget(mainPanel, "dirPanel");
+    mainPanelLayout->add(dirPanel);
     QHBoxLayout* dirLayout = new QHBoxLayout(dirPanel, 0, 5, "dirPanelLayout");
-    dirLayout->setAutoAdd(true);
 
-    new QLabel(i18n("Folder"), dirPanel, "directoryLabel");
+    QLabel* directoryLabel = new QLabel(i18n("Folder"), dirPanel, "directoryLabel");
+    dirLayout->add(directoryLabel);
     QWhatsThis::add(dirPanel, i18n("<b>Folder</b><p>Enter the path to the folder you want to add to the <i>KPhotoBook</i> database.</p>"));
 
     m_currentDirectoryLineEdit = new KLineEdit(dirPanel, "dirLineEdit");
     m_currentDirectoryLineEdit->setMinimumWidth(300);
     m_currentDirectoryLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    dirLayout->add(m_currentDirectoryLineEdit);
 
     QObject::connect(m_currentDirectoryLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 
     QIconSet folderIconSet = KGlobal::iconLoader()->loadIconSet("folder", KIcon::Small, 24, false);
     QPushButton* dirButton = new QPushButton(folderIconSet, 0, dirPanel, "dirButton");
     dirButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    dirLayout->add(dirButton);
 
     QObject::connect(dirButton, SIGNAL(clicked()), this, SLOT(slotDirectoryButtonClicked()));
 
     // add checkbox
     m_recursiveCheckBox = new QCheckBox(i18n("Add folders recursively."), mainPanel, "recursiveCheckBox");
     m_recursiveCheckBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    mainPanelLayout->add(m_recursiveCheckBox);
     QWhatsThis::add(m_recursiveCheckBox, i18n("<b>Add folders recursively</b><p>If enabled, <i>KPhotoBook</i> will add the folder recursively, meaning that sub folders will be added to the database as well, while not following symbolic links to avoid an infinite loop.</p>"));
 
     // spacer
-    QWidget* spacer = new QWidget(mainPanel, "spacer");
-    spacer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    mainPanelLayout->addStretch(1);
 
     // set the directory
     m_currentDirectoryLineEdit->setText(Settings::fileSystemLastAddedSourcedir());

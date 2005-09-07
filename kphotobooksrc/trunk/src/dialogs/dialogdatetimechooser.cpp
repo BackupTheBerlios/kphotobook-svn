@@ -43,22 +43,21 @@ DialogDateTimeChooser::DialogDateTimeChooser(QWidget* parent, const char* name, 
     dateTimeWidget(0)
 {
     tracer->invoked(__func__);
-    
+
     this->setButtonText(KDialogBase::Default, i18n("Clear"));
     this->setButtonTip(KDialogBase::Default, i18n("Clears the entered date"));
-    
+
     QWidget* mainPanel = new QWidget(this, "dirPanel");
     QVBoxLayout* mainPanelLayout = new QVBoxLayout(mainPanel, 0, 5, "mainPanelLayout");
-    mainPanelLayout->setAutoAdd(true);
-    
+
     dateTimeWidget = new DateTimeWidget(mainPanel, dateTime);
+    mainPanelLayout->add(dateTimeWidget);
     connect(this, SIGNAL(defaultClicked()), dateTimeWidget, SLOT(slotClear()));
     connect(dateTimeWidget, SIGNAL(dateTimeValid(bool)), this, SLOT(enableButtonOK(bool)));
-    
+
     // spacer
-    QWidget* spacer = new QWidget(mainPanel, "spacer");
-    spacer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    
+    mainPanelLayout->addStretch(1);
+
     this->setMainWidget(mainPanel);
 }
 

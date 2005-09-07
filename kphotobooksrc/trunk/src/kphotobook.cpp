@@ -1445,10 +1445,10 @@ void KPhotoBook::setupToolWindowTagTree()
 {
     QWidget* tagTreePanel = new QWidget(this, "tagTreePanel");
     QVBoxLayout* tagTreePanelLayout = new QVBoxLayout(tagTreePanel, 0, 0, "tagTreePanelLayout");
-    tagTreePanelLayout->setAutoAdd(true);
 
     m_tagTreeToolBar = new KToolBar(tagTreePanel, "tagTreeToolBar", true, true);
     m_tagTreeToolBar->setIconSize(Settings::tagTreeToolBarIconSize());
+    tagTreePanelLayout->add(m_tagTreeToolBar);
 
     m_actions->m_addMaintag->plug(m_tagTreeToolBar);
 
@@ -1472,6 +1472,7 @@ void KPhotoBook::setupToolWindowTagTree()
     m_actions->m_toggleLockUnlockTagging->plug(m_tagTreeToolBar);
 
     m_tagTree = new TagTree(tagTreePanel, this, "tagtree");
+    tagTreePanelLayout->add(m_tagTree);
 
 
     // set the icon
@@ -1492,10 +1493,10 @@ void KPhotoBook::setupToolWindowSourceDirTree()
     // create sourcedirtree toolwindow
     QWidget* sourceDirTreePanel = new QWidget(this, "sourceDirTreePanel");
     QVBoxLayout* sourceDirTreePanelLayout = new QVBoxLayout(sourceDirTreePanel, 0, 0, "sourceDirTreePanelLayout");
-    sourceDirTreePanelLayout->setAutoAdd(true);
 
     m_sourceDirTreeToolBar = new KToolBar(sourceDirTreePanel, "sourceDirTreeToolBar", true, true);
     m_sourceDirTreeToolBar->setIconSize(Settings::sourceDirTreeToolBarIconSize());
+    sourceDirTreePanelLayout->add(m_sourceDirTreeToolBar);
 
     m_actions->m_addFolder->plug(m_sourceDirTreeToolBar);
 
@@ -1515,6 +1516,7 @@ void KPhotoBook::setupToolWindowSourceDirTree()
     m_actions->m_invertAllFolderSelection->plug(m_sourceDirTreeToolBar);
 
     m_sourcedirTree = new SourceDirTree(sourceDirTreePanel, this, "sourcedirTree");
+    sourceDirTreePanelLayout->add(m_sourcedirTree);
 
     // set the icon
     QIconSet iconSet = KGlobal::iconLoader()->loadIconSet(Constants::ICON_SOURCEDIR, KIcon::Small, 16, true);

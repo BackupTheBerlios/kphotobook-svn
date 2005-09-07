@@ -45,10 +45,10 @@ KPhotoBookView::KPhotoBookView(QWidget *parent) :
 
     // main panel
     QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 0, "mainLayout");
-    mainLayout->setAutoAdd(true);
 
     // file preview
     m_fileView = new KFileIconView(this, "fileIconView");
+    mainLayout->add(m_fileView);
     if (Settings::imagePreviewSelectionMode() == Settings::EnumImagePreviewSelectionMode::Extended) {
         m_fileView->setSelectionMode(KFile::Extended);
     } else {
@@ -57,6 +57,7 @@ KPhotoBookView::KPhotoBookView(QWidget *parent) :
 
     // image viewer
     m_dlgImageViewer = new DialogImageViewer(this, m_fileView);
+    mainLayout->add(m_dlgImageViewer);
 
     // rest of fileview
     m_fileView->setResizeMode(KFileIconView::Adjust);

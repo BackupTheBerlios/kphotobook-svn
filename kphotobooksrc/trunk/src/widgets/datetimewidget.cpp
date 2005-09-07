@@ -122,68 +122,6 @@ void DateTimeWidget::initUI(const QDateTime& dateTime)
     if (dateTime.isValid() && dateTime.time().isValid()) {
         m_timeLine->setText(m_locale->formatTime(dateTime.time(), true));
     }
-
-
-
-    /*
-    QVBoxLayout* mainLayout = new QVBoxLayout(this, 0, 5, "mainLayout");
-    mainLayout->setAutoAdd(true);
-
-    // init Date & Time widgets
-    QWidget* dateTimePanel = new QWidget(this, "dateTimePanel");
-    QHBoxLayout* dateTimePanelLayout = new QHBoxLayout(dateTimePanel, 0, 5, "dateTimePanelLayout");
-    dateTimePanelLayout->setAutoAdd(true);
-
-    // clear button
-    QWidget* clearPanel = new QWidget(dateTimePanel, "clearPanel");
-    QVBoxLayout* clearPanelLayout = new QVBoxLayout(clearPanel, 0, 5, "clearPanelLayout");
-    clearPanelLayout->setAutoAdd(true);
-
-    new QLabel("", clearPanel, "spacerLabel1");
-    QIconSet clearIcon = KGlobal::iconLoader()->loadIconSet("locationbar_erase", KIcon::Toolbar);
-    KPushButton* clearButton = new KPushButton(clearIcon, QString::null, clearPanel, "clearButton");
-    clearButton->setFlat(true);
-    QToolTip::add(clearButton, i18n("Clears the enterd date and time"));
-    connect(clearButton, SIGNAL(clicked()), this, SLOT(slotClear()));
-
-    // date label & date line
-    QWidget* datePanel = new QWidget(dateTimePanel, "datePanel");
-    QVBoxLayout* datePanelLayout = new QVBoxLayout(datePanel, 0, 5, "datePanelLayout");
-    datePanelLayout->setAutoAdd(true);
-
-    new QLabel(i18n("Date"), datePanel, "dateLabel");
-    m_dateLine = new KLineEdit("", datePanel);
-    m_dateLine->setInputMask(getDateMask(m_locale->dateFormatShort()));
-    connect(m_dateLine, SIGNAL(textChanged(const QString&)), this, SLOT(slotDateChanged(const QString&)));
-    if (dateTime.isValid()) {
-        m_dateLine->setText(m_locale->formatDate(dateTime.date(), true));
-    }
-
-    // date picker button
-    QWidget* datePickerPanel = new QWidget(dateTimePanel, "datePickerPanel");
-    QVBoxLayout* datePickerPanelLayout = new QVBoxLayout(datePickerPanel, 0, 5, "datePickerPanelLayout");
-    datePickerPanelLayout->setAutoAdd(true);
-
-    new QLabel("", datePickerPanel, "spacerLabel2");
-    QIconSet dateIcon = KGlobal::iconLoader()->loadIconSet("date", KIcon::Toolbar);
-    KPushButton* datePickerButton = new KPushButton(dateIcon, QString::null, datePickerPanel, "datePickerButton");
-    datePickerButton->setFlat(true);
-    QToolTip::add(datePickerButton, i18n("Opens the datepicker"));
-    connect(datePickerButton, SIGNAL(clicked()), this, SLOT(slotPickDate()));
-
-    // time label & time line
-    QWidget* timePanel = new QWidget(dateTimePanel, "timePanel");
-    QVBoxLayout* timePanelLayout = new QVBoxLayout(timePanel, 0, 5, "timePanelLayout");
-    timePanelLayout->setAutoAdd(true);
-
-    new QLabel(i18n("Time"), timePanel, "timeLabel");
-    m_timeLine = new KLineEdit("", timePanel);
-    m_timeLine->setInputMask(getTimeMask(m_locale->timeFormat()));
-    connect(m_timeLine, SIGNAL(textChanged(const QString&)), this, SLOT(slotTimeChanged(const QString&)));
-    if (dateTime.isValid() && dateTime.time().isValid()) {
-        m_timeLine->setText(m_locale->formatTime(dateTime.time(), true));
-    }
-    */
 }
 
 
