@@ -65,7 +65,7 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, Da
         m_tabWidget->showPage(m_rangePanel);
         return;
     }
-    
+
     switch(m_data->getState()) {
         case DateTimeFilterData::INVALID: {
             tracer->debug(__func__, "invalid data given");
@@ -94,7 +94,7 @@ DialogDateTimeFilter::DialogDateTimeFilter(QWidget* parent, const char* name, Da
                     }
                 }
             }
-            
+
             if ((m_data->getState() & DateTimeFilterData::TO_DATE_SET) == DateTimeFilterData::TO_DATE_SET) {
                 tracer->debug(__func__, "to datetime set");
                 // set the to datetime
@@ -148,21 +148,22 @@ void DialogDateTimeFilter::initUI()
     connect(this, SIGNAL(defaultClicked()), this, SLOT(slotClear()));
 
     QWidget* mainPanel = new QWidget(this, "mainPanel");
-    (new QVBoxLayout(mainPanel, 0, 5, "mainPanelLayout"))->setAutoAdd(true);
+    QVBoxLayout* mainPanelLayout = new QVBoxLayout(mainPanel, 0, 5, "mainPanelLayout");
 
     m_tabWidget = new KTabWidget(mainPanel, "tabWidget");
     m_tabWidget->addTab(buildSinglePanel(), i18n("Single"));
     m_tabWidget->addTab(buildRangePanel(), i18n("Range"));
     m_tabWidget->addTab(buildPatternPanel(), i18n("Pattern"));
+    mainPanelLayout->addWidget(m_tabWidget);
     connect(m_tabWidget, SIGNAL(currentChanged(QWidget*)), this, SLOT(slotValidate()));
 
     // no date set - checkbox
     m_noDateSet = new QCheckBox(i18n("No date set"), mainPanel);
+    mainPanelLayout->addWidget(m_noDateSet);
     connect (m_noDateSet, SIGNAL(toggled(bool)), this, SLOT(slotNoDateSetToggled(bool)));
 
     // spacer
-    QWidget* spacer = new QWidget(mainPanel, "spacer");
-    spacer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    mainPanelLayout->addStretch(1);
 
     ///@todo remove disabling singleDate and pattern as soon as implemented
     m_singlePanel->setEnabled(false);

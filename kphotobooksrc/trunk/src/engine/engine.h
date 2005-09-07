@@ -40,7 +40,7 @@ template<class type> class QPtrList;
 /**
  * The engine managing all folders, tags and files/images.
  *
- * CVS-ID $Id: engine.h 499 2005-09-02 11:48:32Z starcube $
+ * CVS-ID $Id$
  */
 class Engine : public QObject
 {
@@ -170,7 +170,6 @@ class Engine : public QObject
 
     signals:
         void newTagNode(TagNode*);
-        void newFolder(Folder*);
 
     private:
         /**

@@ -347,6 +347,7 @@ void SourceDirTree::slotLoadSettings()
 
 void SourceDirTree::slotAddFolder(Folder* folder)
 {
+    tracer->invoked(__func__);
     if (!folder) {
         tracer->swarning(__func__) << "called with 0!" << endl;
         return;

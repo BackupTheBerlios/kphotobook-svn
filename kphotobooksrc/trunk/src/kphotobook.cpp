@@ -178,6 +178,8 @@ KPhotoBook::KPhotoBook(KSplashScreen* splash, KMdi::MdiMode mdiMode) :
     m_tagTree->addTagNodes(m_engine->tagForest());
     connect(m_engine, SIGNAL(newTagNode(TagNode*)), m_tagTree, SLOT(slotAddTagNode(TagNode*)));
 
+    connect(m_engine->fileSystemScanner(), SIGNAL(newFolder(Folder*)), m_sourcedirTree, SLOT(slotAddFolder(Folder*)));
+
     // apply the saved mainwindow settings, if any, and ask the mainwindow
     // to automatically save settings if changed: window size, toolbar
     // position, icon size, etc.
@@ -317,7 +319,7 @@ void KPhotoBook::load(QFileInfo& fileinfo)
         // add the sourcedirectories to the tagtree
         m_sourcedirTree->clear();
         m_sourcedirTree->addSourceDirs(m_engine->sourceDirs());
-        connect(m_engine, SIGNAL(newFolder(Folder*)), m_sourcedirTree, SLOT(slotAddFolder(Folder*)));
+        connect(m_engine->fileSystemScanner(), SIGNAL(newFolder(Folder*)), m_sourcedirTree, SLOT(slotAddFolder(Folder*)));
 
         // restore the tree states
         loadTreeState();

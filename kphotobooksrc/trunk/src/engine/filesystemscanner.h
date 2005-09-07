@@ -27,6 +27,7 @@ class File;
 class Folder;
 class Tracer;
 
+#include <qobject.h>
 #include <qstring.h>
 class QDateTime;
 class QDir;
@@ -39,8 +40,10 @@ template<class type> class QPtrList;
  *
  * CVS-ID $Id: engine.h 315 2005-05-08 17:27:45Z starcube $
  */
-class FileSystemScanner
+class FileSystemScanner : public QObject
 {
+    Q_OBJECT
+
     private:
         static Tracer* tracer;
 
@@ -79,6 +82,9 @@ class FileSystemScanner
          * appropriate message is thrown.
          */
         void testIfFolderIsAddable(QDir* folder, bool recursive) const throw(EngineException*);
+
+    signals:
+        void newFolder(Folder*);
 
     private:
         void rescanSourceFolders(QPtrList<Folder>* sourceDirs, bool forceEXIF);

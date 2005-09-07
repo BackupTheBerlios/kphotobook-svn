@@ -111,7 +111,7 @@ Folder* FileSystemScanner::addSourceFolder(QDir* folder, bool recursive) throw(E
         addSourceFolders(sourceFolder);
     }
 
-    emit(m_engine->newFolder(sourceFolder));
+    emit(newFolder(sourceFolder));
 
     return sourceFolder;
 }
