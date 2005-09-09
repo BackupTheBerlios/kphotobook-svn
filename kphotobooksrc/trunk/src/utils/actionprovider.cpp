@@ -55,7 +55,7 @@ void ActionProvider::addRecentFile(KURL url)
 {
     m_recentFiles->addURL(url);
 }
-        
+
 
 void ActionProvider::saveRecentFiles() const
 {
@@ -135,6 +135,9 @@ void ActionProvider::setupEngineActions()
 {
     m_rescanFilesystem = new KAction(i18n("&Rescan filesystem"), Constants::ICON_RESCAN_FILESYSTEM, 0, m_kphotobook, SLOT(slotRescanFilesystem()), actionCollection(), "rescanFilesystem");
     m_rescanFilesystem->setWhatsThis(i18n("This may, for example, be needed after having added a new folder to a folder which is already part of the current database. New folders and files will be added to the database, removed items will be prompted for user input."));
+
+    m_rescanFilesystemWithExif = new KAction(i18n("&Rescan filesystem with EXIF"), Constants::ICON_RESCAN_FILESYSTEM_WITH_EXIF, 0, m_kphotobook, SLOT(slotRescanFilesystemWithExif()), actionCollection(), "rescanFilesystemWithExif");
+    m_rescanFilesystemWithExif->setWhatsThis(i18n("This may, for example, be needed after having added a new folder to a folder which is already part of the current database. New folders and files will be added to the database, removed items will be prompted for user input. The EXIF data of all images are read ageain and stored in the database."));
 }
 
 
@@ -153,7 +156,7 @@ void ActionProvider::setupViewActions()
     refreshViewShortCut.append(KStdAccel::shortcut(KStdAccel::Reload));
     refreshViewShortCut.append(KKey("CTRL+r"));
     m_refreshView->setShortcut(refreshViewShortCut);
-    
+
     m_increasePreviewSize = new KToolBarPopupAction (i18n("&Increase Previewsize"), Constants::ICON_INCREASE_PREVIEWSIZE, KStdAccel::shortcut(KStdAccel::ZoomIn), m_kphotobook, SLOT(slotIncreasePreviewSize()), actionCollection(), "increasePreviewSize");
     m_increasePreviewSize->setWhatsThis(i18n("Make the preview size in the thumbnail window bigger."));// Click and hold down the mouse button for a menu with a set of available preview sizes."));
     QObject::connect(m_increasePreviewSize->popupMenu(), SIGNAL(activated(int)), m_kphotobook, SLOT(slotChangePreviewSizeActivated(int)));

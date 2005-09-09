@@ -44,6 +44,7 @@ const QString Constants::ICON_EDIT_SOURCEDIR = QString("kpb_folder_edit");
 const QString Constants::ICON_REMOVE_SOURCEDIR = QString("kpb_folder_remove");
 
 const QString Constants::ICON_RESCAN_FILESYSTEM = QString("kpb_filesystem_reload");
+const QString Constants::ICON_RESCAN_FILESYSTEM_WITH_EXIF = QString("kpb_filesystem_reload");
 
 const QString Constants::ICON_AUTOREFRESH_VIEW = QString("kpb_view_autorefresh");
 const QString Constants::ICON_REFRESH_VIEW = QString("kpb_view_refresh");

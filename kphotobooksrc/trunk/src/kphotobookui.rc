@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<gui name="kphotobook" version="22">
+<gui name="kphotobook" version="23">
 
 <MenuBar>
     <Menu name="file">
@@ -14,6 +14,7 @@
         </Menu>
         <Separator/>
         <Action name="rescanFilesystem" />
+        <Action name="rescanFilesystemWithExif" />
     </Menu>
     <Menu name="manage">
         <text>&amp;Manage</text>
@@ -53,6 +54,7 @@
 <ToolBar name="mainToolBar" fullWidth="false" newline="false" >
   <text>file</text>
   <Action name="rescanFilesystem" />
+  <Action name="rescanFilesystemWithExif" />
   <Action name="toggleLockUnlockTagging" />
 </ToolBar>
 

@@ -43,7 +43,7 @@ class ActionProvider
 {
     private:
         static Tracer* tracer;
-    
+
     public:
         /**
          * Instantiates this ActionProvider and sets up all actions.
@@ -55,9 +55,9 @@ class ActionProvider
         }
 
         void addRecentFile(KURL url);
-        
+
         void saveRecentFiles() const;
-        
+
     private:
         void setupFileActions();
         void setupSettingActions();
@@ -71,7 +71,7 @@ class ActionProvider
         void setupToolviewActions();
 
         inline KActionCollection* actionCollection();
-        
+
     public:
         // file actions
         KAction* m_new;
@@ -100,6 +100,7 @@ class ActionProvider
 
         // engine actions
         KAction* m_rescanFilesystem;
+        KAction* m_rescanFilesystemWithExif;
 
         // view actions
         KToggleAction* m_autoRefreshView;
@@ -116,7 +117,7 @@ class ActionProvider
         KAction* m_invertFolderSelection;
         KAction* m_includeAllFolders;
         KAction* m_excludeAllFolders;
-        KAction* m_invertAllFolderSelection;    
+        KAction* m_invertAllFolderSelection;
         KAction* m_expandFolder;
         KAction* m_collapseFolder;
         KAction* m_expandAllFolders;
@@ -125,7 +126,7 @@ class ActionProvider
         // tag actions
         KAction* m_addMaintag;
         KAction* m_createSubtag;
-        KAction* m_editTag;    
+        KAction* m_editTag;
         KAction* m_deleteTag;
         KToggleAction* m_toggleLockUnlockTagging;
         KToggleAction* m_andifyTags;
@@ -150,7 +151,7 @@ class ActionProvider
         KToggleAction* m_viewerShowImageCounter;
         KToggleAction* m_viewerShowImageInfos;
         KAction* m_viewerQuit;
-        
+
     private:
         KPhotoBook* m_kphotobook;
 };

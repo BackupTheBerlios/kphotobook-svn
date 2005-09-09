@@ -202,6 +202,7 @@ class KPhotoBook : public KMdiMainFrm
         void slotToggleLockUnlockTagging();
 
         void slotRescanFilesystem();
+        void slotRescanFilesystemWithExif();
 
         void slotAutoRefreshView();
         void slotRefreshView();

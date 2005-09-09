@@ -35,7 +35,7 @@ template<class type> class QPtrList;
 
 
 /**
- * The FileSystemScanner scans all SourceFolders for files to be handled by kphotobook.
+ * The FileSystemScanner scans all folders for files to be handled by kphotobook.
  * Found files are added to the engine and its EXIF data is stored in the database too.
  *
  * CVS-ID $Id: engine.h 315 2005-05-08 17:27:45Z starcube $
@@ -53,43 +53,58 @@ class FileSystemScanner : public QObject
         ~FileSystemScanner();
 
         /**
-         * Rescans all sourcefolders for removed/added folders and files.
+         * Only checks if all folders currently in the database still exists.
+         * New folders and files are not found!
+         * The EXIF data of already added files is not reread!
+         */
+        void rescanFast();
+
+        /**
+         * Rescans all folders for removed/added folders and files.
          * If new files are found their EXIf data is read and stored in the database.
          * The EXIF data of already added files is not reread!
          */
         void rescan();
 
         /**
-         * Rescans all sourcefolders for removed/added folders and files.
+         * Rescans all folders for removed/added folders and files.
          * The EXIF data of all files (already added or new) is read and stored in the database.
          */
         void rescanWithEXIF();
 
         /**
-        * Adds the specified sourcefolder and all images in it to the engine.
-        * If recursive is true, all folders below the given folder are added too.
-        * If the sourcefolder cannot be added, an EngineException is thrown.
-        */
-        Folder* addSourceFolder(QDir* folder, bool recursive) throw(EngineException*);
+         * Adds the specified folder and all images in it to the engine.
+         * If recursive is true, all folders below the given folder are added too.
+         * If the folder cannot be added, an EngineException is thrown.
+         */
+        Folder* addFolder(QDir* dir, bool recursive) throw(EngineException*);
 
         /**
-        * Removes the specified sourceFolder and deletes all files and associations below this sourceFolder.
-        */
-        void removeSourceFolder(Folder* sourceFolder);
+         * Removes the specified folder and deletes all files and associations below this folder.
+         */
+        void removeFolder(Folder* folder);
 
         /**
          * Tests if the given folder is addable. If it is not addable an exception with an
          * appropriate message is thrown.
          */
-        void testIfFolderIsAddable(QDir* folder, bool recursive) const throw(EngineException*);
+        void testIfFolderIsAddable(QDir* dir, bool recursive) const throw(EngineException*);
+
+    public slots:
+        void slotCancel();
 
     signals:
         void newFolder(Folder*);
+        void progress_scanningFolder(const QString& foldername);
+        void progress_folderNotFound(const QString& foldername);
+        void progress_loopDetected(const QString& foundFolder, const QString& alreadyAddedFolder);
+        void progress_folderAlreadyAdded(const QString& folderName);
+        void progress_problemOccured(const QString& description);
 
     private:
-        void rescanSourceFolders(QPtrList<Folder>* sourceDirs, bool forceEXIF);
-        void rescanSourceFolder(Folder* sourceDir, bool forceEXIF);
-        void addSourceFolders(Folder* parent);
+        void rescanFolders(QPtrList<Folder>* folders, bool forceEXIF, bool fast = false);
+        void rescanFolder(Folder* folder, bool forceEXIF);
+        void addFolders(Folder* parent);
         void readEXIF(File* file);
         QDateTime readExifDateTime(const QString& data);
 
@@ -109,10 +124,11 @@ class FileSystemScanner : public QObject
 
         /**
          * This list is used for (pre)detecting loops while adding folders recursively.
-         * The list is cleared always before the sourcefolders are rescanned.
+         * The list is cleared always before the folders are rescanned.
          */
         QPtrList<QString>* m_loopDetectionHelper;
 
+        bool m_cancel;
 };
 
 #endif

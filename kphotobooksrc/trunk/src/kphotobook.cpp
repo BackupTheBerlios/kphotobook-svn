@@ -308,6 +308,7 @@ void KPhotoBook::load(QFileInfo& fileinfo)
         //
         // update the view
         //
+        engine()->fileSystemScanner()->rescanFast();
 
         //first clear the tagTree, otherwise we get doubles on loading a new .kpb
         m_tagTree->clear();
@@ -1035,6 +1036,23 @@ void KPhotoBook::slotRescanFilesystem()
 }
 
 
+void KPhotoBook::slotRescanFilesystemWithExif()
+{
+    tracer->invoked(__func__);
+
+    m_engine->fileSystemScanner()->rescanWithEXIF();
+
+    // add the folder to the tagtree
+    m_sourcedirTree->clear();
+    m_sourcedirTree->addSourceDirs(m_engine->sourceDirs());
+
+    // add the files to the view
+    m_view->updateFiles();
+
+    updateState();
+}
+
+
 void KPhotoBook::slotAutoRefreshView()
 {
     Settings::setImagePreviewAutoRefresh(!Settings::imagePreviewAutoRefresh());
@@ -1561,7 +1579,7 @@ void KPhotoBook::updateStatusBar()
 
 Folder* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*)
 {
-    Folder* newSourceDir = m_engine->fileSystemScanner()->addSourceFolder(sourceDir, recursive);
+    Folder* newSourceDir = m_engine->fileSystemScanner()->addFolder(sourceDir, recursive);
 
     updateState();
     return newSourceDir;
@@ -1570,7 +1588,7 @@ Folder* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(EngineEx
 
 void KPhotoBook::removeSourceDir(Folder* sourceDir)
 {
-    m_engine->fileSystemScanner()->removeSourceFolder(sourceDir);
+    m_engine->fileSystemScanner()->removeFolder(sourceDir);
 
     updateState();
 }

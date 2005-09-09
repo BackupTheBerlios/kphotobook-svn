@@ -50,6 +50,7 @@ class Constants
         static const QString ICON_REMOVE_SOURCEDIR;
 
         static const QString ICON_RESCAN_FILESYSTEM;
+        static const QString ICON_RESCAN_FILESYSTEM_WITH_EXIF;
 
         static const QString ICON_AUTOREFRESH_VIEW;
         static const QString ICON_REFRESH_VIEW;

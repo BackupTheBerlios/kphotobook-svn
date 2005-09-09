@@ -32,6 +32,7 @@
 #include "../settings/settings.h"
 #include "../tracer/tracer.h"
 
+#include <kapplication.h>
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <klocale.h>
@@ -57,9 +58,9 @@ Tracer* FileSystemScanner::tracer = Tracer::getInstance("kde.kphotobook.engine",
 
 FileSystemScanner::FileSystemScanner(Engine* engine) :
         m_engine(engine),
-        m_loopDetectionHelper(0)
-{
-}
+        m_loopDetectionHelper(0),
+        m_cancel(false)
+{}
 
 
 FileSystemScanner::~FileSystemScanner()
@@ -68,11 +69,21 @@ FileSystemScanner::~FileSystemScanner()
 }
 
 
+void FileSystemScanner::rescanFast()
+{
+    tracer->sinvoked(__func__) << "scanning fast..." << endl;
+
+    rescanFolders(m_engine->m_sourceDirs, false, true);
+    m_cancel = false;
+}
+
+
 void FileSystemScanner::rescan()
 {
     tracer->sinvoked(__func__) << "scanning..." << endl;
 
-    rescanSourceFolders(m_engine->m_sourceDirs, true);
+    rescanFolders(m_engine->m_sourceDirs, false);
+    m_cancel = false;
 }
 
 
@@ -80,97 +91,102 @@ void FileSystemScanner::rescanWithEXIF()
 {
     tracer->sinvoked(__func__) << "scanning with EXIF..." << endl;
 
-    rescanSourceFolders(m_engine->m_sourceDirs, true);
+    rescanFolders(m_engine->m_sourceDirs, true);
+    m_cancel = false;
 }
 
 
-Folder* FileSystemScanner::addSourceFolder(QDir* folder, bool recursive) throw(EngineException*)
+Folder* FileSystemScanner::addFolder(QDir* dir, bool recursive) throw(EngineException*)
 {
     // test if the given folder is addable
-    testIfFolderIsAddable(folder, recursive);
+    testIfFolderIsAddable(dir, recursive);
 
-    tracer->sdebug(__func__) << "adding folder: " << folder->absPath() << ", recursive: " << recursive << "..." << endl;
+    tracer->sdebug(__func__) << "adding folder: " << dir->absPath() << ", recursive: " << recursive << "..." << endl;
 
     m_engine->dirtyfy();
 
-    Folder* sourceFolder = new Folder(m_engine->m_nextSourceDirId++, folder, recursive);
-    sourceFolder->setFound(true);
-    m_engine->m_sourceDirs->append(sourceFolder);
-    m_engine->m_sourceDirDict->insert(sourceFolder->id(), sourceFolder);
+    Folder* folder = new Folder(m_engine->m_nextSourceDirId++, dir, recursive);
+    folder->setFound(true);
+    m_engine->m_sourceDirs->append(folder);
+    m_engine->m_sourceDirDict->insert(folder->id(), folder);
 
     // add all files in the folder
-    rescanSourceFolder(sourceFolder, false);
+    rescanFolder(folder, false);
+    if (m_cancel) {
+        m_cancel = false;
+        return folder;
+    }
 
     // add all folders below the given folder
     if (recursive) {
         delete m_loopDetectionHelper;
         m_loopDetectionHelper = new QPtrList<QString>;
         m_loopDetectionHelper->setAutoDelete(true);
-        m_loopDetectionHelper->append(new QString(sourceFolder->dir()->canonicalPath()));
+        m_loopDetectionHelper->append(new QString(folder->dir()->canonicalPath()));
 
-        addSourceFolders(sourceFolder);
+        addFolders(folder);
     }
 
-    emit(newFolder(sourceFolder));
+    emit(newFolder(folder));
 
-    return sourceFolder;
+    return folder;
 }
 
 
-void FileSystemScanner::removeSourceFolder(Folder* sourceFolder)
+void FileSystemScanner::removeFolder(Folder* folder)
 {
-    tracer->sdebug(__func__) << "removing sourceFolder: " << sourceFolder->dir()->absPath() << "..." << endl;
+    tracer->sdebug(__func__) << "removing folder: " << folder->dir()->absPath() << "..." << endl;
 
     m_engine->dirtyfy();
 
     // call this method recursively for each child
-    if (sourceFolder->children() && sourceFolder->children()->count()) {
+    if (folder->children() && folder->children()->count()) {
         // remove the subfolders
 
         // we have to work with a copy of the children list because the destructor of
-        // the sourceFolder is changing the sourcefolder-tree
-        QPtrList<Folder> temp(*sourceFolder->children());
+        // the folder is changing the folder-tree
+        QPtrList<Folder> temp(*folder->children());
 
         Folder* child;
         for ( child = temp.first(); child; child = temp.next() ) {
-            removeSourceFolder(child);
+            removeFolder(child);
         }
     }
 
     // remove the specified folder
-    m_engine->m_sourceDirs->remove(sourceFolder);
-    m_engine->m_sourceDirDict->remove(sourceFolder->id());
-    delete sourceFolder;
+    m_engine->m_sourceDirs->remove(folder);
+    m_engine->m_sourceDirDict->remove(folder->id());
+    delete folder;
 }
 
 
-void FileSystemScanner::testIfFolderIsAddable(QDir* folder, bool recursive) const throw(EngineException*)
+void FileSystemScanner::testIfFolderIsAddable(QDir* dir, bool recursive) const throw(EngineException*)
 {
-    tracer->sinvoked(__func__) << folder->absPath() << ", recursive: " << recursive << "..." << endl;
+    tracer->sinvoked(__func__) << dir->absPath() << ", recursive: " << recursive << "..." << endl;
 
     // test if the given folder is already added
-    Folder* sourceFolder;
-    for ( sourceFolder = m_engine->sourceDirs()->first(); sourceFolder; sourceFolder = m_engine->sourceDirs()->next() ) {
+    Folder* folder;
+    for (folder = m_engine->sourceDirs()->first(); folder; folder = m_engine->sourceDirs()->next() ) {
 
-        if (*(sourceFolder->dir()) == *folder) {
+        if (*(folder->dir()) == *dir) {
             QString detailMsg = QString(i18n("The folder you have chosen is already added to KPhotoBook.\n"
-                    "Folder: %1")).arg(sourceFolder->dir()->absPath());
+                    "Folder: %1")).arg(folder->dir()->absPath());
             throw new EngineException(
                     i18n("You cannot add the same folder more than once to KPhotoBook."),
                     detailMsg
             );
         }
 
-        QString sourceFolderPath = sourceFolder->dir()->absPath();
-        QString newFolderPath = folder->absPath();
+        QString folderPath = folder->dir()->absPath();
+        QString newFolderPath = dir->absPath();
 
-        if (sourceFolder->recursive()) {
+        if (folder->recursive()) {
             // test if the new folder is a subfolder of the current sourceFolder
-            if (newFolderPath.startsWith(sourceFolderPath)) {
-                QString detailMsg = QString(i18n("The folder you have chosen is a subfolder of a recursively added sourcefolder.\n"
-                        "Sourcefolder: %1\nNew folder: %2")).arg(sourceFolderPath).arg(newFolderPath);
+            if (newFolderPath.startsWith(folderPath)) {
+                QString detailMsg = QString(i18n("The folder you have chosen is a subfolder of a recursively added folder.\n"
+                        "Folder: %1\nNew folder: %2")).arg(folderPath).arg(newFolderPath);
                 throw new EngineException(
-                        i18n("You cannot add a folder which is a subfolder of an already recursively added sourcefolder because"
+                        i18n("You cannot add a folder which is a subfolder of an already recursively added folder because"
                         "the chosen folder is already added implicitely."),
                         detailMsg
                  );
@@ -178,12 +194,12 @@ void FileSystemScanner::testIfFolderIsAddable(QDir* folder, bool recursive) cons
         }
 
         if (recursive) {
-            // test if the current sourceFolder is a subfolder of the new folder
-            if (sourceFolderPath.startsWith(newFolderPath)) {
+            // test if the current folder is a subfolder of the new folder
+            if (folderPath.startsWith(newFolderPath)) {
                 QString detailMsg = QString(i18n("The folder you have chosen to add recursively is the parentfolder of at least "
-                        "one already added sourcefolders.\nSourcefolder: %1\nNew folder: %2")).arg(sourceFolderPath).arg(newFolderPath);
+                        "one already added folders.\nFolder: %1\nNew folder: %2")).arg(folderPath).arg(newFolderPath);
                 throw new EngineException(
-                        i18n("You cannot add the parentfolder of an already added sourcefolder recursively."),
+                        i18n("You cannot add the parentfolder of an already added folder recursively."),
                         detailMsg
                  );
             }
@@ -195,53 +211,80 @@ void FileSystemScanner::testIfFolderIsAddable(QDir* folder, bool recursive) cons
 
 
 //
+// public slots
+//
+void FileSystemScanner::slotCancel()
+{
+    m_cancel = true;
+}
+
+
+//
 // private methods
 //
-void FileSystemScanner::rescanSourceFolders(QPtrList<Folder>* sourceFolders, bool forceEXIF)
+void FileSystemScanner::rescanFolders(QPtrList<Folder>* folders, bool forceEXIF, bool fast)
 {
-    Folder* sourceFolder = 0;
-    for (sourceFolder = sourceFolders->first(); sourceFolder; sourceFolder = sourceFolders->next()) {
-        tracer->sdebug(__func__) << "rescanning sourcefolder: " << sourceFolder->id() << ": " << sourceFolder->dir()->absPath() << endl;
+    Folder* folder = 0;
+    for (folder = folders->first(); folder; folder = folders->next()) {
+        QString currentFolderPath = folder->dir()->absPath();
 
-        if (sourceFolder->dir()->exists()) {
+        tracer->sdebug(__func__) << "rescanning folder: " << folder->id() << ": " << currentFolderPath << endl;
+        emit(progress_scanningFolder(currentFolderPath));
 
-            sourceFolder->setFound(true);
+        if (folder->dir()->exists()) {
 
-            rescanSourceFolder(sourceFolder, forceEXIF);
+            folder->setFound(true);
 
-            if (sourceFolder->children() && sourceFolder->children()->count() > 0) {
-                rescanSourceFolders(sourceFolder->children(), forceEXIF);
+            if (!fast) {
+                rescanFolder(folder, forceEXIF);
+                if (m_cancel) {
+                    return;
+                }
             }
 
-            // scan the filesystem for new sourcefolders
-            if (sourceFolder->recursive()) {
+            if (folder->children() && folder->children()->count()) {
+                rescanFolders(folder->children(), forceEXIF, fast);
+            }
+
+            // scan the filesystem for new folders
+            if (!fast && folder->recursive()) {
                 delete m_loopDetectionHelper;
                 m_loopDetectionHelper = new QPtrList<QString>;
                 m_loopDetectionHelper->setAutoDelete(true);
-                m_loopDetectionHelper->append(new QString(sourceFolder->dir()->canonicalPath()));
+                m_loopDetectionHelper->append(new QString(folder->dir()->canonicalPath()));
 
-                addSourceFolders(sourceFolder);
+                addFolders(folder);
             }
         } else {
-            sourceFolder->setFound(false);
+            folder->setFound(false);
 
-            tracer->sdebug(__func__) << " sourcefolder: " << sourceFolder->id() << ": '" << sourceFolder->dir()->absPath() << "' not found" << endl;
+            tracer->sdebug(__func__) << "folder: " << folder->id() << ": '" << currentFolderPath << "' not found" << endl;
+            emit(progress_folderNotFound(currentFolderPath));
         }
     }
 }
 
 
-void FileSystemScanner::rescanSourceFolder(Folder* sourceFolder, bool forceEXIF)
+void FileSystemScanner::rescanFolder(Folder* folder, bool forceEXIF)
 {
-    tracer->sdebug(__func__) << "adding files in sourcefolder: " << sourceFolder->id() << ": " << sourceFolder->dir()->absPath() << endl;
+    // this method is called regularly while rescanning the filesystem
+    // before doing something here we process all outstanding events!
+    KApplication::kApplication()->processEvents();
+    if (m_cancel) {
+        return;
+    }
 
-    if (!sourceFolder->dir()->exists()) {
-        tracer->swarning(__func__) << "sourcefolder: " << sourceFolder->id() << ": " << sourceFolder->dir()->absPath()
+    QString currentFolderPath = folder->dir()->absPath();
+
+    tracer->sdebug(__func__) << "adding files in folder: " << folder->id() << ": " << currentFolderPath << endl;
+
+    if (!folder->dir()->exists()) {
+        tracer->swarning(__func__) << "folder: " << folder->id() << ": " << currentFolderPath
                 << " does no longer exist --> ignoring it!!!" << endl;
     }
 
-    // get a list with all files in the current sourcefolder
-    const QFileInfoList* filelist = sourceFolder->dir()->entryInfoList(QDir::Files);
+    // get a list with all files in the current folder
+    const QFileInfoList* filelist = folder->dir()->entryInfoList(QDir::Files);
     if (filelist) {
         QFileInfoListIterator iterator( *filelist );
         QFileInfo* fileInfo;
@@ -254,10 +297,10 @@ void FileSystemScanner::rescanSourceFolder(Folder* sourceFolder, bool forceEXIF)
                 if (!file) {
                     // the file is seen for the first time --> create it
                     tracer->sdebug(__func__) << "found new file to add: '" << fileInfo->absFilePath() << "'" << endl;
-                    file = new File(m_engine, sourceFolder, new QFileInfo(*fileInfo));
+                    file = new File(m_engine, folder, new QFileInfo(*fileInfo));
                     m_engine->dirtyfy();
 
-                    sourceFolder->appendFile(file);
+                    folder->appendFile(file);
                     m_engine->m_fileList->append(file);
                     m_engine->m_fileDict->insert(file->fileInfo()->absFilePath(), file);
 
@@ -276,9 +319,9 @@ void FileSystemScanner::rescanSourceFolder(Folder* sourceFolder, bool forceEXIF)
 }
 
 
-void FileSystemScanner::addSourceFolders(Folder* parent)
+void FileSystemScanner::addFolders(Folder* parent)
 {
-    tracer->sinvoked(__func__) << "with sourceFolder: " << parent->dir()->absPath() << endl;
+    tracer->sinvoked(__func__) << "with folder: " << parent->dir()->absPath() << endl;
 
     // get all folders in the current directory
     const QFileInfoList* subfolderlist = parent->dir()->entryInfoList(QDir::Dirs);
@@ -308,40 +351,43 @@ void FileSystemScanner::addSourceFolders(Folder* parent)
                         loopDetected = true;
                         tracer->swarning(__func__) << "loop detected, not adding folder again: '" << fileInfo->absFilePath()
                                 << "' is pointing to '" << *alreadyAddedFolder << "'" << endl;
+                        emit(progress_loopDetected(fileInfo->absFilePath(), *alreadyAddedFolder));
                         break;
                     }
                     if ((*alreadyAddedFolder).startsWith(subfolder.canonicalPath(), true)) {
                         loopDetected = true;
                         tracer->swarning(__func__) << "loop detected, not adding folder because it is a super directory ("
                                 << subfolder.canonicalPath() << ") of an already added folder: '" << *alreadyAddedFolder << "'" << endl;
+                        emit(progress_loopDetected(subfolder.canonicalPath(), *alreadyAddedFolder));
                         break;
                     }
                 }
 
                 if (!loopDetected) {
-                    Folder* existingSourceFolder = 0;
+                    Folder* existingFolder = 0;
 
                     // we have to test if the folder is already processed to prevent endless loops
                     QIntDictIterator<Folder> it(*m_engine->m_sourceDirDict);
-                    while (!existingSourceFolder && it.current()) {
+                    while (!existingFolder && it.current()) {
 
                         Folder* current = it.current();
 
                         if (current->dir()->canonicalPath() == subfolder.canonicalPath()) {
-                            existingSourceFolder = current;
+                            existingFolder = current;
                             tracer->sdebug(__func__) << "folder is already added: " << current->dir()->canonicalPath() << endl;
+                            emit(progress_folderAlreadyAdded(current->dir()->canonicalPath()));
                         }
 
                         ++it;
                     }
 
-                    if (existingSourceFolder) {
+                    if (existingFolder) {
 
                         // add the directory to the list of handled directories for detecting loops
-                        m_loopDetectionHelper->append(new QString(existingSourceFolder->dir()->canonicalPath()));
+                        m_loopDetectionHelper->append(new QString(existingFolder->dir()->canonicalPath()));
 
                         // make recursive call
-                        addSourceFolders(existingSourceFolder);
+                        addFolders(existingFolder);
                     } else {
                         tracer->sdebug(__func__) << "found new folder to add " << fileInfo->absFilePath() << endl;
 
@@ -359,10 +405,13 @@ void FileSystemScanner::addSourceFolders(Folder* parent)
                         m_loopDetectionHelper->append(new QString(child->dir()->canonicalPath()));
 
                         // add all files in the current folder
-                        rescanSourceFolder(child, false);
+                        rescanFolder(child, false);
+                        if (m_cancel) {
+                            return;
+                        }
 
                         // make recursive call
-                        addSourceFolders(child);
+                        addFolders(child);
                     }
                 }
             }
