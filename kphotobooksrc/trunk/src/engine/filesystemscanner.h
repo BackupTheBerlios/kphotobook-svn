@@ -50,7 +50,7 @@ class FileSystemScanner : public QObject
     public:
         FileSystemScanner(Engine* engine);
 
-        ~FileSystemScanner();
+        ~FileSystemScanner( );
 
         /**
          * Only checks if all folders currently in the database still exists.

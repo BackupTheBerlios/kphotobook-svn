@@ -63,7 +63,7 @@ FileSystemScanner::FileSystemScanner(Engine* engine) :
 {}
 
 
-FileSystemScanner::~FileSystemScanner()
+FileSystemScanner::~FileSystemScanner( )
 {
     delete m_loopDetectionHelper;
 }
