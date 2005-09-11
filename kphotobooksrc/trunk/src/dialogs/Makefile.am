@@ -9,6 +9,7 @@ libdialogs_la_SOURCES = \
 	dialogaddsourcedir.h dialogaddsourcedir.cpp \
 	dialogdatetimechooser.h dialogdatetimechooser.cpp \
 	dialogdatetimefilter.h dialogdatetimefilter.cpp \
+	dialogfilesystemscanner.h dialogfilesystemscanner.cpp \
 	dialogimageviewer.h dialogimageviewer.cpp \
     dialogmanagetag.h dialogmanagetag.cpp
 

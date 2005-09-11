@@ -24,6 +24,7 @@
 #include "exception.h"
 #include "kphotobookview.h"
 #include "dialogs/dialogaddsourcedir.h"
+#include "dialogs/dialogfilesystemscanner.h"
 #include "dialogs/dialogmanagetag.h"
 #include "engine/engine.h"
 #include "engine/file.h"
@@ -63,6 +64,7 @@
 #include <kcombobox.h>
 #include <kconfigdialog.h>
 #include <kdeversion.h>
+#include <kdialogbase.h>
 #include <kedittoolbar.h>
 #include <kedittoolbar.h>
 #include <kfiledialog.h>
@@ -1023,8 +1025,11 @@ void KPhotoBook::slotRescanFilesystem()
 {
     tracer->invoked(__func__);
 
+    // show the dialog, do the work and wait till the user clicks ok
+    DialogFileSystemScanner* dlgFileSystemScanner = dialogFileSystemScannerShow();
     m_engine->fileSystemScanner()->rescan();
-
+    dialogFileSystemScannerClose(dlgFileSystemScanner);
+    
     // add the folder to the tagtree
     m_sourcedirTree->clear();
     m_sourcedirTree->addSourceDirs(m_engine->sourceDirs());
@@ -1040,7 +1045,10 @@ void KPhotoBook::slotRescanFilesystemWithExif()
 {
     tracer->invoked(__func__);
 
+    // show the dialog, do the work and wait till the user clicks ok
+    DialogFileSystemScanner* dlgFileSystemScanner = dialogFileSystemScannerShow();
     m_engine->fileSystemScanner()->rescanWithEXIF();
+    dialogFileSystemScannerClose(dlgFileSystemScanner);
 
     // add the folder to the tagtree
     m_sourcedirTree->clear();
@@ -1578,8 +1586,11 @@ void KPhotoBook::updateStatusBar()
 
 
 Folder* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*)
-{
+{    
+    // show the dialog, do the work and wait till the user clicks ok
+    DialogFileSystemScanner* dlgFileSystemScanner = dialogFileSystemScannerShow();
     Folder* newSourceDir = m_engine->fileSystemScanner()->addFolder(sourceDir, recursive);
+    dialogFileSystemScannerClose(dlgFileSystemScanner);
 
     updateState();
     return newSourceDir;
@@ -1803,6 +1814,36 @@ QString KPhotoBook::selectExportingDirectory(QString startDirectory)
     KMessageBox::sorry(this, i18n("You must select an existing directory."), i18n("Export"));
   }
 }
+
+
+DialogFileSystemScanner* KPhotoBook::dialogFileSystemScannerShow()
+{
+    DialogFileSystemScanner* dlgFileSystemScanner = new DialogFileSystemScanner(m_view, "DialogFileSystemScanner");
+    connect(dlgFileSystemScanner, SIGNAL(cancelClicked()), m_engine->fileSystemScanner(), SLOT(slotCancel()));
+    connect(m_engine->fileSystemScanner(), SIGNAL(progress_scanningFolder(const QString&)), dlgFileSystemScanner, SLOT(slotScanningFolder(const QString&)));
+    connect(m_engine->fileSystemScanner(), SIGNAL(progress(int, int, int)), dlgFileSystemScanner, SLOT(slotScanProgress(int, int, int)));
+    connect(m_engine->fileSystemScanner(), SIGNAL(progress_folderNotFound(const QString&)), dlgFileSystemScanner, SLOT(slotFolderNotFound(const QString&)));
+    connect(m_engine->fileSystemScanner(), SIGNAL(progress_loopDetected(const QString&, const QString&)), dlgFileSystemScanner, SLOT(slotLoopDetected(const QString&, const QString&)));
+    connect(m_engine->fileSystemScanner(), SIGNAL(progress_folderAlreadyAdded(const QString&)), dlgFileSystemScanner, SLOT(slotFolderAlreadyAdded(const QString&)));
+    connect(m_engine->fileSystemScanner(), SIGNAL(progress_problemOccured(const QString&)), dlgFileSystemScanner, SLOT(slotProblemOccured(const QString&)));
+
+    // show the dialog but continue immediately to begin scanning
+    dlgFileSystemScanner->show();
+
+    return dlgFileSystemScanner;
+}
+
+
+void KPhotoBook::dialogFileSystemScannerClose(DialogFileSystemScanner* dlgFileSystemScanner)
+{
+    // after scanning we want the dialog to stay, but we have to rename cancel to close and disconnect the cancel signal
+    disconnect(dlgFileSystemScanner, SIGNAL(cancelClicked()), m_engine->fileSystemScanner(), SLOT(slotCancel()));
+    dlgFileSystemScanner->setButtonText(KDialogBase::Cancel, i18n("Close"));
+    dlgFileSystemScanner->setButtonTip(KDialogBase::Cancel, i18n("Closes this dialog"));
+    dlgFileSystemScanner->exec();
+    delete dlgFileSystemScanner;
+}
+
 
 
 #include "kphotobook.moc"

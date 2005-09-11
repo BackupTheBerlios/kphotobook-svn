@@ -353,8 +353,40 @@ void SourceDirTree::slotAddFolder(Folder* folder)
         return;
     }
 
-    // this is a root node...
-    addSourceDir(folder);
+    if (folder->parent()) {
+        // this is a subfolder
+
+        // find the treenode representing the parent folder
+        SourceDirTreeNode* parentTreeNode = 0;
+    
+        // loop over *all* nodes in the tree
+        QListViewItemIterator it(this);
+        while (it.current()) {
+            SourceDirTreeNode* node = dynamic_cast<SourceDirTreeNode*>(it.current());
+
+            // open the current node if it is in the list
+            if (node->sourceDir() == folder->parent()) {
+                parentTreeNode = node;
+                break;
+            }
+
+            ++it;
+        }
+
+        if (parentTreeNode) {
+            // add the folder as child of the found parent
+            SourceDirTreeNode* sourceDirTreeNode = new SourceDirTreeNode(parentTreeNode, m_photobook, folder, m_photobook->menus()->contextMenuSubDir());
+
+            // insert the just created node into the dictionary
+            m_sourceDirNodeDict->insert(folder->id(), sourceDirTreeNode);
+        } else {
+            // strange... no parent found
+            tracer->serror(__func__) << "No treenode found representing folder '" << folder->dir()->absPath() << "'" << endl;
+        }        
+    } else {
+        // this is a root node...
+        addSourceDir(folder);
+    }
 }
 
 

@@ -95,6 +95,8 @@ class FileSystemScanner : public QObject
 
     signals:
         void newFolder(Folder*);
+
+        void progress(int folders, int files, int problems);
         void progress_scanningFolder(const QString& foldername);
         void progress_folderNotFound(const QString& foldername);
         void progress_loopDetected(const QString& foundFolder, const QString& alreadyAddedFolder);
@@ -102,6 +104,7 @@ class FileSystemScanner : public QObject
         void progress_problemOccured(const QString& description);
 
     private:
+        void reset();
         void rescanFolders(QPtrList<Folder>* folders, bool forceEXIF, bool fast = false);
         void rescanFolder(Folder* folder, bool forceEXIF);
         void addFolders(Folder* parent);
@@ -120,6 +123,9 @@ class FileSystemScanner : public QObject
         bool mustHandleFile(QString filename);
 
     private:
+        /**
+         * Link to the engine this scanner is 'working' for.
+         */
         Engine* m_engine;
 
         /**
@@ -128,7 +134,15 @@ class FileSystemScanner : public QObject
          */
         QPtrList<QString>* m_loopDetectionHelper;
 
+        /**
+         * This field will be set to true by the slot @link slotCancel(). The scanning
+         * must abort as soon as possible after this member was set to true.
+         */
         bool m_cancel;
+
+        int m_folders;
+        int m_files;
+        int m_problems;
 };
 
 #endif

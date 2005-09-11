@@ -24,6 +24,7 @@
 #include "exception.h"
 #include "engine/tagnode.h"
 class ActionProvider;
+class DialogFileSystemScanner;
 class Engine;
 class File;
 class FilterNode;
@@ -331,6 +332,18 @@ class KPhotoBook : public KMdiMainFrm
         * @return The selected directory or QString::null.
         */
         QString selectExportingDirectory(QString startDirectory);
+
+        /**
+         * Creates, connects and shows the DialogFileSysstemScanner.
+         * This method immediately returns.
+         */
+        DialogFileSystemScanner* dialogFileSystemScannerShow();
+
+        /**
+         * Disconnects the cancel button and remas it to close and waits
+         * till the users clicks the button. It also deletes the dialog.
+         */
+        void dialogFileSystemScannerClose(DialogFileSystemScanner* dlgFileSystemScanner);
 
     private:
         KPhotoBookView* m_view;
