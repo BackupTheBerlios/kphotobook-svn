@@ -59,10 +59,7 @@ Tracer* FileSystemScanner::tracer = Tracer::getInstance("kde.kphotobook.engine",
 FileSystemScanner::FileSystemScanner(Engine* engine) :
         m_engine(engine),
         m_loopDetectionHelper(0),
-        m_cancel(false),
-        m_folders(0),
-        m_files(0),
-        m_problems(0)
+        m_cancel(false)
 {}
 
 
@@ -114,9 +111,6 @@ Folder* FileSystemScanner::addFolder(QDir* dir, bool recursive) throw(EngineExce
     folder->setFound(true);
     m_engine->m_sourceDirs->append(folder);
     m_engine->m_sourceDirDict->insert(folder->id(), folder);
-
-    m_folders++;
-    emit(progress(m_folders, m_files, m_problems));
 
     // add all files in the folder
     rescanFolder(folder, false);
@@ -233,9 +227,6 @@ void FileSystemScanner::slotCancel()
 void FileSystemScanner::reset()
 {
     m_cancel = false;
-    m_folders = 0;
-    m_files = 0;
-    m_problems = 0;
 }
 
 
@@ -276,8 +267,6 @@ void FileSystemScanner::rescanFolders(QPtrList<Folder>* folders, bool forceEXIF,
 
             tracer->sdebug(__func__) << "folder: " << folder->id() << ": '" << currentFolderPath << "' not found" << endl;
             emit(progress_folderNotFound(currentFolderPath));
-            m_problems++;
-            emit(progress(m_folders, m_files, m_problems));
         }
     }
 }
@@ -324,8 +313,7 @@ void FileSystemScanner::rescanFolder(Folder* folder, bool forceEXIF)
                     m_engine->m_fileList->append(file);
                     m_engine->m_fileDict->insert(file->fileInfo()->absFilePath(), file);
 
-                    m_files++;
-                    emit(progress(m_folders, m_files, m_problems));
+                    emit(newFile(file));
                     
                     // read exif data from the file and store this data in the database
                     readEXIF(file);
@@ -375,8 +363,6 @@ void FileSystemScanner::addFolders(Folder* parent)
                         tracer->swarning(__func__) << "loop detected, not adding folder again: '" << fileInfo->absFilePath()
                                 << "' is pointing to '" << *alreadyAddedFolder << "'" << endl;
                         emit(progress_loopDetected(fileInfo->absFilePath(), *alreadyAddedFolder));
-                        m_problems++;
-                        emit(progress(m_folders, m_files, m_problems));
                         break;
                     }
                     if ((*alreadyAddedFolder).startsWith(subfolder.canonicalPath(), true)) {
@@ -384,8 +370,6 @@ void FileSystemScanner::addFolders(Folder* parent)
                         tracer->swarning(__func__) << "loop detected, not adding folder because it is a super directory ("
                                 << subfolder.canonicalPath() << ") of an already added folder: '" << *alreadyAddedFolder << "'" << endl;
                         emit(progress_loopDetected(subfolder.canonicalPath(), *alreadyAddedFolder));
-                        m_problems++;
-                        emit(progress(m_folders, m_files, m_problems));
                         break;
                     }
                 }
@@ -403,8 +387,6 @@ void FileSystemScanner::addFolders(Folder* parent)
                             existingFolder = current;
                             tracer->sdebug(__func__) << "folder is already added: " << current->dir()->canonicalPath() << endl;
                             emit(progress_folderAlreadyAdded(current->dir()->canonicalPath()));
-                            m_problems++;
-                            emit(progress(m_folders, m_files, m_problems));
                         }
 
                         ++it;
@@ -433,9 +415,6 @@ void FileSystemScanner::addFolders(Folder* parent)
                         // add the directory to the list of handled directories for detcting loops
                         m_loopDetectionHelper->append(new QString(child->dir()->canonicalPath()));
 
-                        m_folders++;
-                        emit(progress(m_folders, m_files, m_problems));
-                        
                         // add all files in the current folder
                         rescanFolder(child, false);
 

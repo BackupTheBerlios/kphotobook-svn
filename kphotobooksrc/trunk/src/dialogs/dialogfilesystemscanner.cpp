@@ -20,6 +20,8 @@
 
 #include "dialogfilesystemscanner.h"
 
+#include "../engine/folder.h"
+
 #include <kfiledialog.h>
 #include <kglobal.h>
 #include <kiconloader.h>
@@ -46,7 +48,10 @@ DialogFileSystemScanner::DialogFileSystemScanner(QWidget* parent, const char* na
     m_messageCountLabel(0),
     m_tabWidget(0),
     m_folderTextEdit(0),
-    m_messageTextEdit(0)
+    m_messageTextEdit(0),
+    m_folders(0),
+    m_files(0),
+    m_messages(0)
 {
     QWidget* mainPanel = new QWidget(this, "mainPanel");
     setMainWidget(mainPanel);
@@ -115,39 +120,49 @@ DialogFileSystemScanner::~DialogFileSystemScanner()
 //
 void DialogFileSystemScanner::slotScanningFolder(const QString& folder)
 {
+    m_folderCountLabel->setText(QString::number(++m_folders));
     m_currentFolderLineEdit->setSqueezedText(folder);
     m_folderTextEdit->append(folder);
 }
 
 
-void DialogFileSystemScanner::slotScanProgress(int folders, int files, int messages)
+void DialogFileSystemScanner::slotNewFolder(Folder* folder)
 {
-    m_folderCountLabel->setText(QString::number(folders));
-    m_fileCountLabel->setText(QString::number(files));
-    m_messageCountLabel->setText(QString::number(messages));
+    m_messageCountLabel->setText(QString::number(++m_messages));
+    m_messageTextEdit->append(QString(i18n("New folder found: %1")).arg(folder->dir()->absPath()));
 }
 
-
+        
+void DialogFileSystemScanner::slotNewFile(File*)
+{
+    m_fileCountLabel->setText(QString::number(++m_files));    
+}
+        
+        
 void DialogFileSystemScanner::slotFolderNotFound(const QString& foldername)
 {
+    m_messageCountLabel->setText(QString::number(++m_messages));
     m_messageTextEdit->append(QString(i18n("Folder does not exist: %1")).arg(foldername));
 }
 
 
 void DialogFileSystemScanner::slotLoopDetected(const QString& foundFolder, const QString& alreadyAddedFolder)
 {
+    m_messageCountLabel->setText(QString::number(++m_messages));
     m_messageTextEdit->append(QString(i18n("Loop detected: folder '%1' is already added: %2")).arg(foundFolder).arg(alreadyAddedFolder));
 }
 
 
 void DialogFileSystemScanner::slotFolderAlreadyAdded(const QString& foldername)
 {
+    m_messageCountLabel->setText(QString::number(++m_messages));
     m_messageTextEdit->append(QString(i18n("Folder already added: %1")).arg(foldername));
 }
 
 
 void DialogFileSystemScanner::slotProblemOccured(const QString& description)
 {
+    m_messageCountLabel->setText(QString::number(++m_messages));
     m_messageTextEdit->append(QString(i18n("Other problem occured: %1")).arg(description));
 }
 

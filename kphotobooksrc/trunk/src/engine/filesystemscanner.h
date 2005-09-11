@@ -95,8 +95,8 @@ class FileSystemScanner : public QObject
 
     signals:
         void newFolder(Folder*);
+        void newFile(File*);
 
-        void progress(int folders, int files, int problems);
         void progress_scanningFolder(const QString& foldername);
         void progress_folderNotFound(const QString& foldername);
         void progress_loopDetected(const QString& foundFolder, const QString& alreadyAddedFolder);
@@ -139,10 +139,6 @@ class FileSystemScanner : public QObject
          * must abort as soon as possible after this member was set to true.
          */
         bool m_cancel;
-
-        int m_folders;
-        int m_files;
-        int m_problems;
 };
 
 #endif

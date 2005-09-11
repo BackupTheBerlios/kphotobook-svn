@@ -1027,6 +1027,7 @@ void KPhotoBook::slotRescanFilesystem()
 
     // show the dialog, do the work and wait till the user clicks ok
     DialogFileSystemScanner* dlgFileSystemScanner = dialogFileSystemScannerShow();
+    connect(m_engine->fileSystemScanner(), SIGNAL(newFolder(Folder*)), dlgFileSystemScanner, SLOT(slotNewFolder(Folder*)));
     m_engine->fileSystemScanner()->rescan();
     dialogFileSystemScannerClose(dlgFileSystemScanner);
     
@@ -1047,6 +1048,7 @@ void KPhotoBook::slotRescanFilesystemWithExif()
 
     // show the dialog, do the work and wait till the user clicks ok
     DialogFileSystemScanner* dlgFileSystemScanner = dialogFileSystemScannerShow();
+    connect(m_engine->fileSystemScanner(), SIGNAL(newFolder(Folder*)), dlgFileSystemScanner, SLOT(slotNewFolder(Folder*)));
     m_engine->fileSystemScanner()->rescanWithEXIF();
     dialogFileSystemScannerClose(dlgFileSystemScanner);
 
@@ -1589,6 +1591,7 @@ Folder* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(EngineEx
 {    
     // show the dialog, do the work and wait till the user clicks ok
     DialogFileSystemScanner* dlgFileSystemScanner = dialogFileSystemScannerShow();
+    connect(m_engine->fileSystemScanner(), SIGNAL(progress_folderAlreadyAdded(const QString&)), dlgFileSystemScanner, SLOT(slotFolderAlreadyAdded(const QString&)));
     Folder* newSourceDir = m_engine->fileSystemScanner()->addFolder(sourceDir, recursive);
     dialogFileSystemScannerClose(dlgFileSystemScanner);
 
@@ -1821,10 +1824,9 @@ DialogFileSystemScanner* KPhotoBook::dialogFileSystemScannerShow()
     DialogFileSystemScanner* dlgFileSystemScanner = new DialogFileSystemScanner(m_view, "DialogFileSystemScanner");
     connect(dlgFileSystemScanner, SIGNAL(cancelClicked()), m_engine->fileSystemScanner(), SLOT(slotCancel()));
     connect(m_engine->fileSystemScanner(), SIGNAL(progress_scanningFolder(const QString&)), dlgFileSystemScanner, SLOT(slotScanningFolder(const QString&)));
-    connect(m_engine->fileSystemScanner(), SIGNAL(progress(int, int, int)), dlgFileSystemScanner, SLOT(slotScanProgress(int, int, int)));
+    connect(m_engine->fileSystemScanner(), SIGNAL(newFile(File*)), dlgFileSystemScanner, SLOT(slotNewFile(File*)));
     connect(m_engine->fileSystemScanner(), SIGNAL(progress_folderNotFound(const QString&)), dlgFileSystemScanner, SLOT(slotFolderNotFound(const QString&)));
     connect(m_engine->fileSystemScanner(), SIGNAL(progress_loopDetected(const QString&, const QString&)), dlgFileSystemScanner, SLOT(slotLoopDetected(const QString&, const QString&)));
-    connect(m_engine->fileSystemScanner(), SIGNAL(progress_folderAlreadyAdded(const QString&)), dlgFileSystemScanner, SLOT(slotFolderAlreadyAdded(const QString&)));
     connect(m_engine->fileSystemScanner(), SIGNAL(progress_problemOccured(const QString&)), dlgFileSystemScanner, SLOT(slotProblemOccured(const QString&)));
 
     // show the dialog but continue immediately to begin scanning

@@ -21,6 +21,9 @@
 #ifndef DIALOGFILESYSTEMSCANNER_H
 #define DIALOGFILESYSTEMSCANNER_H
 
+class File;
+class Folder;
+
 #include <kdialogbase.h>
 class KLineEdit;
 class KTabWidget;
@@ -46,7 +49,10 @@ class DialogFileSystemScanner : public KDialogBase
     
     public slots:
         void slotScanningFolder(const QString& folder);
-        void slotScanProgress(int folders, int files, int messages);
+        
+        void slotNewFolder(Folder*);
+        void slotNewFile(File*);
+        
         void slotFolderNotFound(const QString& foldername);
         void slotLoopDetected(const QString& foundFolder, const QString& alreadyAddedFolder);
         void slotFolderAlreadyAdded(const QString& foldername);
@@ -63,6 +69,10 @@ class DialogFileSystemScanner : public KDialogBase
 
         KTextEdit* m_folderTextEdit;
         KTextEdit* m_messageTextEdit;
+
+        int m_folders;
+        int m_files;
+        int m_messages;
 };
 
 #endif
