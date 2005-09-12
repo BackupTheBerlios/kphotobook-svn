@@ -1075,3 +1075,6 @@ bool XImage::scaleImage()
 
     return true;
 }
+
+
+#include "imageviewer.moc"

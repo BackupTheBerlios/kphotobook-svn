@@ -943,3 +943,6 @@ QString ImageImporter::getEntry(ExifContent* c, ExifTag tag)
 
     return retval;
 }
+
+
+#include "imageimporter.moc"

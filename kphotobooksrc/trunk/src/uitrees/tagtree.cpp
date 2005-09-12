@@ -526,3 +526,6 @@ void TreeToolTip::maybeTip(const QPoint &point)
         }
     }
 }
+
+
+#include "tagtree.moc"

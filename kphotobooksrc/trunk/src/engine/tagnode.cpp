@@ -307,3 +307,6 @@ bool TagNode::isLinkedToFile(File* file) const
 
     return false;
 }
+
+
+#include "tagnode.moc"

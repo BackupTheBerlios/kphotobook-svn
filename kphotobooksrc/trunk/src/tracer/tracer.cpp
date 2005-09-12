@@ -45,8 +45,6 @@ QString Tracer::TRACE_LEVEL_NAME[6] = {"DEBUG", "INVOKED", "INFO", "WARNING", "E
 QString Tracer::TRACE_LEVEL_NAME_FIXED_LENGTH[6] = {"DEBUG  ", "INVOKED", "INFO   ", "WARNING", "ERROR  ", "FATAL  "};
 QChar Tracer::TRACER_NAME_SEPARATOR('.');
 
-Tracer* Tracer::s_rootTracer = new Tracer("", "", "");
-
 
 //
 // public static methods
@@ -58,10 +56,10 @@ Tracer* Tracer::getInstance(const char* tracername, const char* classname)
 
     // if neither tracername nor classname is specified we return the root-tracer
     if (strTracername.isEmpty() && strClassname.isEmpty()) {
-        return s_rootTracer;
+        return getRootTracer();
     }
 
-    Tracer* currentTracer = s_rootTracer;
+    Tracer* currentTracer = getRootTracer();
     QString currentTracerName = QString("");
     
     // split the tracername into its parts

@@ -89,4 +89,5 @@ void DialogImageViewer::slotToggleFullscreen()
 }
 
 
+#include "dialogimageviewer.moc"
 

@@ -692,3 +692,6 @@ int DateBinder::maxDay()
 
     return m_maxDay;
 }
+
+
+#include "timeruler.moc"

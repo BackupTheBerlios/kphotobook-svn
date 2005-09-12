@@ -415,3 +415,5 @@ void Engine::createExifTagNode()
     m_exifTitleTag->setReadonly(true);
 }
 
+
+#include "engine.moc"

@@ -240,3 +240,6 @@ const QString DateTimeFilterData::marshal() const
 
     return QString::null;
 }
+
+
+#include "datetimefilterdata.moc"

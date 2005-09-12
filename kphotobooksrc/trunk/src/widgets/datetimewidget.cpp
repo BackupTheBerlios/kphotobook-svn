@@ -277,3 +277,6 @@ void DateTimeWidget::slotTimeChanged(const QString& time)
 
     emit(dateTimeValid(false));
 }
+
+
+#include "datetimewidget.moc"

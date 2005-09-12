@@ -159,10 +159,12 @@ class Tracer
     
         /**
         * Returns the root tracer. This is the toplevel tracer instance.
+        * The root tracer is the topmost tracer in the hierarchy of tracer instances.
         */
         static Tracer* getRootTracer()
         {
-            return s_rootTracer;
+            static Tracer* rootTracer = new Tracer("", "", "");
+            return rootTracer;
         }
     
     private:
@@ -279,14 +281,7 @@ class Tracer
         * @return the appropriate child tracer or 0.
         */
         inline Tracer* getChild(const QString& tracerpartname) const;
-    
-    
-    private:
-        /**
-        * The root tracer is the topmost tracer in the hierarchy of tracer instances.
-        */
-        static Tracer* s_rootTracer;
-    
+
         
     private:
         /**

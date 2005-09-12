@@ -588,3 +588,6 @@ bool FileSystemScanner::mustHandleFile(QString filename)
 
     return false;
 }
+
+
+#include "filesystemscanner.moc"
