@@ -613,7 +613,7 @@ void ImageViewer::generateInfoOverlay()
     QString table = "<table>";
     table += QString("<tr><td colspan=+2><font face=sans size=+3>%1</font></td></tr>").arg(date);
     table += row.arg("Filename").arg(m_lstImages.current()->fileInfo()->fileName());
-    table += row.arg("Iso").arg("100");
+    //table += row.arg("Iso").arg("100");
     table += "</table>";
 
 
