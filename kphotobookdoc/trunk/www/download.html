@@ -15,7 +15,7 @@
 <table class="header">
 <tr>
 <td class="header_l"><img alt="download-icon" src="pics/download_h.png" /></td>
-<td class="header_m">Download</td>
+<td class="header_m">Download / Install</td>
 <td class="header_r">KPhotoBook</td>
 </tr>
 </table>
@@ -25,10 +25,46 @@
 <tr>
 <td>
 
+
+<h2>Build-system</h2>
+<p>
+Since version 0.0.7 we are using bksys/scons as build system. That means we no longer use autotools (autoconf, automake, make, configure,...). This new buildsystem is in our opinion faster, more lightweight and easier to understand.
+</p>
+<p>
+To use bksys/scons you need an installed python. bksys and scons must not be installed but are included in the kphotobook source distribution.
+</p>
+<p>
+For your convenience we deliver a faked configure and Makefile which allow you to build/install <i>KPhotoBook</i> almost the same way as before. If you are interested in the new commands you could use, we propose to have a look into the configure-script and Makefile in the source folder.
+</p>
+<p>
+Please consider the <a href="links.html"><i>Links</i> section</a> for links to informations about bksys and scons.
+</p>
+
+
+<h2>Building from the tarball</h2>
+<p>
+Follow these instructions to build the application from the tarball:
+</p>
+<ul>
+<li>Downloaded the tarball from <a target="_top" href="http://developer.berlios.de/projects/kphotobook/">KPhotoBook at berlios.de</a>.</li>
+<li>Extract the downloaded tarball: <pre>tar -xjf kphotobook-x.x.x.tar.bz2</pre></li>
+<li>Go into the extracted directory: <pre>cd kphotobook-x.x.x</pre></li>
+<li>Start configure (where KDE-installation-path is '/opt/kde3' for example):
+<pre>./configure prefix='KDE-installation-path'</pre></li>
+<li>Build the application:
+<pre>make</pre></li>
+<li>Change to root:
+<pre>su</pre></li>
+<li>Install the application:
+<pre>make install</pre></li>
+</ul>
+
+
 <h2>Building from CVS</h2>
 <p>
 Since we moved to subversion it is no longer possible to get <em>KPhotoBook</em> via CVS.
 </p>
+
 
 <h2>Building from Subversion</h2>
 <em>Subversion</em> is the successor of CVS. Please consider the <a target="_top" href="http://subversion.tigris.org/"><em>Subversion</em> homepage</a> or the superb <a target="_top" href="http://svnbook.red-bean.com/"><em>Subversion</em> book</a> for more informations about <em>Subversion</em>.
@@ -52,26 +88,6 @@ Follow these instructions to build the application from the <em>Subversion</em> 
 <pre>make install</pre></li>
 </ul>
 
-<h2>Building from the tarball</h2>
-<p>
-NOTE: The tarball is still fetched from <a target="_top" href="http://sourceforge.net">sourceforge.net</a> since there is not yet a tarball on <a href="http://developer.berlios.de">berliOS</a>.
-</p>
-<p>
-Follow these instructions to build the application from the tarball:
-</p>
-<ul>
-<li>Downloaded the tarball from <a target="_top" href="http://sourceforge.net/projects/kphotobook/">KPhotoBook at sourceforge.net</a>.</li>
-<li>Extract the downloaded tarball: <pre>tar -xzf kphotobook-x.x.x.tar.gz</pre></li>
-<li>Go into the extracted directory: <pre>cd kphotobook-x.x.x</pre></li>
-<li>Start configure (where KDE-installation-path is '/opt/kde3' for example):
-<pre>./configure --prefix='KDE-installation-path'</pre></li>
-<li>Build the application:
-<pre>make</pre></li>
-<li>Change to root:
-<pre>su</pre></li>
-<li>Install the application:
-<pre>make install</pre></li>
-</ul>
 
 <h2>Gentoo installation</h2>
 <p>
