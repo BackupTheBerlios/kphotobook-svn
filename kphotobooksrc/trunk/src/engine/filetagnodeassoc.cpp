@@ -43,5 +43,11 @@ FileTagNodeAssoc::~FileTagNodeAssoc()
     m_file->removeAssoc(this);
 }
 
-
+QString FileTagNodeAssoc::keyAsString()
+{
+    if (m_tagNode) {
+        return *m_tagNode->text();
+    }
+    return "";
+}
 

@@ -33,37 +33,37 @@ class Tracer;
  * Concrete class representing the association between a file and a TagNodeBoolean.
  * This associations contains a reference to the tagnode and the state of the association.
  *
- * CVS-ID $Id: filetagnodeassocboolean.h 435 2005-08-02 20:36:17Z starcube $
+ * CVS-ID $Id$
  */
 class FileTagNodeAssocBoolean : public FileTagNodeAssoc
 {
     private:
         static Tracer* tracer;
-    
+
     public:
         FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, bool value = false);
         FileTagNodeAssocBoolean(File* file, TagNodeBoolean* tagNodeBoolean, QString value);
-    
+
         ~FileTagNodeAssocBoolean()
         {
             // we don't delete anything!
         }
-    
+
         /**
         * Returns the tagNode associated with this association.
         */
         TagNodeBoolean* tagNodeBoolean();
-    
+
         void setValue(bool value)
         {
             m_value = value;
         }
-    
+
         bool value() const
         {
             return m_value;
         }
-    
+
         /**
         * A boolean association must be dumped only, if the assoc is true.
         */
@@ -71,13 +71,13 @@ class FileTagNodeAssocBoolean : public FileTagNodeAssoc
         {
             return m_value;
         }
-    
+
         virtual QString valueAsString() const;
-    
+
         bool equals(QString* value) const;
         bool greaterThan(QString* value) const;
         bool lesserThan(QString* value) const;
-    
+
     private:
         /**
         * The value of this association.

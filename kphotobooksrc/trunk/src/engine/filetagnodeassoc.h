@@ -31,38 +31,38 @@ class TagNode;
  * Abstract superclass of all associations between a file and a node.
  * This abstract class contains the reference to the associated file and the tagNode.
  *
- * CVS-ID $Id: filetagnodeassoc.h 435 2005-08-02 20:36:17Z starcube $
+ * CVS-ID $Id$
  */
 class FileTagNodeAssoc
 {
     public:
         FileTagNodeAssoc(File* file, TagNode* tagNode);
-    
+
         /**
         * Removes this assoc from the list in the tagnode and the file.
         */
         virtual ~FileTagNodeAssoc();
-    
+
         void setFile(File* file)
         {
             m_file = file;
         }
-    
+
         File* file() const
         {
             return m_file;
         }
-    
+
         void setTagNode(TagNode* tagNode)
         {
             m_tagNode = tagNode;
         }
-    
+
         TagNode* tagNode() const
         {
             return m_tagNode;
         }
-    
+
         /**
         * Determines if this association must be dumped to the database.
         * The default implementation returns true;
@@ -71,19 +71,20 @@ class FileTagNodeAssoc
         {
             return true;
         }
-    
+
+        virtual QString keyAsString();
         virtual QString valueAsString() const = 0;
-    
+
         virtual bool equals(QString* value) const = 0;
         virtual bool greaterThan(QString* value) const = 0;
         virtual bool lesserThan(QString* value) const = 0;
-    
+
     protected:
         /**
         * The file this association belongs to.
         */
         File* m_file;
-    
+
         /**
         * The tagNode this association belongs to.
         */
