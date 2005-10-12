@@ -62,7 +62,6 @@
 #include <libexif/exif-tag.h>
 
 
-///@fixme check why this sigsegvs
 Tracer* ImageImporter::tracer = Tracer::getInstance("kde.kphotobook.import", "ImageImporter");
 
 /*
@@ -121,6 +120,7 @@ void ImageImporter::initGUI() {
     m_cmbSourceFolder = new QComboBox( m_grpSource, "txtSourceFolder" );
     m_cmbSourceFolder->setEditable(true);
     m_cmbSourceFolder->setDuplicatesEnabled( false );
+
     m_grpSourceLayout->addWidget( new QLabel(m_cmbSourceFolder, i18n( "Folder:" ), m_grpSource, "lblFolder" ), 1, 0 );
     m_grpSourceLayout->addWidget( m_cmbSourceFolder, 1, 1 );
     QWhatsThis::add(m_cmbSourceFolder, i18n( "Enter the name of the folder, from where you want to import your Images." ));
@@ -747,11 +747,8 @@ void ImageImporter::slotImport()
     //yes, we are done :)
     dlgStatus->setCurrentMode( DlgImageImporterStatus::ModeFinished, i18n("Done."));
 
-    //now update the images
+    //now tell, that new images have arrived
     emit newImagesImported(m_cmbDestBasefolder->currentText());
-
-    ///@todo what happens if the dest dir is not a current kphotobook folder? add the new folder?
-    /// or a subfolder of a kphotobook folder?
 }
 
 
