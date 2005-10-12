@@ -36,7 +36,7 @@ template<class type> class QPtrListStdIterator;
 /**
  * Represents a file/image.
  *
- * CVS-ID $Id: file.h 499 2005-09-02 11:48:32Z starcube $
+ * CVS-ID $Id$
  */
 class File : public KFileItem
 {
@@ -104,6 +104,12 @@ class File : public KFileItem
         * exists one.
         */
         FileTagNodeAssoc* getAssoc(TagNode* tagNode) const;
+
+        /**
+        * Returns the association between this file and the tagNode with the specified id, 
+        * if there exists one.
+        */
+	FileTagNodeAssoc* getAssoc(int id) const;
 
         /**
         * Returns all associations this file has to tagNodes.

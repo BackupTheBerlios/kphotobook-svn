@@ -93,3 +93,16 @@ FileTagNodeAssoc* File::getAssoc(TagNode* tagNode) const
 
     return 0;
 }
+
+FileTagNodeAssoc* File::getAssoc(int id) const
+{
+    FileTagNodeAssoc* currentAssoc;
+    for (currentAssoc = m_assocs->first(); currentAssoc; currentAssoc = m_assocs->next()) {
+
+        if (currentAssoc->tagNode()->id() == id) {
+            return currentAssoc;
+        }
+    }
+
+    return 0;
+}
