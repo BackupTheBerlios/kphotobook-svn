@@ -30,11 +30,12 @@ class DlgImageImporterStatus : public DialogImageImporterStatusUI
   Q_OBJECT
 
 public:
+    /** the current mode of the import operation */
     enum Mode {ModeNone, ModeImport, ModeArchive, ModeDestination, ModeAbort, ModeFinished};
 
 public:
     /**
-     * standardcostructor
+     * standardc'tor
      */
     DlgImageImporterStatus(QWidget* parent = 0, const char* name = 0, bool modal = false, WFlags fl = 0 );
 

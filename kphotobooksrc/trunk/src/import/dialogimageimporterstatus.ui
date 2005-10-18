@@ -8,9 +8,17 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>361</width>
-            <height>317</height>
+            <width>372</width>
+            <height>367</height>
         </rect>
+    </property>
+    <property name="sizePolicy">
+        <sizepolicy>
+            <hsizetype>1</hsizetype>
+            <vsizetype>1</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+        </sizepolicy>
     </property>
     <property name="caption">
         <string>Importing ...</string>
@@ -266,7 +274,7 @@
                         <bool>false</bool>
                     </property>
                     <property name="text">
-                        <string>Close</string>
+                        <string>C&amp;lose</string>
                     </property>
                 </widget>
             </hbox>
