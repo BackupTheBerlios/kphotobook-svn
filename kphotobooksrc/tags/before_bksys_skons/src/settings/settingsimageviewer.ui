@@ -1,0 +1,326 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>SettingsImageViewer</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>SettingsImageViewer</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>640</width>
+            <height>481</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form1</string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>kcfg_ToolsUseInternalImageViewer</cstring>
+            </property>
+            <property name="text">
+                <string>&amp;Use internal imageviewer</string>
+            </property>
+            <property name="accel">
+                <string>Alt+U</string>
+            </property>
+            <property name="whatsThis" stdset="0">
+                <string>&lt;b&gt;Use internal imageviewer&lt;/b&gt;
+&lt;p&gt;Enables the internal Imageviewer coming with KPhotoBook&lt;/p&gt;</string>
+            </property>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox1</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>GroupBoxPanel</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="title">
+                <string>Tools for images</string>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_ImageViewerUseSmoothScaling</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Use Smooth Sc&amp;aling</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+A</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Use Smooth Scaling&lt;/b&gt;
+&lt;p&gt;Enables 'Smooth Scaling'&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_ImageViewerShowImageCounter</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Sh&amp;ow Image Counter</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+O</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Show Image Counter&lt;/b&gt;
+&lt;p&gt;Enables the image counter in the iinternal imageviewer. This will be displayed in the top right corner.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_ImageViewerShowFileInfos</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Show Fi&amp;le Infos</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+L</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Show File Infos&lt;/b&gt;
+&lt;p&gt;If enabled the internal viewer displays some images information in the bottom left corner.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>groupBox2</cstring>
+                    </property>
+                    <property name="title">
+                        <string>Overlays</string>
+                    </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="KColorButton" row="2" column="1" rowspan="1" colspan="2">
+                            <property name="name">
+                                <cstring>kcfg_ImageViewerOverlayBGColor</cstring>
+                            </property>
+                            <property name="text">
+                                <string></string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Overlay Color&lt;/b&gt;
+&lt;p&gt;This sets the overlay color for the image counter and the file infos.&lt;/p&gt;</string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="2" column="0">
+                            <property name="name">
+                                <cstring>textLabel1_2</cstring>
+                            </property>
+                            <property name="sizePolicy">
+                                <sizepolicy>
+                                    <hsizetype>4</hsizetype>
+                                    <vsizetype>5</vsizetype>
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                </sizepolicy>
+                            </property>
+                            <property name="text">
+                                <string>Background color:</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Overlay Color&lt;/b&gt;
+&lt;p&gt;This sets the overlay color for the image counter and the file infos.&lt;/p&gt;</string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="1" column="0">
+                            <property name="name">
+                                <cstring>textLabel1_2_2</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Foreground color:</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Overlay Color&lt;/b&gt;
+&lt;p&gt;This sets the overlay color for the image counter and the file infos.&lt;/p&gt;</string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="0" column="0">
+                            <property name="name">
+                                <cstring>textLabel1_2_2_2</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Translucency:</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Overlay Color&lt;/b&gt;
+&lt;p&gt;This sets the overlay color for the image counter and the file infos.&lt;/p&gt;</string>
+                            </property>
+                        </widget>
+                        <widget class="KColorButton" row="1" column="1" rowspan="1" colspan="2">
+                            <property name="name">
+                                <cstring>kcfg_ImageViewerOverlayFGColor</cstring>
+                            </property>
+                            <property name="text">
+                                <string></string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Overlay Color&lt;/b&gt;
+&lt;p&gt;This sets the overlay color for the image counter and the file infos.&lt;/p&gt;</string>
+                            </property>
+                        </widget>
+                        <widget class="QSlider" row="0" column="1">
+                            <property name="name">
+                                <cstring>kcfg_ImageViewerOverlayTranclucency</cstring>
+                            </property>
+                            <property name="maxValue">
+                                <number>100</number>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="tickmarks">
+                                <enum>Below</enum>
+                            </property>
+                            <property name="tickInterval">
+                                <number>10</number>
+                            </property>
+                        </widget>
+                        <widget class="QSpinBox" row="0" column="2">
+                            <property name="name">
+                                <cstring>spinBox1</cstring>
+                            </property>
+                            <property name="suffix">
+                                <string> %</string>
+                            </property>
+                            <property name="maxValue">
+                                <number>100</number>
+                            </property>
+                        </widget>
+                        <widget class="QGroupBox" row="3" column="0" rowspan="1" colspan="3">
+                            <property name="name">
+                                <cstring>groupBox3</cstring>
+                            </property>
+                            <property name="title">
+                                <string>Counter overlay</string>
+                            </property>
+                            <vbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QCheckBox">
+                                    <property name="name">
+                                        <cstring>kcfg_ImageViewerShowCounterOverlayBG</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>show &amp;background</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string>Alt+B</string>
+                                    </property>
+                                </widget>
+                            </vbox>
+                        </widget>
+                        <widget class="QGroupBox" row="4" column="0" rowspan="1" colspan="3">
+                            <property name="name">
+                                <cstring>groupBox3_2</cstring>
+                            </property>
+                            <property name="title">
+                                <string>Info overlay</string>
+                            </property>
+                            <vbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QCheckBox">
+                                    <property name="name">
+                                        <cstring>kcfg_ImageViewerShowInfoOverlayBG</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>show bac&amp;kground</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string>Alt+K</string>
+                                    </property>
+                                </widget>
+                            </vbox>
+                        </widget>
+                    </grid>
+                </widget>
+                <spacer>
+                    <property name="name">
+                        <cstring>spacer9</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Vertical</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>16</width>
+                            <height>32</height>
+                        </size>
+                    </property>
+                </spacer>
+            </vbox>
+        </widget>
+    </vbox>
+</widget>
+<connections>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>groupBox2</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_ImageViewerUseSmoothScaling</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_ImageViewerShowImageCounter</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ToolsUseInternalImageViewer</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_ImageViewerShowFileInfos</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_ImageViewerOverlayTranclucency</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>spinBox1</receiver>
+        <slot>setValue(int)</slot>
+    </connection>
+    <connection>
+        <sender>spinBox1</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>kcfg_ImageViewerOverlayTranclucency</receiver>
+        <slot>setValue(int)</slot>
+    </connection>
+</connections>
+<tabstops>
+    <tabstop>kcfg_ToolsUseInternalImageViewer</tabstop>
+</tabstops>
+<slots>
+    <slot>chkUseInternalViewer_toggled(bool)</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>kcolorbutton.h</includehint>
+    <includehint>kcolorbutton.h</includehint>
+</includehints>
+</UI>
