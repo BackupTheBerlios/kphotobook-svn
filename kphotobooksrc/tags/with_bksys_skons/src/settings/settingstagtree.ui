@@ -1,0 +1,413 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>SettingsTagTree</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>SettingsTagTree</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>600</width>
+            <height>507</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form1</string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <property name="margin">
+            <number>0</number>
+        </property>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox1</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>GroupBoxPanel</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="title">
+                <string>View</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="KFontRequester" row="1" column="2" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeFont</cstring>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>textLabel3</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Font</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Font&lt;/b&gt;
+&lt;p&gt;This selects the font for the tag names in the tag tree.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>textLabel1</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Icon size</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Icon size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the tag-icons in the Tag Tree. The value can be between 16 and 48.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="KIntSpinBox" row="0" column="2">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeIconSize</cstring>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Icoin size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the tag-icons in the Tag Tree. The value can be between 16 and 48.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <spacer row="0" column="3">
+                    <property name="name">
+                        <cstring>spacer2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>440</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="4">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeShowIcons</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Show icons in the 'Tag Tree'</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Show icons in the Tag Tree&lt;/b&gt;
+
+&lt;p&gt;If enabled the chosen icons for each tag will be shown left beside the tag name. If disabled, even if an icon is chosen for a tag, it will not be shown.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <spacer row="4" column="0">
+                    <property name="name">
+                        <cstring>spacer9</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>23</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="4">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeBoldMatches</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Draw &amp;nodes with matches bold</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+N</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Draw nodes with matches bold&lt;/b&gt;
+
+&lt;p&gt;If thumbnails in the thumbnail viewer are selected, the tags associated to those images are &lt;b&gt;drawn bold&lt;/b&gt;.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeBoldMatchesCollapsedOnly</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="text">
+                        <string>Onl&amp;y draw collapsed nodes bold</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+Y</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Only draw collapsed nodes bold&lt;/b&gt;
+
+&lt;p&gt;Associated tags are only drawn bold, if the tag is collapsed and a sub tag is associated to an image.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox3</cstring>
+            </property>
+            <property name="title">
+                <string>Toolbar</string>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel1_3</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Icon size</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Icon size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the toolbar icons of the tag tree. The size can be between 16 and 32.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="KIntSpinBox">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeToolBarIconSize</cstring>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Icon size&lt;/b&gt;
+
+&lt;p&gt;This sets the size of the toolbar icons of the tag tree. The size can be between 16 and 32.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <spacer>
+                    <property name="name">
+                        <cstring>spacer2_2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>433</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+            </hbox>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox2</cstring>
+            </property>
+            <property name="title">
+                <string>Behavior</string>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel1_2</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Filter operator</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Filter operator&lt;/b&gt;
+&lt;p&gt;&lt;b&gt;AND&lt;/b&gt;:If the filter operator is set to 'AND', only images which contain &lt;i&gt;all&lt;/i&gt; the tags set in the filter are displayed.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;OR&lt;/b&gt;:If the filter operator is set to 'OR', all images which contain &lt;i&gt;any&lt;/i&gt; of the tags set in the filter are shown.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="KComboBox">
+                    <item>
+                        <property name="text">
+                            <string>And</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Or</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>kcfg_TagTreeFilterOperator</cstring>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Filter operator&lt;/b&gt;
+&lt;p&gt;&lt;b&gt;AND&lt;/b&gt;:If the filter operator is set to 'AND', only images which contain &lt;i&gt;all&lt;/i&gt; the tags set in the filter are displayed.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;OR&lt;/b&gt;:If the filter operator is set to 'OR', all images which contain &lt;i&gt;any&lt;/i&gt; of the tags set in the filter are shown.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <spacer>
+                    <property name="name">
+                        <cstring>spacer3</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>110</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeFilterRegexp</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Use Regular E&amp;xpression</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+X</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Use Regular Expression&lt;/b&gt;
+
+&lt;p&gt;Defines if the filter of string tags uses regular expressions or wildcards.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox4</cstring>
+            </property>
+            <property name="title">
+                <string>Remember tree state</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeRememberTree</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Remem&amp;ber open/closed nodes</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+B</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Remember open/closed nodes&lt;/b&gt;
+&lt;p&gt;If enabled KPhotoBook remembers open and closed tags and will set the tree when starting up to the state of the last session.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeRememberFilter</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&amp;Remember filter state</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+R</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Remember filter state&lt;/b&gt;
+&lt;p&gt;If enabled KPhotoBook will remember the filter of the tag tree and set it when starting up KPhotoBook.&lt;/p&gt;
+&lt;p&gt;If not enable the filter will be reset on startup so that all images are shown&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <spacer row="2" column="0">
+                    <property name="name">
+                        <cstring>spacer9_2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Fixed</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>23</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QCheckBox" row="2" column="1">
+                    <property name="name">
+                        <cstring>kcfg_TagTreeUnsetSecretFilter</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="text">
+                        <string>Set filter state of secret tags to 'exclude' by default</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Set filter state of secret tags to 'exclude' by default&lt;/b&gt;&lt;p&gt;If enabled the 'secret' tags will be excluded by default, meaning, that images which have a 'secret' tag associated will not be shown.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <spacer>
+            <property name="name">
+                <cstring>spacer1</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>20</width>
+                    <height>50</height>
+                </size>
+            </property>
+        </spacer>
+    </vbox>
+</widget>
+<connections>
+    <connection>
+        <sender>kcfg_TagTreeBoldMatches</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_TagTreeBoldMatchesCollapsedOnly</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>kcfg_TagTreeRememberFilter</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_TagTreeUnsetSecretFilter</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+</connections>
+<layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>kfontrequester.h</includehint>
+    <includehint>knuminput.h</includehint>
+    <includehint>knuminput.h</includehint>
+    <includehint>kcombobox.h</includehint>
+</includehints>
+</UI>

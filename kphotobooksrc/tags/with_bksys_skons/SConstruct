@@ -1,0 +1,56 @@
+#! /usr/bin/env python
+
+"""
+help       -> scons -h
+compile    -> scons
+clean      -> scons -c
+install    -> scons install
+uninstall  -> scons -c install
+configure  -> scons configure prefix=/tmp/ita debug=full extraincludes=/usr/local/include:/tmp/include prefix=/usr/local
+
+Run from a subdirectory -> scons -u
+The variables are saved automatically after the first run (look at cache/kde.cache.py, ..)
+"""
+
+###################################################################
+# LOAD THE ENVIRONMENT AND SET UP THE TOOLS
+###################################################################
+
+def bstr(target, source, env):
+	comp='kconfig_compiler -d%s %s %s' % (str(source[0].get_dir()), source[1].path, source[0].path)
+        print "bstr called with ", source[0].get_dir(), source[1].path, source[0].path
+	return comp
+
+## Load the builders in config
+env = Environment( tools=['default', 'generic', 'kde'], toolpath=['./', './admin'])
+
+env.KDEuse("environ rpath")
+#env.KDEuse("environ rpath lang_qt thread nohelp")
+
+env['CXXCOMSTR']=bstr
+
+
+###################################################################
+# SCRIPTS FOR BUILDING THE TARGETS
+###################################################################
+
+## Normal build
+env.subdirs('src')
+
+
+###################################################################
+## PROCESS THE DOCUMENTATION
+###################################################################
+
+## Use docfolder for each documentation directory
+## The parameters of docfolder are: documentation dir, language code, app name
+env.docfolder('doc/en', 'en', 'kphotobook/')
+
+
+###################################################################
+# CONVENIENCE FUNCTIONS TO EMULATE 'make dist' and 'make distclean'
+###################################################################
+
+env.dist('kphotobook', '0.0.7')
+
+

@@ -1,0 +1,308 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>DialogImageImporterStatusUI</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>DialogImageImporterStatusUI</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>372</width>
+            <height>367</height>
+        </rect>
+    </property>
+    <property name="sizePolicy">
+        <sizepolicy>
+            <hsizetype>1</hsizetype>
+            <vsizetype>1</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+        </sizepolicy>
+    </property>
+    <property name="caption">
+        <string>Importing ...</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLabel" row="0" column="0">
+            <property name="name">
+                <cstring>m_icoLblSearch</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>4</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image0</pixmap>
+            </property>
+        </widget>
+        <widget class="Line" row="9" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>line1</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>HLine</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+        </widget>
+        <widget class="QLabel" row="7" column="0">
+            <property name="name">
+                <cstring>m_icoLblDest</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>4</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image1</pixmap>
+            </property>
+        </widget>
+        <widget class="KProgress" row="8" column="2">
+            <property name="name">
+                <cstring>m_progressDest</cstring>
+            </property>
+        </widget>
+        <widget class="QLabel" row="7" column="2">
+            <property name="name">
+                <cstring>m_lblDest</cstring>
+            </property>
+            <property name="text">
+                <string>Copy/Move images to KPhotoBook destination</string>
+            </property>
+        </widget>
+        <widget class="Line" row="6" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>line2</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>HLine</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+        </widget>
+        <widget class="KProgress" row="5" column="2">
+            <property name="name">
+                <cstring>m_progressArchive</cstring>
+            </property>
+            <property name="enabled">
+                <bool>false</bool>
+            </property>
+            <property name="percentageVisible">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="4" column="0">
+            <property name="name">
+                <cstring>m_icoLblArchive</cstring>
+            </property>
+            <property name="enabled">
+                <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>4</hsizetype>
+                    <vsizetype>5</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image2</pixmap>
+            </property>
+        </widget>
+        <widget class="Line" row="2" column="0" rowspan="2" colspan="3">
+            <property name="name">
+                <cstring>line3</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>HLine</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>m_lblSearch</cstring>
+            </property>
+            <property name="text">
+                <string>Look for images to import</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="3" column="2" rowspan="2" colspan="1">
+            <property name="name">
+                <cstring>m_lblArchive</cstring>
+            </property>
+            <property name="enabled">
+                <bool>false</bool>
+            </property>
+            <property name="text">
+                <string>Copy images to Archive Folder</string>
+            </property>
+        </widget>
+        <widget class="QLayoutWidget" row="1" column="2">
+            <property name="name">
+                <cstring>layout7</cstring>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>lblFolders</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>4</hsizetype>
+                            <vsizetype>5</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="text">
+                        <string>Folders:</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="1" column="0">
+                    <property name="name">
+                        <cstring>lblFiles</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>4</hsizetype>
+                            <vsizetype>5</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="text">
+                        <string>Files:</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="1" column="1">
+                    <property name="name">
+                        <cstring>m_lblFileCount</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&lt;b&gt;0&lt;/b&gt;  / &lt;b&gt;0&lt;/b&gt;</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="1">
+                    <property name="name">
+                        <cstring>m_lblFolderCount</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&lt;b&gt;0&lt;/b&gt;</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QLayoutWidget" row="11" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>layout4</cstring>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <spacer>
+                    <property name="name">
+                        <cstring>spacer1</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>49</width>
+                            <height>16</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>m_btnAbort</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&amp;Abort</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+A</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>m_btnClose</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="text">
+                        <string>C&amp;lose</string>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
+        <widget class="QTextEdit" row="10" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>m_teStatusMessages</cstring>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<images>
+    <image name="image0">
+        <data format="PNG" length="485">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff61000001ac49444154388dc5d33f48550114c7f1cfbdefbee74309854786a939bc41086a10ca6a086c6fb3da424aa42982a09096a0a5cd96961a84a2a51603e135845b42ba54d01fb0a04c305e682fcb7cffaeb7a14093b4c1a1b39cdf19be1cf89ddf099224b19d0ab7452330a253dd47cbf88115d4112183f43a1dfd9e33f29906675329fb22b187eaaea0b0e5aa04ab76e38cbaa16a5d39889c08c338aca5b3e9bb6afa3605ab72b8dcd2d132d1d6d176cd8a5915c7f03c4c9692fbb9bdb95c764ff68eb2c3827570cd2eb173517bf4a4fd78fbf5e6cee6eee24cb1a0e2a4c01c444929995e2c2f56c3feb0c3a27bdeebc72b5503ba0c044782decc818cd2d392e5c2f2032943b24a6b260e6ad5a5e0821e458c7a67c582a30e3a849d18c3b81b1a5db5c3571964091a89ac2a7a6bca6b3dba714a5e28af0d35dc54376544836129f1468b42157c37ed8558110d68c207dcc28461894b7f8321f20db149cf2cd8af551a73185336e3bc26b7b78a5b2446ec8d392f7dd2aa8a715fccbaa8d1e8bfb21aa96115151326f599f7d9acd3228ffe38e9269592478044d9bc5e4b06451e0bac4577634ffdd2419ae0bf7fe34fae038bee04a5cacf0000000049454e44ae426082</data>
+    </image>
+    <image name="image1">
+        <data format="PNG" length="787">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff61000002da49444154388d7d9351685b6514c77fdff7dd9bdc6669b2c490a49d9da589eba6281a29e89c431c226c4c1f367df0618210b6098e3d0a8a0843df44903d79a52a53411061f4ad22f461cadcd4aeecc1c856d676a5cb52b33437e9b5f7f67ef7fa1008b40e0ffc5f0ee777e09cff3982fb44e5f49c05e1045158864840386fe8ced52bf621777badd8062641bc87324fc9582a3d92d9246106fcd5b008bdb5b6d0ee77866e7df8abfdd2d27f1a544ecf151172a6907f60fc8d17d21cd8a748251400de66c41f375d267fea7263a1f1f780aebffaf367876700540fbe9644c85f2a8f0c8fbfffda0e4a4583288254c24049c1bbdf1bbcf294e0f9c72c9c0d95a8dd11471f7efce085c5d91fba0a6068e2e4478542fee899c3160289eb85b85ec8483e8ea104cfedd19cbb68b2afe0b37724cecdbb2a516f3378a4a2a655e5d46f162afeedb103692b9500d7d37dddeb04eccac5899b92a74b9b7c326df1606a9df440c0eff3d1b8f6bb5f1bc044cc4aa633031a89a29031b76cb9def229666264074dde39e251fd3c81e36590f128e9f8a5fd0650ce2625ab4ec08917f3f773b51fbb72718e3f039333204d0b218db20484af154b4dc5fc1dff7f1b00cc2e80103dfb049134209c6fbb11b5668eb7be04d044401809bc40f2e9097872b407bffd15cc2d81216123f08885eeb23474e7aaf6d6da5280943d29093ada0a9fbd10515bd10c981acbd0841badf5acaecdca2bf621576877527a7576a79cbef6645b7df8e38b1dfee9ae31b6d36134ed20bd3a66b03a953716570c0043b7ce351af2e5b15cae944dc7faf37ef1631300a7e3531cece5eeb57d1a7757978783cbe75134fba7fc6c75aae49b43d34f94d3637b77271162cb9b104511b5a52ed76eb4968b9b974e16c59f976cdb76b6541d7cf39b21d77ce8834462c7eba3855872e7601c80b58ec742dd5ff7dcd65421b87cbea06e5db76ddb816ddf0850ad5663b78347871d55da2fa45116445284ee7256d766f3c6e20ad0b46dbbeff7bfc6d522b8e10f48560000000049454e44ae426082</data>
+    </image>
+    <image name="image2">
+        <data format="PNG" length="550">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff61000001ed49444154388dc5933d68535114c7ffe7de9b2121817c90262fe8601210022e1d14c7bab917dda42088595c04a5d0417071d3dd41505ceae4a438d449073b29d1640949d440f21e8ff8c8cde7bbf73c1753a4d252e8e081c3997efc0fbfc3a1288a709a12a7a20150bd5e3fcbcc3fc230843106d65a30338410074d4490521e4c2144454a7993882e08667ecdcc574f185802b01345d17b63cca6316647000863b1d80b66de388a62e61c80fbd96c762f9fcf3f34c67c37c65c01f0592c168bdd52a9944ba7d3cfadb5970f810566be9d4aa53ed46ab547d96cf6fc60307863adbd46443f01402d97cbfdc964b22c97cb672693c9cbf178bc09e09bb5762b994c6e398e73c9711cb8ae8b76bbfd4a08714b4af96b15a28c312dcff31ac56271bd52a99c6bb55abbd65adf719c8b854201f1781c9d4e07bd5eef8952ea811022f87b4b05c00d82e0d368345acf6432a856ab1522aa24120930331a8d86715df7b110629b88ec613fc25a8b300cf77ddfb7b3d90c524a28a5a0b546b3d944bfdfdf8ea2e89e10e21f78e500003efabeefe772b9352925e6f339baddee3c08823b4aa9a74474e45dd51fdb2dadf5d7e974bac6cce8f57a23adf55da5d4b3e3600050d65a44510422da1b0e871bd3e9d4d35adf20a2b7c7922b0700404460e6779ee77dd15a5f3f290c00f4dfbff137fdb3f9dd9271445d0000000049454e44ae426082</data>
+    </image>
+</images>
+<layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>kprogress.h</includehint>
+    <includehint>kprogress.h</includehint>
+</includehints>
+</UI>

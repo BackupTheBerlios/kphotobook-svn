@@ -1,0 +1,1321 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
+  <!ENTITY kmyapplication "<application>KPhotoBook</application>">
+  <!ENTITY kphotobook "<application>KPhotoBook 0&#46;0&#46;7</application>">
+  <!ENTITY kappname "&kmyapplication;"><!-- Do *not* replace kappname-->
+  <!ENTITY package "kde-module"><!-- kdebase, kdeadmin, etc -->
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % English "INCLUDE"><!-- change language only here -->
+  <!ENTITY author.name "<firstname>Michael</firstname> <surname>Christen</surname>">
+  <!ENTITY author.mail "<email>starcube@users.berlios.de</email>">
+  <!ENTITY author2.name "<firstname>Thomas</firstname> <surname>Christen</surname>">
+  <!ENTITY author2.mail "<email>chtom@users.berlios.de</email>">
+  <!ENTITY author3.name "<firstname>Christian</firstname> <surname>Hoenig</surname>">
+  <!ENTITY author3.mail "<email>choenig@users.berlios.de</email>">
+  <!ENTITY project.homepage '<ulink url="http://kphotobook.berlios.de/">project homepage</ulink>'>
+  <!ENTITY project.page '<ulink url="http://developer.berlios.de/projects/kphotobook/">project page at berlios</ulink>'>
+]>
+
+<!-- TODO
++ Adding Sub Tags
++ Directories -> Folders
++ Photos -> Images
++ Internal Viewer + Screeny
++ New Screenies for Adding Main Tags & Adding Sub Tags
++ Secret Tag
+- Date/Time Tag
+- Filtering using the Source Directory Tree
+- Filtering using the Tag Tree
+- Combining Source and Tag Filter
+- Using EXIF-data to filter
+- Configuring KPhotobook
+
+ -->
+
+
+<book lang="&language;">
+
+<bookinfo>
+  <title>The &kphotobook; Handbook</title>
+
+  <authorgroup>
+    <author>
+    &author.name;
+    <affiliation>
+    <address>&author.mail;</address>
+    </affiliation>
+    </author>
+
+    <author>
+    &author2.name;
+    <affiliation>
+    <address>&author2.mail;</address>
+    </affiliation>
+    </author>
+
+    <author>
+    &author3.name;
+    <affiliation>
+    <address>&author3.mail;</address>
+    </affiliation>
+    </author>
+  </authorgroup>
+
+  <!-- TRANS:ROLES_OF_TRANSLATORS -->
+
+  <copyright>
+    <year>1999 - 2005</year>
+    <!-- <year></year> -->
+    <holder>Michael Christen</holder>
+  </copyright>
+  <!-- Translators: put here the copyright notice of the translation -->
+  <!-- Put here the FDL notice.  Read the explanation in fdl-notice.docbook
+      and in the FDL itself on how to use it. -->
+  <legalnotice>&FDLNotice;</legalnotice>
+
+  <date>2005-04-11</date>
+  <releaseinfo>0&#46;0&#46;7</releaseinfo> <!-- version number -->
+
+  <!-- Abstract about this handbook -->
+
+  <abstract>
+    <para>
+    This is the handbook for <emphasis>&kmyapplication;</emphasis>, an easy to use, straight forward and fast application for managing all your digital photos.
+    </para>
+  </abstract>
+
+  <keywordset>
+    <keyword>KDE</keyword>
+    <keyword>KPhotoBook</keyword>
+    <keyword>digital</keyword>
+    <keyword>photos</keyword>
+    <keyword>images</keyword>
+    <keyword>pictures</keyword>
+    <keyword>album</keyword>
+    <keyword>photobook</keyword>
+    <keyword>tag</keyword>
+    <keyword>exif</keyword>
+    <keyword>manage</keyword>
+    <keyword>organize</keyword>
+  </keywordset>
+
+</bookinfo>
+
+
+<chapter id="introduction">
+<title>Introduction</title>
+
+<para>
+This handbook is intended to give you an overview of all the functions and ease of use of &kmyapplication;. Never ever worry again about finding your best favorite photos again!
+</para>
+
+
+<sect1 id="what_is_kpb">
+  <title>What is &kmyapplication;?</title>
+  <para><emphasis>&kmyapplication;</emphasis> is a powerful, easy to use, intuitive and fast application to manage and organize all your digital photos. The main idea is to be able to annotate your photos with tags (labels) and to refind the photos using the given tags. The tags which can be created by yourself are arranged in a hierarchical tree.</para>
+  <para>The <emphasis>&kmyapplication;</emphasis> GUI (graphical user interface) comes up with several points which make the handling with many photos very easy. This is just a short excerpt of it's goodies:</para>
+  <itemizedlist>
+    <listitem><para>Use several different types of tags in a highly configurable tag tree.</para></listitem>
+    <listitem><para>Organize your photos from any source folder - they don't need to be in one and the same.</para></listitem>
+    <listitem><para>Easily annotate tags to one or more images at a time.</para></listitem>
+    <listitem><para>Quickly find images by the given tags.</para></listitem>
+    <listitem><para>...</para></listitem>
+  </itemizedlist>
+</sect1>
+
+
+<sect1 id="why_kpb">
+  <title>Why &kmyapplication;?</title>
+  <para>The idea for an image managing program came up during September 2003. Having bought a digital camera a few months ago, the necessity for a program to manage all the taken images became urgent. Without a program helping to organize hundreds or even thousands of images is a very time consuming and not that easy task. We were looking for a program helping us to organize the images in a smart way. It was important to us that such a program should not only help you storing your images but also help you to refind them in a fast and easy way.</para>
+
+  <para>When the idea came up to start with such a project, there were no other <emphasis>usable</emphasis> programs available doing that task in a fast and easy way. Neither free nor commercial products satisfied us. A few weeks after our "take off" KimDaBa 1.0 was released. We looked into this program but decided then to go on with the development of <emphasis>&kmyapplication;</emphasis>. KimDaBa was just not exactly what we were looking for. In February 2004 a first alpha-version of Fotoon was released. Fotoon came closer to what idea is... but not exactly either. We decided - once again - to go on working on <emphasis>&kmyapplication;</emphasis> but to have a close eye on these other applications.</para>
+
+  <para>Yes, <emphasis>&kmyapplication;</emphasis> is another application for managing your images. We know that there are - meanwhile - several programs to perform such tasks. Those applications promote themselves to make it easy handling thousands of images. Having looked at some other applications, we found that it was not <emphasis>that</emphasis> easy and not nearly as straight forward as we think such an application should be.</para>
+
+  <para>Digikam, another application for managing images made a lot of progress while <emphasis>&kmyapplication;</emphasis> was in it's early development stages. As soon as people said they would like the tag function of Fotoon or <emphasis>&kmyapplication;</emphasis> Digikam implemented such a function as well. Well done, but not in the way we would like it. The Tag Tree of <emphasis>&kmyapplication;</emphasis> bring a much more powerful tool to manage your images - give it a try!</para>
+
+</sect1>
+
+<sect1 id="feature_list">
+  <title>Basic Feature List</title>
+  <itemizedlist>
+    <listitem><para>create an image database with images from several folders. These can be added single or recursively.</para></listitem>
+    <listitem><para>annotate tags to the images. This can be done for one image only or for several images at once.</para></listitem>
+    <listitem><para>Use different kinds of tags: title, string, dates, numeric, option list and boolean. This will satisfy all your needs.</para></listitem>
+    <listitem><para>search and filter the images using any of the given tags.</para></listitem>
+    <listitem><para>all pictures matching the chosen filter are displayed as thumbnails</para></listitem>
+    <listitem><para>the pictures can be rotated (physically, EXIF or database only)</para></listitem>
+    <listitem><para>show the EXIF informations of a selected file</para></listitem>
+    <listitem><para>show the images matching the filter or the selection in a slide show</para></listitem>
+    <listitem><para>open the files with a any desired program</para></listitem>
+    <listitem><para>export the images matching the filter or the selection as symbolic links.</para></listitem>
+    <listitem><para><emphasis>&kmyapplication;</emphasis>s look and feel is highly configurable.</para></listitem>
+    <listitem><para>For a more complete feature and "to do" list, please visit the <emphasis>&kmyapplication;</emphasis> homepage.</para></listitem>
+  </itemizedlist>
+</sect1>
+
+<sect1 id="evolution">
+  <title>Evolution of <emphasis>&kmyapplication;</emphasis></title>
+  <para>This is a quick overview of the evolution of <emphasis>&kmyapplication;</emphasis></para>
+
+  <sect2>
+    <title>Version 0.0.3</title>
+    <para>Version 0.0.3 was the first release of <emphasis>&kmyapplication;</emphasis> and was released in February 2004. It did not provide many features but seemed quite stable already (probably because of the lack of features :-) ). The GUI provided a source folder tree and a main window in which thumbnails of the images in the imported folders were shown. There was also a tag tree - it was hard coded at this time. V0.0.3 already had the ability to alter the thumbnail size with a ruler.</para>
+  </sect2>
+
+  <sect2>
+    <title>Version 0.0.4</title>
+    <para>Version 0.0.4 was released in March 2004. Besides the features of Version 0.0.3, we provided a functional tag tree with title tags and boolean tags, improved filter abilities, a few new icons and a new tool bar.</para>
+  </sect2>
+
+  <sect2>
+    <title>Version 0.0.5</title>
+    <para>Released in April 2004. There are a lot of things to configure now and the GUI is cleaned up</para>
+    <itemizedlist>
+        <listitem><para>When setting filters on a parent tags, files associated with the sub tags are considered too. E.g. if dog is a sub tag of animal then, when searching for images containing an animal, the images tagged with dog must be displayed too.</para></listitem>
+        <listitem><para>GUI mode is changeable between IDEAl and TabPage mode.</para></listitem>
+        <listitem><para>Remember the selected files whenever possible (changing filter, changing preview size, ...).</para></listitem>
+        <listitem><para>Set F5 as shortcut for "refresh view" not for "rescan filesystem".</para></listitem>
+        <listitem><para>Ctrl+R as alternate shortcut for "refresh view".</para></listitem>
+        <listitem><para>Use right mouse button on tag filters to cycle backwards through the options.</para></listitem>
+        <listitem><para>The dock configuration is stored now. KDE is really great!</para></listitem>
+        <listitem><para>...</para></listitem>
+  </itemizedlist>
+  </sect2>
+
+  <sect2>
+    <title>Version 0.0.6</title>
+    <para>Released in June 2004.</para>
+    <itemizedlist>
+        <listitem><para>Tagging can be locked/unlocked now to avoid accidental change of tags. The lock can be unlocked temporary by holding the CTRL-key.</para></listitem>
+        <listitem><para>The tree states (open/closed) nodes and the filters are stored.</para></listitem>
+        <listitem><para>It is possible now to export selected/matching images as symbolic links to folders.</para></listitem>
+        <listitem><para>Menu entries for showing/restoring the toolviews. It does not exactly what I did want, but the MDI (Toolview) API is a bit odd. But I think it works well enough.</para></listitem>
+        <listitem><para>Add a quit action which closes all open window and exits KPhotoBook.</para></listitem>
+        <listitem><para>Install a mimetype for KPhotoBook associating '*.kpb' files with KPhotoBook.</para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2>
+    <title>Version 0.0.7</title>
+    <para>Released in xxx 2005.</para>
+    <itemizedlist>
+        <listitem><para>version 0.0.7 is currently under construction</para></listitem>
+    </itemizedlist>
+  </sect2>
+
+</sect1>
+
+</chapter>
+
+
+
+<chapter id="using-kphotobook">
+<title>Using &kphotobook;</title>
+
+<sect1 id="strength">
+  <title>Strength of <emphasis>&kmyapplication;</emphasis></title>
+  <para>The strength of <emphasis>&kmyapplication;</emphasis> lies in its highly configurable but still easy to use tag tree. You can use this tag tree to easily annotate tags to your images but also to filter and search the images. There are several types of tags which gives you all the freedom you need to organize your images in a way <emphasis>you</emphasis> want it to. Certainly the images can also be filtered by their source folder. All your filtering wishes can also be combined! In this chapter we will show you how to use <emphasis>&kmyapplication;</emphasis> and we will show you how to get the most out of the powerful tools. </para>
+</sect1>
+
+<sect1 id="database">
+  <title>The <emphasis>&kmyapplication;</emphasis> database</title>
+  <para>A <emphasis>&kmyapplication;</emphasis> database is stored as one XML-file. This file contains all source folders, tags and files belonging to this database. Of course it is possible to have several databases storing different types of images, if you wish.</para>
+  <para>When a database has changed (tags or source folders were edited) the file must be saved. That means that changes are not automatically persisted. Each time a file is saved the old file is backed-up.</para>
+</sect1>
+
+
+
+
+
+<sect1 id="source_folders">
+  <title>Source Folders</title>
+    <para>The <emphasis>&kmyapplication;</emphasis> database contains all images of one or more source folders. Source folders can be added recursively or not. For <emphasis>&kmyapplication;</emphasis> it doesn't matter where on the hard drive your images are stored. <emphasis>&kmyapplication;</emphasis> can handle as many source folders as you wish. They can even be added recursively or not.</para>
+
+    <sect2>
+      <title>The Source Folder Tree</title>
+      <para>The Source Folder Tree shows all the source folders which belong to the database. As known from Konqueror, folders with subfolders can be expanded and collapsed. There are some very handy operations which are accessible through the folder tree context menu:</para>
+        <sect3>
+        <title>Context Menu when Clicking <guimenu>Beside</guimenu> Folders:</title>
+
+        <variablelist>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Include All</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>Includes all source folders which are in the database to the preview</action></para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Exclude All</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>Excludes all source folders from the preview</action></para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Invert All</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>All folders which were included to the preview will be excluded and vice versa</action></para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Expand All</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>The folder Tree will be expanded. All source folders are visible</action></para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Collapse all Source Folders</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>The folder tree will be collapsed. Only the top level folders are shown</action></para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Add Source Folder</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>Prompts the dialog to add a source folder (recursively or not)</action></para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+    </sect3>
+
+
+    <sect3>
+        <title>Context Menu when Clicking <guimenu>On</guimenu> Folders:</title>
+
+        <variablelist>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Include Whole Folder</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>Includes the folder to the preview. Subfolders will be included as well</action></para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Exclude Whole Folder</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>Excludes the folder from the preview. Subfolders will be excluded as well</action></para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Invert Folder Selection</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>All subfolders of the current folder which were included to the preview will be excluded and vice versa</action></para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Expand Source Folder</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>Expands the current folder</action></para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+          <term><menuchoice>
+          <guimenuitem>Collapse Source Folder</guimenuitem>
+          </menuchoice></term>
+          <listitem><para><action>Collapses the current folder</action></para></listitem>
+          </varlistentry>
+
+
+        </variablelist>
+      </sect3>
+
+    </sect2>
+    <sect2>
+    <title>Adding Source Folders</title>
+    <para>The <emphasis>&kmyapplication;</emphasis> database contains all images of one ore more source folders. Source folders can be added recursively or not. Adding them recursively makes <emphasis>&kmyapplication;</emphasis> add the selected folder and all folders below it. When adding a folder recursively, hard- and soft-links are followed by default. To prevent endless loops <emphasis>&kmyapplication;</emphasis> tries to detect and suppress loops in the file system folder structure.</para>
+      <itemizedlist>
+      <listitem><para>non-recursive: only the files in the selected folder will be added to the database.</para></listitem>
+      <listitem><para>recursive: all files in the selected folder and all sub-folders will be added to the database.</para></listitem>
+    </itemizedlist>
+    <para>When restarting <emphasis>&kmyapplication;</emphasis> every source folder will be rescanned by default. New found sub-folders and files will be added to the database. This function can also be executed manually. Missed folders or files will not automatically be removed from the database to prevent loss of the association between files and tags.</para>
+    </sect2>
+
+    <sect2>
+    <title>Removing Source Folders</title>
+    <para>Removing source folders will only remove the folder and all its files from the <emphasis>&kmyapplication;</emphasis> database. No files will be deleted on your hard drive, however, you will lose all associations between the deleted images and the tags associated with them.</para>
+    </sect2>
+
+    <sect2>
+    <title>Rescan Source Folders</title>
+    <para>Rescanning the source folder will check the source folders for new and deleted sub folders and files. New files and folders will automatically be added to the database. <emphasis>&kmyapplication;</emphasis> will ask for user input when folders and files are deleted.</para>
+    </sect2>
+</sect1>
+
+
+
+<sect1 id="thumb_win">
+  <title>Thumbnail Window</title>
+  <para>The thumbnail window shows all the images of your database... depending on your filter, of course. Filtering will be explained later on.</para>
+    <sect2>
+        <title>Thumbnail size</title>
+        <para>The thumbnail size of the images can be changed. This can be done by the "View" menu, by the magnifiers or via the Settings --> Configure <emphasis>&kmyapplication;</emphasis>. The sizes are limited from a minimal size of 32 px to a maximal size of 160 px. In the configure dialog you can also set the font and font size of the filenames which are shown below the image previews.</para>
+
+        <screenshot>
+        <screeninfo>big thumbnails</screeninfo>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="preview_big_tn.png" format="PNG" />
+            </imageobject>
+            <textobject>
+                <phrase>Thumbnail window with big thumbnails</phrase>
+            </textobject>
+        </mediaobject>
+        </screenshot>
+
+        <screenshot>
+        <screeninfo>small thumbnails</screeninfo>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="preview_small_tn.png" format="PNG" />
+            </imageobject>
+            <textobject>
+                <phrase>Thumbnail window with small thumbnails</phrase>
+            </textobject>
+        </mediaobject>
+        </screenshot>
+
+    </sect2>
+
+    <sect2>
+        <title>Selection mode</title>
+        <para>The Thumbnail Window provides two different ways to select images. Chose the one you prefer.</para>
+        <para>The "Extended selection mode" works like the selection in Konqueror. Select or deselect several images by using the SHIFT respectively CTRL key.</para>
+        <para>The "Multi selection mode" works a bit different, You don't need to hold any key for selecting multiple images. Just click on one then on the next to select it too. You won't unselect the first one. To unselect a picture click on it a second time.</para>
+    </sect2>
+
+    <sect2>
+        <title>Refresh the Thumbnail Window</title>
+        <para>After having selected a filter you probably want to see what pictures match the filter selected. By pressing "F5", View --> Refresh View, or the icon in the toolbar you can refresh the thumbnails. <emphasis>&kmyapplication;</emphasis> will then find all the pictures you selected the tag and source filter for. If you want to automatically refresh the view after any change in the filter you can do so by the appropriate icon or via the Configure dialog.</para>
+    </sect2>
+
+    <sect2>
+        <title>Open images with a viewer program</title>
+        <para>Depending on your settings, <emphasis>&kmyapplication;</emphasis> opens the image in the internal or an external viewer when doupleclicking on a preview thumbnail. Unlike the external viewers, the internal also provides a slideshow function.</para>
+    </sect2>
+
+</sect1>
+
+<sect1 id="viewer">
+  <title>Internal Viewer</title>
+  <para><emphasis>&kmyapplication;</emphasis> comes with its own Internal Viewer. Of course you can also use any other viewer if you do not like it. Doubleclicking on an image in the thumbnail view will open that image in the Internal Image Viwer. You can therer scroll through all the pictures (use the left/right cursor buttons) which are matching the current filter.</para>
+        <screenshot>
+        <screeninfo>Internal Viewer</screeninfo>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="viewer.jpg" format="JPG" />
+            </imageobject>
+            <textobject>
+                <phrase>Internal Image Viewer</phrase>
+            </textobject>
+        </mediaobject>
+        </screenshot>
+<!--     <sect2>
+        <title></title>
+        <para></para>
+    </sect2> -->
+</sect1>
+
+<sect1 id="tags">
+  <title>Tags</title>
+      <para>Tags are the main tool to make the search functions of <emphasis>&kmyapplication;</emphasis> so powerful. They are a kind of label which can be given to the images. You can add as many tags to animageo as you want to. They can be arranged in a tree (Tag Tree). There are also several types of tags which are explained later on.</para>
+  <sect2>
+    <title>Tag Tree</title>
+    <para>Depending on your image collection you probably need several tags to describe the content of all your images. If you have many different kinds of images you could easily lose yourself in all the tags you need. Therefore <emphasis>&kmyapplication;</emphasis> organizes the tags in a hierarchical structure - the Tag Tree. In the Tag Tree you can add new tags, deleted and edit them. You can also give every tag an icon which makes it easier to recognize it and work even faster. Through the Tag Tree you can attach tags to your images but it can also figure as your filter. This all sounds a bit confusing but it is not. Read on...</para>
+  </sect2>
+
+  <sect2>
+    <title>Adding, Deleting and Editing Tags</title>
+    <para>The functions for adding, deleting and editing Tags can be reached by right clicking on the Tag Tree. Clicking on the background you can create Main Tags, clicking on a Tag you can create Sub Tags. Main Tags are there to let you give your tree a structure. You cannot associate a Main Tags with an image nor can you filter for it. You can use any type of Tag as a Main Tags.</para>
+
+    <sect3>
+        <title>Adding Main Tags</title>
+        <para>A Main Tag can be add through the menu "Manage" or via the context menu in the tag tree window. Make sure you do not right click on a already existing Tag there.</para>
+        <para>As you can seen on the screenshot below, you can Give your Main Tag a Title, a comment and an Icon. If you do chose an icon, the text will be displayed anyway. Choosing no icon, no icon at all will be displayed. The comment will be shown as tooltip when hovering over the tag.</para>
+        <para>You can also mark your tags as "Secret". That means, that <emphasis>&kmyapplication;</emphasis> will ask again, before you filter for those images. This way you can make sure not to show your very private images to your friends...</para>
+
+        <!--<important>Do not click on an already existing Tag to crate Main Tags!</important>-->
+
+        <screenshot>
+            <screeninfo>Adding Main Tag</screeninfo>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="create_ToplevelTag.png" format="PNG" />
+                </imageobject>
+                <textobject>
+                    <phrase>Adding a Main Tag</phrase>
+                </textobject>
+                <!--<caption>Adding a Main Tag</caption>-->
+            </mediaobject>
+        </screenshot>
+    </sect3>
+
+    <sect3>
+        <title>Adding Sub Tags</title>
+        <para>Adding Sub Tags is as easy as adding Main Tags. The Only difference is that you create Sub Tags on a Main Tag. You have the same choices when creating this kind of tag. The created tag will then be schown underneath its main tag in the tag tree.</para>
+
+        <screenshot>
+            <screeninfo>Adding Sub Tag</screeninfo>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="create_Tag.png" format="PNG" />
+                </imageobject>
+                <textobject>
+                    <phrase>Adding a Sub Tag</phrase>
+                </textobject>
+                <!--<caption>Adding a Sub Tag</caption>-->
+            </mediaobject>
+        </screenshot>
+    </sect3>
+
+
+
+    <sect3>
+        <title>Deleting Tags</title>
+        <para>Tags can be deleted via the Tag context menu. Click with the right mouse button on the Tag you want to delete and chose the entry "Delete Tag". The Tag and the associations between the Tag and the images will be deleted. If you delete a Tag which contains Sub Tags, the Sub Tags and their associations to the images will also be deleted.</para>
+    </sect3>
+
+    <sect3>
+        <title>Editing Tags</title>
+        <para>Tags can be edited via the Tag context menu. There you can edit the Tags Name, Comment and Icon. You cannot edit the tag type though. The Name of the Tag is what represents the Tag in the Tag tree. The comment you can set will be shown as a tool tip of this tag when hovering over it. If you select an icon, it will show left beside the Tag name in the tag tree. Choosing no icon will not show any icon at all (no space holder). </para>
+    </sect3>
+
+  </sect2>
+
+  <sect2>
+    <title>Tag Types</title>
+    <para>There are several types of tags which make the way you can use <emphasis>&kmyapplication;</emphasis> to organize your images very flexible. Available tag types up to now are: title-tags, boolean-tags, string-tags, option-lists, date-tags. </para>
+
+    <sect3>
+        <title>Title Tags</title>
+        <para>Title tags are here to let your tags give a structure. Ideally the are used to wrap tags of the same topic together. For example you have several pets at home you could make a tag called "Pets". Under that title tag you might for example create boolean tags for each of your pets.</para>
+    </sect3>
+
+    <sect3>
+        <title>Boolean Tags</title>
+        <para>Boolean Tags give a yes or no value to your images. You can annotate as many boolean tags to your images as you want.</para>
+    </sect3>
+
+    <sect3>
+        <title>Tag Option Lists</title>
+        <para>An option list can contain several different options. Only one value of an optionlist can be annotated to an image. This is also called a radio group.</para>
+    </sect3>
+
+    <sect3>
+        <title>String Tags</title>
+        <para>With string tags you can annotate words or phrases to your images. You can also search for these values.</para>
+    </sect3>
+
+    <sect3>
+        <title>Using Tags in a logic way</title>
+        <para>There are many ways you can possibly use and organise your tags. Depending on your image collection you will probably need many tags to properly index your collection. You are free, of course, to arrange your tags as you want. However, there are certain ways to arrange them in a way which will allow you to work even faster with KPhotoBook. You can arrange your tags hierarchical in a tag tree. A way to do that is for example to arrange all tags of the same type under one header. For that reason, we have created Main Tags. You cannot sort by these tags, their only purpose is to give you a tool to structure your tag tree. Instead of losing hundreds of words on how to give your tag tree a logical structure here comes an example:</para>
+    </sect3>
+
+    <sect3>
+        <title>Tagging Images</title>
+        <para>In KPhotoBook it is very easy to annotate a tag to one or several images at once. Just select all the images you want to annotate a tag to and click on the box of the tag in the tag tree. There you go. Quickly as this you have give your images your first tag.</para>
+    </sect3>
+
+  </sect2>
+</sect1>
+
+
+<sect1 id="filtering">
+  <title>Filtering the Image Database</title>
+  <para>&kmyapplication; provides an easy yet very powerful way to find your pictures. Given all pictures are tagged correctly as described above, &kmyapplication; can quickly find the pictures you are looking for. This tool is not only very powerful and fast but also easy and intuitive to use. This tool is based upon the Tag and Source Folder Tree. One can filter the pictures by the source they are saved in or by the tags they were given. You can search for pictures having a certain tag and also combine that with a certain source folder.</para>
+    <sect2>
+      <title>Filtering using the Source Folder Tree</title>
+      <para>under construction</para>
+    </sect2>
+
+    <sect2>
+      <title>Filtering using the Tag Tree</title>
+      <para>under construction</para>
+    </sect2>
+
+    <sect2>
+      <title>Combining Source and Tag Filter</title>
+      <para>under construction</para>
+    </sect2>
+
+</sect1>
+
+</chapter>
+
+
+<chapter id="kpb_configuration">
+  <title>Configuring &kmyapplication;</title>
+  <para> Many aspects of &kmyapplication; can be altered in the configure dialog. We will take you through all the options in this chapter.</para>
+
+  <sect1 id="config_dialog">
+    <title>The Configure Dialog</title>
+    <para>&kmyapplication; can be configured at "Settings" --> "Configure KPhotoBook". The configute dialog is split up in six parts which hold the options for special aspects of the program. The button "Defaults" will reset all options of all parts to the default values. "OK" will apply the changes and close the dialog. "Apply" will apply the changes and keep the dialog open. "Cancel" will deny the changes and close the dialog.</para>
+
+    <sect2>
+      <title>General</title>
+      <para>under construction</para>
+      <screenshot>
+      <screeninfo>Configure Dialog - General</screeninfo>
+      <mediaobject>
+          <imageobject>
+              <imagedata fileref="configure_General.png" format="PNG" />
+          </imageobject>
+          <textobject>
+              <phrase>Configure Dialog - General</phrase>
+          </textobject>
+      </mediaobject>
+      </screenshot>
+    </sect2>
+
+    <sect2>
+      <title>Tag Tree</title>
+      <para>under construction</para>
+      <screenshot>
+      <screeninfo>Configure Dialog - Tag Tree</screeninfo>
+      <mediaobject>
+          <imageobject>
+              <imagedata fileref="configure_TagTree.png" format="PNG" />
+          </imageobject>
+          <textobject>
+              <phrase>Configure Dialog - Tag Tree</phrase>
+          </textobject>
+      </mediaobject>
+      </screenshot>
+    </sect2>
+
+    <sect2>
+      <title>Source Folder Tree</title>
+      <para>under construction</para>
+      <screenshot>
+      <screeninfo>Configure Dialog - Source Folder Tree</screeninfo>
+      <mediaobject>
+          <imageobject>
+              <imagedata fileref="configure_SourceDirTree.png" format="PNG" />
+          </imageobject>
+          <textobject>
+              <phrase>Configure Dialog - Source Folder Tree</phrase>
+          </textobject>
+      </mediaobject>
+      </screenshot>
+    </sect2>
+
+    <sect2>
+      <title>Image Preview</title>
+      <para>under construction</para>
+      <screenshot>
+      <screeninfo>Configure Dialog - Image Preview</screeninfo>
+      <mediaobject>
+          <imageobject>
+              <imagedata fileref="configure_ImagePreview.png" format="PNG" />
+          </imageobject>
+          <textobject>
+              <phrase>Configure Dialog - Image Preview</phrase>
+          </textobject>
+      </mediaobject>
+      </screenshot>
+    </sect2>
+
+    <sect2>
+      <title>File Handling</title>
+      <para>under construction</para>
+      <screenshot>
+      <screeninfo>Configure Dialog - File Handling</screeninfo>
+      <mediaobject>
+          <imageobject>
+              <imagedata fileref="configure_FileHandling.png" format="PNG" />
+          </imageobject>
+          <textobject>
+              <phrase>Configure Dialog - File Handling</phrase>
+          </textobject>
+      </mediaobject>
+      </screenshot>
+    </sect2>
+
+    <sect2>
+      <title>Tools</title>
+      <para>under construction</para>
+      <screenshot>
+      <screeninfo>Configure Dialog - Tools</screeninfo>
+      <mediaobject>
+          <imageobject>
+              <imagedata fileref="configure_Tools.png" format="PNG" />
+          </imageobject>
+          <textobject>
+              <phrase>Configure Dialog - Tools</phrase>
+          </textobject>
+      </mediaobject>
+      </screenshot>
+    </sect2>
+
+  </sect1>
+</chapter>
+
+
+<chapter id="commands">
+<title>Command Reference</title>
+
+
+<sect1 id="kphotobook-mainwindow">
+<title>The main &kphotobook; window</title>
+
+<sect2>
+<title>The <guimenu>File</guimenu> Menu</title>
+<para>
+<variablelist>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo>
+</shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>New</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Creates a new &kmyapplication; database</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>O</keycap></keycombo>
+</shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Open</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Opens an existing &kmyapplication; database</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>S</keycap></keycombo>
+</shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Save</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Saves the current &kmyapplication; database</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>Save As</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Saves the current &kmyapplication; database in a new location</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>Export</guimenuitem>
+<guimenuitem>Matching Files</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Exports all the currently filtered images to a folder.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>Export</guimenuitem>
+<guimenuitem>Selected Files</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Exports the selected images to a folder.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>Rescan Filesystem</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Rescans the source folders which are added to the database for new files and - if added recursively - for sub-folders</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>W</keycap></keycombo>
+</shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Close</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Closes</action> the &kphotobook; window</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>Q</keycap></keycombo>
+</shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Close</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Quits</action> &kphotobook;</para></listitem>
+</varlistentry>
+
+</variablelist>
+</para>
+</sect2>
+
+
+<sect2>
+<title>The <guimenu>View</guimenu> Menu</title>
+<para>
+<variablelist>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul"><keycap>F5; </keycap></keycombo>
+<keycombo action="simul">&Ctrl;<keycap>R</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Refresh View</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Refreshes the thumbnail view. This may - for example - be necessary after having changed the tag or source folder filter.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Shift;<keycap>F5; </keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Autorefresh View</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Refreshes the thumbnail view automatically after i.e. filter changes.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>+</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Zoom</guimenuitem>
+<guimenuitem>Increase Preview Size</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>increases the thumbnail preview size.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>-</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Zoom</guimenuitem>
+<guimenuitem>Decrease Preview Size</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>decreases the thumbnail preview size.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Zoom</guimenuitem>
+<guimenuitem>Values 25 % - 100 %</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>sets the thumbnail preview size to the chosen value.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Tag Tree</guimenuitem>
+<guimenuitem>Expand All Tags</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Expands the whole tag tree with all its sub-tags so that the whole tree is visible.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Tag Tree</guimenuitem>
+<guimenuitem>Collapse All Tags</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Collapses the whole tag tree with all its sub-tags so that only the main tags are visible.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Tag Tree</guimenuitem>
+<guimenuitem>Reset Tag Filter</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Resets the Tag Filter so that all pictures are shown.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Tag Tree</guimenuitem>
+<guimenuitem>Show all untaged images</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Sets the Tag Filter so that all pictures with no tags are shown.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Source Folder</guimenuitem>
+<guimenuitem>Expand All Source Folders</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Expands the whole source folder tree with all its sub-trees so that the whole tree is visible.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Source Folder</guimenuitem>
+<guimenuitem>Collapse All Source Folders</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Collapses the whole source folder tree with all its sub-trees so that only the main folders are visible.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Source Folder</guimenuitem>
+<guimenuitem>Include All Src Dirs in Filter</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>All folders are included in the filter.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Source Folder</guimenuitem>
+<guimenuitem>Exclude All Src Dirs in Filter</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>All folders are excluded from the filter.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Source Folder</guimenuitem>
+<guimenuitem>invert Src Dir Filter</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Inverts the Source Folders in the filter. Source folders which were in the filter are excluded now and vice versa.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu>
+<guimenuitem>Restore Toolviews</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Restores the window positions to default. (in case you managed to mess it up :-) )</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl; &Shift;<keycap>F</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Full Screen Mode</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles Full Screen Mode</action></para></listitem>
+</varlistentry>
+
+</variablelist>
+</para>
+</sect2>
+
+
+<sect2>
+<title>The <guimenu>Manage</guimenu> Menu</title>
+<para>
+<variablelist>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Add Source Folder</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Adds a new source folder to the database. This can happen to a single folder or recursively.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Add Main Tag</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Adds a new main tag to the database. A main tag is a top level tag which can contain sub-tags</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Tag Filter Operator = AND</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Sets the tag filter operator to "AND". After refreshing, only the images which contain all the selected tags will be shown.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Tag Filter Operator = OR</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Sets the tag filter operator to "OR". After refreshing, all the images which contain any of the selected tags will be shown.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>L</keycap></keycombo>
+</shortcut>
+<guimenu>Manage</guimenu>
+<guimenuitem>Lock Tagging</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>You can no more annotate tags to pictures. Can be used if you only want to browse your collection and want to make sure you do not change tags by accident.</action></para></listitem>
+</varlistentry>
+
+</variablelist>
+</para>
+</sect2>
+
+
+
+<sect2>
+<title>The <guimenu>Settings</guimenu> Menu</title>
+<para>
+<variablelist>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Toolbars</guimenuitem>
+<guimenuitem>Show Main Toolbar</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Main Toolbar.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Toolbars</guimenuitem>
+<guimenuitem>Show Manage</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Manage Toolbar.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Toolbars</guimenuitem>
+<guimenuitem>Show Preview</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Preview Toolbar.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Manage</guimenu>
+<guimenuitem>Show Toolbar</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Statusbar.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Show Statusbar</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Statusbar.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Configure Shortcuts</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Opens the shortcut configure dialog.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Configure Toolbars</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Opens the toolbar configure dialog.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Configure &kmyapplication;</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Opens the &kmyapplication; configure dialog.</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Tool Views</guimenuitem>
+<guimenuitem>Show Tagtree</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Tag Tree</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Tool Views</guimenuitem>
+<guimenuitem>Show Sourcedirtree</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the Source Folder Tree</action></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Tool Views</guimenuitem>
+<guimenuitem>Show EXIF</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Toggles the EXIF Window</action></para></listitem>
+</varlistentry>
+
+<!--
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl; &Shift;<keycap>F5</keycap></keycombo>
+</shortcut>
+<guimenu>View</guimenu>
+<guimenuitem>Autorefresh View</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Refreshes the thumbnail view automatically after changes.</action></para></listitem>
+</varlistentry>
+
+-->
+
+</variablelist>
+</para>
+</sect2>
+
+
+<sect2>
+<title>The <guimenu>Help</guimenu> Menu</title>
+
+<!-- Assuming you have a standard help menu (help, what's this, about -->
+<!-- &kphotobook;, about KDE) then the documentation is already written. -->
+<!-- The following entity is valid anywhere that a variablelist is -->
+<!-- valid.  -->
+
+&help.menu.documentation;
+
+</sect2>
+
+</sect1>
+</chapter>
+
+
+
+<chapter id="faq">
+<title>Questions and Answers</title>
+
+<!-- (OPTIONAL but recommended) This chapter should include all of the silly
+(and not-so-silly) newbie questions that fill up your mailbox. This chapter
+should be reserved for BRIEF questions and answers! If one question uses more
+than a page or so then it should probably be part of the
+"Using this Application" chapter instead. You should use links to
+cross-reference questions to the parts of your documentation that answer them.
+This is also a great place to provide pointers to other FAQ's if your users
+must do some complicated configuration on other programs in order for your
+application work. -->
+
+&reporting.bugs;
+&updating.documentation;
+
+<qandaset id="faqlist">
+
+<qandaentry>
+<question>
+<para>How can I report bugs in &kmyapplication;?</para>
+</question>
+<answer>
+<para>Please visit the &project.page;. Please do not send an email concerning bugs to the developer directly.</para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para>How can I report issues within this homepage?</para>
+</question>
+<answer>
+<para>Please send an email to the maintainer of the &project.homepage;.</para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para>Is the &kmyapplication; database compatible with the KimDaBA or Fotoon database?</para>
+</question>
+<answer>
+<para>No, it is not. Maybe there will be an import function.</para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para>Will I be able to use Digikam plugins?</para>
+</question>
+<answer>
+<para>Maybe, one day...</para>
+</answer>
+</qandaentry>
+
+<qandaentry>
+<question>
+<para>When will the next version be released?</para>
+</question>
+<answer>
+<para>It's done when it's done :-)</para>
+</answer>
+</qandaentry>
+
+</qandaset>
+</chapter>
+
+<chapter id="credits">
+
+<!-- Include credits for the programmers, documentation writers, and
+contributors here. The license for your software should then be included below
+the credits with a reference to the appropriate license file included in the KDE
+distribution. -->
+
+<title>Credits and License</title>
+
+<para>
+&kphotobook;
+</para>
+<para>
+Program copyright 2004 &author.name; &author.mail;
+</para>
+<para>
+Contributors (in alphabetical order):
+<itemizedlist>
+    <listitem><para>&author3.name; &author3.mail;</para></listitem>
+    <listitem><para>Daniel Gerber</para></listitem>
+    <listitem><para>&author2.name; &author2.mail;</para></listitem>
+</itemizedlist>
+</para>
+
+<para>
+Documentation copyright 2004 &author2.name; &author2.mail;
+</para>
+
+<!-- TRANS:CREDIT_FOR_TRANSLATORS -->
+
+&underFDL;               <!-- FDL: do not remove -->
+
+<!-- Determine which license your application is licensed under,
+     and delete all the remaining licenses below:
+
+     (NOTE:  All documentation are licensed under the FDL,
+     regardless of what license the application uses) -->
+
+&underGPL;               <!-- GPL License -->
+
+</chapter>
+
+<appendix id="installation">
+<title>Installation</title>
+
+<sect1 id="getting-kphotobook">
+<title>How to obtain &kphotobook;</title>
+
+<!-- This first entity contains boiler plate for applications that are
+part of KDE CVS.  You should remove it if you are releasing your
+application -->
+
+&install.intro.documentation;
+
+</sect1>
+
+<sect1 id="requirements">
+<title>Requirements</title>
+
+<!--
+List any special requirements for your application here. This should include:
+.Libraries or other software that is not included in kdesupport,
+kdelibs, or kdebase.
+.Hardware requirements like amount of RAM, disk space, graphics card
+capabilities, screen resolution, special expansion cards, etc.
+.Operating systems the app will run on. If your app is designed only for a
+specific OS, (you wrote a graphical LILO configurator for example) put this
+information here.
+-->
+
+<!--
+<para>
+In order to successfully use &kphotobook;, you need &kde; 1.1. Foobar.lib is
+required in order to support the advanced &kphotobook; features. &kphotobook; uses
+about 5 megs of memory to run, but this may vary depending on your
+platform and configuration.
+</para>
+
+<para>
+All required libraries as well as &kphotobook; itself can be found
+on <ulink url="ftp://ftp.kphotobook.org">The &kphotobook; home page</ulink>.
+</para>
+-->
+
+<!-- For a list of updates, you may refer to the application web site
+or the ChangeLog file, or ... -->
+
+
+<para>
+You can find a list of changes at <ulink url="http://apps.kde.org/kphotobook">http://apps.kde.org/kphotobook</ulink>.
+</para>
+</sect1>
+
+<sect1 id="compilation">
+<title>Compilation and Installation</title>
+
+<!-- This entity contains the boilerplate text for standard -->
+<!-- compilation instructions.  If your application requires any -->
+<!-- special handling, remove it, and replace with your own text. -->
+
+&install.compile.documentation;
+
+</sect1>
+
+
+<sect1 id="configuration">
+<title>Configuration</title>
+
+<para>Don't forget to tell your system to start the <filename>dtd</filename>
+dicer-toaster daemon first, or &kphotobook; won't work !</para>
+
+</sect1>
+
+</appendix>
+
+<!-- &documentation.index;-->
+</book>
+
+<!--
+Local Variables:
+mode: sgml
+sgml-minimize-attributes:nil
+sgml-general-insert-case:lower
+sgml-indent-step:0
+sgml-indent-data:nil
+End:
+
+vim:tabstop=2:shiftwidth=2:expandtab
+-->
+

@@ -1,0 +1,171 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>SettingsGeneral</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>SettingsGeneral</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>600</width>
+            <height>480</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form1</string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox1</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>GroupBoxPanel</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="title">
+                <string>Appearance</string>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel1</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>7</hsizetype>
+                            <vsizetype>5</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="text">
+                        <string>GUI mode</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;GUI Mode&lt;/b&gt;
+&lt;p&gt;&lt;i&gt;Tab Page Mode&lt;/i&gt; will put tabs of the open trees above the tree window. One of the trees is always visible.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;IDEAl Mode&lt;/i&gt; will place the tabs on the left side. The trees can be hidden if necessary.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="KComboBox">
+                    <item>
+                        <property name="text">
+                            <string>IDEAl Mode</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Tab Page Mode</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>kcfg_GeneralViewMode</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>7</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;GUI Mode&lt;/b&gt;
+&lt;p&gt;&lt;i&gt;Tab Page Mode&lt;/i&gt; will put tabs of the open trees above the tree window. One of the trees is always visible.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;IDEAl Mode&lt;/i&gt; will place the tabs on the left side. The trees can be hidden if necessary.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox2</cstring>
+            </property>
+            <property name="title">
+                <string>Actions while starting</string>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_GeneralRescanWhileStartup</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Resca&amp;n source folders on startup</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+N</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Rescan folders on startup&lt;/b&gt;
+
+&lt;p&gt;Enabling this option will KPhotoBook make scan through all the folders being already in the database. While this scan new subfolders and new files will be detected. Those items will be included in the database automatically. If there are deleted items the user will be asked what to do.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox3</cstring>
+            </property>
+            <property name="title">
+                <string>Actions while exiting</string>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_GeneralCheckUntaggedOnExit</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Check for &amp;untagged images</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+U</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Check for untagged images&lt;/b&gt;
+
+&lt;p&gt;If enabled you will be asked when exiting the program if you want to tag the untagged images and if those should be displayed.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+            </vbox>
+        </widget>
+        <spacer>
+            <property name="name">
+                <cstring>spacer2</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>20</width>
+                    <height>290</height>
+                </size>
+            </property>
+        </spacer>
+    </vbox>
+</widget>
+<layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>kcombobox.h</includehint>
+</includehints>
+</UI>

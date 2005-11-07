@@ -1,0 +1,292 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>SettingsImagePreview</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>SettingsImagePreview</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>619</width>
+            <height>490</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form1</string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox1</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>GroupBoxPanel</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="title">
+                <string>View</string>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout7</cstring>
+                    </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLayoutWidget" row="0" column="1">
+                            <property name="name">
+                                <cstring>layout6</cstring>
+                            </property>
+                            <hbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="KRestrictedLine">
+                                    <property name="name">
+                                        <cstring>previewSize</cstring>
+                                    </property>
+                                    <property name="enabled">
+                                        <bool>false</bool>
+                                    </property>
+                                    <property name="sizePolicy">
+                                        <sizepolicy>
+                                            <hsizetype>3</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                            <horstretch>0</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
+                                    </property>
+                                    <property name="maximumSize">
+                                        <size>
+                                            <width>54</width>
+                                            <height>32767</height>
+                                        </size>
+                                    </property>
+                                    <property name="lineWidth">
+                                        <number>3</number>
+                                    </property>
+                                    <property name="text">
+                                        <string>48</string>
+                                    </property>
+                                    <property name="alignment">
+                                        <set>AlignRight</set>
+                                    </property>
+                                    <property name="whatsThis" stdset="0">
+                                        <string>&lt;b&gt;Preview size&lt;/b&gt;
+&lt;p&gt;This sets the size of the preview thumbnails in the thumbnail viewer. The size can be between 32 and 160.&lt;/p&gt;</string>
+                                    </property>
+                                </widget>
+                                <widget class="QSlider">
+                                    <property name="name">
+                                        <cstring>kcfg_ImagePreviewSize</cstring>
+                                    </property>
+                                    <property name="sizePolicy">
+                                        <sizepolicy>
+                                            <hsizetype>7</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                            <horstretch>1</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
+                                    </property>
+                                    <property name="minValue">
+                                        <number>32</number>
+                                    </property>
+                                    <property name="maxValue">
+                                        <number>160</number>
+                                    </property>
+                                    <property name="lineStep">
+                                        <number>8</number>
+                                    </property>
+                                    <property name="value">
+                                        <number>48</number>
+                                    </property>
+                                    <property name="orientation">
+                                        <enum>Horizontal</enum>
+                                    </property>
+                                    <property name="whatsThis" stdset="0">
+                                        <string>&lt;b&gt;Preview size&lt;/b&gt;
+&lt;p&gt;This sets the size of the preview thumbnails in the thumbnail viewer. The size can be between 32 and 160.&lt;/p&gt;</string>
+                                    </property>
+                                </widget>
+                            </hbox>
+                        </widget>
+                        <widget class="KFontRequester" row="1" column="1">
+                            <property name="name">
+                                <cstring>kcfg_ImagePreviewFont</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="1" column="0">
+                            <property name="name">
+                                <cstring>textLabel3</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Font</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Font&lt;/b&gt;
+&lt;p&gt;This selects the font for the image names in the thumbnail view.&lt;/p&gt;</string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="0" column="0">
+                            <property name="name">
+                                <cstring>textLabel1</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Preview size</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Preview size&lt;/b&gt;
+&lt;p&gt;This sets the size of the preview thumbnails in the thumbnail viewer. The size can be between 32 and 160.&lt;/p&gt;</string>
+                            </property>
+                        </widget>
+                    </grid>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_ImagePreviewShowName</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="text">
+                        <string>Show the filename below the image preview</string>
+                    </property>
+                </widget>
+            </vbox>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox2</cstring>
+            </property>
+            <property name="title">
+                <string>Behavior</string>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>kcfg_ImagePreviewAutoRefresh</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Autorefresh the image preview</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>&lt;b&gt;Autorefresh the image preview&lt;/b&gt;
+&lt;p&gt;If enabled KPhotoBook automatically refreshes the thumbnail window after having changed your filter.&lt;/p&gt;</string>
+                    </property>
+                </widget>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout3</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>textLabel1_2</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Selection mode</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Selection mode&lt;/b&gt;
+&lt;p&gt;&lt;b&gt;Extended&lt;/b&gt;: You can select multiple images by pressing shift or control.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Multi&lt;/b&gt;:You do not need to press shift or control to select multtiple images.&lt;/p&gt;</string>
+                            </property>
+                        </widget>
+                        <widget class="KComboBox">
+                            <item>
+                                <property name="text">
+                                    <string>Extended</string>
+                                </property>
+                            </item>
+                            <item>
+                                <property name="text">
+                                    <string>Multi</string>
+                                </property>
+                            </item>
+                            <property name="name">
+                                <cstring>kcfg_ImagePreviewSelectionMode</cstring>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>&lt;b&gt;Selection mode&lt;/b&gt;
+&lt;p&gt;&lt;b&gt;Extended&lt;/b&gt;: You can select multiple images by pressing shift or control.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Multi&lt;/b&gt;:You do not need to press shift or control to select multtiple images.&lt;/p&gt;</string>
+                            </property>
+                        </widget>
+                        <spacer>
+                            <property name="name">
+                                <cstring>spacer3</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                    </hbox>
+                </widget>
+            </vbox>
+        </widget>
+        <spacer>
+            <property name="name">
+                <cstring>spacer3_2</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>20</width>
+                    <height>40</height>
+                </size>
+            </property>
+        </spacer>
+    </vbox>
+</widget>
+<connections>
+    <connection>
+        <sender>kcfg_ImagePreviewSize</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>SettingsImagePreview</receiver>
+        <slot>kcfg_ImagePreviewSize_valueChanged(int)</slot>
+    </connection>
+</connections>
+<includes>
+    <include location="local" impldecl="in implementation">settingsimagepreview.ui.h</include>
+</includes>
+<slots>
+    <slot>kcfg_ImagePreviewSize_valueChanged( int )</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>krestrictedline.h</includehint>
+    <includehint>kfontrequester.h</includehint>
+    <includehint>kcombobox.h</includehint>
+</includehints>
+</UI>
