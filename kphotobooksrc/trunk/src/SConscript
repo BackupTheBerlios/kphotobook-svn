@@ -33,7 +33,7 @@ print "searching cpp and ui files in: ."
 matchingfiles = []
 for dir, dirs, files in os.walk("."):
   matchingfiles += glob.glob(os.path.join(dir, "*.cpp"))
-  matchingfiles += glob.glob(os.path.join(dir, "*.ui"))
+#  matchingfiles += glob.glob(os.path.join(dir, "*.ui"))
 
 matchingfiles.sort()
 

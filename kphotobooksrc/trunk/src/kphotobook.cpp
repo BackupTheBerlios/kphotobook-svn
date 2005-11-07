@@ -287,8 +287,7 @@ void KPhotoBook::load(QFileInfo& fileinfo)
         QString msg = QString(i18n("Could not open file: '%1'")).arg(fileinfo.absFilePath());
         KMessageBox::detailedSorry(m_view, msg, ex->toString(), i18n("Opening file failed"));
 
-        ///@todo it's very strange, but the application crashes if I delete the exception!!!
-        //delete ex;
+        delete ex;
     }
 
     tracer->sdebug(__func__) << "New engine instantiated: " << newEngine << endl;
@@ -665,8 +664,7 @@ bool KPhotoBook::slotFileSave()
             fileSaved = true;
         } catch(PersistingException* ex) {
             KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
-            ///@todo it's very strange, but the application crashes if I delete the exception!!!
-            //delete ex;
+            delete ex;
         }
     } else {
         return slotFileSaveAs();
@@ -707,8 +705,7 @@ bool KPhotoBook::slotFileSaveAs()
                 fileSaved = true;
             } catch(PersistingException* ex) {
                 KMessageBox::detailedError(m_view, ex->message(), ex->detailMessage(), i18n("Saving failed"));
-                ///@todo it's very strange, but the application crashes if I delete the exception!!!
-                //delete ex;
+                delete ex;
             }
         }
     }
@@ -815,10 +812,6 @@ void KPhotoBook::slotAddSourcedir()
             // add the folder to the engine
             addSourceDir(dialog->directory(), dialog->recursive());
 
-            ///@TODO remove...
-//            tracer->debug(__func__, "New folder is ok. adding it to the view...");
-//            m_sourcedirTree->addSourceDir(sourceDir);
-
             // update the view to display the new found files
             tracer->debug(__func__, "updating fileview");
             m_view->updateFiles();
@@ -830,8 +823,7 @@ void KPhotoBook::slotAddSourcedir()
 
             KMessageBox::detailedError(dialog, ex->message(), ex->detailMessage(), i18n("Adding folder failed"));
 
-            ///@todo it's very strange, but the application crashes if I delete the exception!!!
-            //delete ex;
+            delete ex;
         }
     }
     delete dialog;

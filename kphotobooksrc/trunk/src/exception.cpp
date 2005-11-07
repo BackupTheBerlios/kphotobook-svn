@@ -35,8 +35,6 @@ EngineException::EngineException(QString message, QString detailMessage) :
 
 EngineException::~EngineException()
 {
-    delete m_message;
-    delete m_detailMessage;
 }
 
 
