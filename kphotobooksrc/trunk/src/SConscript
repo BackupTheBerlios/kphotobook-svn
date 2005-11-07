@@ -30,11 +30,21 @@ import string
 
 print "searching cpp and ui files in: ."
 
-matchingfiles = []
+cppfiles = []
 for dir, dirs, files in os.walk("."):
-  matchingfiles += glob.glob(os.path.join(dir, "*.cpp"))
-#  matchingfiles += glob.glob(os.path.join(dir, "*.ui"))
-
+  cppfiles += glob.glob(os.path.join(dir, "*.cpp"))
+  
+uifiles = []
+for dir, dirs, files in os.walk("."):
+  uifiles += glob.glob(os.path.join(dir, "*.ui"))
+  
+# remove all cpp files where a ui files exists for
+for uifile in uifiles:
+  cppfile = uifile.replace('.ui', '.cpp')
+  if cppfile in cppfiles:
+    cppfiles.remove(cppfile)
+  
+matchingfiles = cppfiles + uifiles
 matchingfiles.sort()
 
 obj.source = string.join(matchingfiles, "\n")
