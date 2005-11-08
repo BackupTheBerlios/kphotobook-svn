@@ -27,14 +27,12 @@
 
 
 DialogImageViewer::DialogImageViewer(QWidget* parent, KFileIconView* fileView) :
-    KDialog(parent, "", false)
+    KDialog(parent, "", false), m_imageViewer(new ImageViewer(this, fileView))
 {
-    this->setWFlags(Qt::WStyle_StaysOnTop | Qt::WNoAutoErase | Qt::WPaintClever);
+    setWFlags(Qt::WStyle_StaysOnTop | Qt::WNoAutoErase | Qt::WPaintClever);
 
-    m_imageViewer = new ImageViewer(this, fileView);
     connect(m_imageViewer, SIGNAL(signalEnterPressed()), SLOT(slotToggleFullscreen()));
 }
-
 
 
 DialogImageViewer::~DialogImageViewer()
@@ -42,13 +40,11 @@ DialogImageViewer::~DialogImageViewer()
     delete m_imageViewer;
 }
 
-
-void DialogImageViewer::show(File* selectedImage)
+void DialogImageViewer::showImage(File* selectedImage)
 {
-    m_imageViewer->show(selectedImage);
+    m_imageViewer->showImage(selectedImage);
     KDialog::show();
 }
-
 
 bool DialogImageViewer::close ( bool alsoDelete )
 {
@@ -56,27 +52,20 @@ bool DialogImageViewer::close ( bool alsoDelete )
     return KDialog::close(alsoDelete);
 }
 
-
-
 void DialogImageViewer::resizeEvent ( QResizeEvent * e)
 {
     m_imageViewer->resize(e->size());
 }
-
-
 
 void DialogImageViewer::updateImages()
 {
     m_imageViewer->updateImageList();
 }
 
-
-
 void DialogImageViewer::mouseDoubleClickEvent ( QMouseEvent* /* e */ )
 {
     slotToggleFullscreen();
 }
-
 
 void DialogImageViewer::slotToggleFullscreen()
 {
@@ -90,4 +79,3 @@ void DialogImageViewer::slotToggleFullscreen()
 
 
 #include "dialogimageviewer.moc"
-

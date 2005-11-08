@@ -17,8 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-
 #ifndef DIALOGIMAGEVIEWER_H
 #define DIALOGIMAGEVIEWER_H
 
@@ -41,8 +39,8 @@ class DialogImageViewer : public KDialog
         void updateImages();
 
         void mouseDoubleClickEvent ( QMouseEvent* );
-
-        virtual void show (File* selectedImage);
+        
+        virtual void showImage(File* selectedImage);
 
         virtual bool close ( bool alsoDelete );
 

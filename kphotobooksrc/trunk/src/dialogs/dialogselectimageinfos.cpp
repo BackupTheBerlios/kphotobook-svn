@@ -38,7 +38,6 @@ void DialogSelectImageInfos::fillTags(const Engine& engine)
 
         //new QListViewItem(listVisibleTags, "xxxx");
         //listVisibleTags->insertItem("xxxx");
-
     }
 
 }
