@@ -44,18 +44,18 @@ class XImage
         virtual ~XImage();
 
         void     setFile(File* file);
-        File*    file() { return m_file; };
+        File*    file() const { return m_file; }; 
 
         void     free();
 
-        QPixmap* scaled()                { return &m_scaled; };
+        QPixmap& scaled()                { return m_scaled; };
 
         void     setSmoothScale(bool);
 
         void     setMaxDimensions(int maxWidth, int maxHeight);
 
-        bool     isValid();
-        bool     workLeft();
+        bool     isValid() const;
+        bool     workLeft() const;
 
         bool     doWork(bool forceFull = false);
         void     scale(int desiredWidth, int desiredHeight, bool forceDoWork = false);
@@ -66,6 +66,7 @@ class XImage
         bool     convertImage();
         bool     scaleImage();
 
+    private:      
         bool     m_smoothScale;
 
         int      m_maxWidth;
@@ -95,7 +96,7 @@ class ImageViewer : public QWidget
         virtual ~ImageViewer();
 
         void  updateImageList();
-        void  show(File* selectedFile);
+        void  showImage(File* selectedFile);
 
         void  free();
 

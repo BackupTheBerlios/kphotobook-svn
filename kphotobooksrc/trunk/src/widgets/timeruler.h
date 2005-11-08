@@ -35,12 +35,12 @@ class QTimer;
 
 using namespace std;
 
-
-class DateBinder
+/** this class represents an advanced list of dates */
+class ListOfDates
 {
     public:
-        DateBinder();
-        ~DateBinder();
+        ListOfDates();
+        ~ListOfDates();
     
         /**
         * adds the QDate d to this list of dates
@@ -48,8 +48,7 @@ class DateBinder
         void addDate(const QDate& d);
     
         /**
-        * @returns the number of images which mach the given
-        * year, year/month, year/month/day combo
+        * @returns the number of images which mach the given year, year/month, year/month/day combo
         * @param contd if true, the iterator will not be reset to the beginning. This
         * is usefull for continued counting of dates within a loop or so. Be careful, as
         * the data is sorted from low to high, dates could be missed, if they're lower then
@@ -72,8 +71,11 @@ class DateBinder
         */
         int numYears();
     
+	/** @returns the year of the latest date in this container */
         int maxYear();
+	/** @returns the month of the latest date in this container */
         int maxMonth();
+	/** @returns the day of the latest date in this container */
         int maxDay();
     
     private:
@@ -195,7 +197,7 @@ class TimeRuler : public QWidget
         QPoint m_mousePressPosition;
     
         /// the list of dates available in this album
-        DateBinder  m_lstDates;
+        ListOfDates  m_lstDates;
     
         /// the basic pixmap the timeruler is made of
         QPixmap m_pixmap;

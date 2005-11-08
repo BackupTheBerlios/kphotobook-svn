@@ -494,19 +494,19 @@ void TimeRuler::slotScrollTimerFired()
 /////////////////////////////////////////////////////////////////////////////////
 
 
-DateBinder::DateBinder()
+ListOfDates::ListOfDates()
 {
     m_maxYear  = -1;
     m_maxMonth = -1;
     m_maxDay   = -1;
 }
 
-DateBinder::~DateBinder()
+ListOfDates::~ListOfDates()
 {
 }
 
 
-void DateBinder::addDate(const QDate& d)
+void ListOfDates::addDate(const QDate& d)
 {
     list<QDate>::iterator it;
     for (it= m_lstData.begin(); it != m_lstData.end(); ++it) {
@@ -526,7 +526,7 @@ void DateBinder::addDate(const QDate& d)
 }
 
 
-int DateBinder::count (int year, int month, int day, bool cntd)
+int ListOfDates::count (int year, int month, int day, bool cntd)
 {
     int count = 0;
     static list<QDate>::iterator it = m_lstData.begin();
@@ -581,7 +581,7 @@ int DateBinder::count (int year, int month, int day, bool cntd)
 }
 
 
-int DateBinder::firstYear()
+int ListOfDates::firstYear()
 {
     if (m_lstData.size()) {
         return m_lstData.front().year();
@@ -590,7 +590,7 @@ int DateBinder::firstYear()
 }
 
 
-int DateBinder::lastYear()
+int ListOfDates::lastYear()
 {
     if (m_lstData.size()) {
         return m_lstData.back().year();
@@ -598,13 +598,13 @@ int DateBinder::lastYear()
     return -1;
 }
 
-int DateBinder::numYears()
+int ListOfDates::numYears()
 {
     return lastYear() - firstYear() + 1;
 }
 
 
-int DateBinder::maxYear()
+int ListOfDates::maxYear()
 {
     if (m_maxYear <= 0) {
         //calculate the max;
@@ -634,7 +634,7 @@ int DateBinder::maxYear()
 }
 
 
-int DateBinder::maxMonth()
+int ListOfDates::maxMonth()
 {
     if (m_maxMonth <= 0) {
         //calculate the max;
@@ -664,7 +664,7 @@ int DateBinder::maxMonth()
 }
 
 
-int DateBinder::maxDay()
+int ListOfDates::maxDay()
 {
     if (m_maxDay <= 0) {
         //calculate the max;

@@ -24,6 +24,7 @@
 #include "../engine/file.h"
 #include "../settings/settings.h"
 #include "../tracer/tracer.h"
+#include "../engine/filetagnodeassoc.h"
 
 #include <kaction.h>
 #include <kfileiconview.h>
@@ -41,17 +42,14 @@
 #include <qmenubar.h>
 #include <qmessagebox.h>
 #include <qsimplerichtext.h>
-
+#include <qvaluevector.h>
 
 Tracer* ImageViewer::tracer = Tracer::getInstance("kde.kphotobook.widgets", "ImageViewer");
 
-
 ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* name) :
-    QWidget( parent, name, Qt::WDestructiveClose)
+    QWidget( parent, name, Qt::WDestructiveClose), m_fileView(fileView)
 {
     tracer->invoked(__func__);
-
-    m_fileView = fileView;
 
     //this is necessary, to be able to recieve key events
     this->setFocusPolicy(QWidget::WheelFocus);
@@ -92,7 +90,7 @@ ImageViewer::ImageViewer( QWidget* parent, KFileIconView* fileView, const char* 
 }
 
 
-ImageViewer::~ImageViewer()
+ImageViewer::~ImageViewer() 
 {
     tracer->invoked(__func__) ;
 
@@ -102,7 +100,7 @@ ImageViewer::~ImageViewer()
 }
 
 
-void ImageViewer::free()
+void ImageViewer::free() 
 {
     m_curImage->free();
     m_nxtImage->free();
@@ -152,7 +150,7 @@ void ImageViewer::updateImageList()
  * @param selectedFile the file that is currently selected (ie doubleclickted) in
  * the listview
  */
-void ImageViewer::show(File* selectedFile)
+void ImageViewer::showImage(File* selectedFile)
 {
     // if a non null image should be shown...
     if (selectedFile != 0L) {
@@ -608,14 +606,28 @@ void ImageViewer::generateInfoOverlay()
 
     QString date = QDateTime::currentDateTime().toString("yyyy.MM.dd - hh:mm:ss");
 
+    // %1: first column
+    // %2: second column
     QString row = QString("<tr><font size=+1><td><b>%1:</b></td><td>%2</td></font></tr>");
 
-    QString table = "<table>";
-    table += QString("<tr><td colspan=+2><font face=sans size=+3>%1</font></td></tr>").arg(date);
-    table += row.arg("Filename").arg(m_lstImages.current()->fileInfo()->fileName());
-    //table += row.arg("Iso").arg("100");
-    table += "</table>";
+    File* f = m_lstImages.current();
 
+    QValueVector<int> vv;
+    vv.push_back(2); // ExposureTime
+    vv.push_back(3); // aperture
+    vv.push_back(5); //ISO?
+
+    FileTagNodeAssoc* ftna = 0L;
+
+    QString table = "<table>";
+    //table += QString("<tr><td colspan=+2><font face=sans size=+3>%1</font></td></tr>").arg(date);
+    table += row.arg("Filename").arg(m_lstImages.current()->fileInfo()->fileName());
+    for( QValueVector<int>::const_iterator it = vv.begin(); it != vv.end(); ++it) {
+        if ((ftna = f->getAssoc( *it )) != 0L) {
+            table += row.arg(ftna->keyAsString()).arg(ftna->valueAsString());
+        }
+    }
+    table += "</table>";
 
     QSimpleRichText srt(table, font());
     srt.setWidth(width());
@@ -735,7 +747,7 @@ void ImageViewer::resizeEvent( QResizeEvent * )
 
 void ImageViewer::paintEvent( QPaintEvent *e )
 {
-    if ( m_curImage->scaled()->isNull() ) {
+    if ( m_curImage->scaled().isNull() ) {
         tracer->sdebug(__func__) << "preScaled Image is null, unable to display!" << endl;
         //force the current image to finish its work!
         m_curImage->doWork(true);
@@ -754,8 +766,8 @@ void ImageViewer::paintEvent( QPaintEvent *e )
 
 
     //calculate the base of the image to have it centered
-    int x =( w - m_curImage->scaled()->width())  / 2;
-    int y =( h - m_curImage->scaled()->height()) / 2;
+    int x =( w - m_curImage->scaled().width())  / 2;
+    int y =( h - m_curImage->scaled().height()) / 2;
 
     //only draw the black bg, if the image does not cover the whole widget
     if (x != 0 || y != 0) {
@@ -770,7 +782,7 @@ void ImageViewer::paintEvent( QPaintEvent *e )
         painter.drawPixmap(0, 0, m_bgPixmap);
     }
 
-    painter.drawPixmap(x, y, *m_curImage->scaled());
+    painter.drawPixmap(x, y, m_curImage->scaled());
 
 
     if (!m_imageCounterOverlayBG.isNull()) {
@@ -801,16 +813,8 @@ Tracer* XImage::tracer = Tracer::getInstance("kde.kphotobook.dialogs", "XImage")
 
 
 XImage::XImage(int maxWidth, int maxHeight)
+    : m_smoothScale(false), m_file(0L), m_alloc_context(0L)
 {
-    m_file   = 0L;
-    m_image  = QImage();
-    m_pixmap = QPixmap();
-    m_scaled = QPixmap();
-
-    m_smoothScale = false;
-
-    m_alloc_context = 0L;
-
     free();
 
     setMaxDimensions(maxWidth, maxHeight);
@@ -819,8 +823,9 @@ XImage::XImage(int maxWidth, int maxHeight)
 
 XImage::~XImage()
 {
-    if ( m_alloc_context )
+    if ( m_alloc_context ) {
         QColor::destroyAllocContext( m_alloc_context );
+    }      
 }
 
 
@@ -875,7 +880,7 @@ void XImage::setMaxDimensions(int maxWidth, int maxHeight)
  *
  * @returns true, if work is left to be done, ie the 3 steps are not all done
  */
-bool XImage::doWork(bool forceFull)
+bool XImage::doWork(bool forceFull /* = false*/)
 {
     if (m_file == NULL) {
         tracer->serror(__func__) << "has benn called with m_file = 0L ! This should not happen!" << endl;
@@ -924,7 +929,7 @@ bool XImage::doWork(bool forceFull)
 /**
  * @returns true, if work has to be done
  */
-bool XImage::workLeft()
+bool XImage::workLeft() const
 {
     // is one of them null, or is the scaled one null and a width/heigt are given?
     return (m_file
@@ -937,7 +942,7 @@ bool XImage::workLeft()
  * @returns true, if this image is valid, that means, data could be loaded from a file
  * and are ready for transitions
  */
-bool XImage::isValid()
+bool XImage::isValid() const
 {
     return m_file && !m_image.isNull();
 }
@@ -951,7 +956,7 @@ bool XImage::isValid()
  *
  *
  */
-void XImage::scale(int width, int height, bool forceDoWork)
+void XImage::scale(int width, int height, bool forceDoWork /*= false*/)
 {
     //if we already have that size, do nothing;
 //     if (m_desiredWidth == width && m_desiredHeight == height)
@@ -1035,7 +1040,6 @@ bool XImage::convertImage()
  */
 bool XImage::scaleImage()
 {
-
     if (m_pixmap.isNull() || m_desiredWidth <= 0 || m_desiredHeight <= 0) {
         return false;
     }
