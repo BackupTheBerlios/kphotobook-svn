@@ -232,7 +232,7 @@ void KPhotoBookView::slotShowCurrentImage()
         tracer->sdebug(__func__) << "Opening internal Imageviewer ... " << endl;
 
         m_dlgImageViewer->updateImages();
-        m_dlgImageViewer->show(dynamic_cast<File*>(m_fileView->currentFileItem()));
+        m_dlgImageViewer->showImage(dynamic_cast<File*>(m_fileView->currentFileItem()));
     } else {
         QString tool = Settings::toolsDefaultExternalTool();
 
