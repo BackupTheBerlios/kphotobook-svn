@@ -42,7 +42,6 @@ m_iFolderCount(0), m_iFileCountTotal(0), m_iFileCountMatched(0), m_wasCanceled(f
     m_icoLblArchive->setPixmap( KGlobal::iconLoader()->loadIcon( "viewmag", KIcon::Toolbar));
     m_icoLblDest->setPixmap(    KGlobal::iconLoader()->loadIcon( "viewmag", KIcon::Toolbar));
 
-
     connect(m_btnAbort, SIGNAL(clicked()), SLOT(slotAbortClicked()));
     connect(m_btnClose, SIGNAL(clicked()), SLOT(close()));
 }

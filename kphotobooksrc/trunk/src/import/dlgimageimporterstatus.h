@@ -44,7 +44,7 @@ public:
     /**
      * used to enable or disable the Archive Slot
      */
-    void enableImageArchive(bool b);
+	void enableImageArchive(bool b);
 
     /**
      * sets the currently active Mode to m
@@ -100,7 +100,7 @@ private:
     //current count used for Archive AND Dest progress bar
     int m_iCurrentProgress;
 
-    bool m_wasCanceled;
+    volatile bool m_wasCanceled;
 
     //status messages are cached here
     QString m_strStatusMessages;

@@ -42,6 +42,7 @@
 #include <qwhatsthis.h>
 #include <qurloperator.h>
 #include <qdir.h>
+#include <qmessagebox.h>
 
 #include <klocale.h>
 #include <kdirselectdialog.h>
@@ -72,12 +73,10 @@ Tracer* ImageImporter::tracer = Tracer::getInstance("kde.kphotobook.import", "Im
  *  TRUE to construct a modal dialog.
  */
 ImageImporter::ImageImporter( KPhotoBook* parent, const char* name, bool modal, WFlags fl )
-: KDialog( parent, name, modal, fl ), m_photobook(parent)
+    : KDialog( parent, name, modal, fl ), m_photobook(parent), m_bCurrentDeviceMounted(false)
 {
     setCaption(i18n("Image Importer"));
-
-    m_bCurrentDeviceMounted = false;
-
+    
     initGUI();
     initData();
 }
@@ -340,7 +339,15 @@ void ImageImporter::initData() {
         m_cmbDestBasefolder->insertItem(sourceDir->dir()->absPath());
     }
 
+	if (m_cmbDestBasefolder->count() == 0) {
+		QMessageBox::information( this, "No Folders Available",
+                                  "There are no Folders in your album!<br>"
+                                  "Either create a new album and add Folders to "
+                                  "it, or open another available album." );
+		
+	}
     //m_cmbDestBasefolder->insertItem(Settings::imageImporterDestBaseFolder());
+	
     m_cmbDestBasefolder->setCurrentText(Settings::imageImporterDestBaseFolder());
     m_txtDestSubfolders->setText(Settings::imageImporterDestSubfolders());
     m_txtDestFilename->setText(Settings::imageImporterDestFilenames());
