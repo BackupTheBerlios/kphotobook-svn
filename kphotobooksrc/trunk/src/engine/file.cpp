@@ -94,7 +94,7 @@ FileTagNodeAssoc* File::getAssoc(TagNode* tagNode) const
     return 0;
 }
 
-FileTagNodeAssoc* File::getAssoc(int id) const
+FileTagNodeAssoc* File::getAssoc(unsigned int id) const
 {
     FileTagNodeAssoc* currentAssoc;
     for (currentAssoc = m_assocs->first(); currentAssoc; currentAssoc = m_assocs->next()) {

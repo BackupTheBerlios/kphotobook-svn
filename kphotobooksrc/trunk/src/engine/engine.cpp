@@ -54,7 +54,7 @@ Tracer* Engine::tracer = Tracer::getInstance("kde.kphotobook.engine", "Engine");
 
 Engine::Engine() :
     m_dirty(false),
-    m_fileinfo(0),
+    m_fileAlbum(0),
     m_uid(0),
 
     m_fileSystemScanner(new FileSystemScanner(this)),
@@ -79,9 +79,9 @@ Engine::Engine() :
 }
 
 
-Engine::Engine(QFileInfo& fileinfo) throw(EngineException*) :
+Engine::Engine(QFileInfo& fileAlbum) throw(EngineException*) :
     m_dirty(false),
-    m_fileinfo(new QFileInfo(fileinfo)),
+    m_fileAlbum(new QFileInfo(fileAlbum)),
     m_uid(0),
 
     m_fileSystemScanner(new FileSystemScanner(this)),
@@ -99,16 +99,16 @@ Engine::Engine(QFileInfo& fileinfo) throw(EngineException*) :
     m_fileList(new QPtrList<File>()),
     m_fileList2display(new QPtrList<File>())
 {
-    tracer->sinvoked(__func__) << "with file '" << m_fileinfo->absFilePath() << "'" << endl;
+    tracer->sinvoked(__func__) << "with file '" << m_fileAlbum->absFilePath() << "'" << endl;
 
     // if file does not exist, we have nothing to do
-    if (!m_fileinfo->exists()) {
-        QString msg = QString("File '%1' does not exist.").arg(m_fileinfo->absFilePath());
+    //if (!m_fileAlbum->exists()) {
+        QString msg = QString("File '%1' does not exist.").arg(m_fileAlbum->absFilePath());
         tracer->serror(__func__) << msg << endl;
         throw new EngineException(msg, "no detailmessage");
-    }
+    //}
 
-    QFile file(m_fileinfo->absFilePath());
+    QFile file(m_fileAlbum->absFilePath());
 
     // close the file if it is open already
     if (file.isOpen()) {
@@ -182,7 +182,7 @@ Engine::~Engine()
 
 QString Engine::currentURL() const
 {
-    return m_fileinfo ? m_fileinfo->absFilePath() : "";
+    return m_fileAlbum ? m_fileAlbum->absFilePath() : "";
 }
 
 
@@ -331,8 +331,8 @@ void Engine::save() throw(PersistingException*)
         tracer->sdebug(__func__) << "engine is dirty --> saving it..." << endl;
 
         // rename current file
-        QDir path = m_fileinfo->dirPath(true);
-        QString oldFileName = m_fileinfo->fileName();
+        QDir path = m_fileAlbum->dirPath(true);
+        QString oldFileName = m_fileAlbum->fileName();
 
         // create new filename
         QString basename = QFileInfo(oldFileName).baseName(true);
@@ -350,8 +350,8 @@ void Engine::save() throw(PersistingException*)
         }
 
         // save
-        XmlWriter writer = XmlWriter(this);
-        writer.store(new QFile(m_fileinfo->absFilePath()));
+        XmlWriter writer = XmlWriter(*this);
+        writer.store(new QFile(m_fileAlbum->absFilePath()));
     }
 
     m_dirty = false;
@@ -360,12 +360,12 @@ void Engine::save() throw(PersistingException*)
 
 void Engine::saveAs(QFileInfo& newFile) throw(PersistingException*)
 {
-    m_fileinfo = new QFileInfo(newFile);
+    m_fileAlbum = new QFileInfo(newFile);
     m_uid = generateUid();
 
     // save
-    XmlWriter writer = XmlWriter(this);
-    writer.store(new QFile(m_fileinfo->absFilePath()));
+    XmlWriter writer = XmlWriter(*this);
+    writer.store(new QFile(m_fileAlbum->absFilePath()));
 
     m_dirty = false;
 }
@@ -376,7 +376,7 @@ void Engine::saveAs(QFileInfo& newFile) throw(PersistingException*)
 //
 void Engine::cleanUp()
 {
-    delete m_fileinfo;
+    delete m_fileAlbum;
     delete m_uid;
     delete m_fileSystemScanner;
 

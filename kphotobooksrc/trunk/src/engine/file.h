@@ -109,7 +109,7 @@ class File : public KFileItem
         * Returns the association between this file and the tagNode with the specified id, 
         * if there exists one.
         */
-	FileTagNodeAssoc* getAssoc(int id) const;
+        FileTagNodeAssoc* getAssoc(unsigned int id) const;
 
         /**
         * Returns all associations this file has to tagNodes.

@@ -56,7 +56,7 @@ class Engine : public QObject
         friend class XmlWriter;         // class XmlWriter cann access everything on this class
 
         Engine();
-        Engine(QFileInfo& fileinfo) throw(EngineException*);
+        Engine(QFileInfo& fileAlbum) throw(EngineException*);
 
         ~Engine();
 
@@ -85,9 +85,9 @@ class Engine : public QObject
             return m_uid != 0;
         }
 
-        const QFileInfo* fileinfo() const
+        const QFileInfo* fileAlbum() const
         {
-            return m_fileinfo;
+            return m_fileAlbum;
         }
 
         /**
@@ -181,7 +181,7 @@ class Engine : public QObject
         /**
         * The url of the opened xml-file.
         */
-        QFileInfo* m_fileinfo;
+        QFileInfo* m_fileAlbum;
 
         /**
         * A unique identifier for this file.
