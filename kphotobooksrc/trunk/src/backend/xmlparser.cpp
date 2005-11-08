@@ -46,6 +46,17 @@
 
 Tracer* XmlParser::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlParser");
 
+XmlParser::XmlParser(Engine* engine)
+    :  QXmlDefaultHandler(),
+       XmlConstants(),
+       m_engine(engine),
+       m_section(SECTION_UNDEFINED_START),
+       m_currentSourceDir(0),
+       m_currentFile(0),
+       m_tagNodesOfCurrentFile(0),
+       m_exception(0)
+{
+}
 
 XmlParser::~XmlParser()
 {

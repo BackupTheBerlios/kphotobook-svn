@@ -66,11 +66,8 @@ class XmlConstants
         static const QString ATTRIBUTE_TAGASSOC_VALUE;
     
     public:
-        XmlConstants()
-        {}
-    
-        ~XmlConstants()
-        {}
+        XmlConstants()   {}
+        ~XmlConstants()  {}
 };
 
 #endif

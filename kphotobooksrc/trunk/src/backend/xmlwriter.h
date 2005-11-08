@@ -46,18 +46,13 @@ class XmlWriter : public XmlConstants
         static Tracer* tracer;
     
     public:
-        XmlWriter(Engine* engine) :
-            XmlConstants(),
-            m_engine(engine)
-        {}
-    
-        ~XmlWriter()
-        {}
+        XmlWriter(const Engine& engine);
+        ~XmlWriter() {}
     
         void store(QFile* file) throw(PersistingException*);
     
     private:
-        Engine* m_engine;
+        const Engine& m_engine;
     
         void dumpSourceDirs(QTextStream& stream, Folder* sourceDir, QString indent);
         void dumpTagNodes(QTextStream& stream, TagNode* tagnode, QString indent);

@@ -37,6 +37,12 @@
 
 Tracer* XmlWriter::tracer = Tracer::getInstance("kde.kphotobook.backend", "XmlWriter");
 
+XmlWriter::XmlWriter(const Engine& engine) :
+    XmlConstants(),
+    m_engine(engine)
+{
+}
+
 
 void XmlWriter::store(QFile* file2write) throw(PersistingException*)
 {
@@ -57,13 +63,13 @@ void XmlWriter::store(QFile* file2write) throw(PersistingException*)
 
     // write head of the file
     stream << "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" << "\n";
-    stream << "<" << ELEMENT_KPHOTOBOOK << " " << ATTRIBUTE_KPHOTOBOOK_UID << "=\"" << entitize(*(m_engine->uid())) << "\">" << "\n\n";
+    stream << "<" << ELEMENT_KPHOTOBOOK << " " << ATTRIBUTE_KPHOTOBOOK_UID << "=\"" << entitize(*(m_engine.uid())) << "\">" << "\n\n";
 
     // dump the sourcedirs
     stream << "  <!-- source directories -->" << "\n";
     stream << "  <" << ELEMENT_SOURCEDIRS << ">" << "\n";
     Folder* sourceDir;
-    for ( sourceDir = m_engine->m_sourceDirs->first(); sourceDir; sourceDir = m_engine->m_sourceDirs->next() ) {
+    for ( sourceDir = m_engine.m_sourceDirs->first(); sourceDir; sourceDir = m_engine.m_sourceDirs->next() ) {
 
         QString recursive = QString("false");
         if (sourceDir->recursive()) {
@@ -89,7 +95,7 @@ void XmlWriter::store(QFile* file2write) throw(PersistingException*)
     stream << "  <!-- tags -->" << "\n";
     stream << "  <" << ELEMENT_TAGS << ">" << "\n";
     TagNode* tagnode;
-    for ( tagnode = m_engine->m_tagForest->first(); tagnode; tagnode = m_engine->m_tagForest->next() ) {
+    for ( tagnode = m_engine.m_tagForest->first(); tagnode; tagnode = m_engine.m_tagForest->next() ) {
 
         dumpTagNodes(stream, tagnode, QString("    "));
     }
@@ -98,7 +104,7 @@ void XmlWriter::store(QFile* file2write) throw(PersistingException*)
 
     // dump all files
     stream << "  <!-- files -->" << "\n";
-    for ( sourceDir = m_engine->m_sourceDirs->first(); sourceDir; sourceDir = m_engine->m_sourceDirs->next() ) {
+    for ( sourceDir = m_engine.m_sourceDirs->first(); sourceDir; sourceDir = m_engine.m_sourceDirs->next() ) {
 
         dumpFiles(stream, sourceDir, QString("  "));
     }
