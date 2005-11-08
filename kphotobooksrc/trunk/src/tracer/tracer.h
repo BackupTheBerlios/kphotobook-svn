@@ -114,7 +114,14 @@ class Tracer
         /**
         * The valid tracelevels.
         */
-        enum TraceLevel {LEVEL_DEBUG = 0, LEVEL_INVOKED, LEVEL_INFO, LEVEL_WARNING, LEVEL_ERROR, LEVEL_FATAL};
+        enum TraceLevel {
+            LEVEL_DEBUG = 0,
+            LEVEL_INVOKED,
+            LEVEL_INFO,
+            LEVEL_WARNING,
+            LEVEL_ERROR,
+            LEVEL_FATAL
+        };
     
         /**
         * Contains the kdebuglevels to use.
