@@ -26,6 +26,7 @@
 #include "dialogs/dialogaddsourcedir.h"
 #include "dialogs/dialogfilesystemscanner.h"
 #include "dialogs/dialogmanagetag.h"
+//#include "dialogs/dialogselectimageinfos.h"
 #include "engine/engine.h"
 #include "engine/file.h"
 #include "engine/filesystemscanner.h"
@@ -448,7 +449,7 @@ bool KPhotoBook::queryClose()
         // show save, discard, abort dialog
         QString fileName = QString("");
         if (m_engine->uid()) {
-            fileName = QString("%1\n").arg(m_engine->fileinfo()->absFilePath());
+            fileName = QString("%1\n").arg(m_engine->fileAlbum()->absFilePath());
         }
 
         QString text = QString(i18n("The document has been modified.\n%1Do you want to save it?")).arg(fileName);
@@ -581,7 +582,7 @@ void KPhotoBook::slotFileOpen(const KURL& url)
         // show save, discard, abort dialog
         QString fileName = QString("");
         if (m_engine->uid()) {
-            fileName = QString("%1\n").arg(m_engine->fileinfo()->absFilePath());
+            fileName = QString("%1\n").arg(m_engine->fileAlbum()->absFilePath());
         }
 
         QString text = QString(i18n("The document has been modified.\n%1Do you want to save it?")).arg(fileName);
@@ -684,7 +685,7 @@ bool KPhotoBook::slotFileSaveAs()
     QString startDir = QString::null;
     // determine directory of current opened file
     if (m_engine->alreadySavedOnce()) {
-        QFileInfo currentFile = *m_engine->fileinfo();
+        QFileInfo currentFile = *m_engine->fileAlbum();
         startDir = currentFile.dirPath(true);
     }
 
@@ -1022,7 +1023,7 @@ void KPhotoBook::slotRescanFilesystem()
     connect(m_engine->fileSystemScanner(), SIGNAL(newFolder(Folder*)), dlgFileSystemScanner, SLOT(slotNewFolder(Folder*)));
     m_engine->fileSystemScanner()->rescan();
     dialogFileSystemScannerClose(dlgFileSystemScanner);
-    
+
     // add the folder to the tagtree
     m_sourcedirTree->clear();
     m_sourcedirTree->addSourceDirs(m_engine->sourceDirs());
@@ -1580,7 +1581,7 @@ void KPhotoBook::updateStatusBar()
 
 
 Folder* KPhotoBook::addSourceDir(QDir* sourceDir, bool recursive) throw(EngineException*)
-{    
+{
     // show the dialog, do the work and wait till the user clicks ok
     DialogFileSystemScanner* dlgFileSystemScanner = dialogFileSystemScannerShow();
     connect(m_engine->fileSystemScanner(), SIGNAL(progress_folderAlreadyAdded(const QString&)), dlgFileSystemScanner, SLOT(slotFolderAlreadyAdded(const QString&)));
