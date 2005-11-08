@@ -40,6 +40,7 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qwidget.h>
+#include <qregexp.h>
 
 
 Tracer* DialogDateTimeFilter::tracer = Tracer::getInstance("kde.kphotobook.widgets", "DialogDateTimeFilter");
@@ -225,6 +226,8 @@ QWidget* DialogDateTimeFilter::buildPatternPanel()
     m_pattern->setFocus();
     connect(m_pattern, SIGNAL(textChanged(const QString&)), this, SLOT(slotValidate()));
 
+    m_lblPatternParsed = new QLabel("...", patternFieldGroup, "m_lblPatternParsed");
+
     QGroupBox* patternUsageGroup = new QGroupBox(i18n("Usage"), m_patternPanel, "patternUsageGroup");
     patternPanelLayout->add(patternUsageGroup);
     patternUsageGroup->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -272,6 +275,74 @@ void DialogDateTimeFilter::slotValidate()
     } else if (m_tabWidget->currentPage() == m_patternPanel) {
         tracer->sdebug(__func__) << "entered pattern is: " << m_pattern->text() << endl;
         enableButtonOK(true);
+
+        QString fromYear  = "0000";
+        QString fromMonth = "00";
+        QString fromDay   = "00";
+
+        QString toYear  = "0000";
+        QString toMonth = "00";
+        QString toDay   = "00";
+
+        QString pat = m_pattern->text();
+        if (!pat.isEmpty()) {
+            int pos;
+            QString from, to;
+            if ((pos = pat.find( '-' )) > 0) {
+                from = pat.left( pos ).stripWhiteSpace();
+                to   = pat.mid( pos + 1 ).stripWhiteSpace();
+            } else {
+                from = pat;
+                to = pat;
+            }
+
+            QRegExp re;
+
+            re.setPattern( "([0-9]{4})" );
+            if (re.exactMatch( from )) {
+                fromYear = re.cap(1);
+            }
+
+            re.setPattern( "([0-9]{2}).([0-9]{4})" );
+            if (re.exactMatch( from )) {
+                fromMonth = re.cap(1);
+                fromYear  = re.cap(2);
+            }
+
+            re.setPattern( "([0-9]{2}).([0-9]{2}).([0-9]{4})" );
+            if (re.exactMatch( from )) {
+                fromDay   = re.cap(1);
+                fromMonth = re.cap(2);
+                fromYear  = re.cap(3);
+            }
+
+            re.setPattern( "([0-9]{4})" );
+            if (re.exactMatch( to )) {
+                toYear = re.cap(1);
+            }
+
+            re.setPattern( "([0-9]{2}).([0-9]{4})" );
+            if (re.exactMatch( to )) {
+                toMonth = re.cap(1);
+                toYear  = re.cap(2);
+            }
+
+            re.setPattern( "([0-9]{2}).([0-9]{2}).([0-9]{4})" );
+            if (re.exactMatch( to )) {
+                toDay   = re.cap(1);
+                toMonth = re.cap(2);
+                toYear  = re.cap(3);
+            }
+
+
+
+        }
+
+        m_lblPatternParsed->setText( QString("%1.%2.%3 <--> %4.%5.%6")
+                                     .arg(fromDay).arg(fromMonth).arg(fromYear)
+                                     .arg(toDay).arg(toMonth).arg(toYear) );
+
+
         m_data->setFilterPattern(m_pattern->text());
     } else if (m_tabWidget->currentPage() == m_singlePanel){
         enableButtonOK(true);

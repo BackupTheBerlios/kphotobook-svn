@@ -95,6 +95,7 @@ class DialogDateTimeFilter : public KDialogBase
         DateTimeWidget* m_toDateTime;
 
         QLineEdit* m_pattern;
+        QLabel* m_lblPatternParsed;
 
         QCheckBox* m_noDateSet;
 };
