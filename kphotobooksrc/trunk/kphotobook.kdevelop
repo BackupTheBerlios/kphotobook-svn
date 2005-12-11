@@ -2,154 +2,69 @@
 <kdevelop>
   <general>
     <author>Michael Christen</author>
-    <email>starcube@users.sourceforge.ch</email>
-    <version>0.0.6</version>
-    <projectmanagement>KDevKDEAutoProject</projectmanagement>
+    <email>mike@swisstux.net</email>
+    <version>0.1.0</version>
+    <projectmanagement>KDevCustomProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
-    <keywords>
-      <keyword>C++</keyword>
-      <keyword>Code</keyword>
-      <keyword>Qt</keyword>
-      <keyword>KDE</keyword>
-    </keywords>
+    <ignoreparts>
+      <part>kdevbookmarks</part>
+      <part>kdevsnippet</part>
+      <part>kdevdocumentation</part>
+      <part>kdevkonsoleview</part>
+      <part>kdevfilegroups</part>
+      <part>kdevfileselector</part>
+      <part>kdevfilelist</part>
+      <part>kdevdistpart</part>
+      <part>kdevregexptest</part>
+      <part>kdevscripting</part>
+      <part>kdevfilter</part>
+      <part>kdevtexttools</part>
+      <part>kdevtools</part>
+    </ignoreparts>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
     <description/>
-    <ignoreparts/>
-    <secondaryLanguages/>
-    <versioncontrol>kdevsubversion</versioncontrol>
+    <versioncontrol/>
   </general>
-  <kdevautoproject>
-    <general>
-      <activetarget>src/kphotobook</activetarget>
-      <useconfiguration>debug</useconfiguration>
-    </general>
+  <kdevcustomproject>
     <run>
       <mainprogram>src/kphotobook</mainprogram>
-      <terminal>false</terminal>
       <directoryradio>executable</directoryradio>
       <customdirectory>/</customdirectory>
-      <programargs>--tracelevel debug</programargs>
+      <programargs/>
+      <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars/>
-      <runarguments>
-        <kphotobook/>
-      </runarguments>
     </run>
+    <build>
+      <buildtool>make</buildtool>
+      <builddir/>
+    </build>
     <make>
-      <envvars>
-        <envvar value="2.5" name="WANT_AUTOCONF" />
-        <envvar value="1.6" name="WANT_AUTOMAKE" />
-      </envvars>
-      <abortonerror>true</abortonerror>
+      <abortonerror>false</abortonerror>
       <numberofjobs>1</numberofjobs>
+      <prio>0</prio>
       <dontact>false</dontact>
       <makebin/>
-      <prio>0</prio>
+      <defaulttarget/>
+      <makeoptions>debug=full prefix=/usr/kde/3.4</makeoptions>
+      <selectedenvironment>default</selectedenvironment>
+      <environments>
+        <default/>
+      </environments>
     </make>
-    <configurations>
-      <optimized>
-        <builddir>optimized</builddir>
-        <ccompiler>GccOptions</ccompiler>
-        <cxxcompiler>GppOptions</cxxcompiler>
-        <f77compiler>G77Options</f77compiler>
-        <cxxflags>-O2 -g0</cxxflags>
-      </optimized>
-      <debug>
-        <configargs>--enable-debug=full --prefix=/usr/kde/3.4</configargs>
-        <builddir>debug</builddir>
-        <ccompiler>kdevgccoptions</ccompiler>
-        <cxxcompiler>kdevgppoptions</cxxcompiler>
-        <f77compiler>kdevpgf77options</f77compiler>
-        <cxxflags>-O0 -g3</cxxflags>
-        <topsourcedir>/data/home/mike/Documents/develop/kphotobook/kphotobooksrc/trunk</topsourcedir>
-        <cppflags/>
-        <ldflags/>
-        <ccompilerbinary/>
-        <cxxcompilerbinary/>
-        <f77compilerbinary/>
-        <cflags/>
-        <f77flags/>
-        <envvars/>
-      </debug>
-    </configurations>
-  </kdevautoproject>
-  <kdevfileview>
-    <groups>
-      <group pattern="*.cpp;*.cxx;*.h" name="Sources" />
-      <group pattern="*.ui" name="User Interface" />
-      <group pattern="*.png" name="Icons" />
-      <group pattern="*.po;*.ts" name="Translations" />
-      <group pattern="*" name="Others" />
-      <hidenonprojectfiles>false</hidenonprojectfiles>
-      <hidenonlocation>false</hidenonlocation>
-    </groups>
-    <tree>
-      <hidenonprojectfiles>false</hidenonprojectfiles>
-      <hidepatterns>*.o,*.lo,CVS</hidepatterns>
-      <showvcsfields>false</showvcsfields>
-    </tree>
-  </kdevfileview>
-  <kdevdoctreeview>
-    <ignoretocs>
-      <toc>gtk</toc>
-      <toc>gnustep</toc>
-      <toc>python</toc>
-      <toc>php</toc>
-      <toc>perl</toc>
-      <toc>ruby_bugs</toc>
-      <toc>ruby</toc>
-      <toc>python_bugs</toc>
-      <toc>php_bugs</toc>
-      <toc>perl_bugs</toc>
-      <toc>opengl</toc>
-      <toc>kde2book</toc>
-      <toc>java_bugs_gcc</toc>
-      <toc>haskell_bugs_ghc</toc>
-      <toc>haskell</toc>
-      <toc>gnome1</toc>
-      <toc>fortran_bugs_gcc</toc>
-      <toc>bash</toc>
-      <toc>bash_bugs</toc>
-      <toc>ada_bugs_gcc</toc>
-      <toc>ada</toc>
-      <toc>clanlib</toc>
-      <toc>w3c-dom-level2-html</toc>
-      <toc>gtk_bugs</toc>
-      <toc>java_bugs_sun</toc>
-      <toc>w3c-uaag10</toc>
-      <toc>sw</toc>
-      <toc>stl</toc>
-      <toc>sdl</toc>
-      <toc>w3c-svg</toc>
-      <toc>pascal_bugs_fp</toc>
-      <toc>libc</toc>
-      <toc>libstdc++</toc>
-    </ignoretocs>
-    <projectdoc>
-      <userdocDir>html/</userdocDir>
-      <apidocDir>html/</apidocDir>
-    </projectdoc>
-    <ignoreqt_xml>
-      <toc>qmake User Guide</toc>
-      <toc>Guide to the Qt Translation Tools</toc>
-    </ignoreqt_xml>
-    <ignoredoxygen/>
-    <ignorekdocs/>
-    <ignoredevhelp/>
-  </kdevdoctreeview>
+  </kdevcustomproject>
   <kdevdebugger>
     <general>
-      <dbgshell>libtool</dbgshell>
+      <dbgshell/>
       <programargs/>
       <gdbpath/>
-      <breakonloadinglibs>true</breakonloadinglibs>
-      <separatetty>false</separatetty>
-      <floatingtoolbar>false</floatingtoolbar>
-      <runappinappdirectory>true</runappinappdirectory>
       <configGdbScript/>
       <runShellScript/>
       <runGdbScript/>
+      <breakonloadinglibs>true</breakonloadinglibs>
+      <separatetty>false</separatetty>
+      <floatingtoolbar>false</floatingtoolbar>
     </general>
     <display>
       <staticmembers>false</staticmembers>
@@ -157,6 +72,52 @@
       <outputradix>10</outputradix>
     </display>
   </kdevdebugger>
+  <kdevdoctreeview>
+    <ignoretocs>
+      <toc>ada</toc>
+      <toc>ada_bugs_gcc</toc>
+      <toc>bash</toc>
+      <toc>bash_bugs</toc>
+      <toc>clanlib</toc>
+      <toc>fortran_bugs_gcc</toc>
+      <toc>gnome1</toc>
+      <toc>gnustep</toc>
+      <toc>gtk</toc>
+      <toc>gtk_bugs</toc>
+      <toc>haskell</toc>
+      <toc>haskell_bugs_ghc</toc>
+      <toc>java_bugs_gcc</toc>
+      <toc>java_bugs_sun</toc>
+      <toc>kde2book</toc>
+      <toc>opengl</toc>
+      <toc>pascal_bugs_fp</toc>
+      <toc>php</toc>
+      <toc>php_bugs</toc>
+      <toc>perl</toc>
+      <toc>perl_bugs</toc>
+      <toc>python</toc>
+      <toc>python_bugs</toc>
+      <toc>qt-kdev3</toc>
+      <toc>ruby</toc>
+      <toc>ruby_bugs</toc>
+      <toc>sdl</toc>
+      <toc>sw</toc>
+      <toc>w3c-dom-level2-html</toc>
+      <toc>w3c-svg</toc>
+      <toc>w3c-uaag10</toc>
+      <toc>wxwidgets_bugs</toc>
+    </ignoretocs>
+    <ignoreqt_xml>
+      <toc>Guide to the Qt Translation Tools</toc>
+      <toc>Qt Assistant Manual</toc>
+      <toc>Qt Designer Manual</toc>
+      <toc>Qt Reference Documentation</toc>
+      <toc>qmake User Guide</toc>
+    </ignoreqt_xml>
+    <ignoredoxygen>
+      <toc>KDE Libraries (Doxygen)</toc>
+    </ignoredoxygen>
+  </kdevdoctreeview>
   <kdevfilecreate>
     <filetypes/>
     <useglobaltypes>
@@ -165,43 +126,20 @@
       <type ext="h" />
     </useglobaltypes>
   </kdevfilecreate>
-  <kdevcvs>
-    <cvsoptions>-f</cvsoptions>
-    <commitoptions/>
-    <updateoptions>-dP</updateoptions>
-    <addoptions/>
-    <removeoptions>-f</removeoptions>
-    <diffoptions>-u3 -p</diffoptions>
-    <logoptions/>
-    <rshoptions/>
-  </kdevcvs>
   <cppsupportpart>
-    <codecompletion/>
     <filetemplates>
-      <choosefiles>false</choosefiles>
-      <interfaceURL/>
-      <implementationURL/>
       <interfacesuffix>.h</interfacesuffix>
       <implementationsuffix>.cpp</implementationsuffix>
-      <lowercasefilenames>true</lowercasefilenames>
     </filetemplates>
   </cppsupportpart>
-  <kdevclassview>
-    <folderhierarchy>true</folderhierarchy>
-    <depthoffolders>2</depthoffolders>
-  </kdevclassview>
   <kdevcppsupport>
-    <references>
-      <pcs>Qt</pcs>
-      <pcs>KDE 3</pcs>
-    </references>
     <codecompletion>
       <includeGlobalFunctions>true</includeGlobalFunctions>
       <includeTypes>true</includeTypes>
       <includeEnums>true</includeEnums>
       <includeTypedefs>false</includeTypedefs>
-      <automaticCodeCompletion>false</automaticCodeCompletion>
-      <automaticArgumentsHint>false</automaticArgumentsHint>
+      <automaticCodeCompletion>true</automaticCodeCompletion>
+      <automaticArgumentsHint>true</automaticArgumentsHint>
       <automaticHeaderCompletion>true</automaticHeaderCompletion>
       <codeCompletionDelay>250</codeCompletionDelay>
       <argumentsHintDelay>400</argumentsHintDelay>
@@ -215,38 +153,8 @@
       <inlineGet>true</inlineGet>
       <inlineSet>true</inlineSet>
     </creategettersetter>
+    <references/>
   </kdevcppsupport>
-  <kdevcvsservice>
-    <recursivewhenupdate>true</recursivewhenupdate>
-    <prunedirswhenupdate>true</prunedirswhenupdate>
-    <createdirswhenupdate>true</createdirswhenupdate>
-    <recursivewhencommitremove>true</recursivewhencommitremove>
-    <revertoptions>-C</revertoptions>
-  </kdevcvsservice>
-  <dist>
-    <custom>false</custom>
-    <bzip>false</bzip>
-    <archname/>
-    <appname/>
-    <version>0.0.6</version>
-    <release/>
-    <vendor/>
-    <licence/>
-    <summary/>
-    <group/>
-    <packager/>
-    <description/>
-    <changelog/>
-    <devpackage>false</devpackage>
-    <docspackage>false</docspackage>
-    <appicon>false</appicon>
-    <arch>0</arch>
-    <genHTML>false</genHTML>
-    <useRPM>false</useRPM>
-    <ftpkde>false</ftpkde>
-    <appskde>false</appskde>
-    <url/>
-  </dist>
   <kdevdocumentation>
     <projectdoc>
       <docsystem/>
@@ -254,4 +162,14 @@
       <usermanualurl/>
     </projectdoc>
   </kdevdocumentation>
+  <kdevfileview>
+    <groups>
+      <hidenonprojectfiles>false</hidenonprojectfiles>
+      <hidenonlocation>false</hidenonlocation>
+    </groups>
+    <tree>
+      <hidepatterns>*.o,*.lo,CVS</hidepatterns>
+      <hidenonprojectfiles>false</hidenonprojectfiles>
+    </tree>
+  </kdevfileview>
 </kdevelop>
