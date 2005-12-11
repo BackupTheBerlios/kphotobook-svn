@@ -34,7 +34,7 @@ Since version 0.0.7 we are using bksys/scons as build system. That means we no l
 To use bksys/scons you need an installed python. bksys and scons must not be installed but are included in the kphotobook source distribution.
 </p>
 <p>
-For your convenience we deliver a faked configure and Makefile which allow you to build/install <i>KPhotoBook</i> almost the same way as before. If you are interested in the new commands you could use, we propose to have a look into the configure-script and Makefile in the source folder.
+For your convenience we deliver a faked configure and Makefile which allow you to build/install <i>KPhotoBook</i> <b>almost</b> the same way as before. If you are interested in the new commands you could use, we propose to have a look into the configure-script and Makefile in the source folder. The command <code>scons --help</code> may also be useful for informations about bksys/scons.
 </p>
 <p>
 Please consider the <a href="links.html"><i>Links</i> section</a> for links to informations about bksys and scons.
@@ -79,7 +79,7 @@ Follow these instructions to build the application from the <em>Subversion</em> 
 <li>Create the makefile:
 <pre>make -f Makefile.cvs</pre></li>
 <li>Start configure (where KDE-installation-path is '/opt/kde3' for example):
-<pre>./configure --prefix='KDE-installation-path'</pre></li>
+<pre>./configure prefix='KDE-installation-path'</pre></li>
 <li>Build the application:
 <pre>make</pre></li>
 <li>Change to root:
